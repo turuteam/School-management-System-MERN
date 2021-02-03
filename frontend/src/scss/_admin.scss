@@ -1,0 +1,48 @@
+.dashboard__card {
+  background-color: $white;
+  padding: 20px;
+  display: flex;
+  margin-bottom: 30px;
+  align-items: center;
+  justify-content: space-between;
+
+  .card__digits {
+    font-weight: 800;
+    font-size: 1.7em;
+  }
+  h5 {
+    opacity: 0.4;
+  }
+  .card__icon {
+    background-color: lightblue;
+    border-radius: 50%;
+    padding: 30px;
+  }
+}
+
+.notices {
+  height: 500;
+  overflow: scroll;
+
+  .notice {
+    padding: 20px;
+
+    .chip__date {
+      background-color: $darkBlue;
+      color: $white;
+    }
+  }
+}
+
+.attendances {
+  .color__box {
+    width: 100px;
+    height: 20px;
+  }
+  .male__color {
+    background: #051f3e !important;
+  }
+  .female__color {
+    background-color: #ffa201;
+  }
+}

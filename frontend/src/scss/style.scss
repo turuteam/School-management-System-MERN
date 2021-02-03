@@ -4,6 +4,9 @@
 // Import CoreUI styles
 @import "~@coreui/coreui/scss/coreui.scss";
 
+@import "react-big-calendar/lib/sass/styles";
+@import "react-big-calendar/lib/addons/dragAndDrop/styles";
+
 // Some temp fixes
 @import "fixes";
 
@@ -11,3 +14,4 @@
 @import "custom";
 @import "./admin";
 @import "./layouts";
+@import "./students";

@@ -16,15 +16,15 @@ const Exams = React.lazy(()  => import( '../../AdminComponents/academics/Exams')
 
 
 //students
-const AllStudents = React.lazy(()  => import( '../../AdminComponents/students/AllStudents'));
+const AllStudents = React.lazy(()  => import( '../../AdminComponents/students/allStudents/AllStudents'));
 const Upgrade = React.lazy(()  => import( '../../AdminComponents/students/Upgrade'));
-const Attendance = React.lazy(()  => import( '../../AdminComponents/students/Attendance'));
-const Campuses = React.lazy(()  => import( '../../AdminComponents/students/Campuses'));
+const Attendance = React.lazy(()  => import( '../../AdminComponents/students/attendance/Attendance'));
+const Campuses = React.lazy(()  => import( '../../AdminComponents/students/campuses/Campuses'));
 const Dormitories = React.lazy(()  => import( '../../AdminComponents/students/Dormitories'));
 const NewStudent = React.lazy(()  => import( '../../AdminComponents/students/newStudent/NewStudent'));
 const Prefects = React.lazy(()  => import( '../../AdminComponents/students/Prefects'));
 const Scholarships = React.lazy(()  => import( '../../AdminComponents/students/Scholarships'));
-const StudentDetails = React.lazy(()  => import( '../../AdminComponents/students/StudentDetails'));
+const StudentDetails = React.lazy(()  => import( '../../AdminComponents/students/studentDetails/StudentDetails'));
 
 //staff
 const AddStaff = React.lazy(()  => import( '../../AdminComponents/staff/AddStaffPage'));

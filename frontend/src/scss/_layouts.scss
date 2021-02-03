@@ -59,10 +59,17 @@ input:focus {
   padding: 20px;
 }
 
+.lg__btn {
+  padding: 10px 30px !important;
+}
+
+.sm__btn {
+  padding: 5px 15px !important;
+}
+
 .orange__btn {
   background-color: $orange !important;
   color: $white !important;
-  padding: 10px 30px !important;
   &:hover {
     background-color: $darkBlue !important;
   }
@@ -71,7 +78,6 @@ input:focus {
 .blue__btn {
   background-color: $darkBlue !important;
   color: $white !important;
-  padding: 10px 30px !important;
   &:hover {
     background-color: $orange !important;
   }

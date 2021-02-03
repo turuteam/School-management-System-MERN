@@ -27,7 +27,7 @@ const _nav =  [
           {
             _tag: 'CSidebarNavItem',
             name: 'Attendance',
-            to: '/students/attendence',
+            to: '/students/attendance',
           },
           {
             _tag: 'CSidebarNavItem',

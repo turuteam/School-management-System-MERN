@@ -120,8 +120,8 @@ function NewStudent() {
                         <ProfilePicture/>
                         <br className="my-5"/>
                      <div className="row ">
-                         <button type="submit" onClick={handleSubmit(handleCreateSubmit)} className="btn orange__btn mr-5" >Create</button>
-                         <button onClick={handleReset} className="btn blue__btn">Reset</button>
+                         <button type="submit" onClick={handleSubmit(handleCreateSubmit)} className=" col btn orange__btn mr-5" >Create</button>
+                         <button onClick={handleReset} className=" col btn blue__btn">Reset</button>
                      </div>
                 </form>
 
