@@ -1,13 +1,12 @@
 import React, {useState} from 'react'
-import Search from './Search'
-import StudentsTable from './StudentsTable'
+import Search from '../../shared/Search'
+import StudentsTable from '../../shared/TableListUsers';
 
 function AllStudents() {
-   const [searchItems, setsearchItems] = useState({
-     name: "",
-     userID: "",
-     classID: "",
-   })
+   const [name, setname] = useState("");
+   const [id, setid] = useState("");
+   const [classID, setclass] = useState("")
+
 
    const headCells = [
     { id: 'userID', numeric: false, disablePadding: false, label: 'StudentID' }, 
@@ -95,6 +94,30 @@ function AllStudents() {
       gender: "female",
     }
    ]
+   const inputFields = [
+    {
+        type: "text",
+        label: "",
+        value: id,
+        name: "Student ID",
+        onChange: {setid}
+    },
+    {
+     type: "text",
+     label: "",
+     value: name,
+     name: "Name",
+     onChange: {setname}
+ },
+   {
+     type: "text",
+     label: "",
+     value: classID,
+     name: "Class",
+     onChange: {setclass}
+   }
+]
+   
 
    const handleSearch = (e) => {
      e.preventDefault();
@@ -102,7 +125,10 @@ function AllStudents() {
 
   return (
     <div className="content__container">
-      <Search searchItems={searchItems} setsearchItems={setsearchItems} handleSearch={handleSearch}/>
+      <Search
+           title=""
+           inputFields={inputFields}
+        />
       <StudentsTable students={students}  headCells={headCells}/>
     </div>
   )

@@ -8,11 +8,11 @@ const Messages = React.lazy(()  => import( '../../AdminComponents/messages/Messa
 
 
 //academics
-const Calender = React.lazy(()  => import( '../../AdminComponents/academics/Calender'));
-const Classes = React.lazy(()  => import( '../../AdminComponents/academics/Classes'));
-const Courses = React.lazy(()  => import( '../../AdminComponents/academics/Courses'));
-const Timetable = React.lazy(()  => import( '../../AdminComponents/academics/Timetable'));
-const Exams = React.lazy(()  => import( '../../AdminComponents/academics/Exams'));
+const Calender = React.lazy(()  => import( '../../AdminComponents/academics/calender/Calender'));
+const Classes = React.lazy(()  => import( '../../AdminComponents/academics/classes/Classes'));
+const Courses = React.lazy(()  => import( '../../AdminComponents/academics/courses/Courses'));
+const Timetable = React.lazy(()  => import( '../../AdminComponents/academics/timetable/Timetable'));
+const Exams = React.lazy(()  => import( '../../AdminComponents/academics/notes/Exams'));
 
 
 //students
@@ -20,26 +20,32 @@ const AllStudents = React.lazy(()  => import( '../../AdminComponents/students/al
 const Upgrade = React.lazy(()  => import( '../../AdminComponents/students/Upgrade'));
 const Attendance = React.lazy(()  => import( '../../AdminComponents/students/attendance/Attendance'));
 const Campuses = React.lazy(()  => import( '../../AdminComponents/students/campuses/Campuses'));
-const Dormitories = React.lazy(()  => import( '../../AdminComponents/students/Dormitories'));
+const Dormitories = React.lazy(()  => import( '../../AdminComponents/students/dormitories/Dormitories'));
 const NewStudent = React.lazy(()  => import( '../../AdminComponents/students/newStudent/NewStudent'));
-const Prefects = React.lazy(()  => import( '../../AdminComponents/students/Prefects'));
-const Scholarships = React.lazy(()  => import( '../../AdminComponents/students/Scholarships'));
+const Prefects = React.lazy(()  => import( '../../AdminComponents/students/prefects/Prefects'));
+const Scholarships = React.lazy(()  => import( '../../AdminComponents/students/schoolarship/Scholarships'));
 const StudentDetails = React.lazy(()  => import( '../../AdminComponents/students/studentDetails/StudentDetails'));
+const EditStudent = React.lazy(() => import('../../AdminComponents/students/newStudent/EditStudent'));
+
+
 
 //staff
-const AddStaff = React.lazy(()  => import( '../../AdminComponents/staff/AddStaffPage'));
+const AddStaff = React.lazy(()  => import( '../../AdminComponents/staff/addStaff/AddStaffPage'));
 const Staff = React.lazy(()  => import( '../../AdminComponents/staff/AllStaff'));
 const StaffAttendance = React.lazy(()  => import( '../../AdminComponents/staff/Attendence'));
 const StaffDetails = React.lazy(() => import('../../AdminComponents/staff/StaffDetails'));
 const Payrow = React.lazy(()  => import( '../../AdminComponents/staff/PayrowPage'));
 
+
+
 //finance
-const Banking = React.lazy(()  => import( '../../AdminComponents/finance/Banking'));
+const Banking = React.lazy(()  => import( '../../AdminComponents/finance/banking/Banking'));
 const SetFees = React.lazy(()  => import( '../../AdminComponents/finance/SetFees'));
 const PrepareBill = React.lazy(()  => import( '../../AdminComponents/finance/PrepareBill'));
 const NonBillPayment = React.lazy(()  => import( '../../AdminComponents/finance/NonBillPayment'));
 const BillPayment = React.lazy(()  => import( '../../AdminComponents/finance/BillPayment'));
 const ViewPayment = React.lazy(()  => import( '../../AdminComponents/finance/ViewPayment'));
+
 
 
  const routes =  [
@@ -60,6 +66,7 @@ const ViewPayment = React.lazy(()  => import( '../../AdminComponents/finance/Vie
         component: Classes,   
     },
     {
+       
         path: "/academics/courses",
         name: "Courses",
         component: Courses,   
@@ -101,6 +108,11 @@ const ViewPayment = React.lazy(()  => import( '../../AdminComponents/finance/Vie
         component: NewStudent,
     },
     {
+        path: "/students/edit/:id",
+        name: "Edit Student",
+        component: EditStudent,
+    },
+    {
         path: "/students/prefects",
         name: "Prefects",
         component: Prefects,
@@ -137,15 +149,17 @@ const ViewPayment = React.lazy(()  => import( '../../AdminComponents/finance/Vie
         component: StaffAttendance,
     },
     {
+        path: "/staff/finance",
+        exact: true,
+        name: "Staff Payrow ",
+        component: Payrow,
+    },
+    {
         path: "/staff/:id",
         name: "Staff Details ",
         component: StaffDetails,
     },
-    {
-        path: "/staff/payrow",
-        name: "Staff Payrow ",
-        component: Payrow,
-    },
+  
     {
         path: "/finance/set",
         name: "Set Fees",

@@ -22,12 +22,12 @@ const useStyles2 = makeStyles({
   },
 });
 
-export default function CustomPaginationActionsTable({campuses}) {
+export default function CustomPaginationActionsTable({prefects}) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, campuses.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, prefects.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -45,15 +45,14 @@ export default function CustomPaginationActionsTable({campuses}) {
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell align="left">Campus</TableCell>
-            <TableCell align="left">Location</TableCell>
             <TableCell align="left">Added</TableCell>
             <TableCell align="left">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ?  campuses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : campuses
+            ?  prefects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : prefects
           ).map((row) => (
             <TableRow key={row.id}>
               <TableCell component="th"  scope="row">
@@ -61,9 +60,6 @@ export default function CustomPaginationActionsTable({campuses}) {
               </TableCell>
               <TableCell align="left">
                 {row.name}
-              </TableCell>
-              <TableCell  align="left">
-                {row.location}
               </TableCell>
               <TableCell  align="left">
                 {row.added}
@@ -89,7 +85,7 @@ export default function CustomPaginationActionsTable({campuses}) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              count={campuses.length}
+              count={prefects.length}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{

@@ -22,12 +22,12 @@ const useStyles2 = makeStyles({
   },
 });
 
-export default function CustomPaginationActionsTable({campuses}) {
+export default function CustomPaginationActionsTable({scholarships}) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, campuses.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, scholarships.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -44,16 +44,17 @@ export default function CustomPaginationActionsTable({campuses}) {
       <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell align="left">Campus</TableCell>
-            <TableCell align="left">Location</TableCell>
+            <TableCell align="left">Scholarship</TableCell>
+            <TableCell align="left">Percentage</TableCell>
+            <TableCell align="left">Number of Students</TableCell>
             <TableCell align="left">Added</TableCell>
             <TableCell align="left">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ?  campuses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : campuses
+            ?  scholarships.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : scholarships
           ).map((row) => (
             <TableRow key={row.id}>
               <TableCell component="th"  scope="row">
@@ -62,8 +63,11 @@ export default function CustomPaginationActionsTable({campuses}) {
               <TableCell align="left">
                 {row.name}
               </TableCell>
-              <TableCell  align="left">
-                {row.location}
+              <TableCell align="left">
+                {row.percentage}
+              </TableCell>
+              <TableCell align="left">
+                {3}
               </TableCell>
               <TableCell  align="left">
                 {row.added}
@@ -89,7 +93,7 @@ export default function CustomPaginationActionsTable({campuses}) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              count={campuses.length}
+              count={scholarships.length}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{

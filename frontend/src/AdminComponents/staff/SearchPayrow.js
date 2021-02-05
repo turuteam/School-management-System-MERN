@@ -1,15 +1,15 @@
 import React from 'react'
 
-function Search({searchItems, setsearchItems, handleSearch}) {
+function SearchPayrow() {
     return (
-        <form onSubmit={handleSearch} className="mb-5">
+        <form  className="mb-5 content__container">
             <div className="row g-3">
                 <div className="col">
                     <input 
                     type="text" 
-                    name="studentID" 
+                    name="staffID" 
                     className="form-control py-4" 
-                    placeholder="Search by Student ID" 
+                    placeholder="Search by Staff ID" 
                     aria-label="First name"/>
                 </div>
                 <div className="col">
@@ -23,9 +23,17 @@ function Search({searchItems, setsearchItems, handleSearch}) {
                 <div className="col">
                     <input 
                     type="text" 
-                    name="class" 
+                    name="name" 
                     className="form-control py-4" 
-                    placeholder="Search by Class" 
+                    placeholder="Search by Staff Type" 
+                    aria-label="Last name"/>
+                </div>
+                <div className="col">
+                    <input 
+                    type="text" 
+                    name="name" 
+                    className="form-control py-4" 
+                    placeholder="Search by Status" 
                     aria-label="Last name"/>
                 </div>
                 <div className="col">
@@ -36,4 +44,4 @@ function Search({searchItems, setsearchItems, handleSearch}) {
     )
 }
 
-export default Search
+export default SearchPayrow

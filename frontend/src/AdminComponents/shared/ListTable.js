@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {Link} from 'react-router-dom'
-import TablePaginationActions from './TablePigination'
+import TablePaginationActions from './TablePagination'
 
 
 const useStyles2 = makeStyles({
@@ -22,12 +22,12 @@ const useStyles2 = makeStyles({
   },
 });
 
-export default function CustomPaginationActionsTable({campuses}) {
+export default function CustomPaginationActionsTable({data, tableHeader}) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, campuses.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -43,31 +43,22 @@ export default function CustomPaginationActionsTable({campuses}) {
       <Table className={classes.table} aria-label="custom pagination table">
       <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell align="left">Campus</TableCell>
-            <TableCell align="left">Location</TableCell>
-            <TableCell align="left">Added</TableCell>
-            <TableCell align="left">Action</TableCell>
+              {tableHeader && tableHeader.map(head => <TableCell key={head.id} >{head.name}</TableCell>)}
+              <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ?  campuses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : campuses
+            ?  data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : data
           ).map((row) => (
             <TableRow key={row.id}>
-              <TableCell component="th"  scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell align="left">
-                {row.name}
-              </TableCell>
-              <TableCell  align="left">
-                {row.location}
-              </TableCell>
-              <TableCell  align="left">
-                {row.added}
-              </TableCell>
+                {tableHeader && 
+                   tableHeader.map(cell =>   
+                        <TableCell key={cell.id}  align="left">
+                             {row[cell.id]}
+                        </TableCell>
+                 )}
               <TableCell  align="left">
                   <IconButton>
                       <DeleteOutlineIcon/>
@@ -89,7 +80,7 @@ export default function CustomPaginationActionsTable({campuses}) {
           <TableRow>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              count={campuses.length}
+              count={data.length}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{

@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Prefects() {
+function AddNote() {
     return (
         <div>
-            Perfects
+            add note
         </div>
     )
 }
 
-export default Prefects
+export default AddNote

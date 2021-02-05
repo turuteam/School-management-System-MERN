@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Dormitories() {
+function AddClass() {
     return (
         <div>
-            Dormitories
+            Add
         </div>
     )
 }
 
-export default Dormitories
+export default AddClass

@@ -75,31 +75,13 @@ const _nav =  [
         {
           _tag: 'CSidebarNavItem',
           name: 'Attendance',
-          to: '/staff/attendence',
+          to: '/staff/attendance',
         },
         {
           _tag: 'CSidebarNavItem',
           name: 'Payrow',
-          to: '/staff/payrow',
+          to: '/staff/finance',
         }
-    ]
-  },
-  {
-    _tag: 'CSidebarNavDropdown',
-    name: 'Parents',
-    route: '/parents',
-    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
-    _children: [
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'All Parents',
-            to: '/parents',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Add New',
-            to: '/parents/new',
-          },
     ]
   },
   {
@@ -125,14 +107,9 @@ const _nav =  [
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Exams',
-        to: '/academics/exams',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Timetable',
-        to: '/academics/timetable',
-      },
+        name: 'Notes',
+        to: '/academics/notes',
+      }
     
     ],
   },

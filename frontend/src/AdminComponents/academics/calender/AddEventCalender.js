@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Calender() {
+function AddCalender() {
     return (
         <div>
-           calender 
+            Add
         </div>
     )
 }
 
-export default Calender
+export default AddCalender

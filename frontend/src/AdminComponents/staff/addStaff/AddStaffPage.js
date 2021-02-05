@@ -1,14 +1,13 @@
 import React, {useState} from 'react'
 import PersonalInfo from '../../shared/Personalnfo';
-
-import Academics from './AcademicsDetails';
+import EmplymentDetails from './EmploymentDetails';
 import ContactDetails from '../../shared/Contact';
-import ProfilePicture from './ProfilePicture';
-import Guadian from '../../shared/Guadian'
+import ProfilePicture from '../../shared/ProfilePicture';
+import NextofKin from '../../shared/Guadian'
 import { useForm } from "react-hook-form";
 
 
-function NewStudent() {
+function NewStaff() {
     //personal
     const [name, setname] = useState("");
     const [lastname, setlastname] = useState("");
@@ -19,21 +18,21 @@ function NewStudent() {
     const [nationality, setnationality] = useState("")
     const [placeofBirth, setplaceofBirth] = useState("")
     const [religion, setreligion] = useState("")
+    const [title, settitle] = useState("")
 
     //form verification
     const { register, handleSubmit, errors } = useForm();
 
-    //academics 
-    const [autoID, setautoID] = useState(true);
-    const [userID, setuserID] = useState("")
-    const [classID, setclass] = useState("")
-    const [section, setsection] = useState("")
-    const [status, setstatus] = useState(null);
-    const [dormitory, setdormitory] = useState("")
-    const [schoolarship, setschoolarship] = useState("");
-    const [feesCategory, setfeesCategory] = useState("");
-    const [lastSchool, setlastSchool] = useState("");
-    const [reasonforTransfer, setreasonforTransfer] = useState("")
+    //EmplymentDetails 
+    const [role, setRole] = useState("");
+    const [department, setDepartment] = useState("")
+    const [campus, setCampus] = useState("")
+    const [employmentDate, setemploymentDate] = useState(null);
+    const [qualification, setqualification] = useState("")
+    const [years, setyears] = useState("");
+    const [salary, setsalary] = useState("");
+    const [allowance, setallowance] = useState("");
+    
 
 
     //contact details
@@ -43,13 +42,7 @@ function NewStudent() {
     const [postalAddress, setpostalAddress] = useState("")
 
     //guidan
-    const [guadian, setguadian] = useState([]);
-    const [guadianmobile, setguadianmobile] = useState("")
-    const [guadianname, setguadianname] = useState("")
-    const [guaianemail, setguadianemail] = useState("")
-    const [relationship, setrelationship] = useState("")
-    const [ocupation, setocupation] = useState("")
-    const [address, setaddress] = useState("")
+    const [nextofKin, setnextofKin] = useState([])
    
 
     const handleReset = (e) => {
@@ -71,11 +64,14 @@ function NewStudent() {
 
     return (
         <div>
-            <h2>Add New Students</h2>
+            <h2>Add New Staff Member</h2>
             <div>
                 <form action="" className="content__container">
                       <PersonalInfo
                         register={register}
+                        title={title}
+                        setTitle={settitle}
+                        isTeacher={true}
                         errors={errors}
                         name={name} setname={setname}
                         secondName={secondName} setsecondName={setsecondName}
@@ -88,19 +84,25 @@ function NewStudent() {
                         religion={religion} setreligion={setreligion}
                       />
                         <br className="my-5"/>
-                       <Academics
+                       <EmplymentDetails
                          register={register}
                          errors={errors}
-                         autoID={autoID}  setautoID={setautoID}
-                         userID={userID}   setuserID={setuserID}
-                         classID={classID} setclass={setclass}
-                         section={section} setsection={setsection}
-                         status={status} setstatus={setstatus}
-                         dormitory={dormitory} setdormitory={setdormitory}
-                         schoolarship={schoolarship} setschoolarship={setschoolarship}
-                         feesCategory={feesCategory} setfeesCategory={setfeesCategory}
-                         lastSchool={lastSchool} setlastSchool={setlastSchool}
-                         reasonforTransfer={reasonforTransfer} setreasonforTransfer={setreasonforTransfer}
+                            role={role}
+                            setRole={setRole}
+                            department={department}
+                            setDepartment={setDepartment}
+                            campus={campus}
+                            setCampus={setCampus}
+                            employmentDate={employmentDate}
+                            setemploymentDate={setemploymentDate}
+                            qualification={qualification}
+                            setqualification={setqualification}
+                            years={years}
+                            salary={salary}
+                            allowance={allowance}
+                            setallowance={setallowance}
+                            setsalary={setsalary}
+                            setyears={setyears}
                        />
                         <br className="my-5"/>
                         <ContactDetails
@@ -116,7 +118,10 @@ function NewStudent() {
                            postalAddress={postalAddress}
                         />
                         <br className="my-5"/>
-                        <Guadian guadian={guadian} setguadian={setguadian}/>
+                        <NextofKin 
+                           isTeacher={true}
+                           guadian={nextofKin} 
+                           setguadian={setnextofKin}/>
                         <br className="my-5"/>
                         <ProfilePicture/>
                         <br className="my-5"/>
@@ -131,4 +136,4 @@ function NewStudent() {
     )
 }
 
-export default NewStudent
+export default NewStaff

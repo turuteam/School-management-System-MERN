@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Banking() {
+function Notes() {
     return (
         <div>
-            Banking
+            notes
         </div>
     )
 }
 
-export default Banking
+export default Notes

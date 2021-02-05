@@ -1,9 +1,10 @@
 import React from 'react'
 
+
 function StaffDetails() {
     return (
         <div>
-            staff Details PAge
+            staff Details Page
         </div>
     )
 }

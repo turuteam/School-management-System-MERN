@@ -1,14 +1,13 @@
 import React, {useState} from 'react'
-import PersonalInfo from '../../shared/Personalnfo';
-
+import PersonalInfo from './Personalnfo';
 import Academics from './AcademicsDetails';
-import ContactDetails from '../../shared/Contact';
+import ContactDetails from './Contact';
 import ProfilePicture from './ProfilePicture';
-import Guadian from '../../shared/Guadian'
+import Guadian from './Guadian'
 import { useForm } from "react-hook-form";
 
 
-function NewStudent() {
+function EditStudent() {
     //personal
     const [name, setname] = useState("");
     const [lastname, setlastname] = useState("");
@@ -44,12 +43,6 @@ function NewStudent() {
 
     //guidan
     const [guadian, setguadian] = useState([]);
-    const [guadianmobile, setguadianmobile] = useState("")
-    const [guadianname, setguadianname] = useState("")
-    const [guaianemail, setguadianemail] = useState("")
-    const [relationship, setrelationship] = useState("")
-    const [ocupation, setocupation] = useState("")
-    const [address, setaddress] = useState("")
    
 
     const handleReset = (e) => {
@@ -71,7 +64,7 @@ function NewStudent() {
 
     return (
         <div>
-            <h2>Add New Students</h2>
+            <h2>Edit Students</h2>
             <div>
                 <form action="" className="content__container">
                       <PersonalInfo
@@ -122,7 +115,9 @@ function NewStudent() {
                         <br className="my-5"/>
                      <div className="row ">
                          <button type="submit" onClick={handleSubmit(handleCreateSubmit)} className=" col btn orange__btn mr-5" >Create</button>
-                         <button onClick={handleReset} className=" col btn blue__btn">Reset</button>
+                         <button onClick={handleReset} className=" col btn blue__btn mr-5">Reset</button>
+                         <button className="col btn btn-danger">Cancel</button>
+
                      </div>
                 </form>
 
@@ -131,4 +126,4 @@ function NewStudent() {
     )
 }
 
-export default NewStudent
+export default EditStudent

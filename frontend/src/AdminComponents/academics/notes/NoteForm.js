@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Classes() {
+function NoteForm() {
     return (
         <div>
-           claases 
+            note
         </div>
     )
 }
 
-export default Classes
+export default NoteForm

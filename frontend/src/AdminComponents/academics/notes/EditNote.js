@@ -1,11 +1,11 @@
 import React from 'react'
 
-function AddStaffPage() {
+function EditNote() {
     return (
         <div>
-            Add staff
+            edit note
         </div>
     )
 }
 
-export default AddStaffPage
+export default EditNote
