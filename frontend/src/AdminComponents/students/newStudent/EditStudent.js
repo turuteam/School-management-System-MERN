@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
-import PersonalInfo from './Personalnfo';
+import PersonalInfo from '../../shared/Personalnfo';
 import Academics from './AcademicsDetails';
-import ContactDetails from './Contact';
-import ProfilePicture from './ProfilePicture';
-import Guadian from './Guadian'
+import ContactDetails from '../../shared/Contact';
+import ProfilePicture from '../../shared/ProfilePicture';
+import Guadian from '../../shared/Guadian'
 import { useForm } from "react-hook-form";
 
 
@@ -18,6 +18,9 @@ function EditStudent() {
     const [nationality, setnationality] = useState("")
     const [placeofBirth, setplaceofBirth] = useState("")
     const [religion, setreligion] = useState("")
+    const [health, sethealth] = useState("")
+    const [allege, setallege] = useState("")
+    const [disease, setdisease] = useState("")
 
     //form verification
     const { register, handleSubmit, errors } = useForm();
@@ -79,6 +82,12 @@ function EditStudent() {
                         nationality={nationality} setnationality={setnationality}
                         placeofBirth={placeofBirth} setplaceofBirth={setplaceofBirth}
                         religion={religion} setreligion={setreligion}
+                        healthCon={health}
+                        setHealthCon={sethealth}
+                        disease={disease}
+                        setDisease={setdisease}
+                        allerge={allege}
+                        setallerge={setallege}
                       />
                         <br className="my-5"/>
                        <Academics

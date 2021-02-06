@@ -1,9 +1,8 @@
 import React, {useState} from 'react'
 import PersonalInfo from '../../shared/Personalnfo';
-
 import Academics from './AcademicsDetails';
 import ContactDetails from '../../shared/Contact';
-import ProfilePicture from './ProfilePicture';
+import ProfilePicture from '../../shared/ProfilePicture';
 import Guadian from '../../shared/Guadian'
 import { useForm } from "react-hook-form";
 
@@ -19,6 +18,9 @@ function NewStudent() {
     const [nationality, setnationality] = useState("")
     const [placeofBirth, setplaceofBirth] = useState("")
     const [religion, setreligion] = useState("")
+    const [health, sethealth] = useState("")
+    const [allege, setallege] = useState("")
+    const [disease, setdisease] = useState("")
 
     //form verification
     const { register, handleSubmit, errors } = useForm();
@@ -44,12 +46,6 @@ function NewStudent() {
 
     //guidan
     const [guadian, setguadian] = useState([]);
-    const [guadianmobile, setguadianmobile] = useState("")
-    const [guadianname, setguadianname] = useState("")
-    const [guaianemail, setguadianemail] = useState("")
-    const [relationship, setrelationship] = useState("")
-    const [ocupation, setocupation] = useState("")
-    const [address, setaddress] = useState("")
    
 
     const handleReset = (e) => {
@@ -86,6 +82,12 @@ function NewStudent() {
                         nationality={nationality} setnationality={setnationality}
                         placeofBirth={placeofBirth} setplaceofBirth={setplaceofBirth}
                         religion={religion} setreligion={setreligion}
+                        healthCon={health}
+                        setHealthCon={sethealth}
+                        disease={disease}
+                        setDisease={setdisease}
+                        allerge={allege}
+                        setallerge={setallege}
                       />
                         <br className="my-5"/>
                        <Academics

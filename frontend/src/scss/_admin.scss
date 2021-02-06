@@ -46,3 +46,116 @@
     background-color: #ffa201;
   }
 }
+
+.fees {
+  font-size: 1em;
+
+  .icon {
+    width: 0.8em;
+    height: 0.8em;
+    color: red;
+    font-weight: 800;
+  }
+}
+
+.messages__container {
+  height: 70vh;
+  overflow: hidden;
+  margin: 0;
+  background-color: #fff;
+  display: flex;
+
+  .sidebar {
+    border-right: 1px solid #ccc;
+    height: 100%;
+    flex: 0.33;
+    border: 1px solid #ccc;
+    margin: 0;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sidemessage {
+      background-color: $darkBlue !important;
+      border-bottom: #ccc 1px solid !important;
+      padding: 15px 10px;
+      text-decoration: none;
+
+      a {
+        color: #fff;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .message__container {
+    display: flex;
+    flex-direction: column;
+    flex: 0.66;
+
+    .header {
+      background-color: $darkBlue;
+      padding: 10px;
+      color: #ccc;
+    }
+    .message__messages {
+      margin-top: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .message {
+        width: fit-content;
+        max-width: 30vw;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        border: #051f3e 1px solid;
+        border-radius: 10px;
+        padding: 10px;
+
+        .message__time {
+          align-self: flex-end;
+        }
+      }
+    }
+
+    .sender__mesaage {
+      align-self: flex-end;
+      color: #ccc;
+      background-color: $darkBlue;
+    }
+    .send {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid $darkBlue;
+
+      input {
+        flex: 1;
+      }
+      input,
+      button {
+        border: none;
+      }
+    }
+  }
+}
+
+.form__sender {
+  padding: 0 !important;
+
+  .header {
+    background-color: $darkBlue;
+    padding: 10px;
+    color: #ccc;
+    margin-bottom: 10px;
+  }
+}

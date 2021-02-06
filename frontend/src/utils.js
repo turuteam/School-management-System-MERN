@@ -1,5 +1,31 @@
 //import {API_BASE_URL} from './api'
 import moment from 'moment';
+import {  toast } from 'react-toastify';
+
+export const successAlert = (text) => {
+    return  toast.success(text, {
+            position: "top-right",
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })  
+}
+
+export const errorAlert = (text) => {
+    return  toast.error(text, {
+            position: "top-right",
+            autoClose: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })  
+}
+
 
 export const  getID = function () {
     return  Math.random().toString(36).substr(2, 9);

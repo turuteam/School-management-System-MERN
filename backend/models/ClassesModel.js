@@ -7,8 +7,16 @@ const ClassesSchema =   new Schema( {
         type: String,
         required: true
     },
-    teacherID: String,
-    classPrefect: String,
+    teacherID: {
+        type: String
+    },
+    classCode: {
+        type: String,
+        required: true
+    },
+    campusID: {
+        type: String
+    },
     date: {
         type: Date,
         default: Date.now

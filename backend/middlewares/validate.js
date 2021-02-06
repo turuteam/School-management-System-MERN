@@ -43,8 +43,9 @@ export const createCourse = Joi.object({
 
 export const createClass = Joi.object({
     name: Joi.string().required(),
-    teacherID: Joi.string(),
-    repID: Joi.string(),
+    classCode: Joi.string().required(),
+    campusID: Joi.string(),
+    teacherID: Joi.string()
 })
 
 export const createnextKin = Joi.object({

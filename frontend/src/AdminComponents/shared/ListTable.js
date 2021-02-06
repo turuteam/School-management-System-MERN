@@ -60,12 +60,14 @@ export default function CustomPaginationActionsTable({data, tableHeader}) {
                         </TableCell>
                  )}
               <TableCell  align="left">
-                  <IconButton>
+                <div  className="d-flex align-items-center">
+                <IconButton>
                       <DeleteOutlineIcon/>
                   </IconButton>
                   <Link to="/campuses/edit">
                      <EditIcon></EditIcon>
                   </Link>
+                </div>
               </TableCell>
             </TableRow>
           ))}

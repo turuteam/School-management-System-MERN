@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import ClassTable from '../../shared/ListTable';
 import Search from '../../shared/Search';
+import {Link} from 'react-router-dom'
 
 function Classes() {
     const [name, setname] = useState("")
@@ -55,7 +56,7 @@ function Classes() {
                      <Search title={title} inputFields={inputFields}/>
                 </div>  
                 <div className="col-xs-12 col-sm-4 col-md-2">
-                    <button className="btn orange__btn btn__lg">Add New Class</button>
+                    <Link to="/academics/classes/add" className="btn orange__btn btn__lg">Add New Class</Link>
                 </div>
             </div>
            

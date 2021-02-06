@@ -148,12 +148,49 @@ const _nav =  [
       }
     ],
   },
-
   {
     _tag: 'CSidebarNavItem',
-    name: 'Message',
-    to: '/messages',
+    name: 'Canteen',
+    to: '/canteen',
     icon: 'cil-calculator',
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Message',
+    route: '/messages',
+    icon: 'cil-calculator',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Inbox',
+        to: '/messages',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Message Students',
+        to: '/messages/students',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Message Staff',
+        to: '/messages/staff',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Message Guadian',
+        to: '/messages/guadian',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Bulk/Group Message',
+        to: '/messages/group',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Bill Reminder',
+        to: '/messages/billreminder',
+      }
+    ],
   },
   {
     _tag: 'CSidebarNavItem',

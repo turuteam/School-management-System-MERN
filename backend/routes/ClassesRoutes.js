@@ -31,18 +31,19 @@ route.get('/:id', async(req, res) => {
 //create
 route.post('/create', async(req, res) => {
     let body = req.body
-   const {error} = createClass.validate(body);
-    if(error){
-        console.log(error)
-    return  res.json({success: false, error : error.details[0].message})
-    }
+  //  const {error} = createClass.validate(body);
+  //   if(error){
+  //       console.log(error, "error")
+  //         return  res.json({success: false, error : error.details[0].message})
+  //   }
     body = {
       ...body,
-      name: stringtoLowerCaseSpace(body.name)
+      name: stringtoLowerCaseSpace(body.name),
+      code: stringtoLowerCaseSpace(body.classCode)
     }
 
     const classExist = await ClassesModel.findOne({
-        name: body.name,
+        code: body.classCode
     })
     if(classExist){
         return res.json({success: false, error: "Course already exist"})
