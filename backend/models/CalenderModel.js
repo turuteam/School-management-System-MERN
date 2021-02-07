@@ -2,21 +2,30 @@ import  mongoose from "../config/mongodb.js"
 
 const { Schema } = mongoose;
 
-const ClassesSchema =   new Schema( {
-    name: {
+const CalendarSchema =   new Schema( {
+    title: {
         type: String,
         required: true
+    },
+    resource: {
+        type: String
     },
     description: {
         type: String
     },
-    startDate: {
+    start: {
         type: Date,
     },
-    endDate: {
+    end: {
         type: Date
     },
-    type: String
+    allDay: {
+        type: Boolean
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
 })
 
-export default  mongoose.model("classes", ClassesSchema);
+export default  mongoose.model("calendar", CalendarSchema);

@@ -1,20 +1,24 @@
 import express from "express";
-import ClassesModel from "../models/ClassesModel.js";
-import {stringtoLowerCaseSpace} from '../middlewares/utils.js';
-import {createClass} from '../middlewares/validate.js'
+import OptionsModel from "../models/OptionsModel.jså";
+
 const route = express.Router();
 
+//get all events
 route.get('/', async(req, res) => {
-    const docs = await ClassesModel.find();
+    const docs = await OptionsModel.find();
     res.json(docs);
 })
+
+
+//search event by name
+
 
 //get one by id
 route.get('/:id', async(req, res) => {
   if(!req.params.id) {
       return res.status(400).send('Missing URL parameter: username')
     }
-  await ClassesModel.findOne({ _id: req.params.id })
+  await OptionsModel.findOne({ _id: req.params.id })
   .then(docs => {
       if(docs){
           return  res.json({success: true,docs})
@@ -31,25 +35,8 @@ route.get('/:id', async(req, res) => {
 //create
 route.post('/create', async(req, res) => {
     let body = req.body
-  //  const {error} = createClass.validate(body);
-  //   if(error){
-  //       console.log(error, "error")
-  //         return  res.json({success: false, error : error.details[0].message})
-  //   }
-    body = {
-      ...body,
-      name: stringtoLowerCaseSpace(body.name),
-      code: stringtoLowerCaseSpace(body.classCode)
-    }
 
-    const classExist = await ClassesModel.findOne({
-        code: body.classCode
-    })
-    if(classExist){
-        return res.json({success: false, error: "Course already exist"})
-    }
-
-    ClassesModel.create(body)
+   OptionsModel.create(body)
     .then(doc => {
         console.log(doc)
         res.json({success: true, doc});
@@ -66,7 +53,7 @@ route.put('/update/:id', (req, res) => {
     if(!req.params.id) {
       return res.status(400).send('Missing URL parameter: username')
     } 
-  ClassesModel.findOneAndUpdate({
+  OptionsModel.findOneAndUpdate({
       _id: req.params.id
     }, req.body, {
       new: true
@@ -89,7 +76,7 @@ route.delete('/delete/:id', (req, res) => {
     if(!req.params.id) {
       return res.status(400).send('Missing URL parameter: username')
     }
-  ClassesModel.findOneAndRemove({
+    OptionsModel.findOneAndRemove({
       _id: req.params.id
     })
     .then(doc => {

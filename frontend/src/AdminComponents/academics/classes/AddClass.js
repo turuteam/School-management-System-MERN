@@ -3,6 +3,7 @@ import React  from 'react'
 import ClassForm from './ClassForm';
 import axios from '../../../store/axios'
 import {errorAlert, successAlert} from '../../../utils'
+import GoBack from '../../shared/GoBack'
 
 
 function AddClass() {
@@ -40,6 +41,8 @@ function AddClass() {
     }
 
     return (
+        <>
+        <GoBack link="/academics/classes" name="Back  to Classes List"/>
         <div className="content__container">
             <h3>Add Class</h3>
             <ClassForm  
@@ -55,6 +58,7 @@ function AddClass() {
             setteacher={setteacher}/>
              
         </div>
+        </>
     )
 }
 

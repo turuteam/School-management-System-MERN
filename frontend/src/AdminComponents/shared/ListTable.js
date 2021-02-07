@@ -12,7 +12,6 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import {Link} from 'react-router-dom'
 import TablePaginationActions from './TablePagination'
 
 
@@ -22,7 +21,7 @@ const useStyles2 = makeStyles({
   },
 });
 
-export default function CustomPaginationActionsTable({data, tableHeader}) {
+export default function CustomPaginationActionsTable({data, tableHeader, handleEdit, handleDelete, loading}) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -47,30 +46,45 @@ export default function CustomPaginationActionsTable({data, tableHeader}) {
               <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
+        {loading ? <div className="text-center my-5 w-100">
+              <div class="spinner-grow spinner-grow-sm" role="status">
+               <span class="visually-hidden">Loading...</span>
+             </div>
+             <div class="spinner-grow spinner-grow-sm" role="status">
+               <span class="visually-hidden">Loading...</span>
+             </div>
+             <div class="spinner-grow spinner-grow-sm" role="status">
+               <span class="visually-hidden">Loading...</span>
+             </div>
+        </div> : 
         <TableBody>
-          {(rowsPerPage > 0
-            ?  data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : data
-          ).map((row) => (
-            <TableRow key={row.id}>
-                {tableHeader && 
-                   tableHeader.map(cell =>   
-                        <TableCell key={cell.id}  align="left">
-                             {row[cell.id]}
-                        </TableCell>
-                 )}
-              <TableCell  align="left">
-                <div  className="d-flex align-items-center">
-                <IconButton>
-                      <DeleteOutlineIcon/>
-                  </IconButton>
-                  <Link to="/campuses/edit">
-                     <EditIcon></EditIcon>
-                  </Link>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+          {data.length <=0  ? <div className="text-center my-5">  No data yet </div> : 
+          <>
+            {(rowsPerPage > 0
+              ?  data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : data
+            ).map((row) => (
+              <TableRow key={row._id}>
+                  {tableHeader && 
+                    tableHeader.map(cell =>   
+                          <TableCell key={cell.id}  align="left">
+                              {row[cell.id] || "null"}
+                          </TableCell>
+                  )}
+                <TableCell  align="left">
+                  <div  className="d-flex align-items-center">
+                    <IconButton onClick={() => handleDelete(row._id)}>
+                        <DeleteOutlineIcon/>
+                    </IconButton>
+                    <IconButton onClick={() =>  handleEdit(row._id)}>
+                      <EditIcon></EditIcon>
+                    </IconButton>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </>
+          }
 
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
@@ -78,6 +92,7 @@ export default function CustomPaginationActionsTable({data, tableHeader}) {
             </TableRow>
           )}
         </TableBody>
+        }
         <TableFooter>
           <TableRow>
             <TablePagination

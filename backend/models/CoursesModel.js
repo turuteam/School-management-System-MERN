@@ -12,17 +12,16 @@ const CourserSchema =   new Schema( {
         required: true
     },
     code: {
+        type: String,
+        required: true
+    },
+    type: {
         type: String
     },
-    teachers: {
-      type :[ {
-           teacherID:{
-               type: String
-           }
-      }],
-      default: []
-}
-
+    teacher: {
+        type: String
+    },
+    default: []
 })
 
 export default  mongoose.model("courses", CourserSchema);

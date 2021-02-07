@@ -12,10 +12,9 @@ function ClassForm(props) {
         setcampus , 
         teacher, 
         loading,
+        isEdit,
         handleAddClass,
         setteacher} = props
-
-    
 
     return (
        <form onSubmit={handleSubmit(handleAddClass)} action="">
@@ -68,7 +67,7 @@ function ClassForm(props) {
                 <div className="offset-sm-2">
                    <button disabled={loading} type="submit" className="btn blue__btn">
                        {loading && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
-                       Add 
+                       {isEdit ?  "Save Changes" : "Add"}
                     </button>
                 </div>
                 

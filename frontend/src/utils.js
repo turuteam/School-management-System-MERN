@@ -74,3 +74,34 @@ export const  timeStamp = (time) => {
   }
 
 }
+
+export const combineDateAndTime = function(date, time) {
+    console.log(time, "tieme");
+    // let d = new Date();
+    // time =   d.setTime(time);
+    
+    date = new Date(date)
+    console.log(date, "date")
+   
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1; // Jan is 0, dec is 11
+    var day = date.getDate();
+    var dateString = '' + year + '-' + month + '-' + day;
+    var combined = new Date(dateString + ' ' + time);
+
+    return combined;
+};
+
+export const separateDateandTime  = (date) => {
+        const d = new Date(date)
+
+        var year = d.getFullYear();
+        var month = d.getMonth() + 1; // Jan is 0, dec is 11
+        var da = d.getDate();
+        var hours = d.getHours();
+        var minutes = d.getMinutes();
+        var  day = '' + year + '-' + month + '-' + da;
+        var time = "" + hours + ": " + minutes
+
+        return {day, time}
+}

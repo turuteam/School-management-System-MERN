@@ -82,3 +82,16 @@ input:focus {
     background-color: $orange !important;
   }
 }
+
+.link,
+a {
+  text-decoration: none;
+  &:hover {
+    color: $darkBlue;
+    text-decoration: none;
+  }
+  .icon {
+    height: 30px !important;
+    width: 30px !important;
+  }
+}

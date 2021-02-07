@@ -1,14 +1,33 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import ClassTable from '../../shared/ListTable';
 import Search from '../../shared/Search';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import axios from '../../../store/axios';
+import {useHistory} from 'react-router-dom';
+import {errorAlert, successAlert} from '../../../utils'
+
+const tableHeadings = [
+    {id: "classCode", name: "ID"},
+    {id: "name", name: "Class"},
+    {id: "campusID", name: "Campus"},
+    {id: "students", name: "Students"},
+    {id: "teacherID", name: "Class Teacher"},
+]
 
 function Classes() {
-    const [name, setname] = useState("")
-    const [campus, setcampus] = useState("")
-    const [teacher, setteacher] = useState("")
+    const [name, setname] = useState("");
+    const [campus, setcampus] = useState("");
+    const [teacher, setteacher] = useState("");
+    const [classes, setclasses] = useState([]);
+    const history = useHistory();
 
-    let title = "Classes List"
+    useEffect(() => {
+        axios.get('/classes').then(res =>{
+            console.log(res.data);
+            setclasses(res.data);
+        })
+    }, [])
+
     const inputFields = [
            {
                type: "text",
@@ -33,34 +52,48 @@ function Classes() {
           }
     ]
 
-    const classesData = [
-        {id: "a1", name: "Class 1", campus: "Main Campus", students: "10", classTK: "TK20213"},
-        {id: "a2", name: "Class 1", campus: "Main Campus", students: "25", classTK: "TK20213"},
-        {id: "a3", name: "Class 1", campus: "Campus 3", students: "16", classTK: "TK20213"},
-        {id: "a4", name: "Class 4", campus: "Campus 1", students: "17", classTK: "TK20213"},
-        {id: "a5", name: "Class 5", campus: "Campus 5", students: "13", classTK: "TK20213"},
-        {id: "a6", name: "Class 6", campus: "Campus 2", students: "30", classTK: "TK20213"},
+    const handleDeleteClass = (id) => {
+        const ans = window.confirm("are you sure you want to delete");
+        if(ans){
+           axios.delete(`/courses/delete/${id}`).then(res => {
+               if(res.data.error){
+                 errorAlert(res.data.error);
+                 return 0;
+               }
+            //    successAlert("Deleted");
+               setclasses(classes.filter(course => course._id !== id))  
+           })
+        }      
+    }
 
-    ]
-    const tableHeadings = [
-        {id: "id", name: "ID"},
-        {id: "name", name: "Class"},
-        {id: "campus", name: "Campus"},
-        {id: "students", name: "Students"},
-        {id: "classTK", name: "Class Teacher"},
-    ]
+    const handleEditClass = (id) => {
+        history.push(`/academics/classes/edit/${id}`);
+    }
+
+    const handleSearch= (e) => {
+        e.preventDefault();
+    }
+
     return (
         <div>
             <div className="row">
                 <div className="col-xs-12 col-sm-8 col-md-10">
-                     <Search title={title} inputFields={inputFields}/>
+                     <Search title="Classes List" inputFields={inputFields}/>
                 </div>  
                 <div className="col-xs-12 col-sm-4 col-md-2">
-                    <Link to="/academics/classes/add" className="btn orange__btn btn__lg">Add New Class</Link>
+                    <Link  
+                          to="/academics/classes/add" 
+                          className="btn orange__btn btn__lg">
+                          Add New Class
+                    </Link>
                 </div>
             </div>
            
-             <ClassTable  data={classesData} tableHeader={tableHeadings}/>
+             <ClassTable 
+             handleEdit={handleEditClass} 
+             handleSearch = {handleSearch}
+             handleDelete={handleDeleteClass}  
+             data={classes} tableHeader={tableHeadings}/>
         </div>
     )
 }

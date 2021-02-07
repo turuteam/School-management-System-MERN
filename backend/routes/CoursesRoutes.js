@@ -16,12 +16,12 @@ route.get('/:id', async(req, res) => {
       return res.status(400).send('Missing URL parameter: username')
     }
   await CoursesModel.findOne({ _id: req.params.id })
-  .then(user => {
-      if(user){
-      return  res.json({success: true,student: user})
+  .then(docs => {
+      if(docs){
+         return  res.json({success: true,docs})
       }
       else{
-      return  res.json({success: false, error: 'Does not exists'})
+          return  res.json({success: false, error: 'Does not exists'})
       }
   })
   .catch(err => {
@@ -29,22 +29,34 @@ route.get('/:id', async(req, res) => {
   });
 })
 
+//search 
+route.get('search/:teacher/:name/:campus', async(res, req) => {
+  const doc = await CoursesModel.find({
+      teacher: req.params?.teacher,
+      name: req.params?.name,
+      campus: req.params?.campus
+    });
+  res.json(doc);
+})
+
 
 //create
 route.post('/create', async(req, res) => {
     let body = req.body
-   const {error} = createCourse.validate(body);
-    if(error){
-        console.log(error)
-    return  res.json({success: false, error : error.details[0].message})
-    }
+  //  const {error} = createCourse.validate(body);
+  //   if(error){
+  //       console.log(error)
+  //   return  res.json({success: false, error : error.details[0].message})
+  //   }
     body = {
       ...body,
+      code: stringtoLowerCase(body.name),
       name: stringtoLowerCase(body.name)
     }
 
     const departExist = await CoursesModel.findOne({
         name: body.name,
+        code: body.code
     })
     if(departExist){
         return res.json({success: false, error: "Course already exist"})
@@ -66,8 +78,7 @@ route.post('/create', async(req, res) => {
 route.put('/update/:id', (req, res) => {
     if(!req.params.id) {
       return res.status(400).send('Missing URL parameter: username')
-    }
-    
+    } 
   CoursesModel.findOneAndUpdate({
       _id: req.params.id
     }, req.body, {
@@ -83,8 +94,8 @@ route.put('/update/:id', (req, res) => {
     .catch(err => {
         res.json({success: false, message:err})
     })
-  
   });
+
 
 //delete
 route.delete('/delete/:id', (req, res) => {
@@ -100,7 +111,7 @@ route.delete('/delete/:id', (req, res) => {
       .catch(err => {
         res.status(500).json({success: false, error: err})
       })
-  })
+})
 
 
 

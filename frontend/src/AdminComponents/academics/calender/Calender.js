@@ -1,24 +1,45 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import CalenderTable from '../../shared/ListTable';
+import {Link} from 'react-router-dom';
+import axios from '../../../store/axios'
+import {useHistory} from 'react-router-dom';
+import {errorAlert} from '../../../utils'
 
+
+const tableHeadings = [
+    {id: "resourse", name: "Type"},
+    {id: "title", name: "Event"},
+    {id: "start", name: "Starts"},
+    {id: "end", name: "Ends"},
+]
 
 
 function Calender() {
-    const calenderData = [
-        {id: "a1", event: "Maths", start: "Science",end: "TK20213"},
-        {id: "a2", event: "Geo", start: "Arts",end: "TK20213"},
-        {id: "a3", event: "History", start: "Arts",end: "TK20213"},
-        {id: "a4", event: "Science", start: "Science",end:  "TK20213"},
-        {id: "a5", event: "Accounts", start: "Commercials",end:  "TK20213"},
-        {id: "a6", event: "English", start: "Languages",end:  "TK20213"},
+    const [events, setevents] = useState([]);
+    const history = useHistory();
 
-    ]
-    const tableHeadings = [
-        {id: "id", name: "ID"},
-        {id: "event", name: "Event"},
-        {id: "start", name: "Starts"},
-        {id: "end", name: "Ends"},
-    ]
+    useEffect(() => {
+        axios.get('/calendar').then(res => {
+              setevents(res.data)
+        })
+       
+    }, [])
+   
+    const handleDelete = (id) => {
+        axios.delete(`/calendar/delete/${id}`).then(res => {
+            if(res.data.error){
+                 errorAlert(res.data.error);
+                 return 0;
+            }
+            setevents(events.filter(event => event._id !== id))
+        })
+
+    }
+
+    const handleEdit = (id) => {
+        history.push(`/academics/calender/edit/${id}`)
+    }
+   
     return (
         <div>
             <div className="row mb-5">
@@ -28,10 +49,14 @@ function Calender() {
                       </form>
                  </div>
                  <div className="col">
-                     <button className="btn btn__lg blue__btn">Add New Event</button>
+                     <Link  to="/academics/calender/add" className="btn btn__lg blue__btn">Add New Event </Link>
                  </div>
             </div>
-            <CalenderTable data={calenderData} tableHeader={tableHeadings}/>
+            <CalenderTable 
+            data={events} 
+            handleDelete={ handleDelete}
+            handleEdit={handleEdit}
+            tableHeader={tableHeadings}/>
         </div>
     )
 }

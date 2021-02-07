@@ -8,6 +8,7 @@ import AttendanceRoutes from './routes/AttendanceRoutes.js';
 import ChatRoutes from './routes/ChatRoutes.js';
 import CoursesRoutes from './routes/CoursesRoutes.js'
 import ClassesRoutes from './routes/ClassesRoutes.js';
+import CalendarRoutes from './routes/CalendarRoutes.js';
 import FilesRoutes from './routes/FilesRoutes.js';
 import NextofKinRoutes from './routes/NextofKinRoutes.js';
 import NonTeachersRoutes from './routes/NonTeachersRoutes.js';
@@ -39,6 +40,7 @@ app.use("/api/attendance", AttendanceRoutes);
 app.use("/api/chat", ChatRoutes);  
 app.use("/api/classes", ClassesRoutes);  
 app.use("/api/courses", CoursesRoutes);  
+app.use("/api/calendar", CalendarRoutes);
 app.use("/api/files", FilesRoutes); 
 app.use("/api/nextofkin", NextofKinRoutes);
 app.use("/api/nonteachers", NonTeachersRoutes);

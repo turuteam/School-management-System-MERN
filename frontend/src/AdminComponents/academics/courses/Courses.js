@@ -1,11 +1,37 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import CourseTable from '../../shared/ListTable';
 import Search from '../../shared/Search';
+import {Link, useHistory} from 'react-router-dom'
+import axios from '../../../store/axios';
+import {errorAlert, successAlert} from '../../../utils'
+
+
+const tableHeadings = [
+    {id: "code", name: "ID"},
+    {id: "name", name: "Course"},
+    {id: "type", name: "Course Type"},
+    {id: "teacher", name: "Teacher"},
+]
+
 
 function Courses() {
     const [name, setname] = useState("")
     const [depart, setdepart] = useState("")
     const [teacher, setteacher] = useState("")
+    const [courses, setcourses] = useState([])
+    const history = useHistory();
+    const [loading, setloading] = useState(false)
+
+
+    useEffect(() => {
+        setloading(true)
+        axios.get('/courses').then(res =>{
+            console.log(res.data);
+            setcourses(res.data);
+            setloading(false);
+        })
+    }, [])
+
 
     const inputFields = [
            {
@@ -29,23 +55,37 @@ function Courses() {
             name: "teacher",
             onChange: setteacher
           }
-    ]
+    ];
 
-    const classesData = [
-        {id: "a1", name: "Maths", type: "Science", teacher: "TK20213"},
-        {id: "a2", name: "Geo", type: "Arts", teacher: "TK20213"},
-        {id: "a3", name: "History", type: "Arts", teacher: "TK20213"},
-        {id: "a4", name: "Science", type: "Science", teacher:  "TK20213"},
-        {id: "a5", name: "Accounts", type: "Commercials", teacher:  "TK20213"},
-        {id: "a6", name: "English", type: "Languages", teacher:  "TK20213"},
 
-    ]
-    const tableHeadings = [
-        {id: "id", name: "ID"},
-        {id: "name", name: "Class"},
-        {id: "type", name: "Course Type"},
-        {id: "teacher", name: "Teacher"},
-    ]
+    const handleDelete = (id) => {
+       const ans = window.confirm("are you sure you want to delete");
+       if(ans){
+          axios.delete(`/courses/delete/${id}`).then(res => {
+              if(res.data.error){
+                errorAlert(res.data.error);
+                return 0;
+              }
+            //   successAlert("Deleted");
+              setcourses(courses.filter(course => course._id !== id))  
+          })
+       }      
+    }
+    const handleEdit = (id) => {
+        history.push(`/academics/courses/edit/${id}`)
+           
+     }
+
+     const handleSearch = (e) => {
+         e.preventDefault();
+         if(teacher !== "" || name !== "" || depart !== ""){
+             return 0
+         }
+         axios.get(`/courses/${teacher}/${name}/${depart}`).then(res => {
+             console.log(res.data)
+         })
+     }
+   
     return (
         <div>
             <div className="row">
@@ -53,11 +93,20 @@ function Courses() {
                      <Search title="Courses List" inputFields={inputFields}/>
                 </div>  
                 <div className="col-xs-12 col-sm-4 col-md-2">
-                    <button className="btn orange__btn btn__lg">Add New Course</button>
+                    <Link to={`/academics/courses/add`} 
+                    className="btn orange__btn btn__lg">
+                        Add New Course
+                    </Link>
                 </div>
             </div>
            
-             <CourseTable  data={classesData} tableHeader={tableHeadings}/>
+             <CourseTable  
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}  
+                data={courses} 
+                loading={loading}
+                handleSearch={handleSearch}
+                tableHeader={tableHeadings}/>
         </div>
     )
 }
