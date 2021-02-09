@@ -7,8 +7,7 @@ const EditProfile =   React.lazy(()  => import( '../../StudentComponents/profile
 const Fees =   React.lazy(()  => import( '../../StudentComponents/finances/FeesPage'));
 const Class =   React.lazy(()  => import( '../../StudentComponents/classes/Classes'));
 const Courses =   React.lazy(()  => import( '../../StudentComponents/classes/CoursesPage'));
-const Exams =   React.lazy(()  => import( '../../StudentComponents/classes/ExamsPage'));
-const Timetable =   React.lazy(()  => import( '../../StudentComponents/classes/TimeTablePage'));
+const Calendar=   React.lazy(()  => import( '../../StudentComponents/classes/CalendarPage'));
 const Attendance =   React.lazy(()  => import( '../../StudentComponents/attendence/AttendancePage'));
 const Messages =   React.lazy(()  => import( '../../StudentComponents/messages/Messages'));
 const Notifications =   React.lazy(()  => import( '../../StudentComponents/notifications/NotificationsPage'));
@@ -31,29 +30,24 @@ const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/S
         component: Profile,
     },
     {
-        path: "/editProfile",
+        path: "/profile/edit/:id",
         name: "Edit Profile",
         component: EditProfile,   
     },
     {
-        path: "/class",
+        path: "/academics/class",
         name: "Class",
         component: Class
     },
     {
-        path: "/course",
+        path: "/academics/course",
         name: "Courses",
         component: Courses
     },
     {
-        path: "/exams",
-        name: "Exams",
-        component: Exams
-    },
-    {
-        path: "/timetable",
-        name: "Timetable",
-        component: Timetable
+        path: "/academics/calendar",
+        name: "Calendar",
+        component: Calendar
     },
     {
         path: "/fees",

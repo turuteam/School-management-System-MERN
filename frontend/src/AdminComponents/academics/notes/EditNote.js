@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import AddForm from './NoteForm';
+import EditForm from './NoteForm';
 
 function EditNote() {
     const [classID, setclassID] = useState("");
@@ -7,10 +7,23 @@ function EditNote() {
     const [topic, settopic] = useState("")
     const [notes, setnotes] = useState("")
     const [file, setfile] = useState("")
+    const [loading, setloading] = useState(false)
+
+    const handleResetNote = () => {
+        setclassID("");
+        setsubject("");
+        settopic("")
+        setnotes("");
+        setfile("");
+   }
+   const handleEditNote = () => {
+       alert("edit")
+   }
+
     return (
         <div>
            <h3>Add New Notes</h3>
-           <AddForm 
+           <EditForm 
             classID={classID}
             setclass={setclassID} 
             subject={subject} 
@@ -18,6 +31,10 @@ function EditNote() {
             topic={topic} 
             settopic={settopic} 
             file={file} 
+            handleAdd= {handleEditNote}
+            handleReset ={handleResetNote}
+            loading={loading}
+            isEdit={true}
             setfile={setfile} 
             notes={notes}
             setnotes={setnotes}

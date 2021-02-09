@@ -1,11 +1,11 @@
 import React from 'react'
 
-function ExamsPage() {
+function ProfileForm() {
     return (
         <div>
-            Exams
+            
         </div>
     )
 }
 
-export default ExamsPage
+export default ProfileForm

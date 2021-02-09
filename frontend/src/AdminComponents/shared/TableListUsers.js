@@ -12,6 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { useHistory} from 'react-router-dom'
 import TableHeader from './TableHeader'
 import TableToolbar from './TableToolbar'
+import {getImgSrc, getIntial} from '../../utils'
 
 
 function descendingComparator(a, b, orderBy) {
@@ -119,6 +120,8 @@ export default function EnhancedTable({students,  headCells}) {
   };
 
   
+ 
+  console.log(getImgSrc())
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
@@ -168,23 +171,23 @@ export default function EnhancedTable({students,  headCells}) {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                      <TableCell  id={labelId} >
                         {row.userID}
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                          <Avatar  src={row.photoUrl} alt="R"/>
+                      <TableCell >
+                          <Avatar  src={`${getImgSrc()}${row.photoUrl}`} alt={getIntial(row.name)}></Avatar>
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                      <TableCell >
                         {row.name}
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                      <TableCell >
                         {row.middleName}
                       </TableCell>
                       <TableCell align="left">{row.surname}</TableCell>
-                      <TableCell align="right">{row.classID}</TableCell>
-                      <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.telephone}</TableCell>
-                      <TableCell align="right">{row.gender}</TableCell>
+                      <TableCell align="left">{row.classID}</TableCell>
+                      <TableCell align="left">{row.email}</TableCell>
+                      <TableCell align="left">{row.telephone}</TableCell>
+                      <TableCell align="left">{row.gender}</TableCell>
                     </TableRow>
                   );
                 })}

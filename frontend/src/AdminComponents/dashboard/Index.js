@@ -1,9 +1,9 @@
 import React from 'react'
 import Cards from './Cards';
-import SchoolCalender from './SchoolCalender'
+import SchoolCalender from '../../components/dashboard/SchoolCalender'
 import Expenses from './SchoolPopulation';
 import Earning from './Attendance';
-import NoticeBoard from './NoticeBoard'
+import NoticeBoard from '../../components/dashboard/NoticeBoard'
 
 
 function Index() {

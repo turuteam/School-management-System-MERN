@@ -60,6 +60,9 @@ const StudentSchema =   new Schema( {
     telephone: {
         type: String
     },
+    mobilenumber: {
+        type: String
+    },
     classID: {
         type: String
     },
@@ -70,8 +73,19 @@ const StudentSchema =   new Schema( {
             }
         ]
     },
-    nextofKinID: {
-        type: String
+    guadian: {
+        type: [
+            {
+                id: String,
+                relationship: String,
+                occupation: String,
+                name: String,
+                email: String,
+                mobile: String,
+                address: String,
+                lastname: String,
+            }
+        ]
     },
     profileUrl: {
         type: String
@@ -79,7 +93,7 @@ const StudentSchema =   new Schema( {
     grade: {
         type: String
      },
-     LastSchool: {
+     lastSchool: {
         type:{
             school: String,
             reason: String
@@ -88,6 +102,18 @@ const StudentSchema =   new Schema( {
     password: {
         type: String,
         required: true
+    },
+    health: {
+        type: String
+    },
+    allege: {
+        type: String
+    },
+    disease: {
+        type :String
+    },
+    section: {
+        type: String
     },
     date: { 
         type: Date, 

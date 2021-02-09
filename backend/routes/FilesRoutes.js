@@ -1,13 +1,24 @@
 import express from "express";
 import FilesModel from "../models/FilesModel.js";
-import {createFile} from '../middlewares/validate.js'
+//import {uploader} from '../middlewares/multer.js'
 
 const route = express.Router();
 
-route.get('/', async(req, res) => {
-    const ads = await FilesModel.find();
-    res.json(ads);
-})
+// route.post("/", uploader.single("photo"), (req, res, next) => {
+//   try {
+//     console.log("logging req.file: ", req.file);
+//     res.send({path: `${req.file.filename}`});
+//    // res.status(200).sendFile(`${__dirname}/public/consumerPhotos/${req.file.filename}`);
+//   } 
+//   catch (err) {
+//     res.status(418).send(err);
+//   }
+// });
+
+//search
+
+//get files for teacher
+//get file for student
 
 //get one by id
 route.get('/:id', async(req, res) => {
@@ -31,11 +42,6 @@ route.get('/:id', async(req, res) => {
 //create task
 route.post('/create', async(req, res) => {
     let body = req.body
-   const {error} = createFile.validate(body);
-    if(error){
-        console.log(error)
-    return  res.json({success: false, error : error.details[0].message})
-    }
   
     FilesModel.create(body)
     .then(doc => {
@@ -46,11 +52,6 @@ route.post('/create', async(req, res) => {
         res.json({success: false, message:err})
     })
   });
-
-
-
-
-
 
 //edit task
 route.put('/update/:id', (req, res) => {

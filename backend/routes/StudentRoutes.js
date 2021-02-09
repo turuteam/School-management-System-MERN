@@ -1,7 +1,7 @@
 import express from "express";
 import StudentModel from "../models/StudentModel.js";
 import  bcrypt from 'bcrypt';
-import {create, login, changePassword} from  '../middlewares/validate.js';
+import { login, changePassword} from  '../middlewares/validate.js';
 import {stringtoLowerCaseSpace, stringSpace} from '../middlewares/utils.js';
 import {role} from '../middlewares/variables.js'
 
@@ -18,9 +18,10 @@ route.get('/student/:id', async(req, res) => {
     if(!req.params.id) {
         return res.status(400).send('Missing URL parameter: username')
       }
-    await StudentModel.findOne({ _id: req.params.id })
+    await StudentModel.findOne({ userID: req.params.id })
     .then(user => {
         if(user){
+          console.log(user)
         return  res.json({success: true,student: user})
         }
         else{
@@ -28,7 +29,8 @@ route.get('/student/:id', async(req, res) => {
         }
     })
     .catch(err => {
-        return res.json({success: false, error: "Server error"})
+        console.log(err)
+        return res.json({success: false, error: "WRONG error"})
     });
 })
 
@@ -60,10 +62,10 @@ route.get('/class/:id', async(req, res) => {
 route.post('/create', async(req , res) => {
   let body = req.body
 
-   const {error} = create.validate(body);
-  if(error){
-    return  res.json({success: false, error : error.details[0].message})
-   }
+  //  const {error} = create.validate(body);
+  // if(error){
+  //   return  res.json({success: false, error : error.details[0].message})
+  //  }
 
    body = {
     ...body,

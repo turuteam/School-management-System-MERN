@@ -10,6 +10,8 @@ function Contact(props) {
         setresidence, 
         telephone, 
         postalAddress,
+        errors,
+        register,
         setpostalAddress} = props
 
     return (
@@ -22,19 +24,22 @@ function Contact(props) {
                             name="mobile" 
                             type="tel" 
                             value={mobilenumber}
+                            ref={register({ required: true })}  
                             onChange={e => setmobilenumber(e.target.value)}
                             className="form-control" 
                             placeholder="phone number if any" />
+                            {errors.mobile && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                         <div className="col-xs-12 col-sm-6">
                             <label for="secondname" className="form-label">Phone Number</label>
                             <input 
                              value={telephone}
-                            onChange={e => settelephone(e.target.value)}
-                            name="phone" 
-                            type="tel" 
-                            className="form-control" 
-                            placeholder="phone number if any" />
+                             onChange={e => settelephone(e.target.value)}
+                             name="phone" 
+                             type="tel" 
+                             className="form-control" 
+                             placeholder="phone number if any" />
+                             
                         </div> 
                     </div>
                     <div class="row mb-3">
@@ -42,10 +47,12 @@ function Contact(props) {
                             <label for="name" className="form-label">Area of Residence</label>
                             <textarea 
                               value={residence}
+                              ref={register({ required: true })}  
                               onChange={e => setresidence(e.target.value)}
-                            rows={3} name="residence" 
-                            type="text" 
-                            className="form-control"  ></textarea>
+                             rows={3} name="residence" 
+                             type="text" 
+                             className="form-control"  ></textarea>
+                             {errors.residence && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                       
                         <div className="col-xs-12 col-sm-6">

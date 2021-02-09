@@ -58,7 +58,7 @@ export const getIntial = (name ) => {
 }
 
 export const getImgSrc = () => {
-     return `http://localhost:5000/consumerPhotos`
+     return `http://localhost:5000`
 }
 
 

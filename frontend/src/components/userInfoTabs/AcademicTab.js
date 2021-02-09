@@ -1,7 +1,7 @@
 import React from 'react'
 
 function AcademicTab({user}) {
-    const data = user?.user
+    const data = user.user
     return (
         <div>
             <div className="row  mb-3">
@@ -26,11 +26,11 @@ function AcademicTab({user}) {
             </div>
             <div className="row  mb-3">
                 <div className="col-4">Last School </div>
-                <div className="col-6">{user?.lastSchool?.school || "N/A"} </div>
+                <div className="col-6">{user.LastSchool?.school || "N/A"} </div>
             </div>
             <div className="row  mb-3">
                 <div className="col-4">Reason for Leaving last School </div>
-                <div className="col-6"> {user?.lastSchool?.reason || "N/A"} </div>
+                <div className="col-6"> {user.LastSchool?.reason || "N/A"} </div>
             </div>
         </div>
     )

@@ -3,23 +3,28 @@ import  mongoose from "../config/mongodb.js"
 const { Schema } = mongoose;
 
 const FilesSchema =   new Schema( {
-   filename: {
+   topic: {
        type: String
    },
    date: {
        type: Date,
        default: Date.now
    },
+   notes: {
+       type: String
+   },
    courseID: {
+       type: String
+   },
+   classID: {
        type: String
    },
    senderId: {
        type: String
    },
-   fileData: {
+   file: {
        type: String
-       //gridfs
    }
 })
 
-export default  mongoose.model("files", FilesSchema);
+export default  mongoose.model("notes", FilesSchema);

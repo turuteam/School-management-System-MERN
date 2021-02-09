@@ -5,7 +5,9 @@ import ContactDetails from '../../shared/Contact';
 import ProfilePicture from '../../shared/ProfilePicture';
 import Guadian from '../../shared/Guadian'
 import { useForm } from "react-hook-form";
-
+import GuadianCard from '../../shared/GuadianCard';
+import axios from '../../../store/axios';
+import {errorAlert, successAlert} from '../../../utils'
 
 function NewStudent() {
     //personal
@@ -21,6 +23,10 @@ function NewStudent() {
     const [health, sethealth] = useState("")
     const [allege, setallege] = useState("")
     const [disease, setdisease] = useState("")
+    const [loading, setloading] = useState("")
+
+    const [profileUrl, setprofileUrl] = useState("");
+    const [profileimg, setprofileimg] = useState("")
 
     //form verification
     const { register, handleSubmit, errors } = useForm();
@@ -46,6 +52,29 @@ function NewStudent() {
 
     //guidan
     const [guadian, setguadian] = useState([]);
+
+
+    const handleDeleteGuadian  = (id ) => {
+         setguadian(guadian.filter(e => e.id !== id))
+    }
+
+    const handleChangeFile = (e) => {
+        const selected = e.target.files[0];
+         if(selected?.size > 2000000 ){
+             errorAlert("image is too large")
+         }
+         else if(selected){
+            setprofileUrl(selected)
+             const fileReader = new FileReader();
+             fileReader.readAsDataURL(selected);
+             fileReader.onloadend = () => {
+               setprofileimg(fileReader.result)   
+             };
+         } 
+         else{
+             console.log('no file selected')
+         }
+    }
    
 
     const handleReset = (e) => {
@@ -59,10 +88,52 @@ function NewStudent() {
         setnationality("")
         setplaceofBirth("")
         setreligion("")
-
     }
+
     const handleCreateSubmit = () => {
-        alert("submited")
+        const fileData = new FormData();
+        fileData.append("photo", profileUrl);
+        axios.post('/upload', fileData, {}).then((res) => {
+            const path= res.data.path;
+        axios.post('/students/create', {
+            profileUrl: path,
+            name,
+            middleName: secondName,
+             surname:  lastname,
+            gender,
+            dateofBirth,
+            email,
+            nationality,
+            religion,
+            placeofBirth,
+            health,
+            disease,
+            allege,
+            classID,
+            section,
+            status,
+            schoolarship,
+            fees: feesCategory,
+            lastSchool: {
+                school: lastSchool,
+                reason: reasonforTransfer
+            },
+            mobilenumber,
+            telephone,
+            postalAddress,
+            physicalAddress: residence,
+            guadian
+        }).then(response => {
+            if(response.data.error){
+                errorAlert(response.data.error);
+                return 0;
+            }
+            successAlert("successfully added");
+        })
+       }).catch(err => {
+           console.log(err);
+           errorAlert("something went wrong");
+       })
     }
 
     return (
@@ -70,6 +141,11 @@ function NewStudent() {
             <h2>Add New Students</h2>
             <div>
                 <form action="" className="content__container">
+                      <ProfilePicture 
+                        profileimg={profileimg} 
+                        setprofileUrl={handleChangeFile}
+                      />
+                        <br className="my-5"/>
                       <PersonalInfo
                         register={register}
                         errors={errors}
@@ -119,8 +195,13 @@ function NewStudent() {
                         />
                         <br className="my-5"/>
                         <Guadian guadian={guadian} setguadian={setguadian}/>
-                        <br className="my-5"/>
-                        <ProfilePicture/>
+                        <div className="row">
+                              {guadian && guadian.map((e, i )=> 
+                              <div className="col-xs-12 col-sm-6">
+                              <GuadianCard guadian={e} key={i}  handleDeleteGuadian={ handleDeleteGuadian} />
+                              </div>
+                            )}
+                        </div>
                         <br className="my-5"/>
                      <div className="row ">
                          <button type="submit" onClick={handleSubmit(handleCreateSubmit)} className=" col btn orange__btn mr-5" >Create</button>

@@ -1,8 +1,19 @@
-import React from 'react'
+import React from 'react';
+import {useSelector} from 'react-redux'
+import {selectClasses, selectCourses} from '../../../store/slices/schoolSlice';
+import { useForm } from "react-hook-form";
+
 
 
 function NoteForm(props) {
-    let {classID, setclass, subject, setsubject, topic, settopic, file, setfile, notes , setnotes} = props
+     const classes = useSelector(selectClasses);
+     const courses = useSelector(selectCourses);
+     const { register, handleSubmit, errors } = useForm();
+
+    let {classID, setclass, subject, setsubject, 
+        topic, settopic, loading,
+        handleAdd, handleReset, isEdit,
+        setfile, notes , setnotes} = props
 
     return (
         <form className="row g-3" action="">
@@ -12,11 +23,10 @@ function NoteForm(props) {
                     value={classID}
                     onChange={e => setclass(e.target.value)}
                     name="class" class="form-select">
-                    <option selected  >Choose...</option>
-                    <option value="2a">2A</option>
-                    <option value="2a">3A</option>
-                    <option value="2a">2B</option>
-                    <option value="2a">2C</option>
+                    <option selected hidden >Choose...</option>
+                    {classes.length > 0 ?  classes.map(e => <option value={e.classCode} key={e.classCode}>{e.name}</option>) 
+                    :
+                     <option disabled>No classes available yet</option>}
                 </select>
             </div>
             <div className="col-md-6">
@@ -25,20 +35,21 @@ function NoteForm(props) {
                     value={subject}
                     onChange={e => setsubject(e.target.value)}
                     name="class" class="form-select">
-                    <option selected  >Choose...</option>
-                    <option value="2a">2A</option>
-                    <option value="2a">3A</option>
-                    <option value="2a">2B</option>
-                    <option value="2a">2C</option>
+                    <option selected  hidden>Choose...</option>
+                    {courses.length > 0 ?  courses.map(e => <option value={e.code} key={e.code}>{e.name}</option>) 
+                    :
+                     <option disabled>No courses available yet</option>}
                 </select>
             </div>
             <div className="col-12">
                 <label className="form-label">Topic</label>
                 <input  
                  value={topic} 
+                 ref={register({ required: true })}
                  onChange={e => settopic(e.target.value)}
                  type="text" 
-                 className="form-control" id="topic" />
+                 className="form-control" name="topic" />
+                  {errors.topic && <span className=" form-error text-danger mb-2">This field is required</span>}
             </div>
             <div className="col-12">
                 <label className="form-label">Notes</label>
@@ -51,11 +62,23 @@ function NoteForm(props) {
             </div>
             <div className="col-12">
                 <label className="form-label">Upload file</label>
-                <input type="file" value={file} onChange={e => setfile(e.target.value)} className="form-control" id="topic" />
+                <input 
+                 type="file" 
+                 accept=".jpg,.jpeg,.png,.doc,.docx,.pdf"
+                 ref={register({ required: true })}
+                 onChange={e => setfile(e.target.files[0])} 
+                 className="form-control" 
+                 name="file" />
+                  {errors.file && <span className=" form-error text-danger mb-2">Please select file</span>}
             </div>
             <div className="col-12">
-                <button className="btn blue__btn mr-3">Add</button>
-                <button className="btn orange__btn">Reset</button>
+                <button 
+                onClick={ handleSubmit(handleAdd)} 
+                className="btn blue__btn mr-3">
+                     {loading && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+                       {isEdit ?  "Save Changes" : "Add"}
+                </button>
+                <button onClick={handleSubmit(handleReset)} className="btn orange__btn">Reset</button>
             </div>
         </form>
     )

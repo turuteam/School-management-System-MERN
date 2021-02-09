@@ -24,12 +24,15 @@ function AcademicsDetails(props) {
         lastSchool,
         setlastSchool,
         reasonforTransfer,
+        isEdit,
         setreasonforTransfer
      } = props
     return (
         <div>
                <h3>Academics Details</h3>
                     <div class="row mb-3">
+                        {!isEdit && 
+                        <>
                         <div className="col-xs-12 col-sm-6">
                             <label for="name" className="form-label">Auto Generate ID</label>
                             <div className="form-check form-switch">
@@ -51,7 +54,8 @@ function AcademicsDetails(props) {
 
                              className="form-control" />
                         </div>}
-                       
+                        </>
+                       }
                     </div>
                     <div class="row mb-3">
                         <div className="col-xs-12 col-sm-6 col-md-4">
@@ -68,7 +72,7 @@ function AcademicsDetails(props) {
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
                             </select>
-                            
+                            {errors.class && <span className=" form-error text-danger mb-2">This field is required</span>} 
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
                             <label for="" className="form-label">Section / House</label>
@@ -81,11 +85,12 @@ function AcademicsDetails(props) {
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
                             <label for="" className="form-label">Status</label>
-                            <select   ref={register({ required: true })} name={status} value={status} onChange={e => setstatus(e.target.value)}  name="class"   class="form-select" aria-label="Default select example">
+                            <select   ref={register({ required: true })} name="status" value={status} onChange={e => setstatus(e.target.value)}  name="class"   class="form-select" aria-label="Default select example">
                                 <option selected  disabled hidden>select</option>
                                 <option value="border">Border </option>
                                 <option value="day">Day Student</option>
                             </select>
+                            {errors.status && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                         {status === "border" && 
                            <div className="col-xs-12 col-sm-6 col-md-4">
@@ -96,7 +101,7 @@ function AcademicsDetails(props) {
                              name="dormitary"   
                              class="form-select" 
                              aria-label="Default select example">
-                               <option selected  disabled hidden>select</option>
+                               <option selected  hidden>select</option>
                                <option value="1">One</option>
                                <option value="2">Two</option>
                                <option value="3">Three</option>
@@ -114,7 +119,7 @@ function AcademicsDetails(props) {
                                 name="scholarship"   
                                 class="form-select" 
                                 aria-label="Default select example">
-                                <option selected  disabled hidden>select</option>
+                                <option selected   hidden>select</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
@@ -123,7 +128,7 @@ function AcademicsDetails(props) {
                         <div className="col-xs-12 col-sm-6 ">
                             <label for="secondname" className="form-label">Fees Category</label>
                             <select name="feesCategory" value={feesCategory} onChange={e => setfeesCategory(e.target.value)}     class="form-select" aria-label="Default select example">
-                                <option selected  disabled hidden>select</option>
+                                <option selected   hidden>select</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
@@ -146,7 +151,7 @@ function AcademicsDetails(props) {
                             <textarea 
                             name="reason" 
                             value={reasonforTransfer} 
-                            onChange={setreasonforTransfer} 
+                            onChange={e => setreasonforTransfer(e.target.value)} 
                             rows={4} className="form-control" ></textarea>
                         </div> 
                     </div>

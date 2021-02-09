@@ -1,4 +1,4 @@
-import mongoose, { connect }  from'mongoose';
+import mongoose from'mongoose';
 import  dotenv from 'dotenv';
 
 //LOCAL_DB_CONNECT  -localhost database
@@ -7,19 +7,19 @@ dotenv.config()
 const connection_url = process.env.DB_CONNECT;
 
 
+
 mongoose.connect(connection_url, {
     useCreateIndex: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
+    useUnifiedTopology: true
 })
-let gfs;
+
 
 mongoose.connection.once('open', ()=> {
     console.log("db connnected localhost db")
-    gfs = new mongoose.mongo.GridFSBucket(connect.db, {
-        bucketName: "uploads"
-    })
+    // gfs = new mongoose.mongo.GridFSBucket(connect.db, {
+    //     bucketName: "uploads"
+    // })
 })
 
 

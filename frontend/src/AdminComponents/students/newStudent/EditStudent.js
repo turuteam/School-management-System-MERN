@@ -1,13 +1,20 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import PersonalInfo from '../../shared/Personalnfo';
 import Academics from './AcademicsDetails';
 import ContactDetails from '../../shared/Contact';
 import ProfilePicture from '../../shared/ProfilePicture';
 import Guadian from '../../shared/Guadian'
 import { useForm } from "react-hook-form";
+import {useParams} from 'react-router-dom';
+import axios from '../../../store/axios';
+import {errorAlert} from '../../../utils'
 
 
 function EditStudent() {
+    const {id} = useParams();
+
+    const [studentDetails, setstudentDetails] = useState({})
+
     //personal
     const [name, setname] = useState("");
     const [lastname, setlastname] = useState("");
@@ -20,7 +27,10 @@ function EditStudent() {
     const [religion, setreligion] = useState("")
     const [health, sethealth] = useState("")
     const [allege, setallege] = useState("")
-    const [disease, setdisease] = useState("")
+    const [disease, setdisease] = useState("");
+
+    const [profileUrl, setprofileUrl] = useState("");
+    const [profileimg, setprofileimg] = useState("");
 
     //form verification
     const { register, handleSubmit, errors } = useForm();
@@ -36,17 +46,44 @@ function EditStudent() {
     const [feesCategory, setfeesCategory] = useState("");
     const [lastSchool, setlastSchool] = useState("");
     const [reasonforTransfer, setreasonforTransfer] = useState("")
-
-
     //contact details
     const [mobilenumber, setmobilenumber] = useState("");
     const [residence, setresidence] = useState("");
     const [telephone, settelephone] = useState("");
     const [postalAddress, setpostalAddress] = useState("")
-
     //guidan
     const [guadian, setguadian] = useState([]);
    
+    useEffect(() => {
+          axios.get(`/students/student/${id}`).then(res => {
+              let data = res.data.student
+              setstudentDetails(data);
+              setname(data?.name);
+              setlastname(data?.surname);
+              setgender(data?.gender);
+              setdateofBirth(data?.dateofBirth);
+              setemail(data?.email);
+              setnationality(data?.nationality);
+              setplaceofBirth(data?.placeofBirth);
+              setreligion(data?.religion);
+              sethealth(data?.health);
+              setallege(data?.allege);
+              setdisease(data?.disease);
+              setclass(data?.classID);
+              setstatus(data?.statue);
+              setdormitory(data?.dormitory);
+              setschoolarship(data?.schoolarship);
+              setfeesCategory(data?.fees);
+              setlastSchool(data?.lastSchool);
+              setreasonforTransfer(data?.reasonforTransfer);
+              setmobilenumber(data?.mobilenumber);
+              setresidence(data?.physicalAddress);
+              settelephone(data?.telephone);
+              setpostalAddress(data.postalAddress);
+              setguadian(data?.guadian)
+              setprofileimg(data?.profileUrl)
+          })
+    }, [id])
 
     const handleReset = (e) => {
         e.preventDefault();
@@ -59,17 +96,42 @@ function EditStudent() {
         setnationality("")
         setplaceofBirth("")
         setreligion("")
+        sethealth("");
+        setallege("");
+        setdisease("")
 
     }
     const handleCreateSubmit = () => {
         alert("submited")
     }
 
+    const handleChangeFile = (e) => {
+        const selected = e.target.files[0];
+         if(selected?.size > 2000000 ){
+             errorAlert("image is too large")
+         }
+         else if(selected){
+            setprofileUrl(selected)
+             const fileReader = new FileReader();
+             fileReader.readAsDataURL(selected);
+             fileReader.onloadend = () => {
+               setprofileimg(fileReader.result)   
+             };
+         } 
+         else{
+             console.log('no file selected')
+         }
+    }
+   
+
     return (
         <div>
             <h2>Edit Students</h2>
             <div>
                 <form action="" className="content__container">
+                      <ProfilePicture 
+                        profileimg={profileimg} 
+                        setprofileUrl={handleChangeFile}/>
                       <PersonalInfo
                         register={register}
                         errors={errors}
@@ -93,6 +155,7 @@ function EditStudent() {
                        <Academics
                          register={register}
                          errors={errors}
+                         isEdit={true}
                          autoID={autoID}  setautoID={setautoID}
                          userID={userID}   setuserID={setuserID}
                          classID={classID} setclass={setclass}
@@ -126,7 +189,6 @@ function EditStudent() {
                          <button type="submit" onClick={handleSubmit(handleCreateSubmit)} className=" col btn orange__btn mr-5" >Create</button>
                          <button onClick={handleReset} className=" col btn blue__btn mr-5">Reset</button>
                          <button className="col btn btn-danger">Cancel</button>
-
                      </div>
                 </form>
 

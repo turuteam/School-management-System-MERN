@@ -19,6 +19,9 @@ import TeacherRoutes from './routes/TeacherRoutes.js';
 import TimeTableRoutes from './routes/TimeTableRoutes.js';
 import SharedRoutes from './routes/SharedRoutes.js';
 import DepartmentsRoutes from './routes/DepartmentRoutes.js';
+import UploadsRoutes from './routes/Uploads.js';
+import path from 'path';
+const __dirname = path.resolve(path.dirname(''));
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -28,7 +31,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: true, credentials: true}));
 app.use(bodyParser.json());
-app.use(express.static("./consumerPhotos"));
+app.use(express.static(__dirname + "/consumerPhotos"));
+app.use(express.static("./public"));
 
 //routes
 app.get('/', (req,res) => {
@@ -41,7 +45,7 @@ app.use("/api/chat", ChatRoutes);
 app.use("/api/classes", ClassesRoutes);  
 app.use("/api/courses", CoursesRoutes);  
 app.use("/api/calendar", CalendarRoutes);
-app.use("/api/files", FilesRoutes); 
+app.use("/api/notes", FilesRoutes); 
 app.use("/api/nextofkin", NextofKinRoutes);
 app.use("/api/nonteachers", NonTeachersRoutes);
 app.use("/api/notification", NotificationRoutes); 
@@ -50,6 +54,7 @@ app.use("/api/tasks", TaskRoutes);
 app.use("/api/teachers", TeacherRoutes); 
 app.use("/api/timetable", TimeTableRoutes);   
 app.use("/api", SharedRoutes);
+app.use("/upload", UploadsRoutes);
 app.use("/api/departments", DepartmentsRoutes)
 
   

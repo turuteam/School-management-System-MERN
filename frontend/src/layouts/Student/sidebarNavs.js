@@ -8,17 +8,16 @@ const _nav =  [
     route: '/',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon sidebarIcon"/>,
     _children: [
-        {
+         {
             _tag: 'CSidebarNavItem',
             name: 'My Profile',
-            to: '/login',
+            to: '/profile',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Edit Profile',
-            to: '/editProfile',
+            to: '/profile/edit/:id',
           }
-
     ]
   },
   {
@@ -30,23 +29,18 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Class',
-        to: '/class',
+        to: '/academics/class',
       },
        {
           _tag: 'CSidebarNavItem',
           name: 'Courses',
-          to: '/courses',
+          to: '/academics/course',
         },
         {
             _tag: 'CSidebarNavItem',
-            name: 'Exams',
-            to: '/exams',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Timetable',
-            to: '/timetable',
-          },
+            name: 'Calendar',
+            to: '/academics/calendar',
+          }
     ]
   },
   {
