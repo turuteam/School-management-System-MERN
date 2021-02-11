@@ -9,7 +9,13 @@ const Class =   React.lazy(()  => import( '../../StudentComponents/classes/Class
 const Courses =   React.lazy(()  => import( '../../StudentComponents/classes/CoursesPage'));
 const Calendar=   React.lazy(()  => import( '../../StudentComponents/classes/CalendarPage'));
 const Attendance =   React.lazy(()  => import( '../../StudentComponents/attendence/AttendancePage'));
+
+
 const Messages =   React.lazy(()  => import( '../../StudentComponents/messages/Messages'));
+const MessageAdmin = React.lazy(() => import('../../StudentComponents/messages/MessageAdmin'));
+const MessageTeacher = React.lazy(() => import('../../StudentComponents/messages/MessageTeacher'));
+//const MessageChat = React.lazy(() => import('../../StudentComponents/messages/Messages'));
+
 const Notifications =   React.lazy(()  => import( '../../StudentComponents/notifications/NotificationsPage'));
 const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/SettingsPage'));
 
@@ -71,6 +77,26 @@ const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/S
     },
     {
         path: "/message",
+        name: "Messages",
+        exact: true,
+        component: Messages,
+    },
+    {
+        path: "/message/admin",
+        name: "Messages",
+        exact: true,
+        component: MessageAdmin,
+
+    },
+    {
+        path: "/message/teacher",
+        name: "Messages",
+        exact: true,
+        component: MessageTeacher,
+        
+    },
+    {
+        path: "/message/:id",
         name: "Messages",
         component: Messages,
     },

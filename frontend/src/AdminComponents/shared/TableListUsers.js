@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({students,  headCells}) {
+export default function EnhancedTable({students,  headCells, route}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
@@ -157,7 +157,7 @@ export default function EnhancedTable({students,  headCells}) {
                   return (
                     <TableRow
                       hover
-                      onClick={() => history.push(`/students/${row.userID}`)}
+                      onClick={() => history.push(`/${route}/${row.userID}`)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}

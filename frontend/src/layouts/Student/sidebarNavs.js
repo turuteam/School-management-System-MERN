@@ -59,14 +59,31 @@ const _nav =  [
   {
     _tag: 'CSidebarNavItem',
     name: 'Attendance',
-    to: '/attandance',
+    to: '/attendance',
     icon: <CIcon name="cil-calculator" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
   },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Message',
-    to: '/messages',
-    icon: <CIcon name="cil-calculator" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
+    _tag: 'CSidebarNavDropdown',
+    name: 'Messages',
+    route: '/messages',
+    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Inbox',
+        to: '/message',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Message School Admin',
+        to: '/message/admin',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Message  Teacher',
+        to: '/message/teacher',
+      },
+    ]
   },
   {
     _tag: 'CSidebarNavItem',

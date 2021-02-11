@@ -19,7 +19,7 @@ route.get('/:id', async(req, res) => {
     if(!req.params.id) {
         return res.status(400).send('Missing URL parameter: username')
       }
-    await TeacherModel.findOne({ _id: req.params.id })
+    await TeacherModel.findOne({ userID: req.params.id })
     .then(user => {
         if(user){
         return  res.json({success: true, teacher: user})
@@ -29,6 +29,7 @@ route.get('/:id', async(req, res) => {
         }
     })
     .catch(err => {
+      console.log(err)
         return res.json({success: false, error: "Server error"})
     });
 })
@@ -36,10 +37,10 @@ route.get('/:id', async(req, res) => {
 //create
 route.post('/create', async(req , res) => {
     let body = req.body
-     const {error} = create.validate(body);
-    if(error){
-      return  res.json({success: false, error : error.details[0].message})
-     }
+    //  const {error} = create.validate(body);
+    // if(error){
+    //   return  res.json({success: false, error : error.details[0].message})
+    //  }
 
      body = {
       ...body,

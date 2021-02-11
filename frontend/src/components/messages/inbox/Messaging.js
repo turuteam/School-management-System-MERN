@@ -1,26 +1,23 @@
 import React from 'react'
 import {Switch, Route} from 'react-router-dom'
-import Sidebar from '../../components/messages/inbox/Sidebar'
-import Message from '../../components/messages/inbox/MessageContainer'
-import DefaultView from '../../components/messages/inbox/DefaultView'
+import Sidebar from './Sidebar'
+import Message from './MessageContainer'
+import DefaultView from './DefaultView'
 
 
-function Messages() {
+function Messaging() {
     return (
         <div>
-           <div>
            <h3>Inbox Messages</h3>
             <div className=" messages__container ">
                 <Sidebar/>
                     <Switch>
                           <Route component={Message} path="/message/:id"  />
-                          <Route component={DefaultView} path="/message"  />
+                          <Route component={DefaultView} path="/messages"  />
                     </Switch>
             </div>
-        </div>
-
         </div>
     )
 }
 
-export default Messages
+export default Messaging

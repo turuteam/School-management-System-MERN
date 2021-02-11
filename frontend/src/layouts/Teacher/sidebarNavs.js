@@ -1,5 +1,6 @@
 import React from 'react'
-import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react';
+
 
 const _nav =  [
   {
@@ -11,17 +12,17 @@ const _nav =  [
         {
             _tag: 'CSidebarNavItem',
             name: 'My Profile',
-            to: '/base/breadcrumbs',
+            to: '/profile',
           },
           {
             _tag: 'CSidebarNavItem',
             name: 'Edit Profile',
-            to: '/base/cards',
+            to: '/profile/edit',
           },
           {
             _tag: 'CSidebarNavItem',
-            name: 'Salary',
-            to: '/base/breadcrumbs',
+            name: 'Payrow',
+            to: '/payrow',
           }
     ]
   },
@@ -33,31 +34,44 @@ const _nav =  [
     _children: [
         {
             _tag: 'CSidebarNavItem',
-            name: 'All Classes',
-            to: '/classes/all',
-          },
-          {
-            _tag: 'CSidebarNavItem',
             name: 'Classes',
-            to: '/classes/details',
+            to: '/academics/classes',
           },
           {
             _tag: 'CSidebarNavItem',
-            name: 'All Courses',
-            to: '/courses/all',
-          },
-          {
-            _tag: 'CSidebarNavItem',
-            name: 'Course Details',
-            to: '/courses/details',
-          },
+            name: 'Courses',
+            to: '/academics/courses',
+          }
     ]
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Attendences',
-    to: '/attendances',
+    to: '/attendance',
     icon: 'cil-calculator',
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Message',
+    route: '/messages',
+    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
+    _children: [
+        {
+            _tag: 'CSidebarNavItem',
+            name: 'Inbox',
+            to: '/messages',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Message School Admin',
+            to: '/messages/admin',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'Message Student',
+            to: '/messages/student',
+          },  
+    ]
   },
   {
     _tag: 'CSidebarNavItem',

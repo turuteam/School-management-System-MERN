@@ -66,7 +66,7 @@ function AllStudents() {
            title=""
            inputFields={inputFields}
         />
-      <StudentsTable students={students}  headCells={headCells}/>
+      <StudentsTable route="students" students={students}  headCells={headCells}/>
     </div>
   )
 }

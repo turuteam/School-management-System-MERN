@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -8,7 +7,6 @@ import {
   CCol,
   CContainer,
   CForm,
-  CInput,
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
@@ -20,19 +18,23 @@ import axios from './../../store/axios'
 import { useForm } from "react-hook-form";
 import { useDispatch} from 'react-redux';
 import {loggin}  from '../../store/slices/userSlice';
-import {LoginString } from '../../store/localStorage'
-import {  toast } from 'react-toastify';
+import {LoginString } from '../../store/localStorage';
+import {errorAlert} from '../../utils'
+
 
 const Login = ({history}) => {
   const [userId, setuserId] = useState("");
-  const [password, setpassword] = useState("")
+  const [password, setpassword] = useState("");
+  const [loading, setloading] = useState(false)
   const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
 
 
   const handleSignin = () => {
+    setloading(true)
       axios.post('/signin', {userID: userId, password}).then(res => {
         const {data} = res
+        setloading(false)
          if(data.success === true){
             console.log(data.user)
             const user = data.user
@@ -55,19 +57,13 @@ const Login = ({history}) => {
             history.push('/')
          }
          else{
-           console.log(data)
-           toast.error(data.error, {
-            position: "top-center",
-            autoClose: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-           })  
+           console.log(data);
+           errorAlert(data.error)
         }
       }).catch(err => {
-        console.log(err)
+        console.log(err);
+        setloading(false)
+        errorAlert("Connection  error try again later")
       })
   }
 
@@ -123,11 +119,17 @@ const Login = ({history}) => {
                     <CRow>
                       <CCol xs="6">
                         <CButton 
+                        disabled={loading}
                         onClick={handleSubmit(handleSignin)} 
                         type="submit"
                          color="primary"
                           className="px-4">
-                            Login
+                            { loading ? 
+                              <>
+                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                <span className="visually-hidden">Loading...</span>
+                              </> : <>Login</>
+                            }
                         </CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">

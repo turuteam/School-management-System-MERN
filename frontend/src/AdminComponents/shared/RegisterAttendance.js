@@ -7,11 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-//import RemoveIcon from '@material-ui/icons/Remove';
+
+
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -38,47 +35,70 @@ const useStyles = makeStyles({
 });
 
 
-export default function CustomizedTables({attendanceData}) {
+export default function CustomizedTables({attendanceData, setattendanceData}) {
   const classes = useStyles();
 
+  const registerStudent = (id) => {
+      let objIndex=    attendanceData.findIndex((data => data.userID === id));
+      let updatedObj = { ...attendanceData[objIndex], status: !attendanceData[objIndex].status};
+      const updatedProjects = [
+        ...attendanceData.slice(0, objIndex),
+        updatedObj,
+        ...attendanceData.slice(objIndex + 1),
+      ];
+      console.log(updatedProjects)
+      setattendanceData(updatedProjects)  
+  }
+
+  const handleReset = () => {
+    console.log("reset")
+       const newData = (attendanceData.map(data => {
+         return { ...data , status : false } 
+        }))
+        console.log(newData);
+        setattendanceData(newData)
+  }
+
   return (
+    <>
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-          <StyledTableCell  align="left">Date</StyledTableCell>
             <StyledTableCell  align="left">Student ID</StyledTableCell>
             <StyledTableCell align="left">Name</StyledTableCell>
             <StyledTableCell align="left">Last Name</StyledTableCell>
             <StyledTableCell align="left">Status</StyledTableCell>
-            <StyledTableCell align="left">Action</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {attendanceData.map((row) => (
-            <StyledTableRow key={row.studentID}>
-                <StyledTableCell >
-                {row.date}
-              </StyledTableCell>
+          {attendanceData.length > 0 ?  attendanceData.map((row) => (
+            <StyledTableRow key={row.userID}>
                <StyledTableCell >
-                {row.studentID}
+                {row.userID}
               </StyledTableCell>
               <StyledTableCell >
                 {row.name}
               </StyledTableCell>
               <StyledTableCell>
-                {row.lastname}
-              </StyledTableCell>
-              <StyledTableCell>
-                {row.status ? <CheckIcon/> : <ClearIcon className="text-danger"/>}
+                {row.surname}
               </StyledTableCell>
                <StyledTableCell>
-                 <IconButton> <EditIcon/> </IconButton>
+               <div className="form-check">
+                    <input  onClick={( ) => registerStudent(row.userID)} className="form-check-input" type="checkbox" value="" id="flexCheckChecked"/>
+                </div>
               </StyledTableCell>
             </StyledTableRow>
-          ))}
+          )) : <div>No students in this class</div>}
         </TableBody>
       </Table>
     </TableContainer>
+    <div className="my-3 d-flex justify-content-end">
+              <div>
+                  <button className="btn blue__btn mr-2">Submit</button>
+                  <button className="btn orange__btn" onClick={handleReset}>Reset</button>
+              </div>
+        </div>
+    </>
   );
 }

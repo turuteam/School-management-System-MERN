@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import TableList from '../../components/tables/ListTable';
+import {Link} from 'react-router-dom';
 
 const tableHeader = [
     {id: "type", name: "Type"},
@@ -22,7 +23,18 @@ function FeesPage() {
 
     return (
         <div>
-            <h3 className="mb-4">Fees Payments</h3>
+            <div className="row">
+                <div className="col-xs-12 col-sm-6">
+                      <h3 className="mb-4">Your Payments</h3>
+                </div>
+               <div className="col-xs-12 col-sm-6">
+                   <div className="d-flex justify-content-around">
+                      <Link className="btn orange__btn" to="/">Due Payment</Link>    
+                      <Link className="btn blue__btn" to="/"> Fees</Link>
+                   </div>
+                     
+               </div>
+            </div>
             <TableList 
            data={data} 
            tableHeader={tableHeader} 

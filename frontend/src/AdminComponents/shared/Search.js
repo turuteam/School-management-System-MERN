@@ -1,7 +1,7 @@
 import React from 'react'
 
 function Search(props) {
-     let { inputFields, title, handleSearch} = props;
+     let { inputFields, title, handleSearch, isReset} = props;
 
     return (
            <form  className="mb-5 content__container">
@@ -18,12 +18,12 @@ function Search(props) {
                                     onChange={(e) => input?.onChange(e.target.value)}  
                                     className="form-select form-select-sm py-2" 
                                     >
-                                        <option disabled hidden selected>Select</option>
+                                        <option hidden defaultValue>Select</option>
                                         {input?.options && input?.options.map(option => <option key={option.id}>{option.name}</option>)}
                                     </select>
                                     :
                                     <input 
-                                    type="text"
+                                    type={input.type}
                                     value={input.value} 
                                     name={input?.name} 
                                     className="form-control py-3" 
@@ -38,9 +38,11 @@ function Search(props) {
                     <div className="col-2  mb-3">
                         <button className="btn orange__btn " onClick={handleSearch}>Search</button>
                     </div>
-                    <div className="col  mb-3">
-                    <button className="btn blue__btn ">Reset</button>
-                    </div>
+                    {!isReset  && 
+                       <div className="col  mb-3">
+                           <button className="btn blue__btn ">Reset</button>
+                        </div>
+                    }
                     
                 </div>
            </form>

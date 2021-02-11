@@ -42,7 +42,7 @@ const Prefects = React.lazy(()  => import( '../../AdminComponents/students/prefe
 const Scholarships = React.lazy(()  => import( '../../AdminComponents/students/schoolarship/Scholarships'));
 const StudentDetails = React.lazy(()  => import( '../../AdminComponents/students/studentDetails/StudentDetails'));
 const EditStudent = React.lazy(() => import('../../AdminComponents/students/newStudent/EditStudent'));
-
+const RegisterAttendance =  React.lazy(()  => import( '../../AdminComponents/students/attendance/RegisterAttendance'));
 
 
 //staff
@@ -51,6 +51,7 @@ const Staff = React.lazy(()  => import( '../../AdminComponents/staff/AllStaff'))
 const StaffAttendance = React.lazy(()  => import( '../../AdminComponents/staff/Attendence'));
 const StaffDetails = React.lazy(() => import('../../AdminComponents/staff/StaffDetails'));
 const Payrow = React.lazy(()  => import( '../../AdminComponents/staff/PayrowPage'));
+const EditStaff  =  React.lazy(()  => import( '../../AdminComponents/staff/addStaff/EditStaff'));
 
 
 
@@ -151,7 +152,13 @@ const EditPayment = React.lazy(() => import('../../AdminComponents/canteen/AddCa
     {
         path: "/students/attendance",
         name: "Attendance",
+        exact: true,
         component: Attendance,
+    },
+    {
+        path: "/students/attendance/register",
+        name: "Attendance Register",
+        component: RegisterAttendance
     },
     {
         path: "/students/campus",
@@ -214,6 +221,11 @@ const EditPayment = React.lazy(() => import('../../AdminComponents/canteen/AddCa
         exact: true,
         name: "Staff Payrow ",
         component: Payrow,
+    },
+    {
+        path: "/staff/edit/:id",
+        name: "Edit staff",
+        component: EditStaff
     },
     {
         path: "/staff/:id",

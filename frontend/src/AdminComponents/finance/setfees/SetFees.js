@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Search from '../../shared/Search';
-import FeesTable from './FeesTable'
+import FeesTable from './FeesTable';
+
+const tableHeader = [
+    {id: "class", name: "Class"},
+    {id: "day", name: " Day"},
+    {id: "freshday", name: "Fresh Day"},
+    {id: "border", name: "Border"},
+    {id: "freshborder", name: "Fresh Border"},
+]
 
 function SetFees() {
     const [year, setyear] = useState("");
@@ -36,14 +44,7 @@ function SetFees() {
         }
     ]
 
-    const tableHeader = [
-        {id: "id", name: "#"},
-        {id: "class", name: "Class"},
-        {id: "day", name: " Day"},
-        {id: "freshday", name: "Fresh Day"},
-        {id: "border", name: "Border"},
-        {id: "freshborder", name: "Fresh Border"},
-    ]
+   
 
     const feesData  = [
         {

@@ -21,14 +21,20 @@ const TeacherSchema =   new Schema( {
     email: {
         type: String
     },
-    address: {
+    physicalAddress: {
         type: String
+     },
+     postalAddress: {
+         type: String
      },
      gender: {
         type: String,
         required: true
     },
     dateofBirth: {
+        type: String
+    },
+    placeofBirth: {
         type: String
     },
     department: {
@@ -44,34 +50,24 @@ const TeacherSchema =   new Schema( {
     salary: {
         type: String
     },
+    allowance: {
+        type: String
+    },
     positions: {
-        type: [{
-            position: String,
-            department: String,
-            date: {
-                type: Date,
-                default: Date.now
-            }
-        }],
-        default: []
+        type: String
     },
     telephone: {
+        type: String
+    },
+    mobile: {
         type: String
     },
     password: {
         type: String,
         required: true
     },
-    classes: {
-        type: [{
-            classID: String,
-            startdate: {
-                type: Date,
-                default: Date.now
-            }
-        }],
-        default: []
-
+    classID: {
+        type: String,
     },
     courses: {
         type: [
@@ -86,14 +82,28 @@ const TeacherSchema =   new Schema( {
       ] ,
       default: []
     },
-    nextofKinID: {
-        type: String
+    nextofKin: {
+        type: {
+            relationship: String,
+            occupation: String,
+            name: String,
+            email: String,
+            mobile: String,
+            address: String,
+            lastname: String,
+        }
     },
     profileUrl: {
         type: String
     },
-    healthyCondition: {
+    health: {
         type: String
+    },
+    allege: {
+        type: String
+    },
+    disease: {
+        type :String
     },
     nationality: {
         type: String

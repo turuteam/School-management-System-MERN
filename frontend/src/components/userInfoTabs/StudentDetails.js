@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import StudentInfo from './StudentInfo';
+import StudentInfo from './UserInfo';
 import StudentTabs from './StudentTabs';
 import axios from '../../../store/axios';
 import { useParams} from 'react-router-dom'

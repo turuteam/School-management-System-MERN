@@ -91,6 +91,7 @@ function NewStudent() {
     }
 
     const handleCreateSubmit = () => {
+        setloading(true)
         const fileData = new FormData();
         fileData.append("photo", profileUrl);
         axios.post('/upload', fileData, {}).then((res) => {
@@ -124,6 +125,7 @@ function NewStudent() {
             physicalAddress: residence,
             guadian
         }).then(response => {
+            setloading(false)
             if(response.data.error){
                 errorAlert(response.data.error);
                 return 0;
@@ -131,6 +133,7 @@ function NewStudent() {
             successAlert("successfully added");
         })
        }).catch(err => {
+           setloading(false)
            console.log(err);
            errorAlert("something went wrong");
        })
@@ -204,8 +207,18 @@ function NewStudent() {
                         </div>
                         <br className="my-5"/>
                      <div className="row ">
-                         <button type="submit" onClick={handleSubmit(handleCreateSubmit)} className=" col btn orange__btn mr-5" >Create</button>
-                         <button onClick={handleReset} className=" col btn blue__btn">Reset</button>
+                         <button 
+                           disabled={loading} 
+                           type="submit" 
+                           onClick={handleSubmit(handleCreateSubmit)} 
+                           className="col btn orange__btn mr-5" >
+                               {loading ?  
+                               <> 
+                                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                  <span className="visually-hidden">Loading...</span>
+                               </> : "Create"}
+                          </button>
+                         <button onClick={handleReset} className="col btn blue__btn">Reset</button>
                      </div>
                 </form>
 

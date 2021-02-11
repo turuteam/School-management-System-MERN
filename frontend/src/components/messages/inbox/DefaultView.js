@@ -1,11 +1,11 @@
 import React from 'react'
 
-function AddNew() {
+function DefaultView() {
     return (
         <div>
-            new parent
+            Default
         </div>
     )
 }
 
-export default AddNew
+export default DefaultView

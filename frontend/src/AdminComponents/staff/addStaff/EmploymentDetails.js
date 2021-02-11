@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 function EmploymentDetails(props) {
+    const [showCheck, setshowCheck] = useState(false)
     let {
         role,
         setRole,
@@ -19,14 +20,13 @@ function EmploymentDetails(props) {
         setsalary,
         setyears,
         register,
-        error,
-
-
+        errors,
+        handleCoursesCheckbox
     } = props
     return (
         <div>
                <h3>Employment Details</h3>
-                    <div class="row mb-3">
+                    <div className="row mb-3">
                         <div className="col-xs-12 col-sm-6 col-md-4">
                             <label  className="form-label">Staff Role</label>
                             <select   
@@ -34,9 +34,9 @@ function EmploymentDetails(props) {
                                 value={role} 
                                 onChange={e => setRole(e.target.value)}  
                                 name="role"   
-                                class="form-select" 
+                                className="form-select" 
                                 aria-label="Default select example">
-                                <option  selected  disabled hidden >select</option>
+                                <option  defaultValue  hidden >select</option>
                                 <option value="teacher">Teacher</option>
                                 <option value="headmaster">Head Master</option>
                                 <option value="accountant">Accountant</option>
@@ -52,6 +52,7 @@ function EmploymentDetails(props) {
                                 <option value="secretary">Secretary</option>
                                 <option value="driver">Driver</option>
                             </select>
+                            {errors.role && <span className=" form-error text-danger mb-2">Name is required</span>}
                             
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
@@ -62,7 +63,7 @@ function EmploymentDetails(props) {
                                 name="department"   
                                 className="form-select" 
                                 aria-label="Default select example">
-                                <option  selected  disabled hidden >select</option>
+                                <option  defaultValue   hidden >select</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
@@ -76,13 +77,13 @@ function EmploymentDetails(props) {
                                onChange={e => setCampus(e.target.value)}    
                                className="form-select" 
                                aria-label="Default select example">
-                                <option selected  disabled hidden>select</option>
+                                <option defaultValue   hidden>select</option>
                                 <option value="border">Border </option>
                                 <option value="day">Day Student</option>
                             </select>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div className="row mb-3">
                         <div className="col-xs-12 col-sm-6 col-md-4 ">
                             <label className="form-label">Employment Date</label>
                             <input 
@@ -135,6 +136,44 @@ function EmploymentDetails(props) {
                             className="form-control" 
                             placeholder="staff allowance" />
                         </div> 
+                    </div>
+                    <div className="row mb-3">
+                         <div className="col-xs-12 col-sm-6 col-md-4">
+                            <label  className="form-label">Class</label>
+                            <select    
+                               name="campus" 
+                               value={campus} 
+                               onChange={e => setCampus(e.target.value)}    
+                               className="form-select" 
+                               aria-label="Default select example">
+                                <option defaultValue   hidden>select</option>
+                                <option value="border">Border </option>
+                                <option value="day">Day Student</option>
+                            </select>
+                         </div>
+                         <div className="col-xs-12 col-sm-6 col-md-4">
+                                <label  className="form-label">Courses</label>
+                               <div className="selectBox">
+                                    <select onClick={ () => setshowCheck(!showCheck)} className="form-select" >
+                                        <option hidden>Select an option</option>
+                                    </select>
+                                    {showCheck && <div className="showcheckboxes">
+                                        <div className="form-check ">
+                                            <input onChange={handleCoursesCheckbox} className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                                            <label className="form-check-label" >
+                                                Default checkbox
+                                            </label>
+                                         </div>
+                                        <div className="form-check">
+                                            <input  onClick={handleCoursesCheckbox} className="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
+                                            <label className="form-check-label">
+                                                Checked checkbox
+                                            </label>
+                                        </div>
+                                    </div>}
+                              </div>
+                             
+                         </div >
                     </div>
         </div>
     )

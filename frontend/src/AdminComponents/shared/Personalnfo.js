@@ -36,9 +36,9 @@ function Personalnfo(props) {
     return (
         <div>
              <h3>Personal Information</h3>
-                    <div class="row mb-3">
+                    <div className="row mb-3">
                          {isTeacher && <div className="col-xs-12 col-sm-6 col-md-2">
-                            <label for="name" className="form-label">Title</label>
+                            <label  className="form-label">Title</label>
                             <select 
                               className="form-control"
                               ref={register({ required: true })}  
@@ -46,7 +46,7 @@ function Personalnfo(props) {
                               name="gender"
                               onChange={e => setTitle(e.target.value)}
                               aria-label="Default select example">
-                                <option selected disabled >Select</option>
+                                <option defaultValue hidden >Select</option>
                                 <option value="mr">Mr</option>
                                 <option value="mrs">Mrs</option>
                                 <option value="miss">Ms</option>
@@ -59,7 +59,7 @@ function Personalnfo(props) {
                                {errors.name && <span className=" form-error text-danger mb-2">This field is required</span>}
                            </div>}
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="name" className="form-label">First Name</label>
+                            <label  className="form-label">First Name</label>
                             <input 
                               name="name" 
                               type="text" 
@@ -71,7 +71,7 @@ function Personalnfo(props) {
                                {errors.name && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="secondname" className="form-label">Second Name</label>
+                            <label className="form-label">Second Name</label>
                             <input 
                              type="text"
                              name="secondname"
@@ -80,7 +80,7 @@ function Personalnfo(props) {
                              className="form-control" />
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="lastname" className="form-label">Last Name</label>
+                            <label  className="form-label">Last Name</label>
                             <input 
                              ref={register({ required: true })} 
                              value={lastname}
@@ -91,9 +91,9 @@ function Personalnfo(props) {
                              {errors.lastname && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div className="row mb-3">
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="name" className="form-label">Gender *</label>
+                            <label  className="form-label">Gender *</label>
                             <select 
                               className="form-control"
                               ref={register({ required: true })}  
@@ -101,7 +101,7 @@ function Personalnfo(props) {
                               name="gender"
                               onChange={e => setgender(e.target.value)}
                               aria-label="Default select example">
-                                <option selected>Select</option>
+                                <option defaultValue hidden>Select</option>
                                 <option value="female">Female</option>
                                 <option value="male">Male</option>
                                 <option value="others">Others</option>
@@ -109,7 +109,7 @@ function Personalnfo(props) {
                             {errors.gender && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="secondname" className="form-label">Date of Birth</label>
+                            <label className="form-label">Date of Birth</label>
                             <input 
                             value={dateofBirth}
                             name="dateofBirth"
@@ -118,7 +118,7 @@ function Personalnfo(props) {
                             className="form-control" />
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="lastname" className="form-label">Email</label>
+                            <label  className="form-label">Email</label>
                             <input 
                             value={email}
                             onChange={e => setemail(e.target.value)}
@@ -129,7 +129,7 @@ function Personalnfo(props) {
                     </div>
                     <div class="row mb-3">
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="name" className="form-label">Nationality</label>
+                            <label  className="form-label">Nationality</label>
                             <input 
                             value={nationality}
                             onChange={e => setnationality(e.target.value)}
@@ -147,7 +147,7 @@ function Personalnfo(props) {
                             className="form-control" />
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="lastname" className="form-label">Place of Birth</label>
+                            <label  className="form-label">Place of Birth</label>
                             <input 
                             type="text" 
                             name="placeofBirth" 
@@ -158,14 +158,14 @@ function Personalnfo(props) {
                         </div>
                         <div className="row  mb-3">
                             <div className="col-xs-12 col-sm-6 col-md-4">
-                                <label for="lastname" className="form-label">Health Condition</label>
+                                <label  className="form-label">Health Condition</label>
                                 <select 
                                     value={healthCon}
                                     onChange={e => setHealthCon(e.target.value)}
                                     className="form-control"
                                     name="gender"
                                     aria-label="Default select example">
-                                        <option selected default>Select</option>
+                                        <option defaultValue hidden>Select</option>
                                         <option value="vgood">Very Good</option>
                                         <option value="good">Good</option>
                                         <option value="fair">Fair</option>
@@ -173,7 +173,7 @@ function Personalnfo(props) {
                                 </select>
                             </div>
                             <div className="col-xs-12 col-sm-6 col-md-4">
-                                <label for="lastname" className="form-label">Disease</label>
+                                <label  className="form-label">Disease</label>
                                 <input 
                                 type="text" 
                                 name="heathy" 
@@ -183,7 +183,7 @@ function Personalnfo(props) {
                                 className="form-control" />
                             </div>
                             <div className="col-xs-12 col-sm-6 col-md-4">
-                                <label for="lastname" className="form-label">Any Allegies</label>
+                                <label  className="form-label">Any Allegies</label>
                                 <input 
                                 type="text" 
                                 name="allegies" 

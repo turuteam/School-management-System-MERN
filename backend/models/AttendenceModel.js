@@ -7,21 +7,13 @@ const AttendanceSchema =   new Schema( {
         type: String,
         required: true
     },
-    startTime: {
+    status: {
         type: Date,
         default: Date.now
-    },
-    startLocation: {
-        type: String,
-        default: null
     },
     endTime: {
         type: String,
         default: null
-    },
-    endLocation: {
-       type: String,
-       default: null
     },
     date: {
         type: Date, 
