@@ -1,77 +1,102 @@
 import React, { useState } from 'react'
+import FeeForm from './FeeForm'
+import axios from '../../../store/axios'
+import {Link} from 'react-router-dom'
+import {errorAlert, successAlert} from '../../../utils'
 
 function SetNewFees() {
     const [year, setyear] = useState("")
     const [term, setterm] = useState("")
     const [classID, setclass] = useState("")
-    const [amount, setamount] = useState("")
-    const [type, settype] = useState("")
+    const [type, settype] = useState("");
+    const [tution, settution] = useState("");
+    const [facility, setfacility] = useState("");
+    const [maintenance, setmaintenance] = useState("");
+    const [exam, setexam] = useState("")
+
+    const handleSubmit = () => {
+        if(classID && type){
+        var obj = {};
+        var results = {
+            tution,
+            facility,
+            maintenance,
+            exam
+        }
+        if(type === "day"){
+            obj =  {
+                day: results
+             }
+        }
+        else if(type === "freshDay"){
+            obj =  {
+                freshday: results
+             }
+        }
+        else if(type === "freshBorder"){
+            obj =  {
+                freshBorder: results
+             }
+        }
+        else if(type === "border"){
+            obj =  {
+                border: results
+             }
+        }
+        else{
+            return 0
+        }
+         axios.post('/fees/add',{name: classID, ...obj, year, term}).then(res => {
+             if(res.data.error){
+                 errorAlert(res.data.error);
+                 return 0;
+             }
+             successAlert("successfully created");
+             settution("");
+             setfacility("");
+             setmaintenance("");
+             setyear("");
+             setterm("");
+             setclass("");
+             setexam("");
+             settype("");
+             settution("");
+
+         }).catch(err => {
+             console.log(err)
+            errorAlert("Error");
+         })
+        }
+        else{
+           errorAlert("Fill in all fields") 
+        }
+    }
 
     return (
         <div>
+             <div className="d-flex justify-content-end">
+                     <Link className="btn blue__btn" to="/finance/fees"> View All Fees</Link>
+             </div>
             <h3>Set Fees</h3>
-           <form className="row" action="">
-              <div className="col-md-6">
-                <label className="form-label">Select Academic Year</label>
-                <select 
-                    value={year}
-                    onChange={e => setyear(e.target.value)}
-                    name="class" class="form-select">
-                    <option selected  >Choose...</option>
-                    <option value="2a">2021/2022</option>
-                    <option value="2a">2020/2021</option>
-                    <option value="2a">2019/2020</option>
-                    <option value="2a">2018/2019</option>
-                </select>
-                </div>
-                <div className="col-md-6">
-                <label className="form-label">Select Academic Tearm</label>
-                <select 
-                    value={term}
-                    onChange={e => setterm(e.target.value)}
-                    name="class" class="form-select">
-                    <option selected  >Choose...</option>
-                    <option value="2a">2021/2022</option>
-                    <option value="2a">2020/2021</option>
-                    <option value="2a">2019/2020</option>
-                    <option value="2a">2018/2019</option>
-                </select>
-                </div>
-                <div className="col-md-6">
-                <label className="form-label">Set fees for Class</label>
-                <select 
-                    value={classID}
-                    onChange={e => setclass(e.target.value)}
-                    name="class" class="form-select">
-                    <option selected  >Choose...</option>
-                    <option value="2a">2021/2022</option>
-                    <option value="2a">2020/2021</option>
-                    <option value="2a">2019/2020</option>
-                    <option value="2a">2018/2019</option>
-                </select>
-                </div>
-                <div className="col-md-6">
-                <label className="form-label">Select Type</label>
-                <select 
-                    value={type}
-                    onChange={e => settype(e.target.value)}
-                    name="class" class="form-select">
-                    <option selected  >Choose...</option>
-                    <option value="2a">2021/2022</option>
-                    <option value="2a">2020/2021</option>
-                    <option value="2a">2019/2020</option>
-                    <option value="2a">2018/2019</option>
-                </select>
-                </div>
-                <div className="col-md-6">
-                        <label className="form-label">Amount</label>
-                        <input  
-                        value={amount} 
-                        onChange={e => setamount(e.target.value)}
-                        type="text" 
-                        className="form-control" id="amount" />
-                </div>
-           </form>
+           <FeeForm 
+              year={year}
+              tution={tution}
+              settution={settution}
+              setfacility={setfacility}
+              facility={facility}
+              maintenance={maintenance}
+              setmaintenance={setmaintenance}
+              exam={exam}
+              setexam={setexam}
+              setyear={setyear}
+              term={term}
+              setterm={setterm}
+              classID={classID}
+              setclass={setclass}
+              type={type}
+              settype={settype}
+              onSubmit={handleSubmit}
+           />
         </div>
     )
 }

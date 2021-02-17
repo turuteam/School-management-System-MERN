@@ -39,6 +39,9 @@ const StudentSchema =   new Schema( {
      postalAddress: {
          type: String
      },
+     dormitoryID : {
+        type: String
+     },
      gender: {
         type: String,
         required: true
@@ -87,6 +90,9 @@ const StudentSchema =   new Schema( {
             }
         ]
     },
+    campusID: {
+        type: String
+    },
     profileUrl: {
         type: String
      },
@@ -119,6 +125,6 @@ const StudentSchema =   new Schema( {
         type: Date, 
         default: Date.now
     },
-})
+}, { timestamps: true })
 
 export default  mongoose.model("students", StudentSchema, "accounts");

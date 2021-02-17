@@ -48,11 +48,6 @@ const TheLayout = () => {
         return  [] 
     }
 
-    const navs = getNavs();
-    const routes = getRoutes();
-    console.log(navs, routes)
-
-
   return (
     <div className="c-app c-default-layout">
       <TheSidebar navs={getNavs()}/>

@@ -26,7 +26,27 @@ route.get('/:id', async(req, res) => {
   .catch(err => {
       return res.json({success: false, error: "Server error"})
   });
-})
+});
+
+//get by classCode
+route.get('/classCode/:id', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await ClassesModel.findOne({ classCode: req.params.id })
+  .then(docs => {
+      if(docs){
+          return  res.json({success: true,docs})
+      }
+      else{
+          return  res.json({success: false, error: 'Does not exists'})
+      }
+  })
+  .catch(err => {
+      return res.json({success: false, error: "Server error"})
+  });
+});
+
 
 //create
 route.post('/create', async(req, res) => {

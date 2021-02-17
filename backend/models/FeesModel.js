@@ -4,23 +4,46 @@ import  mongoose from "../config/mongodb.js"
 const { Schema } = mongoose;
 
 const FeesSchema =   new Schema( {
-    feesFor: {
-        type: String,
-        required: true
+    name: {
+        type: String
     },
-   feesType: {
+    code: {
        type: String
-   },
-   amount: {
-       type: String
-   },
-   status: {
-       type: String
-   },
-    date: {
-        type: Date,
-        default: Date.now
-    } 
-})
+    },
+    term: String,
+    year: String,
+    day: {
+       type: {
+               tution: String,
+               facility: String,
+               maintenance: String,
+               exam: String
+           }
+    },
+    freshDay: {
+        type: {
+                tution: String,
+                facility: String,
+                maintenance: String,
+                exam: String
+            }
+     },
+     border: {
+        type: {
+                tution: String,
+                facility: String,
+                maintenance: String,
+                exam: String
+            }
+     },
+     freshBorder: {
+        type: {
+                tution: String,
+                facility: String,
+                maintenance: String,
+                exam: String
+            }
+     }
+}, { timestamps: true })
 
 export default  mongoose.model("fees", FeesSchema);

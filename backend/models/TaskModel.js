@@ -16,6 +16,6 @@ const TaskSchema =   new Schema( {
        type: Date
    }
 
-})
+}, { timestamps: true })
 
 export default  mongoose.model("tasks", TaskSchema);

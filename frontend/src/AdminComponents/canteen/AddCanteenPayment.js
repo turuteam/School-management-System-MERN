@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import AddForm from './CanteenForm'
+import Nav from './CanteenNav'
 
 function AddCanteenPayment() {
     const [name, setname] = useState("");
@@ -9,8 +10,10 @@ function AddCanteenPayment() {
     const [classID, setclassID] = useState("")
 
     return (
+        <>
+        <Nav />
+        <h3>Add Canteen Payment </h3>
         <div className="content__container mb-5">
-            <h3>Add Student Payment</h3>
             <AddForm 
                 name={name}
                 studentID={studentID} 
@@ -23,8 +26,8 @@ function AddCanteenPayment() {
                 classID={classID} 
                 setclassID={setclassID}
             />
-            
         </div>
+        </>
     )
 }
 

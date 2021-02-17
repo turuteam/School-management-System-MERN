@@ -37,6 +37,11 @@ export default function CustomPaginationActionsTable({tableHeader, data}) {
     setPage(0);
   };
 
+  const getTotal = (a,b,c,d)=>{
+    let total =  parseFloat(a || 0) + parseFloat(b || 0) + parseFloat(c || 0) + parseFloat(d || 0);
+    return total;
+  }
+
 
   return (
     <TableContainer component={Paper}>
@@ -48,64 +53,50 @@ export default function CustomPaginationActionsTable({tableHeader, data}) {
               </TableRow>
             </TableHead>
         <TableBody>
-          {(rowsPerPage > 0
+          {data.length > 0  ? 
+          <>{(rowsPerPage > 0
             ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : data
           ).map((row) => (
             <TableRow key={row.id}>
               <TableCell style={{ width: 250 }} align="left">
-                {row.class}
+                {row?.name}
               </TableCell>
-              <TableCell  align="left" style={{ width: 250 }}  align="left">
+              <TableCell  align="left" style={{ width: 250 }}>
                  <ul  className="fees">
-                   <li>Tution Fee =  {row.day.tuitionFee}  <ClearIcon className="icon"/></li>
-                   <li>Facility User Fee =  {row.day.facilityFee}  <ClearIcon className="icon"/></li>
-                   <li>Tution maintenance fee =  {row.day.facilityMaintenance}  <ClearIcon className="icon"/></li>
-                   <li>Exam Fee =  {row.day.examitionFee}  <ClearIcon className="icon"/></li>
+                    {row?.day?.tution ? <li> Tution Fee = {row?.day?.tution} </li> : "-"} 
+                    {row?.day?.facility ? <li> Facility Fee = {row?.day?.facility} </li> : "-"}
+                    {row?.day?.maintenance ? <li> Tution maintenance fee = {row?.day?.maintenance} </li> : "-"}
+                    {row?.day?.exam ? <li> Exam Fee = {row?.day?.exam} </li> : "-"}
                  </ul>
-                 <div>Total {row.day?.tuitionFee + row.day.facilityFee + row.day.facilityMaintenance + row.day.examitionFee}  </div>
+                 <div>Total {getTotal( row?.day?.tution , row?.day?.facility , row?.day?.maintenance , row?.day?.exam) || 0}  </div>
               </TableCell>
-              <TableCell style={{ width: 250 }}   align="left">
-                 <ul className="fees">
-                   <li>Tution Fee =  {row.freshday.tuitionFee} <ClearIcon className="icon"/></li>
-                   <li>Facility User Fee =  {row.freshday.facilityFee}  <ClearIcon className="icon"/></li>
-                   <li>Tution maintenance fee =  {row.freshday.facilityMaintenance}  <ClearIcon className="icon"/></li>
-                   <li>Exam Fee =  {row.freshday.examitionFee}  <ClearIcon className="icon"/></li>
-                 </ul>
-                 <div>Total {
-                      row.freshday?.tuitionFee + 
-                      row.freshday.facilityFee + 
-                      row.freshday.facilityMaintenance + 
-                      row.freshday.examitionFee}  
-                  </div>
-              </TableCell>
-              <TableCell style={{ width: 250 }}   align="left">
-                 <ul className="fees">
-                   <li>Tution Fee =  {row.border.tuitionFee}  <ClearIcon className="icon"/></li>
-                   <li>Facility User Fee =  {row.border.facilityFee}  <ClearIcon className="icon"/></li>
-                   <li>Tution maintenance fee =  {row.border.facilityMaintenance}  <ClearIcon className="icon"/></li>
-                   <li>Exam Fee =  {row.border.examitionFee}  <ClearIcon className="icon"/></li>
-                 </ul>
-                 <div>Total {
-                      row.border?.tuitionFee + 
-                      row.border.facilityFee + 
-                      row.border.facilityMaintenance + 
-                      row.border.examitionFee}  
-                  </div>
-              </TableCell>
-              <TableCell  style={{ width: 250 }}  align="left">
+              <TableCell  align="left" style={{ width: 250 }}>
                  <ul  className="fees">
-                   <li>Tution Fee =  {row.freshborder.tuitionFee} <ClearIcon className="icon"/></li>
-                   <li>Facility User Fee =  {row.freshborder.facilityFee} <ClearIcon className="icon"/></li>
-                   <li>Tution maintenance fee =  {row.freshborder.facilityMaintenance} <ClearIcon className="icon"/></li>
-                   <li>Exam Fee =  {row.freshborder.examitionFee} <ClearIcon  className="icon"/></li>
+                    {row?.freshDay?.tution ? <li> Tution Fee = {row?.freshDay?.tution} </li> : "-"} 
+                    {row?.freshDay?.facility ? <li> Facility Fee = {row?.freshDay?.facility} </li> : "-"}
+                    {row?.freshDay?.maintenance ? <li> Tution maintenance fee = {row?.freshDay?.maintenance} </li> : "-"}
+                    {row?.freshDay?.exam ? <li> Exam Fee = {row?.freshDay?.exam} </li> : "-"}
                  </ul>
-                 <div>Total {
-                      row.freshborder?.tuitionFee + 
-                      row.freshborder.facilityFee + 
-                      row.freshborder.facilityMaintenance + 
-                      row.freshborder.examitionFee}  
-                  </div>
+                 <div>Total {row?.freshDay?.tution + row?.freshDay?.facility + row?.freshDay?.maintenance + row?.freshDay?.exam || 0}  </div>
+              </TableCell>
+              <TableCell  align="left" style={{ width: 250 }}>
+                 <ul  className="fees">
+                    {row?.border?.tution ? <li> Tution Fee = {row?.border?.tution} </li> : "-"} 
+                    {row?.border?.facility ? <li> Facility Fee = {row?.border?.facility} </li> : "-"}
+                    {row?.border?.maintenance ? <li> Tution maintenance fee = {row?.border?.maintenance} </li> : "-"}
+                    {row?.border?.exam ? <li> Exam Fee = {row?.border?.exam} </li> : "-"}
+                 </ul>
+                 <div>Total {getTotal(row?.border?.tution , row?.border?.facility , row?.border?.maintenance , row?.border?.exam) || 0}  </div>
+              </TableCell>
+              <TableCell  align="left" style={{ width: 250 }}>
+                 <ul  className="fees">
+                    {row?.freshBorder?.tution ? <li> Tution Fee = {row?.freshBorder?.tution} </li> : "-"} 
+                    {row?.freshBorder?.facility ? <li> Facility Fee = {row?.freshBorder?.facility} </li> : "-"}
+                    {row?.freshBorder?.maintenance ? <li> Tution maintenance fee = {row?.freshBorder?.maintenance} </li> : "-"}
+                    {row?.freshBorder?.exam ? <li> Exam Fee = {row?.freshBorder?.exam} </li> : "-"}
+                 </ul>
+                 <div>Total {row?.freshBorder?.tution + row?.freshBorder?.facility + row?.freshBorder?.maintenance + row?.freshBorder?.exam || 0}  </div>
               </TableCell>
               <TableCell  align="left">
                 <div  className="d-flex align-items-center">
@@ -113,11 +104,11 @@ export default function CustomPaginationActionsTable({tableHeader, data}) {
                       <DeleteOutlineIcon/>
                   </IconButton>
                 </div>
-                 
               </TableCell>
             </TableRow>
-          ))}
-
+          ))} </>
+          : <>No  data</>
+          }
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />

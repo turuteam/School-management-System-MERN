@@ -1,33 +1,29 @@
 import React from 'react'
 import {
-  CBadge,
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
-  CDropdownToggle,
-  CButton
-
+  CDropdownToggle
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 import {Avatar} from '@material-ui/core'
-import { useSelector, useDispatch} from 'react-redux';
-import {selectUser, logout} from '../store/slices/userSlice';
-import {getIntial, getCapitalize} from '../utils';
+import {useDispatch} from 'react-redux';
+import PersonIcon from '@material-ui/icons/Person';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LockIcon from '@material-ui/icons/Lock';
+import SettingsIcon from '@material-ui/icons/Settings';
+import {logout} from '../store/slices/userSlice';
+import {getIntial, getCapitalize, getImgSrc} from '../utils';
 import {useHistory} from 'react-router-dom'
 
-const TheHeaderDropdown = () => {
-  const user = useSelector(selectUser);
+const TheHeaderDropdown = ({user}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   
-
-
   const handleLogout = () => {
       dispatch(logout);
       localStorage.clear();
       history.push('/login')
   }
-  console.log(user)
 
   return (
     <CDropdown
@@ -38,7 +34,7 @@ const TheHeaderDropdown = () => {
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="user__avatar ">
             <h6> <strong>{getCapitalize(user?.name)} {getIntial(user?.middleName || "")} {getCapitalize(user?.lastName)}</strong> <br/>  <span>{user?.role}</span></h6>
-          <Avatar   src={user?.photoUrl} />
+          <Avatar   src={getImgSrc(user?.photoUrl)} />
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
@@ -50,33 +46,22 @@ const TheHeaderDropdown = () => {
         >
           <strong>{getCapitalize(user?.name)} {getIntial(user?.middleName || "")}  {getCapitalize(user?.lastName)}</strong>
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-bell" className="mfe-2" />
-            My Profile
-          <CBadge color="info" className="mfs-auto">42</CBadge>
+        <CDropdownItem onClick={() => history.push('/profile')}>
+           <PersonIcon />
+             View Profile
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-envelope-open" className="mfe-2" />
-         Task
-          <CBadge color="success" className="mfs-auto">42</CBadge>
+        <CDropdownItem onClick={() => history.push('/settings')}>
+          <LockIcon />
+             Change Password
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-task" className="mfe-2" />
-         Message
-          <CBadge color="danger" className="mfs-auto">42</CBadge>
+        <CDropdownItem onClick={() => history.push('/settings')}>
+          <SettingsIcon />
+            Settings
         </CDropdownItem>
-  
-        <CDropdownItem>
-          <CIcon name="cil-user" className="mfe-2" />Settings
+        <CDropdownItem onClick={handleLogout}>
+          <ExitToAppIcon/>
+             Log Out
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-settings" className="mfe-2" />
-          Settings
-        </CDropdownItem>
-        <CButton onClick={handleLogout}>
-          <CIcon name="cil-lock-locked" className="mfe-2" />
-           Log Out
-        </CButton>
       </CDropdownMenu>
     </CDropdown>
   )

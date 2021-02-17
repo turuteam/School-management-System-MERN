@@ -19,7 +19,7 @@ route.get('/:id', async(req, res) => {
     if(!req.params.id) {
         return res.status(400).send('Missing URL parameter: username')
       }
-    await TeacherModel.findOne({ userID: req.params.id })
+    await TeacherModel.findOne({ userID: req.params.id, role: role.Teacher })
     .then(user => {
         if(user){
         return  res.json({success: true, teacher: user})
@@ -33,6 +33,27 @@ route.get('/:id', async(req, res) => {
         return res.json({success: false, error: "Server error"})
     });
 })
+
+//get teacher courses
+route.get('/courses/:id', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await TeacherModel.findOne({ userID: req.params.id, role: role.Teacher })
+  .then(user => {
+      if(user){
+      return  res.json({success: true, docs: user?.courses})
+      }
+      else{
+      return  res.json({success: false, error: 'Teacher does not exists'})
+      }
+  })
+  .catch(err => {
+    console.log(err)
+      return res.json({success: false, error: "Server error"})
+  });
+})
+
 
 //create
 route.post('/create', async(req , res) => {
@@ -123,16 +144,16 @@ route.post('/changePassword/:id', async(req, res )=> {
       return  res.json({success: false, error : error.details[0].message})
   }
 
-  TeacherModel.findOne({_id:  req.params.id}).then(user => {
+  TeacherModel.findOne({userID:  req.params.id}).then(user => {
     if(user){
       if (bcrypt.compareSync(req.body.oldPassword, user.password)){
             bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
               if(err){
                 console.log("err")
-                return res.json( { success: false, message: err })
+                return res.json( { success: false,error: err })
               }
               TeacherModel.findOneAndUpdate({
-                _id: req.params.id
+                userID: req.params.id
               },{password: hash}, {
                    new: true
               })
@@ -141,16 +162,16 @@ route.post('/changePassword/:id', async(req, res )=> {
                 })
               .catch(e => {
                 console.log("e")
-                  return res.json( { success: false, message: e + "e"})
+                  return res.json( { success: false,error: e + "e"})
               })
           })  
       }
       else{
-          return res.json( { success: false, message: "Wrong old password"})
+          return res.json( { success: false,error: "Wrong old password"})
       }
     }
     else{
-      return res.json({success: false, message: "Teacher does not exist"})
+      return res.json({success: false,error: "Teacher does not exist"})
     }
   })
 })
@@ -161,16 +182,22 @@ route.put('/update/:id', (req, res) => {
     return res.status(400).send('Missing URL parameter: username')
   } 
 TeacherModel.findOneAndUpdate({
-    _id: req.params.id
+    userID: req.params.id
   }, req.body, {
     new: true
   })
   .then(doc => {
       console.log(doc)
-      res.json({success: true, doc});
+      if(doc){
+        return    res.json({success: true, doc});
+      }
+      else{
+        return    res.json({success: false, error: "Error "});
+      }
+    
     })
   .catch(err => {
-      res.json({success: false, message:err})
+      res.json({success: false, error:err})
   })
 
 });
@@ -181,7 +208,7 @@ route.delete('/delete/:id', (req, res) => {
     return res.status(400).send('Missing URL parameter: username')
   }
 TeacherModel.findOneAndRemove({
-    _id: req.params.id
+    userID: req.params.id
   })
   .then(doc => {
       res.json(doc)

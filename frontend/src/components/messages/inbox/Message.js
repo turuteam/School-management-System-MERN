@@ -1,14 +1,13 @@
 import React from 'react'
+import {timeStamp} from '../../../utils'
 
-function Message({sender}) {
+function Message({message, currentUser}) {
     return (
-        <div className={sender ? "sender__mesaage message" : "message"}>
-            <div className="message__content">Lorem ipsum dolor, sit amet consectetur 
-                adipisicing elit. Laborum magni ea sunt
-                 molestiae nihil deleniti quaerat id, doloribus
-                  assumenda nemo!
+        <div className={currentUser === message?.senderID? "sender__mesaage message" : "message"}>
+            <div className="message__content">
+               {message?.message}
             </div>
-            <div className="message__time ">02/02/2021</div>
+            <div className="message__time ">{timeStamp(message.date)}</div>
         </div>
     )
 }

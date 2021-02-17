@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import StudentInfo from './StudentInfo';
-import StudentTabs from './StudentTabs';
+import StudentInfo from '../../../components/userInfoTabs/UserInfo';
+import StudentTabs from '../../../components/userInfoTabs/StudentTabs'
 import axios from '../../../store/axios';
 import { useParams} from 'react-router-dom'
 

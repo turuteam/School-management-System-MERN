@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import Settings from '../../components/settings/Settings'
+
 
 function SettingsPage() {
     return (
         <div>
-            settings
+           <Settings/>
         </div>
     )
 }

@@ -7,10 +7,6 @@ const ChatSchema =   new Schema( {
         type: Date,
         default: Date.now
     },
-    status: {
-        type: Boolean,
-        default: false
-    },
     requestor_id:{
         type: String,
         required: true
@@ -32,6 +28,6 @@ const ChatSchema =   new Schema( {
         ],
         default: []
     }
-})
+}, { timestamps: true })
 
 export default  mongoose.model("chats", ChatSchema);

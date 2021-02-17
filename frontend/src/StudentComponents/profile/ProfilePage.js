@@ -1,25 +1,39 @@
-import { Avatar } from '@material-ui/core'
-import React from 'react'
+
+import React, {useState , useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import InfoTabs from '../../AdminComponents/students/studentDetails/StudentTabs'
+import Profile from '../../components/profile/UpdateProfile'
+import {useSelector} from 'react-redux';
+import {selectUser} from '../../store/slices/userSlice';
+import { getCapitalize, getIntial} from '../../utils'
+import axios from '../../store/axios'
 
 function ProfilePage() {
+    const user = useSelector(selectUser);
+    const [userDetails, setuserDetails] = useState({})
+
+    useEffect(() => {
+        axios.get(`/students/student/${user?.id}`).then(res => {
+            setuserDetails(res.data.student)
+        })
+    }, [user])
+
     return (
         <div className="content__container"> 
            <h3>About Me</h3>
            <div className="row mb-5">
                <div className="col-xs-12 col-sm-6 col-md-4">
-                   <Avatar alt="R"  src=""></Avatar>
+                   <Profile profile={user?.photoUrl} id={user?.id}/>
                </div>
                <div className="col-xs-12 col-sm-6 col-md-8">
-                   <h3>Student Name</h3>
-                   <h6>Student ID</h6>
+                   <h3>{ getCapitalize(user?.name)} {getIntial(user?.middleName || "")} {getCapitalize(user?.lastName)}</h3>
+                   <h6>{user?.id}</h6>
                     <div className="muted-text">Role</div>
-                    <Link to={`/editProfile/123`} className="btn blue__btn sm__btn mt-4">Edit</Link>
-               </div>
+                         <Link to={`/profile/edit`} className="btn blue__btn sm__btn mt-4">Edit</Link>
+                   </div>
            </div>
             <div className="Profile Details">
-                <InfoTabs/>      
+                <InfoTabs user={userDetails}/>      
            </div>
         </div>
     )

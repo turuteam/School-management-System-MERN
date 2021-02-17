@@ -1,29 +1,175 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {useSelector} from 'react-redux';
+import {selectClasses} from '../../../store/slices/schoolSlice';
+import axios from '../../../store/axios';
+import {errorAlert} from '../../../utils';
+import { useForm } from "react-hook-form";
 
-function AddPrefect() {
+const min = new Date().getFullYear();
+
+function AddPrefect({name, setname, userID, setuserID,handleAdd, 
+    position, setposition, loading, startYear, endYear, 
+    yearOptions,
+    setstartYear, setendYear}) {
+    const classes = useSelector(selectClasses);
+    const [students, setstudents] = useState([]);
+    const { register, handleSubmit, errors, reset } = useForm();
+
+
+    const handleSearchbyClass = (e) => {
+        axios.get(`/students/class/${e}`).then(res => {
+            console.log(res.data)
+            if(res.data.error){
+                console.log("error");
+                errorAlert(res.data.error);
+                return 0
+            }
+            setstudents(res.data.users.map(user => {
+                return {
+                    id: user.userID,
+                    name: user.name,
+                    surname: user.surname
+                }
+            }))
+        })
+    }
+
+    const handleCancel = () => {
+        reset();
+        setname("")
+        setuserID("")
+        setposition("");
+        setendYear("");
+        setstartYear(min)
+
+    }
+
+    const handleSelectStudent = (id) => {
+          let selectedstudent = students.find(e => e.userID = id);
+          setname(selectedstudent?.name  + selectedstudent?.surname);
+          setuserID(id)
+    }
+
+
     return (
-        <div className="content__container">
-                <h5 className="mb-4">Add Prefect</h5>
+        <div className="">
+            <div className="mb-5 content__container">
+                <h3>Search Student</h3>
+                <div className="row">
+                   <div className="col-md-12">
+                        <label  className="form-label">Student's Class</label>
+                        <select 
+                        onChange={(e) => handleSearchbyClass(e.target.value)}  
+                        id="inputState" 
+                        className="form-select">
+                            <option defaultValue hidden>Choose...</option>
+                            {classes.map(e => <option key={e._id} value={e._id}>{e.name}</option>)}
+                        </select>
+                    </div>
+                </div>
+                <div className="row">
+                    {students.length > 0  && 
+                    <div className="col-md-12">
+                        <label  className="form-label">OR Select Student's Class</label>
+                        <select onChange={(e) => handleSelectStudent(e.target.value)}  id="inputState" className="form-select">
+                            <option defaultValue hidden>Choose...</option>
+                            {students.map(e => <option key={e.userID} value={e.userID}>{e.userID} {e.name} {e.surname}</option>)}
+                        </select>
+                    </div>
+                   }
+                </div> 
+            </div>
+
+              <div className="content__container">
+                <h3 className="mb-4">Add Prefect</h3>
                 <form action="">
+                    <div className="row mb-3">
+                        <label  className="col-sm-3 col-form-label">Name</label>
+                        <div className="col-sm-9">
+                           <input 
+                           type="text" 
+                           value={name}
+                           ref={register({ required: true })} 
+                           onChange={e => setname(e.target.value)}
+                           className="form-control" 
+                           name="name"/> 
+                            {errors.name && <span className=" form-error text-danger mb-2">This field is required</span>}
+                        </div>
+                    </div>
                     <div className="row mb-3">
                         <label  className="col-sm-3 col-form-label">Student ID</label>
                         <div className="col-sm-9">
-                        <input type="text" className="form-control" id="name"/>
+                           <input 
+                           type="text" 
+                           ref={register({ required: true })} 
+                           className="form-control" 
+                           value={userID}
+                           onChange={e => setuserID(e.target.value)}
+                           name="userId"/>
+                             {errors.userId && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                     </div>
                     <div className="row mb-3">
                         <label  className="col-sm-3 col-form-label">Position</label>
                         <div className="col-sm-9">
-                        <input type="text" className="form-control" id="name"/>
+                            <input 
+                             ref={register({ required: true })} 
+                             value={position}
+                             onChange={e => setposition(e.target.value)}
+                             type="text" 
+                             className="form-control" 
+                             name="position"/>
+                               {errors.position && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                     </div>
                     <div className="row mb-3">
-                        <button 
-                            className="btn blue__btn offset-sm-2 col-xs-8 col-sm-3">
-                            Add
-                        </button>
+                        <label  className="col-sm-3 col-form-label">From Year</label>
+                        <div className="col-sm-9">
+                                <select 
+                                name="start_year" 
+                                value={startYear} 
+                                onChange={e => setstartYear(e.target.value)}
+                                className="form-select">
+                                    <option defaultValue hidden>Choose...</option>
+                                    {yearOptions && yearOptions.map(e => <option key={e} value={e}>{e}</option>)}
+                                </select>
+                               {errors.start_year && <span className=" form-error text-danger mb-2">This field is required</span>}
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <label  className="col-sm-3 col-form-label">To Year</label>
+                        <div className="col-sm-9">
+                           <select 
+                                name="end_year" 
+                                value={endYear} 
+                                onChange={e => setendYear(e.target.value)}
+                                className="form-select">
+                                    <option defaultValue hidden>Choose...</option>
+                                    {yearOptions && yearOptions.map(e => <option key={e} value={e}>{e}</option>)}
+                                </select>
+                               {errors.start_year && <span className=" form-error text-danger mb-2">This field is required</span>}
+                        </div>
+                    </div>
+                    <div className="row mb-3">
+                        <div  className="offset-sm-3">
+                            <button 
+                             disabled={loading}
+                              onClick={handleSubmit(handleAdd)}
+                                className="btn blue__btn ">
+                                    {loading &&
+                                       <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                     }
+                                Add
+                            </button>
+                            <button 
+                              onClick={handleCancel}
+                                className="btn btn-danger ml-3">
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 </form>
+             </div>
         </div>
     )
 }

@@ -18,7 +18,7 @@ route.get('/student/:id', async(req, res) => {
     if(!req.params.id) {
         return res.status(400).send('Missing URL parameter: username')
       }
-    await StudentModel.findOne({ userID: req.params.id })
+    await StudentModel.findOne({ userID: req.params.id , role: role.Student})
     .then(user => {
         if(user){
           console.log(user)
@@ -34,6 +34,89 @@ route.get('/student/:id', async(req, res) => {
     });
 })
 
+//get studentCourses
+route.get('/student/courses/:id', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await StudentModel.findOne({ userID: req.params.id , role: role.Student})
+  .then(user => {
+      if(user){
+        console.log(user)
+      return  res.json({success: true,courses: user?.courses})
+      }
+      else{
+      return  res.json({success: false, error: 'Student does not exists'})
+      }
+  })
+  .catch(err => {
+      console.log(err)
+      return res.json({success: false, error: "WRONG error"})
+  });
+})
+
+
+
+//search students by id or name
+route.get('/search/:id', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await StudentModel.find({ role:  role.Student, $or: [{userID: req.params.id}, {name:{ $regex: req.params.id } }, {lastname:{ $regex: req.params.id }} ]})
+  .then(user => {
+      if(user){
+         return  res.json({success: true, users: user})
+      }
+      else{
+         return  res.json({success: false, error: 'Student does not exists'})
+      }
+  })
+  .catch(err => {
+      console.log(err)
+      return res.json({success: false, error: "WRONG error"})
+  });
+})
+
+//get all parents 
+route.get('/parents', async(req, res) => {
+  await StudentModel.find({role : role.Student})
+  .then(user => {
+      if(user){
+         let results = user.map(a => a.guadian);
+         var merged = [].concat.apply([], results);
+         return  res.json({success: true, docs: merged})
+      }
+      else{
+         return  res.json({success: false, error: 'No parents details available'})
+      }
+  })
+  .catch(err => {
+      console.log(err)
+      return res.json({success: false, error: "WRONG error"})
+  });
+})
+
+
+//search parents
+route.get('/parents/:id', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await StudentModel.findOne({_id:  req.params.id })
+  .then(user => {
+      if(user.guadian?.lenght > 0){
+         return  res.json({success: true, docs: user.guadian})
+      }
+      else{
+         return  res.json({success: false, error: 'No parents details available'})
+      }
+  })
+  .catch(err => {
+      console.log(err)
+      return res.json({success: false, error: "WRONG error"})
+  });
+})
+
 
 //get students in class
 route.get('/class/:id', async(req, res) => {
@@ -42,15 +125,16 @@ route.get('/class/:id', async(req, res) => {
     }
   await StudentModel.find({ classID: req.params.id })
   .then(user => {
-      if(user){
-      return  res.json({success: true,students: user})
+      if(user.length > 0){
+         return  res.json({success: true,users: user})
       }
-      else{
-      return  res.json({success: false, message: 'Student does not exists'})
-      }
+    else{
+      return  res.json({success: false, error: 'No Students in the classå'})
+    }
   })
   .catch(err => {
-      return res.json({success: false, message: "Server error"})
+    console.log(err)
+      return res.json({success: false, error: "Server error"})
   });
 })
 
@@ -74,12 +158,15 @@ route.post('/create', async(req , res) => {
     email: stringSpace(body?.email)
   }
 
-   const studentExist = await StudentModel.findOne({ $and : [{
+   const studentExist = await StudentModel.findOne(
+     { 
+       $and : [{
         email: body.email,
         name: body.name,
         surname: body.surname,
         role: role.Student
-    }]})
+       }]
+  })
     if(studentExist){
         return res.json({success: false, error: "Student already exist"})
     }
@@ -158,7 +245,7 @@ route.put('/changePassword/:id', async(req, res )=> {
     if(error) {
         return  res.json({success: false, error : error.details[0].message})
     }
-    StudentModel.findOne({_id:  req.params.id}).then(user => {
+    StudentModel.findOne({userID:  req.params.id}).then(user => {
       if(user){
         if (bcrypt.compareSync(req.body.oldPassword, user.password)){
               bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
@@ -199,7 +286,7 @@ route.put('/update/:id', (req, res) => {
     }
     console.log(req.body)
     StudentModel.findOneAndUpdate({
-      studentID: req.params.id
+      userID: req.params.id
     }, req.body, {
       new: true
     })
@@ -216,13 +303,85 @@ route.put('/update/:id', (req, res) => {
   
   });
 
+
+//change students class
+route.post('/upgrade/class', (req, res) => {
+  const {currentlass, nextclass} = req.body
+  
+  StudentModel.updateMany({
+    role: role.Student,
+    classID: currentlass
+  }, {classID : nextclass}, {
+    new: true
+  })
+  .then(doc => {
+      console.log(doc)
+      if(!doc){
+        return res.json({success: false, error: "doex not exists"})
+     }
+      return res.json({success: true, student:  doc});
+    })
+  .catch(err => {
+      res.json({success: false, error:err})
+  })
+
+});
+
+//change student dormitories
+route.post('/upgrade/dormitories', (req, res) => {
+  const {currentdormitory, nextdormitory} = req.body
+  
+  StudentModel.updateMany({
+    role: role.Student,
+    dormitoryID: currentdormitory
+  }, {dormitoryID: nextdormitory}, {
+    new: true
+  })
+  .then(doc => {
+      console.log(doc)
+      if(!doc){
+        return res.json({success: false, error: "doex not exists"})
+     }
+      return res.json({success: true, student:  doc});
+    })
+  .catch(err => {
+      res.json({success: false, error:err})
+  })
+
+});
+
+//change student campus
+route.post('/upgrade/campus', (req, res) => {
+  const {currentcampus, nextcampus} = req.body
+  
+  StudentModel.updateMany({
+    role: role.Student,
+    campusID: currentcampus
+  }, {campusID : nextcampus}, {
+    new: true
+  })
+  .then(doc => {
+      console.log(doc)
+      if(!doc){
+        return res.json({success: false, error: "doex not exists"})
+     }
+      return res.json({success: true, student:  doc});
+    })
+  .catch(err => {
+      res.json({success: false, error:err})
+  })
+
+});
+
+
+
 //delete student
 route.delete('/delele/:id', (req, res) => {
     if(!req.params.id) {
       return res.status(400).send('Missing URL parameter: username')
     }
    StudentModel.findOneAndRemove({
-      studentID: req.params.id
+      userID: req.params.id
     })
     .then((doc) => {
          if(!doc){

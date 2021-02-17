@@ -27,6 +27,6 @@ const NextofKinchema =   new Schema( {
    email: {
        type: String
    }
-})
+}, { timestamps: true })
 
 export default  mongoose.model("nextofkins", NextofKinchema);

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SendToForm({message, setmessage, onSend, recipientsOptions, recipient, setrecipient, sender, sendto}) {
+function SendToForm({message, setmessage, onSend, recipient, setrecipient, sender, sendto, searchOptions, loading}) {
     return (
         <form action="" className=" content__container form__sender">
             <div className="header"> 
@@ -15,16 +15,7 @@ function SendToForm({message, setmessage, onSend, recipientsOptions, recipient, 
                         id="inputState" 
                         className="form-select">
                             <option selected hidden>Choose...</option>
-                            {recipientsOptions.length > 0 ? 
-                                recipientsOptions.map(rec => 
-                                <option 
-                                key={rec.id} 
-                                value={rec.id}>
-                                    {rec.name}
-                                </option>
-                                ): 
-                                <option disabled>No options</option>
-                            }
+                            {searchOptions ?  searchOptions() :   <option disabled>No options</option>}
                     </select>
                 </div>  
             </div>
@@ -50,7 +41,7 @@ function SendToForm({message, setmessage, onSend, recipientsOptions, recipient, 
                     </textarea>
                </div>
                <div className="col-12">
-                   <button onClick={onSend} className="btn blue__btn w-100">Send</button>
+                   <button disabled={loading} onClick={onSend} className="btn blue__btn w-100">Send</button>
                </div> 
            </div>
         </form>

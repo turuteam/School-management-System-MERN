@@ -1,6 +1,5 @@
 import express from "express";
 import CoursesModel from "../models/CoursesModel.js";
-import {createCourse} from '../middlewares/validate.js';
 import {stringtoLowerCase} from '../middlewares/utils.js';
 
 const route = express.Router();
@@ -29,6 +28,29 @@ route.get('/:id', async(req, res) => {
   });
 })
 
+
+//get by coursecode
+route.get('/courseCode/:id', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await CoursesModel.findOne({ code: req.params.id })
+  .then(docs => {
+      if(docs){
+         return  res.json({success: true,docs})
+      }
+      else{
+          return  res.json({success: false, error: 'Does not exists'})
+      }
+  })
+  .catch(err => {
+      return res.json({success: false, error: "Server error"})
+  });
+})
+
+
+//return course name
+
 //search 
 route.get('search/:teacher/:name/:campus', async(res, req) => {
   const doc = await CoursesModel.find({
@@ -43,11 +65,6 @@ route.get('search/:teacher/:name/:campus', async(res, req) => {
 //create
 route.post('/create', async(req, res) => {
     let body = req.body
-  //  const {error} = createCourse.validate(body);
-  //   if(error){
-  //       console.log(error)
-  //   return  res.json({success: false, error : error.details[0].message})
-  //   }
     body = {
       ...body,
       code: stringtoLowerCase(body.name),

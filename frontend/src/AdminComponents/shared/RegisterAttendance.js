@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function CustomizedTables({attendanceData, setattendanceData}) {
+export default function CustomizedTables({ isStaff, handleResetAttendance ,attendanceData, setattendanceData,loading, handleRegister, isEdit}) {
   const classes = useStyles();
 
   const registerStudent = (id) => {
@@ -46,13 +46,12 @@ export default function CustomizedTables({attendanceData, setattendanceData}) {
         updatedObj,
         ...attendanceData.slice(objIndex + 1),
       ];
-      console.log(updatedProjects)
       setattendanceData(updatedProjects)  
   }
 
   const handleReset = () => {
     console.log("reset")
-       const newData = (attendanceData.map(data => {
+       const newData = (attendanceData?.map(data => {
          return { ...data , status : false } 
         }))
         console.log(newData);
@@ -65,38 +64,49 @@ export default function CustomizedTables({attendanceData, setattendanceData}) {
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell  align="left">Student ID</StyledTableCell>
+            <StyledTableCell  align="left"> {isStaff ? "Staff ID" : "Student ID"}</StyledTableCell>
             <StyledTableCell align="left">Name</StyledTableCell>
             <StyledTableCell align="left">Last Name</StyledTableCell>
             <StyledTableCell align="left">Status</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {attendanceData.length > 0 ?  attendanceData.map((row) => (
-            <StyledTableRow key={row.userID}>
+          {attendanceData?.length > 0 ?  attendanceData.map((row) => (
+            <StyledTableRow key={row?.userID}>
                <StyledTableCell >
-                {row.userID}
+                {row?.userID}
               </StyledTableCell>
               <StyledTableCell >
-                {row.name}
+                {row?.name}
               </StyledTableCell>
               <StyledTableCell>
-                {row.surname}
+                {row?.surname}
               </StyledTableCell>
                <StyledTableCell>
                <div className="form-check">
-                    <input  onClick={( ) => registerStudent(row.userID)} className="form-check-input" type="checkbox" value="" id="flexCheckChecked"/>
+                    <input  
+                      onChange={( ) => registerStudent(row?.userID)} 
+                      className="form-check-input" 
+                      type="checkbox" 
+                      value={row?.status} 
+                      id="flexCheckChecked" 
+                      checked={row?.status}/>
                 </div>
               </StyledTableCell>
             </StyledTableRow>
-          )) : <div>No students in this class</div>}
+          )) : <div className="p-3"> {isStaff ? "No Staff data" : "No students in this class"}</div>
+          }
         </TableBody>
       </Table>
     </TableContainer>
     <div className="my-3 d-flex justify-content-end">
               <div>
-                  <button className="btn blue__btn mr-2">Submit</button>
-                  <button className="btn orange__btn" onClick={handleReset}>Reset</button>
+                  <button onClick={handleRegister} disabled={loading || !attendanceData?.length > 0 } className="btn blue__btn mr-2">
+                     {loading &&  <span className="spinner-border spinner-border-sm" role="status" ></span>}
+                      {isEdit ?  "Submit" : "Save Changes"}
+                  </button>
+                  {isEdit ? <button onClick={ handleResetAttendance } className="btn orange__btn">Cancel Changes</button> : 
+                     <button className="btn orange__btn" onClick={handleReset}>Reset</button>}
               </div>
         </div>
     </>

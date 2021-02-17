@@ -12,6 +12,6 @@ const TimetableSchema =   new Schema( {
    },
    weekDate: String,
    courseID: String
-})
+}, { timestamps: true })
 
 export default  mongoose.model("timetable", TimetableSchema);

@@ -11,7 +11,8 @@ const connection_url = process.env.DB_CONNECT;
 mongoose.connect(connection_url, {
     useCreateIndex: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 })
 
 

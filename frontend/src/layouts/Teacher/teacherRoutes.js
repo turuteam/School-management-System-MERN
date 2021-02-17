@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const Dashboard = React.lazy(()  => import( '../../AdminComponents/dashboard/Index'));
+const Dashboard = React.lazy(()  => import( '../../TeachersComponents/dashboard/Index'));
 
 //profile
 const EditProfile = React.lazy(()  => import( '../../TeachersComponents/dashboard/EditProfile'));
@@ -28,10 +28,14 @@ const Notifications = React.lazy(()  => import( '../../TeachersComponents/notifi
 const Classes = React.lazy(()  => import( '../../TeachersComponents/academics/AllClasses'));
 const Courses = React.lazy(()  => import( '../../TeachersComponents/academics/AllCourses'));
 const CourseDetails = React.lazy(()  => import( '../../TeachersComponents/academics/CourseDetails'));
+const Calendar = React.lazy(()  => import( '../../TeachersComponents/academics/Calender'));
+const AddCourseNotes = React.lazy(()  => import( '../../TeachersComponents/academics/AddCorseNotes'));
+
+
 
  const routes =  [
     {
-        path: "/admin",
+        path: "/",
         name: "Dashboard",
         exact: true,
         component: Dashboard,
@@ -62,11 +66,24 @@ const CourseDetails = React.lazy(()  => import( '../../TeachersComponents/academ
         path: "/academics/classes",
         name: "Classes",
         component: Classes,
+        exact: true
     },
     {
         path: "/academics/courses",
         name: "Courses",
+        exact: true,
         component: Courses,
+    },
+    {
+        path: "/academics/courses/addnotes",
+        name: "Courses",
+        component: AddCourseNotes,
+    },
+    {
+        path: "/academics/calender",
+        name: "Courses",
+        exact: true,
+        component: Calendar,
     },
     {
         path: "/academics/coursedetail/:id",
@@ -75,6 +92,7 @@ const CourseDetails = React.lazy(()  => import( '../../TeachersComponents/academ
     },
     {
         path: "/profile",
+        exact: true,
         name: "Course Details",
         component: Profile,
     },

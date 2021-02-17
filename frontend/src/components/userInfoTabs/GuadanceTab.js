@@ -1,11 +1,11 @@
 import React from 'react';
-import GuadianCard from './GuadianCard'
+import GuadianCard from '../../AdminComponents/shared/GuadianCard'
 
 function GuadanceTab({user}) {
     console.log(user)
     return (
         <div>
-            {user?.length > 0 ? user?.map(e => {
+            {user?.length > 0 ? user.map(e => {
                 return(
                     <GuadianCard  guadian={e}  key={e._id} noEdit={true}/>
                 )

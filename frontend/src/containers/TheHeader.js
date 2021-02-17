@@ -11,6 +11,7 @@ import {
 } from '@coreui/react'
 import SearchIcon from '@material-ui/icons/Search';
 import CIcon from '@coreui/icons-react'
+import {selectUser} from '../store/slices/userSlice';
 
 // routes config
 import routes from '../routes'
@@ -23,6 +24,7 @@ import {
 
 const TheHeader = () => {
   const dispatch = useDispatch()
+  const user = useSelector(selectUser);
   const sidebarShow = useSelector(state => state.sidebarShow)
 
   const toggleSidebar = () => {
@@ -61,9 +63,9 @@ const TheHeader = () => {
       </CHeaderNav>
 
       <CHeaderNav className="px-3 nav__icons">
-        <TheHeaderDropdownNotif/>
-        <TheHeaderDropdownMssg/>
-        <TheHeaderDropdown/>
+        <TheHeaderDropdownNotif id={user?.id}/>
+        <TheHeaderDropdownMssg id={user?.id}/>
+        <TheHeaderDropdown user={user}/>
       </CHeaderNav>
 
       <CSubheader className="px-3 justify-content-end">

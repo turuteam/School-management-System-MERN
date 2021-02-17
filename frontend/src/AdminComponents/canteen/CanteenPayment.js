@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Search from '../shared/Search';
 import TableList from '../shared/ListTable';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
 function CanteenPayment() {
     const [classID, setclass] = useState("");
@@ -70,7 +70,9 @@ function CanteenPayment() {
                    <Search title="Canteen Payments" inputFields={inputFields} />   
                 </div>
                   <div  className="col-xs-12 col-sm-2">
-                       <Link className="btn blue__btn lg__btn" to="/canteen/addpayment"> Add Payment</Link> 
+                       <Link to="/canteen/members/register" className="btn blue__btn mb-3">Add Canteen Member </Link>
+                       <Link to="/canteen/members" className="btn blue__btn mb-3">View All Members </Link>
+                       <Link className="btn blue__btn" to="/canteen/addpayment"> Make Payment</Link> 
                   </div>
             </div>
           

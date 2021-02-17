@@ -7,22 +7,13 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 
-function DeleteFeesModal({id, }) {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
+function DeleteFeesModal({ open , setOpen}) {
+ 
   const handleClose = () => {
     setOpen(false);
   };
 
     return (
-        <div>
-             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open alert dialog
-            </Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -32,8 +23,7 @@ function DeleteFeesModal({id, }) {
                 <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    Let Google help apps determine location. This means sending anonymous location data to
-                    Google, even when no apps are running.
+                    Are you sure you want to delete
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -45,8 +35,6 @@ function DeleteFeesModal({id, }) {
                 </Button>
                 </DialogActions>
             </Dialog>
-            
-        </div>
     )
 }
 

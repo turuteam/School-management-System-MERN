@@ -1,30 +1,36 @@
-import React, {useState} from 'react';
-import TableList from '../../components/tables/ListTable';
+import React, {useState,  useEffect} from 'react';
+import TableList from '../../AdminComponents/shared/ListTable';
+import axios from '../../store/axios'
+
 
 const tableHeader = [
-    {id: "date", name: "Date"},
-    {id: "amount", name: "Amount ($)"},
-    {id: "receipt", name: "Receipt Number"},
-    {id: "paidto", name: "Paid to "},
+    {id: "resourse", name: "Type"},
+    {id: "title", name: "Event"},
+    {id: "start", name: "Starts"},
+    {id: "end", name: "Ends"},
 
 ]
 
 function ExamsPage() {
     const [loading, setloading] = useState(false);
+    const [events, setevents] = useState([]);
 
-    const data = [
-        {paidto: "camp1", amount: "First Campus", receipt:"123 Street Road ,City  26000", date: "21-Jan-2021 07:49pm"},
-        {paidto: "camp2", amount: "Second Campus", receipt:"123 Street Road ,City  26000", date: "21-Jan-2021 07:49pm"},
-        {paidto: "camp3", amount: "Third Campus", receipt:"123 Street Road ,City  26000", date: "21-Jan-2021 07:49pm"},
-        {paidto: "camp4", amount: "Fouth Campus", receipt:"123 Street Road ,City  26000", date: "21-Jan-2021 07:49pm"},
-        {paidto: "camp5", amount: "Fiveth Campus", receipt:"123 Street Road ,City  26000", date: "21-Jan-2021 07:49pm"}
-    ]
-
+    useEffect(() => {
+        setloading(true)
+        axios.get('/calendar')
+        .then(res => {
+            setloading(false)
+            setevents(res.data)
+        })
+       
+    }, [])
+   
     return (
         <div>
            <TableList 
-           data={data} 
+           data={events} 
            tableHeader={tableHeader} 
+           noActions={true}
            loading={loading}/>
         </div>
     )

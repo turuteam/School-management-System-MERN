@@ -9,7 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import InfoTab from './InfoTab';
 import EmploymentTab from './EmploymentTab';
-import GuadanceTab from './GuadanceTab';
+import GuadanceTab from './NextofKinTab';
+import ContactTab from './ContactInfo'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -77,7 +78,8 @@ export default function FullWidthTabs({user}) {
         >
           <Tab label="Staff's Information" {...a11yProps(0)} />
           <Tab label="Employment's Information" {...a11yProps(1)} />
-          <Tab label="Next of kin 's Information" {...a11yProps(2)} />
+          <Tab label="Contact Information" {...a11yProps(2)} />
+          <Tab label="Next of kin 's Information" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -92,7 +94,10 @@ export default function FullWidthTabs({user}) {
           <EmploymentTab  user={user}/>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <GuadanceTab  user={user?.guadian}/>
+          <ContactTab  user={user}/>
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
+          <GuadanceTab  user={user?.nextofKin}/>
         </TabPanel>
       </SwipeableViews>
     </div>

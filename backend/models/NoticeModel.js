@@ -3,11 +3,17 @@ import  mongoose from "../config/mongodb.js"
 const { Schema } = mongoose;
 
 const NotificationsSchema =   new Schema( {
-   data: {
+   date: {
        type: Date,
        default: Date.now
    },
+   title: {
+       type: String
+   },
    message: {
+       type: String
+   },
+   sender: {
        type: String,
    },
    receiver: {
@@ -17,6 +23,6 @@ const NotificationsSchema =   new Schema( {
        default: "All"
    }
 
-})
+}, { timestamps: true })
 
-export default  mongoose.model("notifications", NotificationsSchema);
+export default  mongoose.model("notices", NotificationsSchema);

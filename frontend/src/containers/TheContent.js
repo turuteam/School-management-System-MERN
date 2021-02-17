@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react'
 import {
-  Redirect,
   Route,
   Switch
 } from 'react-router-dom'
@@ -36,7 +35,6 @@ const TheContent = ({routes, path}) => {
                    />
               )
             })}
-            {/* <Redirect from="/" to={`/${path}`} /> */}
           </Switch>
         </Suspense>
       </CContainer>

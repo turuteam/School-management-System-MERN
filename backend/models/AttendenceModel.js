@@ -3,22 +3,24 @@ import  mongoose from "../config/mongodb.js"
 const { Schema } = mongoose;
 
 const AttendanceSchema =   new Schema( {
-    userID: {
+    classID: {
         type: String,
         required: true
     },
-    status: {
-        type: Date,
-        default: Date.now
-    },
-    endTime: {
+    role: {
         type: String,
-        default: null
     },
-    date: {
-        type: Date, 
-        default: Date.now
-     },
-})
+    users: {
+        type: [
+            { 
+               userID: String,
+               name: String, 
+               surname: String,
+                status: Boolean
+            },
+        ],
+        default: []
+    }
+}, { timestamps: true })
 
 export default  mongoose.model("attendance", AttendanceSchema);

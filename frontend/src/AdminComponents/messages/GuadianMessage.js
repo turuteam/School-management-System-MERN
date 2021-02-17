@@ -1,48 +1,126 @@
-import React from 'react'
+import React, { useState } from 'react';
+import  SendToForm from '../../components/messages/SendToForm';
+import axios from '../../store/axios';
+import {errorAlert, successAlert} from '../../utils';
+import {useSelector} from 'react-redux';
+import {selectUser} from '../../store/slices/userSlice';
+import { debounce } from "throttle-debounce";
+
 
 function GuadianMessage() {
+    const [message, setmessage] = useState("");
+    const [recipientsOptions, setrecipientsOptions] = useState([]);
+    const [recipient, setrecipient] = useState("");
+    const sender = useSelector(selectUser);
+    const [studentsList, setstudentsList] = useState([])
+    const [search, setsearch] = useState("");
+    const [sendto, setsendto] = useState("Guadian");
+    
+    
+    const  autocompleteSearch = () => {
+        if(search){
+            axios.get(`/students/search/${search}`)
+            .then(res => {
+                if(res.data.error){
+                    console.log("error");
+                    errorAlert(res.data.error);
+                    return 0
+                }
+                setstudentsList(res.data.users.map(user => {
+                    return {
+                        _id: user._id,
+                        userID: user.userID,
+                        name: user.name,
+                        surname: user.surname
+                    }
+                }))
+            })
+        }
+      };
+
+      const  autocompleteSearchDebounced = debounce(500, autocompleteSearch);
+    
+    
+    const onSend = (e) => {
+        e.preventDefault()
+        if(message && recipient){
+            axios.post(`/chat/send/user/${sender?.id}/${recipient}`, {message, senderID: sender?.id}).then((res) => {
+                if(res.data.error){
+                   errorAlert(res.data.error);
+                   return 0
+                }
+                successAlert("message send");
+                setmessage("");
+            })
+        }
+    }
+
+    const handleSearchbyName = (e) => {
+        e.preventDefault();
+        autocompleteSearch();
+    };
+
+
+
+    const handleChange = (e) =>  {
+        setsearch(e.target.value);
+        autocompleteSearchDebounced(e.target.value)
+    }
+
+    const handleSearchParents = (id) => {
+        alert(id)
+        axios.get(`/students/parents/${id}`)
+         .then((res) => {
+            if(res.data.error){
+               errorAlert(res.data.error);
+               return 0
+            }
+           setrecipientsOptions(res.data.docs);
+        })
+
+    }
+
+
+    const searchOptions = () => {
+        return recipientsOptions.map(option => <button  className="btn" key={option._id} value={option._id}>{option.name} {option.surname} {option.relationship} </button>)
+     }
+
+
+
     return (
-        <div>
+     <div>
         <div className="mb-5 content__container row">
-            <form className="mb-5 col-md-6">
-                <label for="inputState" class="form-label">Search Student by Name or Staff ID</label>
-                <input className="form-control" type="text" placeholder="Type here..."/>
-                
-            </form>
-            <div className="col-md-5">
-               <label for="inputState" class="form-label">OR Select Student</label>
-                <select id="inputState" class="form-select">
-                <option selected>Choose...</option>
-                <option>...</option>
-                </select>
-            </div>
-        </div>
-        <form action="" className=" content__container form__sender">
-            <div className="header"> 
-                <h3>Send Message to a guadian of</h3>
-            </div>
-            <div className="row mb-2">
-                <label className="col-sm-2" htmlFor="">Recipient:</label>
-                <div className="col-sm-10">
-                    <input className="form-control" value="" type="text" readOnly/>
-                </div>  
-            </div>
-            <div className="row mb-2">
-                <label className="col-sm-2" htmlFor="">Sender:</label>
-                <div className="col-sm-10">
-                    <input className="form-control" value="" type="text" readOnly/>
+            <form onSubmit={handleSearchbyName} className="mb-5 col-12 ">
+                <label className="form-label">Search for  Student by Name or  ID</label>
+                <div className="d-flex flex-row">
+                    <input 
+                    value={search} 
+                    onChange={handleChange} 
+                    className="form-control" 
+                    type="text" 
+                    placeholder="Type here..."/>
+                    <button className="btn blue__btn">Search</button>
                 </div>
-            </div>
-           <div className="mb-2 row">
-               <div className="col-12">
-                  <textarea className="form-control" name="" rows="10" placeholder="Type here"></textarea>
-               </div>
-               <div className="col-12">
-                   <button className="btn blue__btn w-100">Send</button>
-               </div>
-              
-           </div>
-        </form>
+                <ul>
+                 {studentsList.length > 0  ?  
+                   <>{studentsList.map(option =>   <li onClick={() => handleSearchParents(option._id)} key={option._id}  className="option">{option.name} {option.surname} {option.userID} </li> )}</>
+                 : 
+                 <li>No results found</li>}
+               </ul>
+            </form> 
+        </div>
+        { recipientsOptions.length > 0 && 
+        <SendToForm  
+           message={message} 
+           setmessage={setmessage} 
+           onSend={onSend} 
+           searchOptions={searchOptions} 
+           recipient={recipient} 
+           setrecipient={setrecipient} 
+           sender={sender?.id} 
+           sendto={sendto}/>
+        }
+       
     </div>
     )
 }

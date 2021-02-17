@@ -1,16 +1,23 @@
-import React from 'react'
-import AttendanceTable from '../../components/tables/AttendanceTable'
+import React, {useState, useEffect} from 'react'
+import AttendanceTable from '../../components/tables/AttendanceTable';
+import axios from '../../store/axios';
+import {useSelector} from 'react-redux';
+import {selectUser} from '../../store/slices/userSlice'
 
 function Attendance() {
+    const [attendanceData, setattendanceData] = useState([]);
+    const user = useSelector(selectUser)
 
-    const attendanceData = [
-        {id: "123", date: "27/02/2021", status: true},
-        {id: "124", date: "27/02/2021", status: false},
-        {id: "125", date: "27/02/2021", status: false},
-        {id: "126", date: "27/02/2021", status: true}
-    ]
+    useEffect(() => {
+        axios.get(`/attendance/user/${user?.id}`).then(res => {
+            console.log(res)
+            setattendanceData(res.data)
+        })
+    }, [user])
+
     return (
-        <div>
+        <div className="attendance">
+            <h3 className="mb-3">Attendance List</h3>
             <AttendanceTable  attendanceData={attendanceData}/> 
         </div>
     )

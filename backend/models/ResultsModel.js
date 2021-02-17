@@ -13,6 +13,6 @@ const ResultsSchema =   new Schema( {
        string: Date.now
    }
 
-})
+}, { timestamps: true })
 
 export default  mongoose.model("results", ResultsSchema);

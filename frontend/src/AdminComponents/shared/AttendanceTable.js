@@ -8,10 +8,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
+//import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-//import RemoveIcon from '@material-ui/icons/Remove';
+import RemoveIcon from '@material-ui/icons/Remove';
+import moment from 'moment';
+import {Link} from 'react-router-dom'
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -20,7 +22,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
   body: {
     fontSize: 14,
-  },
+  }
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
@@ -35,10 +37,20 @@ const useStyles = makeStyles({
   table: {
     minWidth: 700,
   },
+  list:{
+    listStyle: "none"
+ },
+ iconSize: {
+   width: 20,
+   height: 20
+ },
+ textDanger: {
+   color: "red"
+ }
 });
 
 
-export default function CustomizedTables({attendanceData}) {
+export default function CustomizedTables({attendanceData, isStaff}) {
   const classes = useStyles();
 
   return (
@@ -47,7 +59,8 @@ export default function CustomizedTables({attendanceData}) {
         <TableHead>
           <TableRow>
           <StyledTableCell  align="left">Date</StyledTableCell>
-            <StyledTableCell  align="left">Student ID</StyledTableCell>
+            {!isStaff &&  <StyledTableCell  align="left">Class ID</StyledTableCell>}
+            <StyledTableCell align="left">{isStaff ? "Staff ID" : " Student  ID"}</StyledTableCell>
             <StyledTableCell align="left">Name</StyledTableCell>
             <StyledTableCell align="left">Last Name</StyledTableCell>
             <StyledTableCell align="left">Status</StyledTableCell>
@@ -55,28 +68,52 @@ export default function CustomizedTables({attendanceData}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {attendanceData.map((row) => (
-            <StyledTableRow key={row.studentID}>
+
+          {attendanceData.length > 0 ?  attendanceData?.map((row) => (
+            <StyledTableRow key={row._id}>
                 <StyledTableCell >
-                {row.date}
+                {moment(row.date).format('Do MMMM  YYYY') }
               </StyledTableCell>
-               <StyledTableCell >
-                {row.studentID}
-              </StyledTableCell>
+              {!isStaff &&  
               <StyledTableCell >
-                {row.name}
+                {row.classID}
+              </StyledTableCell>}
+              
+              <StyledTableCell >
+                <ul>
+                  {row.users?.map(user => {
+                    return <li className={classes.list} key={user.userID}> {user.userID}</li>
+                  })}
+                </ul>
               </StyledTableCell>
               <StyledTableCell>
-                {row.lastname}
+                <ul>
+                  {row.users?.map(user => {
+                    return <li className={classes.list} key={user.userID}> {user.name}</li>
+                  })}
+                </ul>
               </StyledTableCell>
               <StyledTableCell>
-                {row.status ? <CheckIcon/> : <ClearIcon className="text-danger"/>}
+                <ul>
+                  {row.users?.map(user => {
+                    return <li className={classes.list} key={user.userID}> {user.surname}</li>
+                  })}
+                </ul>
+              </StyledTableCell>
+              <StyledTableCell>
+              <StyledTableCell>
+                <ul>
+                  {row.users?.map(user => {
+                    return <li className={classes.list} key={user.userID}>{user.status ? <CheckIcon className={classes.iconSize}/> : <RemoveIcon className={`${classes.iconSize}  text-danger`}/>}</li>
+                  })}
+                </ul>
+              </StyledTableCell>
               </StyledTableCell>
                <StyledTableCell>
-                 <IconButton> <EditIcon/> </IconButton>
+                 <Link to={isStaff ? `/attendance/staff/edit/${row._id}` : `/attendance/students/edit/${row.classID}/${row._id}`}> <EditIcon/> </Link>
               </StyledTableCell>
             </StyledTableRow>
-          ))}
+          )) : <div className="p-5"> No data </div>}
         </TableBody>
       </Table>
     </TableContainer>

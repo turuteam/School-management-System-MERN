@@ -1,17 +1,20 @@
-import React, {useState} from 'react';
-import {errorAlert} from '../../utils';
+import React, {useState, useEffect} from 'react';
 import PersonalInfo from '../../AdminComponents/shared/Personalnfo';
-import ProfilePicture from '../../AdminComponents/shared/ProfilePicture';
 import Contact from '../../AdminComponents/shared/Contact';
 import Guadian from '../../AdminComponents/shared/Guadian'
-
+import {useSelector} from 'react-redux'
+import {selectUser} from '../../store/slices/userSlice'
+import axios from '../../store/axios'
 import { useForm } from "react-hook-form";
+import GuadianCard from '../../AdminComponents/shared/GuadianCard';
+import {errorAlert, successAlert} from '../../utils'
 
 
 function EditProfilePage() {
     const { register, handleSubmit, errors } = useForm();
-
+    const user = useSelector(selectUser)
     const [name, setname] = useState("");
+    const [studentDetails, setstudentDetails] = useState({})
     const [lastname, setlastname] = useState("");
     const [secondName, setsecondName] = useState("")
     const [gender, setgender] = useState("")
@@ -23,9 +26,7 @@ function EditProfilePage() {
     const [health, sethealth] = useState("")
     const [allege, setallege] = useState("")
     const [disease, setdisease] = useState("");
-
-    const [profileUrl, setprofileUrl] = useState("");
-    const [profileimg, setprofileimg] = useState("");
+    const [loading, setloading] = useState(false)
 
     const [mobilenumber, setmobilenumber] = useState("");
     const [residence, setresidence] = useState("");
@@ -34,41 +35,91 @@ function EditProfilePage() {
 
     const [guadian, setguadian] = useState([]);
 
-    const handleChangeFile = (e) => {
-        const selected = e.target.files[0];
-         if(selected?.size > 2000000 ){
-             errorAlert("image is too large")
-         }
-         else if(selected){
-            setprofileUrl(selected)
-             const fileReader = new FileReader();
-             fileReader.readAsDataURL(selected);
-             fileReader.onloadend = () => {
-               setprofileimg(fileReader.result)   
-             };
-         } 
-         else{
-             console.log('no file selected')
-         }
-    }
+    console.log(guadian)
+
     const handleEdit = () => {
-        alert("submited")
+        alert("submited");
+        axios.put(`/students/update/${user?.id}`, {
+            name,
+            middleName: secondName,
+            surname:  lastname,
+            gender,
+            dateofBirth,
+            email,
+            nationality,
+            religion,
+            placeofBirth,
+            health,
+            disease,
+            allege,
+            mobilenumber,
+            telephone,
+            postalAddress,
+            physicalAddress: residence,
+            guadian
+        }).then(response => {
+            setloading(false)
+            if(response.data.error){
+                errorAlert(response.data.error);
+                return 0;
+            }
+            successAlert("successfully added");
+            setstudentDetails(response.data.student)
+        
+       }).catch(err => {
+           setloading(false)
+           console.log(err);
+           errorAlert("something went wrong");
+       })
     }
+
+    const handleDeleteGuadian  = (id ) => {
+        setguadian(guadian.filter(e => e.id !== id))
+   }
+
+    useEffect(() => {
+        axios.get(`/students/student/${user?.id}`).then(res => {
+            let data = res.data.student
+            console.log(data)
+            setstudentDetails(data);
+            setname(data?.name);
+            setlastname(data?.surname);
+            setgender(data?.gender);
+            setdateofBirth(data?.dateofBirth);
+            setemail(data?.email);
+            setnationality(data?.nationality);
+            setplaceofBirth(data?.placeofBirth);
+            setreligion(data?.religion);
+            sethealth(data?.health);
+            setallege(data?.allege);
+            setdisease(data?.disease);
+            setmobilenumber(data?.mobilenumber);
+            setresidence(data?.physicalAddress);
+            settelephone(data?.telephone);
+            setpostalAddress(data.postalAddress);
+            setguadian(data?.guadian)
+        })
+  }, [user])
+
 
     const handleReset = (e) => {
         e.preventDefault();
-        setname("");
-        setsecondName("")
-        setlastname("")
-        setgender("")
-        setdateofBirth("")
-        setemail("");
-        setnationality("")
-        setplaceofBirth("")
-        setreligion("")
-        sethealth("");
-        setallege("");
-        setdisease("")
+           setname(studentDetails?.name);
+            setlastname(studentDetails?.surname);
+            setgender(studentDetails?.gender);
+            setdateofBirth(studentDetails?.dateofBirth);
+            setemail(studentDetails?.email);
+            setnationality(studentDetails?.nationality);
+            setplaceofBirth(studentDetails?.placeofBirth);
+            setreligion(studentDetails?.religion);
+            sethealth(studentDetails?.health);
+            setallege(studentDetails?.allege);
+            setdisease(studentDetails?.disease);
+            setmobilenumber(studentDetails?.mobilenumber);
+            setresidence(studentDetails?.physicalAddress);
+            settelephone(studentDetails?.telephone);
+            setpostalAddress(studentDetails.postalAddress);
+            setguadian(studentDetails?.guadian)
 
     }
 
@@ -77,10 +128,6 @@ function EditProfilePage() {
         <div>
             <h3>Edit My Profile</h3>
             <form action="" className="content__container mt-3">
-                   <ProfilePicture 
-                    profileimg={profileimg} 
-                    setprofileUrl={handleChangeFile}/>
-                     <br className="my-5"/>
                     <PersonalInfo
                         register={register}
                         errors={errors}
@@ -106,7 +153,7 @@ function EditProfilePage() {
                            errors={errors}
                            mobilenumber={mobilenumber}
                            setmobilenumber={setmobilenumber}
-                           residence={residence}
+                         residence={residence}
                            setresidence={setresidence}
                            settelephone={settelephone}
                            telephone={telephone}
@@ -115,11 +162,25 @@ function EditProfilePage() {
                         />
                         <br className="my-5"/>
                         <Guadian guadian={guadian} setguadian={setguadian}/>
-
+                          <div className="row">
+                              {guadian && guadian.map((e)=> 
+                                <div className="col-xs-12 col-sm-6">
+                                    <GuadianCard guadian={e} key={e.id}  handleDeleteGuadian={ handleDeleteGuadian} />
+                                </div>
+                             )}
+                         </div>
                         <div className="row ">
-                         <button type="submit" onClick={handleSubmit(handleEdit)} className=" col btn orange__btn mr-5" >Create</button>
-                         <button onClick={handleReset} className=" col btn blue__btn mr-5">Reset</button>
-                         <button className="col btn btn-danger">Cancel</button>
+                         <button 
+                            type="submit" 
+                            disabled={loading}
+                            onClick={handleSubmit(handleEdit)} 
+                            className=" col blue__btn btn mr-5" >
+                               {loading ? <> 
+                                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                  <span className="visually-hidden">Loading...</span>
+                               </> : "Save Changes"}
+                        </button>
+                         <button onClick={handleReset} className=" col btn  orange__btn mr-5">Reset</button>
                      </div>
             </form>
         </div>

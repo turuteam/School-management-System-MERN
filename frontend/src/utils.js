@@ -57,8 +57,8 @@ export const getIntial = (name ) => {
     return name.slice(0, 1).toUpperCase();
 }
 
-export const getImgSrc = () => {
-     return `http://localhost:5000`
+export const getImgSrc = (src) => {
+     return `http://localhost:5000/${src}`
 }
 
 
@@ -104,4 +104,11 @@ export const separateDateandTime  = (date) => {
         var time = "" + hours + ": " + minutes
 
         return {day, time}
+}
+
+export const sortArray = (arr) => {
+    arr.sort(function(x, y){
+        return x.updatedAt - y.updatedAt;
+    })
+    
 }

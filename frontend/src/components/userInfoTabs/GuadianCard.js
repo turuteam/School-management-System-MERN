@@ -18,7 +18,7 @@ function GuadianCard({guadian,handleDeleteGuadian, noEdit}) {
                        <div className="col-6">{guadian?.name} </div>
                  </div>
                 <div className="row  mb-3">
-                    <div className="col-6"> Surname : </div>
+                    <div className="col-6"> Surname: </div>
                     <div className="col-6">{guadian?.lastname}</div>
                 </div>
                 <div className="row  mb-3">

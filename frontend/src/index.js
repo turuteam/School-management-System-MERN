@@ -9,8 +9,16 @@ import * as serviceWorker from './serviceWorker';
 import { icons } from './assets/icons'
 import { Provider } from 'react-redux'
 import store from './store/index'
+import axios from './store/axios'
 import {LoginString} from './store/localStorage'
 import { loggin, logout } from './store/slices/userSlice';
+import {setClasses, 
+        setCourses, 
+        setDormitories, 
+        setCampuses, 
+        setSections,
+        setfeesType, 
+        setScholarships} from './store/slices/schoolSlice';
 
 
 
@@ -24,13 +32,32 @@ if(localStorage.getItem(LoginString.ID)){
     lastName: localStorage.getItem(LoginString.LASTNAME),
     middleName: localStorage.getItem(LoginString.middleName)
   }))
+   axios.get('/classes').then(res => {
+       store.dispatch(setClasses(res?.data));
+   })
+   axios.get('/sections').then(res => {
+    store.dispatch(setSections(res?.data));
+})
+   axios.get('/courses').then(res => {
+     store.dispatch(setCourses(res?.data))
+   })
+   axios.get('/scholarships').then(res => {
+    store.dispatch(setScholarships(res?.data))
+  })
+   axios.get('/campuses').then(res => {
+     store.dispatch(setCampuses(res?.data))
+   })
+   axios.get('/dormitories').then(res => {
+    store.dispatch(setDormitories(res?.data))
+  })
+  axios.get('/fees/types').then(res => {
+    store.dispatch(setfeesType(res?.data))
+  })
  }
  else{
   store.dispatch(logout())
  }
  
-
-
 React.icons = icons
 
 ReactDOM.render(

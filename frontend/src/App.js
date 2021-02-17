@@ -15,10 +15,7 @@ const loading = (
 
 // Containers
 const TheLayout = React.lazy(() => import('./layouts/index'));
-const Layout = React.lazy(() => import('./containers/Layout/Layout'));
-//const Admin = React.lazy(() => import('./layouts/Admin/Admin'));
-//const Student = React.lazy(() => import('./layouts/Student/Student'));
-//const Teacher = React.lazy(() => import('./layouts/Teacher/Teacher'));
+//const Layout = React.lazy(() => import('./containers/Layout/Layout'));
 
 // Pages
 const Login = React.lazy(() => import('./pages/login/Login'));
@@ -34,12 +31,12 @@ function App() {
        <ToastContainer/>
           <React.Suspense fallback={loading}>
             <Switch>
-                   <SignedInRoutes
+                   {/* <SignedInRoutes
                       isAuth={user} 
                       exact={true}
                       path={`/${user?.role}`} 
                       name="Dashboard" 
-                      Component={TheLayout} />
+                      Component={TheLayout} /> */}
                     <SignedOutRoutes 
                       isAuth={user} 
                       exact={true}
@@ -63,7 +60,7 @@ function App() {
                             // render={props => <TheLayout {...props}/>} /> 
                            Component={TheLayout} /> 
                      {/* <Route path="/" name="Home" render={props => <Layout {...props}/>} /> */}
-                      {/* <Redirect path="/" to={`/${user?.role}`}/> */}
+                      <Redirect path="/" to={`/${user?.role}`}/>
                        
             </Switch>
           </React.Suspense>

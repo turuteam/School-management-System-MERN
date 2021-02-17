@@ -22,6 +22,6 @@ const CourserSchema =   new Schema( {
         type: String
     },
     default: []
-})
+}, { timestamps: true })
 
 export default  mongoose.model("courses", CourserSchema);

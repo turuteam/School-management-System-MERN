@@ -4,7 +4,6 @@ import React from 'react';
 const Dashboard = React.lazy(()  => import( '../../StudentComponents/dashboard/Index'));
 const Profile =   React.lazy(()  => import( '../../StudentComponents/profile/ProfilePage'));
 const EditProfile =   React.lazy(()  => import( '../../StudentComponents/profile/EditProfilePage'));
-const Fees =   React.lazy(()  => import( '../../StudentComponents/finances/FeesPage'));
 const Class =   React.lazy(()  => import( '../../StudentComponents/classes/Classes'));
 const Courses =   React.lazy(()  => import( '../../StudentComponents/classes/CoursesPage'));
 const Calendar=   React.lazy(()  => import( '../../StudentComponents/classes/CalendarPage'));
@@ -19,7 +18,11 @@ const MessageTeacher = React.lazy(() => import('../../StudentComponents/messages
 const Notifications =   React.lazy(()  => import( '../../StudentComponents/notifications/NotificationsPage'));
 const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/SettingsPage'));
 
-
+//finamce
+const FeesPayments =   React.lazy(()  => import( '../../StudentComponents/finances/FeesPage'));
+const Fees =    React.lazy(()  => import( '../../StudentComponents/finances/Fees'));
+const FeesDue =    React.lazy(()  => import( '../../StudentComponents/finances/DuePayments'));
+const Canteen = React.lazy(()  => import( '../../StudentComponents/finances/Canteen'));
 
 
  const routes =  [
@@ -36,7 +39,7 @@ const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/S
         component: Profile,
     },
     {
-        path: "/profile/edit/:id",
+        path: "/profile/edit",
         name: "Edit Profile",
         component: EditProfile,   
     },
@@ -56,9 +59,25 @@ const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/S
         component: Calendar
     },
     {
-        path: "/fees",
+        path: "/finance/fees",
         name: "Fees",
+        exact: true,
         component: Fees
+    },
+    {
+        path: "/finance/fees/payments",
+        name: "Fees",
+        component: FeesPayments
+    },
+    {
+        path: "/finance/fees/due",
+        name: "Fees",
+        component: FeesDue
+    },
+    {
+        path: "/finance/canteen",
+        name: "Fees",
+        component: Canteen
     },
     {
         path: "/attendance",
@@ -69,11 +88,6 @@ const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/S
         path: "/notifications",
         name: "Notifications",
         component: Notifications
-    },
-    {
-        path: "/settings",
-        name: "Settings",
-        component: Settings
     },
     {
         path: "/message",
@@ -99,6 +113,11 @@ const Settings =   React.lazy(()  => import( '../../StudentComponents/settings/S
         path: "/message/:id",
         name: "Messages",
         component: Messages,
+    },
+    {
+        path: "/settings",
+        name: "Settings",
+        component: Settings,
     },
 ]
 

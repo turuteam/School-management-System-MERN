@@ -4,7 +4,7 @@ import Search from '../../shared/Search';
 import {Link} from 'react-router-dom';
 import axios from '../../../store/axios';
 import {useHistory} from 'react-router-dom';
-import {errorAlert, successAlert} from '../../../utils'
+import {errorAlert} from '../../../utils'
 
 const tableHeadings = [
     {id: "classCode", name: "ID"},
@@ -55,12 +55,11 @@ function Classes() {
     const handleDeleteClass = (id) => {
         const ans = window.confirm("are you sure you want to delete");
         if(ans){
-           axios.delete(`/courses/delete/${id}`).then(res => {
+           axios.delete(`/classes/delete/${id}`).then(res => {
                if(res.data.error){
                  errorAlert(res.data.error);
                  return 0;
                }
-            //    successAlert("Deleted");
                setclasses(classes.filter(course => course._id !== id))  
            })
         }      

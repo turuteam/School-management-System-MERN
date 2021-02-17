@@ -16,7 +16,7 @@ const _nav =  [
           {
             _tag: 'CSidebarNavItem',
             name: 'Edit Profile',
-            to: '/profile/edit/:id',
+            to: '/profile/edit',
           }
     ]
   },
@@ -52,7 +52,7 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Fees',
-        to: '/fees',
+        to: '/finance/fees/payments',
       },
     ]
   },
@@ -60,13 +60,13 @@ const _nav =  [
     _tag: 'CSidebarNavItem',
     name: 'Attendance',
     to: '/attendance',
-    icon: <CIcon name="cil-calculator" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
+    icon:  <CIcon name="cil-paperclip" customClasses="c-sidebar-nav-icon sidebarIcon"/>,
   },
   {
     _tag: 'CSidebarNavDropdown',
     name: 'Messages',
     route: '/messages',
-    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
+    icon: <CIcon name="cil-chat-bubble" customClasses="c-sidebar-nav-icon sidebarIcon"/>,
     _children: [
       {
         _tag: 'CSidebarNavItem',
@@ -87,16 +87,16 @@ const _nav =  [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Notifications',
+    name: 'Notice',
     to: '/notifications',
-    icon: <CIcon name="cil-bell" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
+    icon: <CIcon name="cil-bell" customClasses="c-sidebar-nav-icon sidebarIcon"/>,
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Account Settings',
+    name: 'Settings',
     to: '/settings',
-   icon: <CIcon name="cil-calculator" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
-  },
+    icon: <CIcon name="cil-settings" customClasses="c-sidebar-nav-icon sidebarIcon"/>,
+  }
   
   
 ]

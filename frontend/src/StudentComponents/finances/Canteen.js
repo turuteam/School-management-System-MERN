@@ -1,11 +1,11 @@
 import React from 'react'
 
-function DefaultView() {
+function Canteen() {
     return (
         <div>
-            Default
+            Canteen
         </div>
     )
 }
 
-export default DefaultView
+export default Canteen

@@ -1,7 +1,6 @@
 import React from 'react'
 
 function AcademicTab({user}) {
-    const data = user.user
     return (
         <div>
             <div className="row  mb-3">

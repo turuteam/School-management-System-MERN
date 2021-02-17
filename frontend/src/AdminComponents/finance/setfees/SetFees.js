@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import Search from '../../shared/Search';
 import FeesTable from './FeesTable';
+import axios from '../../../store/axios';
+import AddType from './AddFessModel'
 
 const tableHeader = [
-    {id: "class", name: "Class"},
+    {id: "code", name: "Fees Type"},
     {id: "day", name: " Day"},
-    {id: "freshday", name: "Fresh Day"},
+    {id: "freshDay", name: "Fresh Day"},
     {id: "border", name: "Border"},
-    {id: "freshborder", name: "Fresh Border"},
+    {id: "freshBorder", name: "Fresh Border"},
 ]
 
 function SetFees() {
     const [year, setyear] = useState("");
-    const [term, setterm] = useState("")
+    const [term, setterm] = useState("");
+    const [fees, setfees] = useState([]);
+    const [open, setOpen] = useState(false)
+    const [name, setname] = useState("");
+    const [loading, setloading] = useState(false)
+
+    useEffect(() => {
+        axios.get('/fees').then(res => {
+             setfees(res.data)
+             console.log(res.data)
+        })
+    }, [])
 
     const formInputs = [
         {
@@ -44,159 +57,41 @@ function SetFees() {
         }
     ]
 
+    const handleAddNew = () => {
+        setloading(true);
+        axios.post('/fees/create', {name}).then(res => {
+            setloading(false);
+            console.log(res)
+            setfees([res.data.doc, ...fees])
+            setOpen(false)
+            setname("");
+        })
+    }
+
    
 
-    const feesData  = [
-        {
-            id: "1",
-            class: "Class 2",
-            day: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshday: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            border: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshborder: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            }
-        },
-        {
-            id: "2",
-            class: "Class 3",
-            day: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshday: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            border: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshborder: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            }
-        },
-        {
-            id: "4",
-            class: "Class 4",
-            day: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshday: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            border: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshborder: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            }
-        },
-        {
-            id: "1",
-            class: "Creche",
-            day: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshday: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            border: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshborder: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            }
-        },
-        {
-            id: "5",
-            class: "JHS 1",
-            day: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshday:{
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            border: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            },
-            freshborder: {
-                tuitionFee: 320,
-                facilityFee: 50,
-                facilityMaintenance: 50,
-                examitionFee: 30
-            }
-        }
-    ]
     return (
         <div>
             <div className=" row mb-3">
                <Search  className="col-8" title="Current Fees"  inputFields={formInputs}/>
-                <div className="col-4">
-                     <Link className="btn blue__btn" to="/"> Set Fees</Link>
+                <div className="d-flex justify-content-end">
+                     <Link className="btn blue__btn ml-3" to="/finance/fees/set"> Set Fees</Link>
+                     <button 
+                        onClick={() => setOpen(true)} 
+                        className="btn blue__btn mr-3" 
+                        to="/finance/fees/set"> 
+                       Add Fees Type
+                    </button>
                 </div>
             </div>
-             <FeesTable tableHeader={tableHeader} data={feesData}/>
+             <FeesTable tableHeader={tableHeader} data={fees}/>
+             <AddType 
+             open={open} 
+             name={name}
+             onSubmit={handleAddNew}
+             loading={loading}
+             setname={setname}
+             setOpen={setOpen}/>
         </div>
     )
 }

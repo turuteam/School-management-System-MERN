@@ -1,27 +1,76 @@
 import React from 'react'
+import CampusForm from './CampusForm'
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
 
-function EditCampuses() {
+
+
+const styles = (theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(2),
+    },
+    closeButton: {
+      position: 'absolute',
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      color: theme.palette.grey[500],
+    },
+  });
+
+const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
     return (
-        <div className="content__container">
-             <h5 className="mb-4">Edit Campus</h5>
-            <form action="">
-                <div className="row mb-3">
-                    <label  className="col-sm-2 col-form-label">Name</label>
-                    <div className="col-sm-10">
-                    <input type="text" className="form-control" id="name"/>
-                    </div>
-                </div>
-                <div className="row mb-3">
-                    <label  className="col-sm-2 col-form-label">Location</label>
-                    <div className="col-sm-10">
-                        <textarea rows={3} className="form-control" id="name"></textarea>
-                    </div>
-                </div>
-                <div className="row mb-3">
-                    <button className="btn blue__btn offset-sm-2 col-xs-8 col-sm-3">Save Changes</button>
-                </div>
-            </form>
-        </div>
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogContent = withStyles((theme) => ({
+    root: {
+      padding: theme.spacing(2),
+    },
+  }))(MuiDialogContent);
+  
+  
+  
+  
+
+function EditCampuses({open, setopen, name, location , setname, setlocation, onSubmit, loading}) {
+
+    return (
+             <Dialog 
+             fullWidth={true}
+             maxWidth="sm"
+             onClose={() => setopen(false)} 
+             aria-labelledby="customized-dialog-title" 
+             open={open}>
+                    <DialogTitle id="customized-dialog-title" onClose={() => setopen(false)}>
+                    Edit Campus
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        <CampusForm 
+                        name={name} 
+                        isEdit={true}
+                        location={location} 
+                        setname={setname} 
+                        setlocation={setlocation} 
+                        onSubmit={onSubmit} 
+                        loading={loading}/>
+                    </DialogContent>
+
+                </Dialog>
     )
 }
 

@@ -1,6 +1,20 @@
 import React, {useState} from 'react'
+import {useSelector} from 'react-redux';
+import {selectClasses, 
+    selectCourses, 
+    selectDormitories, 
+    selectScholarship, 
+    selectSection, 
+    selectCampuses} from '../../../store/slices/schoolSlice'
 
 function EmploymentDetails(props) {
+    const classes = useSelector(selectClasses);
+    const courses = useSelector(selectCourses);
+    const dormitories = useSelector(selectDormitories);
+    const scholarship = useSelector(selectScholarship);
+    const sections = useSelector(selectSection);
+    const campuses = useSelector(selectCampuses);
+
     const [showCheck, setshowCheck] = useState(false)
     let {
         role,
@@ -92,7 +106,7 @@ function EmploymentDetails(props) {
                                 onChange={e => setemploymentDate(e.target.value)}
                                 type="date" 
                                 className="form-control" 
-                            />
+                              />
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
                             <label  className="form-label">Qualification</label>
@@ -147,32 +161,38 @@ function EmploymentDetails(props) {
                                className="form-select" 
                                aria-label="Default select example">
                                 <option defaultValue   hidden>select</option>
-                                <option value="border">Border </option>
-                                <option value="day">Day Student</option>
+                                {classes.length > 0 ? classes.map(e => 
+                                    <option key={e.classCode} value={e.classCode}>
+                                        {e.name}
+                                    </option>) 
+                                : <option disabled>No data yet</option>}
                             </select>
                          </div>
                          <div className="col-xs-12 col-sm-6 col-md-4">
                                 <label  className="form-label">Courses</label>
                                <div className="selectBox">
                                     <select onClick={ () => setshowCheck(!showCheck)} className="form-select" >
-                                        <option hidden>Select an option</option>
+                                        <option hidden>Select options</option>
                                     </select>
                                     {showCheck && <div className="showcheckboxes">
-                                        <div className="form-check ">
-                                            <input onChange={handleCoursesCheckbox} className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                                            <label className="form-check-label" >
-                                                Default checkbox
-                                            </label>
-                                         </div>
-                                        <div className="form-check">
-                                            <input  onClick={handleCoursesCheckbox} className="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
-                                            <label className="form-check-label">
-                                                Checked checkbox
-                                            </label>
-                                        </div>
+                                        {courses.length  > 0 ? 
+                                         <>
+                                             {courses.map(e =>  
+                                                        <div key={e.code} value={e.code} className="form-check ">
+                                                            <input 
+                                                                onChange={handleCoursesCheckbox} 
+                                                                className="form-check-input" 
+                                                                type="checkbox" 
+                                                                value={e.code} 
+                                                                id="flexCheckDefault"/>
+                                                            <label className="form-check-label" >
+                                                               {e.name}
+                                                            </label>
+                                                        </div>
+                                            )}
+                                         </> :  <option disabled>No data yet</option>}
                                     </div>}
                               </div>
-                             
                          </div >
                     </div>
         </div>

@@ -29,7 +29,7 @@
 
     .chip__date {
       background-color: $darkBlue;
-      color: $white;
+      color: $white !important;
     }
   }
 }
@@ -158,4 +158,10 @@
     color: #ccc;
     margin-bottom: 10px;
   }
+}
+
+.default__chat {
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
 }

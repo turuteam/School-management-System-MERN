@@ -25,6 +25,6 @@ const FilesSchema =   new Schema( {
    file: {
        type: String
    }
-})
+}, { timestamps: true })
 
 export default  mongoose.model("notes", FilesSchema);

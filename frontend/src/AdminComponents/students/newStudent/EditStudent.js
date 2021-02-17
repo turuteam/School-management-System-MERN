@@ -7,7 +7,7 @@ import Guadian from '../../shared/Guadian'
 import { useForm } from "react-hook-form";
 import {useParams} from 'react-router-dom';
 import axios from '../../../store/axios';
-import {errorAlert} from '../../../utils'
+import {errorAlert, successAlert} from '../../../utils'
 
 
 function EditStudent() {
@@ -31,6 +31,7 @@ function EditStudent() {
 
     const [profileUrl, setprofileUrl] = useState("");
     const [profileimg, setprofileimg] = useState("");
+    const [loading, setloading] = useState(false)
 
     //form verification
     const { register, handleSubmit, errors } = useForm();
@@ -102,7 +103,54 @@ function EditStudent() {
 
     }
     const handleCreateSubmit = () => {
-        alert("submited")
+        alert("submited");
+        setloading(true)
+        const fileData = new FormData();
+        fileData.append("photo", profileUrl);
+        axios.post('/upload', fileData, {}).then((res) => {
+            const path= res.data.path;
+        axios.put(`/students/update/${id}`, {
+            profileUrl: path,
+            name,
+            middleName: secondName,
+            surname:  lastname,
+            gender,
+            dateofBirth,
+            email,
+            nationality,
+            religion,
+            placeofBirth,
+            health,
+            disease,
+            allege,
+            classID,
+            section,
+            status,
+            schoolarship,
+            fees: feesCategory,
+            lastSchool: {
+                school: lastSchool,
+                reason: reasonforTransfer
+            },
+            mobilenumber,
+            telephone,
+            postalAddress,
+            physicalAddress: residence,
+            guadian
+        }).then(response => {
+            setloading(false)
+            if(response.data.error){
+                errorAlert(response.data.error);
+                return 0;
+            }
+            successAlert("successfully added");
+            setstudentDetails(response.data.student)
+        })
+       }).catch(err => {
+           setloading(false)
+           console.log(err);
+           errorAlert("something went wrong");
+       })
     }
 
     const handleChangeFile = (e) => {
@@ -186,9 +234,19 @@ function EditStudent() {
                         <ProfilePicture/>
                         <br className="my-5"/>
                      <div className="row ">
-                         <button type="submit" onClick={handleSubmit(handleCreateSubmit)} className=" col btn orange__btn mr-5" >Create</button>
+                         <button 
+                            type="submit" 
+                            disabled={loading}
+                            onClick={handleSubmit(handleCreateSubmit)} 
+                            className=" col btn orange__btn mr-5" >
+                                 {loading ?  
+                               <> 
+                                  <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                  <span className="visually-hidden">Loading...</span>
+                               </> : "Save Changes"}
+                            </button>
                          <button onClick={handleReset} className=" col btn blue__btn mr-5">Reset</button>
-                         <button className="col btn btn-danger">Cancel</button>
+                        
                      </div>
                 </form>
 

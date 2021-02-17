@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import InfoTab from './InfoTab';
 import AcademicTab from './AcademicTab';
-import GuadanceTab from './GuadanceTab';
+import GuadanceTab from '../../../components/userInfoTabs/GuadanceTab';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

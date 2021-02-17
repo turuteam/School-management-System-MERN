@@ -8,7 +8,10 @@ import AttendanceRoutes from './routes/AttendanceRoutes.js';
 import ChatRoutes from './routes/ChatRoutes.js';
 import CoursesRoutes from './routes/CoursesRoutes.js'
 import ClassesRoutes from './routes/ClassesRoutes.js';
+import CampusRoutes from './models/CampusesModel.js';
 import CalendarRoutes from './routes/CalendarRoutes.js';
+import DormitoriesRoutes from './routes/DormitoriesRoutes.js';
+import PrefectsRoutes from './routes/PrefectsRoutes.js';
 import FilesRoutes from './routes/FilesRoutes.js';
 import NextofKinRoutes from './routes/NextofKinRoutes.js';
 import NonTeachersRoutes from './routes/NonTeachersRoutes.js';
@@ -18,8 +21,14 @@ import TaskRoutes from './routes/TaskRoutes.js';
 import TeacherRoutes from './routes/TeacherRoutes.js';
 import TimeTableRoutes from './routes/TimeTableRoutes.js';
 import SharedRoutes from './routes/SharedRoutes.js';
+import ScholarshipRoutes from './routes/ScholarshipRoutes.js';
+import SectionRoutes from './routes/SectionRoutes.js';
 import DepartmentsRoutes from './routes/DepartmentRoutes.js';
 import UploadsRoutes from './routes/Uploads.js';
+import CanteenRoutes from './routes/CanteenRouter.js';
+import BankingRoutes from './routes/BankingRoutes.js';
+import FeesRoutes from './routes/FeesRoutes.js';
+
 import path from 'path';
 const __dirname = path.resolve(path.dirname(''));
 
@@ -41,10 +50,12 @@ app.get('/', (req,res) => {
   
 app.use("/api/students", StudentRoutes); 
 app.use("/api/attendance", AttendanceRoutes);  
-app.use("/api/chat", ChatRoutes);  
+app.use("/api/chats", ChatRoutes);  
 app.use("/api/classes", ClassesRoutes);  
 app.use("/api/courses", CoursesRoutes);  
+app.use("/api/campuses", CampusRoutes)
 app.use("/api/calendar", CalendarRoutes);
+app.use("/api/dormitories", DormitoriesRoutes)
 app.use("/api/notes", FilesRoutes); 
 app.use("/api/nextofkin", NextofKinRoutes);
 app.use("/api/nonteachers", NonTeachersRoutes);
@@ -54,8 +65,14 @@ app.use("/api/tasks", TaskRoutes);
 app.use("/api/teachers", TeacherRoutes); 
 app.use("/api/timetable", TimeTableRoutes);   
 app.use("/api", SharedRoutes);
+app.use("/api/scholarships", ScholarshipRoutes);
+app.use("/api/sections", SectionRoutes);
+app.use("/api/prefects", PrefectsRoutes);
 app.use("/upload", UploadsRoutes);
-app.use("/api/departments", DepartmentsRoutes)
+app.use("/api/departments", DepartmentsRoutes);
+app.use("/api/canteen", CanteenRoutes);
+app.use("/api/banking", BankingRoutes);
+app.use("/api/fees", FeesRoutes);  
 
   
 app.listen(PORT, () => {

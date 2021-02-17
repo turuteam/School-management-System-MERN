@@ -115,6 +115,6 @@ const TeacherSchema =   new Schema( {
         type: Date, 
         default: Date.now
     },
-})
+}, { timestamps: true })
 
 export default  mongoose.model("teachers", TeacherSchema, "accounts");
