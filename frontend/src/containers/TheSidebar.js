@@ -11,6 +11,7 @@ import {
   CSidebarNavDropdown,
   CSidebarNavItem,
 } from '@coreui/react'
+import {selectSidebarShow} from '../store/slices/appSlice'
 
 import logo from '../assets/icons/logo.png'
 
@@ -18,7 +19,7 @@ import logo from '../assets/icons/logo.png'
 
 const TheSidebar = ({navs}) => {
   const dispatch = useDispatch()
-  const show = useSelector(state => state.sidebarShow)
+  const show = useSelector(selectSidebarShow)
 
   return (
     <CSidebar
@@ -33,7 +34,7 @@ const TheSidebar = ({navs}) => {
           alt="logo-negative"
           height={35}
         />
-         <CSidebarMinimizer className="c-d-md-down-none sidebar__minimizer"/>
+         {/* <CSidebarMinimizer className="c-d-md-down-none sidebar__minimizer"/> */}
       </CSidebarBrand>
      
       <CSidebarNav>
@@ -47,7 +48,7 @@ const TheSidebar = ({navs}) => {
           }}
         />
       </CSidebarNav>
-      {/* <CSidebarMinimizer className="c-d-md-down-none"/> */}
+      <CSidebarMinimizer className="c-d-md-down-none"/>
     </CSidebar>
   )
 }

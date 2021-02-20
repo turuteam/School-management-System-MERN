@@ -61,8 +61,7 @@ function NewStaff() {
     const [occupation, setoccupation] = useState("")
     const [address, setaddress] = useState("");
 
-    const handleReset = (e) => {
-        e.preventDefault();
+    const handleReset = () => {
         setname(""); setRole("");
         setsecondName(""); setDepartment("")
         setlastname(""); setCampus("");
@@ -96,7 +95,6 @@ function NewStaff() {
         fileData.append("photo", profileUrl);
         axios.post('/upload', fileData, {}).then((res) => {
             const path= res.data.path;
-
             axios.post('/teachers/create', {
                 profileUrl: path,
                 name,
@@ -116,6 +114,7 @@ function NewStaff() {
                 position: role,
                 mobilenumber,
                 telephone,
+                courses,
                 postalAddress,
                 physicalAddress: residence,
                 nextofKin: {
@@ -172,6 +171,7 @@ function NewStaff() {
                 <form action="" className="content__container">
                         <ProfilePicture 
                         profileimg={profileimg} 
+                        profileUrl={profileUrl}
                         setprofileUrl={handleChangeFile}
                        />
                       <PersonalInfo
@@ -236,7 +236,7 @@ function NewStaff() {
                         <NextofKin 
                          lastname={nextlastname} 
                          setlastname={setnextlastname}
-                         name={name}
+                         name={nextname}
                          setname={setnextname}
                          errors={errors}
                          register={register}
@@ -265,7 +265,7 @@ function NewStaff() {
                                </> : "Create"}
                         </button>
                           <button 
-                           onClick={handleReset} 
+                           onClick={ (e) => { e.preventDefault(); handleReset()}} 
                            className=" col btn blue__btn">
                                Reset
                          </button>

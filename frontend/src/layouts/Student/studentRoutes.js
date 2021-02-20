@@ -8,7 +8,7 @@ const Class =   React.lazy(()  => import( '../../StudentComponents/classes/Class
 const Courses =   React.lazy(()  => import( '../../StudentComponents/classes/CoursesPage'));
 const Calendar=   React.lazy(()  => import( '../../StudentComponents/classes/CalendarPage'));
 const Attendance =   React.lazy(()  => import( '../../StudentComponents/attendence/AttendancePage'));
-
+const ViewCalendar = React.lazy(()  => import( '../../AdminComponents/academics/calender/ViewCalendar'));
 
 const Messages =   React.lazy(()  => import( '../../StudentComponents/messages/Messages'));
 const MessageAdmin = React.lazy(() => import('../../StudentComponents/messages/MessageAdmin'));
@@ -59,6 +59,11 @@ const Canteen = React.lazy(()  => import( '../../StudentComponents/finances/Cant
         component: Calendar
     },
     {
+        path: '/academics/viewCalendar',
+        name: "View Calendar",
+        component: ViewCalendar
+    },
+    {
         path: "/finance/fees",
         name: "Fees",
         exact: true,
@@ -90,7 +95,7 @@ const Canteen = React.lazy(()  => import( '../../StudentComponents/finances/Cant
         component: Notifications
     },
     {
-        path: "/message",
+        path: "/messages",
         name: "Messages",
         exact: true,
         component: Messages,

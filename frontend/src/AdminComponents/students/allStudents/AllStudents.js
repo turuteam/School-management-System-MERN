@@ -2,6 +2,10 @@ import React, {useState, useEffect} from 'react'
 import Search from '../../shared/Search'
 import StudentsTable from '../../shared/TableListUsers';
 import axios from '../../../store/axios'
+import {selectClasses} from '../../../store/slices/schoolSlice';
+import {useSelector} from 'react-redux'
+import {errorAlert} from '../../../utils'
+
 
 const headCells = [
   { id: 'userID', numeric: false, disablePadding: false, label: 'StudentID' }, 
@@ -19,16 +23,30 @@ const headCells = [
 function AllStudents() {
    const [name, setname] = useState("");
    const [id, setid] = useState("");
-   const [classID, setclass] = useState("")
-   const [students, setstudents] = useState([])
+   const [classID, setclass] = useState("");
+   const [students, setstudents] = useState([]);
+   const classes = useSelector(selectClasses)
 
+   const classesOptions = classes.map(e => {
+     return {
+       name: e.name,
+       id: e.classCode
+     }
+   })
 
   useEffect(() => {
       axios.get('/students').then(res => {
+        console.log(res.data);
           setstudents(res.data)
       })
   }, [])
 
+  const handleReset = ( e) => {
+       e.preventDefault();
+       setname("");
+       setid("");
+       setclass("")
+  }
   
    const inputFields = [
     {
@@ -36,37 +54,60 @@ function AllStudents() {
         label: "",
         value: id,
         name: "Student ID",
-        onChange: {setid}
+        onChange: setid
     },
     {
      type: "text",
      label: "",
      value: name,
      name: "Name",
-     onChange: {setname}
+     onChange: setname
  },
    {
-     type: "text",
+     type: "select",
+     options: classesOptions,
      label: "",
      value: classID,
      name: "Class",
-     onChange: {setclass}
+     onChange: setclass
    }
 ]
    
 
    const handleSearch = (e) => {
      e.preventDefault();
+     axios.get(`/students/search/${id}/${name}/${classID}`).then(res => {
+         console.log(res.data);
+     })
    }
+
+   const handleDelete = (i) => {
+    let ans = window.confirm(`Are sure you want to delete user ${i}`);
+    if(ans){
+     axios.delete(`/user/delete/${i}`).then(res => {
+       if(res.data.error){
+          errorAlert(res.data.error)
+       }
+       setstudents(students.filter(i => i.userID !== id))
+     })
+    }
+      
+  }
 
 
   return (
     <div className="content__container">
-      <Search
+       <Search
            title=""
+           handleReset={ handleReset}
+           handleSearch={handleSearch}
            inputFields={inputFields}
         />
-      <StudentsTable route="students" students={students}  headCells={headCells}/>
+      <StudentsTable 
+      route="students" 
+      handleDelete={handleDelete}
+      students={students}  
+      headCells={headCells}/>
     </div>
   )
 }

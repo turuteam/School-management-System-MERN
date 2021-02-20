@@ -22,6 +22,7 @@ function EnhancedTableHead(props) {
     };
   
     return (
+      <>
       <TableHead>
         <TableRow>
           <TableCell padding="checkbox">
@@ -53,8 +54,12 @@ function EnhancedTableHead(props) {
               </TableSortLabel>
             </TableCell>
           ))}
+          <TableCell padding="checkbox">
+              Actions
+          </TableCell>
         </TableRow>
       </TableHead>
+      </>
     );
   }
   

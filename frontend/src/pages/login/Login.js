@@ -36,24 +36,23 @@ const Login = ({history}) => {
         const {data} = res
         setloading(false)
          if(data.success === true){
-            console.log(data.user)
-            const user = data.user
+            const user = data?.user
             dispatch(loggin({
-              id: user.userID,
-              name: user.name,
-              email: user.email,
-              photoUrl: user.photoUrl,
-              role: user.role,
-              lastName: user.surname,
-              middleName: user.middleName
+              id: user?.userID,
+              name: user?.name,
+              email: user?.email,
+              photoUrl: user?.profileUrl              ,
+              role: user?.role,
+              lastName: user?.surname,
+              middleName: user?.middleName
             }))
-            localStorage.setItem(LoginString.ID, user.userID)
-            localStorage.setItem(LoginString.PhotoURL, user.photoUrl)
-            localStorage.setItem(LoginString.NAME, user.name) 
-            localStorage.setItem(LoginString.EMAIL, user.email)
-            localStorage.setItem(LoginString.USERROLE, user.role);
-            localStorage.setItem(LoginString.LASTNAME, user.surname);
-            localStorage.setItem(LoginString.MIDNAME, user.middleName)
+            localStorage.setItem(LoginString.ID, user?.userID)
+            localStorage.setItem(LoginString.PhotoURL, user?.profileUrl )
+            localStorage.setItem(LoginString.NAME, user?.name) 
+            localStorage.setItem(LoginString.EMAIL, user?.email)
+            localStorage.setItem(LoginString.USERROLE, user?.role);
+            localStorage.setItem(LoginString.LASTNAME, user?.surname);
+            localStorage.setItem(LoginString.MIDNAME, user?.middleName)
             history.push('/')
          }
          else{

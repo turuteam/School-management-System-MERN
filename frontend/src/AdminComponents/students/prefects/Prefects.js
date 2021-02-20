@@ -25,9 +25,6 @@ const yearArray = () => {
     return arr
 }
 
-
-
-
 function Prefects() {
     const [name, setname] = useState("");
     const [userID, setuserID] = useState("");
@@ -44,6 +41,7 @@ function Prefects() {
     const [prefects, setprefects] = useState([]);
     const [editid, seteditid] = useState("");
     const [dataloading, setdataloading] = useState(false)
+
 
     useEffect(() => {
         setdataloading(true)
@@ -132,7 +130,6 @@ function Prefects() {
             seteditloading(false)
             errorAlert("Failed to edit")
         })
-
     }
 
 

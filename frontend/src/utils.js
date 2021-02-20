@@ -32,7 +32,7 @@ export const  getID = function () {
   };
 
 export const getTrimString = (str, length) => {
-     if(str.length > length){
+     if(str?.length > length){
        return str.substr(0, length) + '...';
      }
     return str
@@ -42,19 +42,22 @@ export const getCapitalize = (string) => {
     if(string){
         return string.charAt(0).toUpperCase() + string.substring(1);
      }
-    else return 0;  
+    else return null;  
 }
 
 export const getLowerCase = (string) => {
     if(string){
         return  string.toLowerCase()
     }
-    else return 0;
+    else return null;
     
 }
 
 export const getIntial = (name ) => {
-    return name.slice(0, 1).toUpperCase();
+    if(name){
+        return name.slice(0, 1).toUpperCase();
+    }
+   return null
 }
 
 export const getImgSrc = (src) => {

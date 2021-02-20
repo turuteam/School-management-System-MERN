@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {  makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,9 +11,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
 import { useHistory} from 'react-router-dom'
 import TableHeader from './TableHeader'
-import TableToolbar from './TableToolbar'
-import {getImgSrc, getIntial} from '../../utils'
-
+import {getImgSrc, getIntial} from '../../utils';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import IconButton from '@material-ui/core/IconButton'
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import ViewActions from './ViewOptions'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -66,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({students,  headCells, route}) {
+export default function EnhancedTable({students,  headCells, route, handleDelete}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
@@ -74,6 +80,10 @@ export default function EnhancedTable({students,  headCells, route}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const history = useHistory();
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const [id, setid] = useState("")
+  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -119,9 +129,16 @@ export default function EnhancedTable({students,  headCells, route}) {
     setPage(0);
   };
 
-  
+  const handleClose = () => {
+    setOpen(null);
+  }
  
-  console.log(getImgSrc())
+  
+  const handleToggle = (i) => {
+    console.log(i)
+    setOpen((prevOpen) => !prevOpen);
+    setid(i)
+  };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
@@ -130,7 +147,6 @@ export default function EnhancedTable({students,  headCells, route}) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <TableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -157,7 +173,7 @@ export default function EnhancedTable({students,  headCells, route}) {
                   return (
                     <TableRow
                       hover
-                      onClick={() => history.push(`/${route}/${row.userID}`)}
+                     // onClick={() => history.push(`/${route}/${row.userID}`)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -171,23 +187,28 @@ export default function EnhancedTable({students,  headCells, route}) {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell  id={labelId} >
-                        {row.userID}
+                      <TableCell align="left"  id={labelId} >
+                        {row.userID || "-"}
                       </TableCell>
-                      <TableCell >
-                          <Avatar  src={`${getImgSrc()}${row.photoUrl}`} alt={getIntial(row.name)}></Avatar>
+                      <TableCell align="left">
+                          <Avatar  src={`${getImgSrc(row.profileUrl)}`} alt={getIntial(row.name)}></Avatar>
                       </TableCell>
-                      <TableCell >
+                      <TableCell align="left">
                         {row.name}
                       </TableCell>
-                      <TableCell >
-                        {row.middleName}
+                      <TableCell align="left"> {row.middleName || "-"}</TableCell>
+                      <TableCell align="left">{row.surname || "-"}</TableCell>
+                      <TableCell align="left">{row.classID || "-"}</TableCell>
+                      <TableCell align="left">{row.email || "-"}</TableCell>
+                      <TableCell align="left">{row.telephone || "-"}</TableCell>
+                      <TableCell align="left">{row.gender || "-"}</TableCell>
+                      <TableCell align="left">
+                         <ViewActions 
+                         id={row?.userID} 
+                         route={route} 
+                         history={history} 
+                         handleDelete={handleDelete}/>
                       </TableCell>
-                      <TableCell align="left">{row.surname}</TableCell>
-                      <TableCell align="left">{row.classID}</TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row.telephone}</TableCell>
-                      <TableCell align="left">{row.gender}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -209,6 +230,7 @@ export default function EnhancedTable({students,  headCells, route}) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
+     
     </div>
   );
 }

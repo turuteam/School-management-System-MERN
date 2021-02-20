@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import InfoTab from './InfoTab';
 import AcademicTab from './AcademicTab';
-import GuadanceTab from './NextofKinTab';
+import GuadanceTab from './GuadanceTab';
 import ContactInfo from './ContactInfo'
 
 function TabPanel(props) {
@@ -73,7 +73,8 @@ export default function FullWidthTabs({user}) {
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
-          variant="fullWidth"
+          variant="scrollable"
+          scrollButtons="auto"
           aria-label="full width tabs example"
         >
           <Tab label="Student's Information" {...a11yProps(0)} />

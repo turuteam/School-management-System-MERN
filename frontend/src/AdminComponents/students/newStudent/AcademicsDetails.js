@@ -44,6 +44,8 @@ function AcademicsDetails(props) {
         setreasonforTransfer,
         handleCoursesCheckbox
      } = props
+
+    
     return (
         <div>
                <h3>Academics Details</h3>
@@ -116,7 +118,9 @@ function AcademicsDetails(props) {
                                 aria-label="Default select example">
                                 <option defaultValue  hidden>select</option>
                                 <option value="border">Border </option>
-                                <option value="day">Day Student</option>
+                                <option value="fresh-border">Fresh Border </option>
+                                <option value="day">Day </option>
+                                <option value="fresh-day">Fresh Day </option>
                             </select>
                             {errors.status && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
@@ -163,9 +167,6 @@ function AcademicsDetails(props) {
                                     {e.name}
                                 </option>) : 
                                 <option disabled>No data yet</option>}
-                                {/* <option value="primary">Primary</option>
-                                <option value="preSchool">Pre-School</option>
-                                <option value="jhs">JHS</option> */}
                             </select>
                         </div>
                         <div className="col-xs-12 col-sm-6  col-md-4">
@@ -185,7 +186,10 @@ function AcademicsDetails(props) {
                           <div className="col-xs-12 col-sm-6 col-md-4">
                                 <label  className="form-label">Courses</label>
                                <div className="selectBox">
-                                    <select onClick={ () => setshowCheck(!showCheck)} className="form-select" >
+                                    <select 
+                                    value="courses"
+                                    onClick={ () => setshowCheck(!showCheck)} 
+                                    className="form-select" >
                                         <option hidden>Select options</option>
                                     </select>
                                     {showCheck && <div className="showcheckboxes">
@@ -194,7 +198,7 @@ function AcademicsDetails(props) {
                                              {courses.map(e =>  
                                                         <div key={e.code} value={e.code} className="form-check ">
                                                             <input 
-                                                                onChange={handleCoursesCheckbox} 
+                                                                onChange={event => handleCoursesCheckbox(event)} 
                                                                 className="form-check-input" 
                                                                 type="checkbox" 
                                                                 value={e.code} 

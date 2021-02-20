@@ -1,40 +1,51 @@
 import React, {useState, useEffect} from 'react'
-import FileTable from '../../shared/ListTable'
+import FileTable from './NotesTable'
 import {Link} from 'react-router-dom';
 import Search from '../../shared/Search'
+import {useHistory} from 'react-router-dom'
 import axios from '../../../store/axios';
+import {errorAlert} from '../../../utils';
+import {useSelector} from 'react-redux';
+import {selectUser} from '../../../store/slices/userSlice'
 
 const tableHead = [
-    {id: "_id" , name: "#"},
-    {id: "topic" , name: "Topic"},
-    {id: "CourseID" , name: "Course"},
-    {id: "classID" , name: "Class"},
-    {id: "senderID", name: "Teacher"},
-    {id: "file" , name: "File"},
     {id: "date" , name: "Added"},
+    {id: "topic" , name: "Topic"},
+    {id: "courseID" , name: "Course"},
+    {id: "classID" , name: "Class"},
+    {id: "senderId", name: "Teacher"},
+    {id: "file" , name: "File"},
+   
 ]
 
 function Notes() {
     const [subject, setsubject] = useState("");
     const [classID, setclass] = useState("");
     const [teacher, setteacher] = useState("");
-    const [notes, setnotes] = useState([])
+    const [notes, setnotes] = useState([]);
+    const history = useHistory();
+    const user = useSelector(selectUser)
 
     useEffect(() => {
         axios.get('/notes').then(res => {
+            console.log(res.data)
               setnotes(res.data)
         })
     }, [])
 
-    // const notes = [
-    //     {id: "abc1", topic: "Covid 19", subject: "Health", class: "2A",teacherID: "TN202012", file: "covid.pdf", added: "21-12-2020 17:35:11"},
-    //     {id: "abc2", topic: "Covid 19", subject: "Health", class: "2A",teacherID: "TN202012", file: "covid.pdf", added: "21-12-2020 17:35:11"},
-    //     {id: "abc3", topic: "Covid 19", subject: "Health", class: "2A",teacherID: "TN202012", file: "covid.pdf", added: "21-12-2020 17:35:11"},
-    //     {id: "abc4", topic: "Covid 19", subject: "Health", class: "2A",teacherID: "TN202012", file: "covid.pdf", added: "21-12-2020 17:35:11"},
-    //     {id: "abc5", topic: "Covid 19", subject: "Health", class: "2A",teacherID: "TN202012", file: "covid.pdf", added: "21-12-2020 17:35:11"},
-    // ]
+    const handleEdit = (id) => {
+        history.push(`/academics/notes/edit/${id}`)
+    }
 
-   
+    const handleDelete = (id) => {
+        axios.delete(`/notes/delete/${id}`).then(res => {
+            if(res.data.error){
+                errorAlert(res.data.error)
+            }
+            setnotes(notes.filter(e => e._id !== id))
+        })
+
+    }
 
     const searchInputForm = [
         {
@@ -69,7 +80,12 @@ function Notes() {
                       <Link to="/academics/notes/add" className="btn blue__btn " >Add Form</Link>
                   </div>
               </div>
-             <FileTable data={notes} tableHeader={tableHead}/>
+             <FileTable 
+             handleDelete={handleDelete} 
+             handleEdit={handleEdit} 
+             data={notes} 
+            user = {user?.id}
+             tableHeader={tableHead}/>
         </div>
     )
 }

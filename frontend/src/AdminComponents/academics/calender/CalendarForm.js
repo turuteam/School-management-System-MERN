@@ -67,7 +67,18 @@ function CalendarForm(props) {
                   name="type"
                  className="form-select">
                     <option defaultValue hidden>Choose...</option>
-                    <option>...</option>
+                    <option>Holiday</option>
+                    <option>Easter Break</option>
+                    <option>Mid Term</option>
+                    <option>Break</option>
+                    <option>Trip</option>
+                    <option>Sports</option>
+                    <option>Competitons</option>
+                    <option>Visiting Day</option>
+                    <option>Mid Term Assessment</option>
+                    <option>Independence Holiday</option>
+                    <option>Revision Week</option>
+                    <option>Other</option>
                 </select>
 
             </div>

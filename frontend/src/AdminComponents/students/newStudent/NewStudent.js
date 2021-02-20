@@ -25,6 +25,7 @@ function NewStudent() {
     const [disease, setdisease] = useState("")
     const [loading, setloading] = useState("")
 
+
     const [profileUrl, setprofileUrl] = useState("");
     const [profileimg, setprofileimg] = useState("")
 
@@ -41,7 +42,8 @@ function NewStudent() {
     const [schoolarship, setschoolarship] = useState("");
     const [feesCategory, setfeesCategory] = useState("");
     const [lastSchool, setlastSchool] = useState("");
-    const [reasonforTransfer, setreasonforTransfer] = useState("")
+    const [reasonforTransfer, setreasonforTransfer] = useState("");
+    const [courses, setcourses] = useState([])
 
 
     //contact details
@@ -79,6 +81,25 @@ function NewStudent() {
 
     const handleReset = (e) => {
         e.preventDefault();
+        setautoID(true)
+        setstatus("")
+        setclass("")
+        setsection("")
+        setdormitory("")
+        setschoolarship("")
+        setfeesCategory("")
+        setuserID("")
+        setcourses([]);
+        setdisease("")
+        setguadian([])
+        setreasonforTransfer("")
+        settelephone("")
+        setpostalAddress("")
+        setresidence("")
+        setmobilenumber("")
+        setlastSchool("")
+        setallege("")
+        sethealth();
         setname("");
         setsecondName("")
         setlastname("")
@@ -89,6 +110,7 @@ function NewStudent() {
         setplaceofBirth("")
         setreligion("")
     }
+    console.log(feesCategory)
 
     const handleCreateSubmit = () => {
         setloading(true)
@@ -111,9 +133,10 @@ function NewStudent() {
             disease,
             allege,
             classID,
+            courses: courses,
             section,
             status,
-            schoolarship,
+            scholarship: schoolarship,
             fees: feesCategory,
             lastSchool: {
                 school: lastSchool,
@@ -131,12 +154,28 @@ function NewStudent() {
                 return 0;
             }
             successAlert("successfully added");
+            handleReset()
         })
        }).catch(err => {
            setloading(false)
            console.log(err);
            errorAlert("something went wrong");
        })
+    }
+
+    const  handleCoursesCheckbox = (e) => {
+        console.log(e.target.value)
+        let course = courses.find(i => i.courseID === e.target.value)
+
+        if(course){
+            setcourses([courses.filter(i => i.courseID !== e.target.value) ])
+        }
+        else{
+            setcourses([{courseID: e.target.value, courses}, ...courses])
+        }
+        console.log(courses)
+
+      
     }
 
     return (
@@ -171,12 +210,15 @@ function NewStudent() {
                         <br className="my-5"/>
                        <Academics
                          register={register}
+                         handleCoursesCheckbox={handleCoursesCheckbox}
                          errors={errors}
                          autoID={autoID}  setautoID={setautoID}
                          userID={userID}   setuserID={setuserID}
                          classID={classID} setclass={setclass}
                          section={section} setsection={setsection}
                          status={status} setstatus={setstatus}
+                         coursesArr={courses}
+                         setcourse={setcourses}
                          dormitory={dormitory} setdormitory={setdormitory}
                          schoolarship={schoolarship} setschoolarship={setschoolarship}
                          feesCategory={feesCategory} setfeesCategory={setfeesCategory}

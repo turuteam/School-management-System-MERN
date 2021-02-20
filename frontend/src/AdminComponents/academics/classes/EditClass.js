@@ -10,6 +10,7 @@ function EditClass() {
     const [campus, setcampus] = useState("");
     const [teacher, setteacher] = useState("");
     const [code, setcode] = useState("");
+    const [academic, setacademic] = useState("")
     const [loading, setloading] = useState(false);
     const {id} =  useParams();
 
@@ -21,12 +22,14 @@ function EditClass() {
               if(res.data.error){
                   errorAlert(res.data.error);
                   return 0
-              };
+              }
               let doc = res.data.docs;
               setname(doc?.name);
               setcampus(doc?.campusID);
               setteacher(doc?.teacherID);
               setcode(doc?.classCode)
+              setacademic(doc?.academic)
+
          })
        
     }, [id])
@@ -37,6 +40,7 @@ function EditClass() {
             name, 
             classCode: code,
             campusID: campus, 
+            academic: academic,
             teacherID: teacher }).then(res => {
                 if(res.data.error){
                     errorAlert(res.data.error);
@@ -54,7 +58,10 @@ function EditClass() {
     return (
         <>
          <div className="d-flex justify-content-end mb-5">
-              <Link to="/academics/classes" className="link"> <ArrowBackIosIcon className="icon"/> Back  to Classes List</Link>
+              <Link to="/academics/classes" className="link"> 
+                    <ArrowBackIosIcon className="icon"/> 
+                    Back  to Classes List
+                </Link>
          </div>
         <div className="content__container">
            <h3>Edit Class</h3>
@@ -63,6 +70,8 @@ function EditClass() {
             handleAddClass={handleEdit}
             setname={setname} 
             campus={campus} 
+            academic={academic}
+            setacademic={setacademic}
             setcampus={setcampus}
             code={code}
             loading={loading}

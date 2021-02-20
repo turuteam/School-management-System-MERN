@@ -1,5 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import EditForm from './NoteForm';
+import axios from '../../../store/axios';
+import {useParams} from 'react-router-dom';
+import {errorAlert, successAlert} from '../../../utils'
 
 function EditNote() {
     const [classID, setclassID] = useState("");
@@ -7,7 +10,8 @@ function EditNote() {
     const [topic, settopic] = useState("")
     const [notes, setnotes] = useState("")
     const [file, setfile] = useState("")
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(false);
+    const {id} = useParams();
 
     const handleResetNote = () => {
         setclassID("");
@@ -16,12 +20,52 @@ function EditNote() {
         setnotes("");
         setfile("");
    }
+   useEffect(() => {
+       axios.get(`/notes/${id}`).then(res => {
+           let data =res.data.doc
+           setclassID(data?.classID);
+           setsubject(data?.courseID);
+           settopic(data?.topic);
+           setfile(data?.file);
+           setnotes(data?.notes)
+       })
+   }, [id])
+
+
    const handleEditNote = () => {
-       alert("edit")
+    setloading(true)
+    const fileData = new FormData();
+        fileData.append("photo", file);
+        axios.post('/upload', fileData, {}).then((res) => {
+          const path= res.data.path;
+          console.log(path) 
+          axios.put(`/notes/update/${id}`, {
+              topic,
+              classID,
+              courseID: subject,
+              notes,
+              file: path
+          }).then(response => {
+            console.log(response.data)
+              if(response.data.error){
+                errorAlert(res.data.error);
+                setloading(false);
+                return 0;
+              }
+              successAlert("notes successfully added");
+              setloading(false);
+              handleResetNote();  
+          })
+        })
+    .catch(err => {
+        setloading(false);
+        errorAlert("sorry something went error, try again later")
+    })
+
    }
 
     return (
-        <div>
+        <div className="content__container mb-5">
            <h3>Add New Notes</h3>
            <EditForm 
             classID={classID}

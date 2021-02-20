@@ -43,9 +43,6 @@ const DialogTitle = withStyles(styles)((props) => {
     },
   }))(MuiDialogContent);
   
-  
-  
-  
 
 function EditCampuses({open, setopen, name, location , setname, setlocation, onSubmit, loading}) {
 

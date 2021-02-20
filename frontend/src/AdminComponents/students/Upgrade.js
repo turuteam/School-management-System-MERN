@@ -8,8 +8,6 @@ function Upgrade() {
     const classes = useSelector(selectClasses);
     const dormitories = useSelector(selectDormitories);
     const campuses = useSelector(selectCampuses);
-    
-    console.log(classes)
     const [currentclass, setcurrentclass] = useState("");
     const [nextclass, setnextclass] = useState("");
     const [currentdormitories, setcurrentdormitories] = useState("");

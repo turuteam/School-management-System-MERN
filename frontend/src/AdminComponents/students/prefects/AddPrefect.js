@@ -47,7 +47,7 @@ function AddPrefect({name, setname, userID, setuserID,handleAdd,
     const handleSelectStudent = (id) => {
           let selectedstudent = students.find(e => e.userID = id);
           setname(selectedstudent?.name  + selectedstudent?.surname);
-          setuserID(id)
+          setuserID(selectedstudent?.userID)
     }
 
 
@@ -63,7 +63,7 @@ function AddPrefect({name, setname, userID, setuserID,handleAdd,
                         id="inputState" 
                         className="form-select">
                             <option defaultValue hidden>Choose...</option>
-                            {classes.map(e => <option key={e._id} value={e._id}>{e.name}</option>)}
+                            {classes.map(e => <option key={e.classCode} value={e.classCode}>{e.name}</option>)}
                         </select>
                     </div>
                 </div>
@@ -73,7 +73,7 @@ function AddPrefect({name, setname, userID, setuserID,handleAdd,
                         <label  className="form-label">OR Select Student's Class</label>
                         <select onChange={(e) => handleSelectStudent(e.target.value)}  id="inputState" className="form-select">
                             <option defaultValue hidden>Choose...</option>
-                            {students.map(e => <option key={e.userID} value={e.userID}>{e.userID} {e.name} {e.surname}</option>)}
+                            {students.map(e => <option key={e.id} value={e.id}>{e.id} {e.name} {e.surname}</option>)}
                         </select>
                     </div>
                    }
@@ -112,14 +112,29 @@ function AddPrefect({name, setname, userID, setuserID,handleAdd,
                     <div className="row mb-3">
                         <label  className="col-sm-3 col-form-label">Position</label>
                         <div className="col-sm-9">
-                            <input 
+                            {/* <input 
                              ref={register({ required: true })} 
                              value={position}
                              onChange={e => setposition(e.target.value)}
                              type="text" 
                              className="form-control" 
-                             name="position"/>
-                               {errors.position && <span className=" form-error text-danger mb-2">This field is required</span>}
+                             name="position"/> */}
+                             <select 
+                              ref={register({ required: true })} 
+                              name="position"
+                              onChange={(e) => setposition(e.target.value)}   
+                              className="form-select">
+                                  <option defaultValue hidden>Choose...</option>
+                                  <option value="Headgirl">Head Girl</option>
+                                  <option value="Headboy">Head Boy</option>
+                                  <option value="Vice Headgirl">Vice Headgirl</option>
+                                  <option value="Vice Headboy">Vice Headboy</option>
+                                  <option value="Senior Prefect">Senior Prefect</option>
+                                  <option value="Prefect">Prefect </option>
+                                  <option value="other">Other </option>
+                             </select>
+                               {errors.position && 
+                                 <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>
                     </div>
                     <div className="row mb-3">

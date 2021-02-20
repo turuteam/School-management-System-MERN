@@ -113,7 +113,7 @@ function Personalnfo(props) {
                             <input 
                             value={dateofBirth}
                             name="dateofBirth"
-                            onChange={e => setdateofBirth(e.target.value)}
+                            onChange={e => setdateofBirth( e.target.value)}
                             type="date" 
                             className="form-control" />
                         </div>
@@ -138,7 +138,8 @@ function Personalnfo(props) {
                             className="form-control"  />
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="religion" className="form-label">Religion</label>
+                            <label for="religion" 
+                            className="form-label">Religion</label>
                             <input 
                             type="text" 
                             name="religion"

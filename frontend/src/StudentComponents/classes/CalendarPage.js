@@ -27,6 +27,7 @@ function ExamsPage() {
    
     return (
         <div>
+            <h3 className="mb-5">Upcoming School Events</h3>
            <TableList 
            data={events} 
            tableHeader={tableHeader} 

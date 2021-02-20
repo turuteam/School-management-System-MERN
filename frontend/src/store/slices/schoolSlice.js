@@ -9,7 +9,9 @@ export const schoolSlice = createSlice({
     scholarships: [],
     campuses: [],
     sections: [],
-    feesTypes: []
+    feesTypes: [],
+    staff: [],
+    academicYear: {},
   },
   reducers: {
     setClasses :(state, action )=> {
@@ -33,11 +35,17 @@ export const schoolSlice = createSlice({
      setfeesType : (state, action) => {
       state.feesTypes = action.payload
      },
+     setAcademicYear: (state, action) => {
+      state.academicYear = action.payload
+     },
+     setStaff: (state, action) => {
+      state.staff = action.payload
+     },
   },
 });
 
 
-export const { setClasses, setCourses, setDormitories, setScholarships, setCampuses, setSections, setfeesType } = schoolSlice.actions;
+export const { setAcademicYear  ,setClasses, setCourses, setDormitories, setScholarships, setCampuses, setSections, setfeesType , setStaff} = schoolSlice.actions;
 export const selectClasses = state => state.school.classes;
 export const selectCourses = state => state.school.courses;
 export const selectDormitories = state => state.school.dormitories;
@@ -45,6 +53,9 @@ export const selectScholarship = state => state.school.scholarships;
 export const selectCampuses = state => state.school.campuses;
 export const selectSection = state => state.school.sections;
 export const selectFees = state => state.school.feesTypes;
+export const selectacademicYear = state => state.school.academicYear;
+export const selectStaff = state => state.school.staff
+
 
 
 export default schoolSlice.reducer;

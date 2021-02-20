@@ -90,9 +90,9 @@ function MessageStudent() {
             onSend={onSend} 
             recipientsOptions={recipientOptions} 
             recipient={recipient} 
-            sendto="Teacher"
+            sendto="Students"
             setrecipient={setrecipient} 
-            sender={sender}/> 
+            sender={sender?.id}/> 
      </div>
     )
 }

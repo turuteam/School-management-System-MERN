@@ -1,18 +1,12 @@
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux';
 import {selectClasses, 
-    selectCourses, 
-    selectDormitories, 
-    selectScholarship, 
-    selectSection, 
+    selectCourses,
     selectCampuses} from '../../../store/slices/schoolSlice'
 
 function EmploymentDetails(props) {
     const classes = useSelector(selectClasses);
     const courses = useSelector(selectCourses);
-    const dormitories = useSelector(selectDormitories);
-    const scholarship = useSelector(selectScholarship);
-    const sections = useSelector(selectSection);
     const campuses = useSelector(selectCampuses);
 
     const [showCheck, setshowCheck] = useState(false)
@@ -78,9 +72,10 @@ function EmploymentDetails(props) {
                                 className="form-select" 
                                 aria-label="Default select example">
                                 <option  defaultValue   hidden >select</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                  {
+                                   campuses.length > 0 ? 
+                                    campuses.map(e => <option key={e._id} value={e._id}>{e.name}</option>) : <option disabled>No campuses yet</option>
+                                  }
                             </select>
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
@@ -92,8 +87,10 @@ function EmploymentDetails(props) {
                                className="form-select" 
                                aria-label="Default select example">
                                 <option defaultValue   hidden>select</option>
-                                <option value="border">Border </option>
-                                <option value="day">Day Student</option>
+                                {
+                                   campuses.length > 0 ? 
+                                    campuses.map(e => <option key={e._id} value={e._id}>{e.name}</option>) : <option disabled>No campuses yet</option>
+                                  }
                             </select>
                         </div>
                     </div>

@@ -46,6 +46,7 @@ function EditStudent() {
     const [schoolarship, setschoolarship] = useState("");
     const [feesCategory, setfeesCategory] = useState("");
     const [lastSchool, setlastSchool] = useState("");
+    const [courses, setcourses] = useState([])
     const [reasonforTransfer, setreasonforTransfer] = useState("")
     //contact details
     const [mobilenumber, setmobilenumber] = useState("");
@@ -54,6 +55,8 @@ function EditStudent() {
     const [postalAddress, setpostalAddress] = useState("")
     //guidan
     const [guadian, setguadian] = useState([]);
+
+   
    
     useEffect(() => {
           axios.get(`/students/student/${id}`).then(res => {
@@ -61,6 +64,7 @@ function EditStudent() {
               setstudentDetails(data);
               setname(data?.name);
               setlastname(data?.surname);
+              setsecondName(data?.middleName)
               setgender(data?.gender);
               setdateofBirth(data?.dateofBirth);
               setemail(data?.email);
@@ -71,12 +75,15 @@ function EditStudent() {
               setallege(data?.allege);
               setdisease(data?.disease);
               setclass(data?.classID);
-              setstatus(data?.statue);
+              setsection(data?.section)
+              setstatus(data?.status);
+              setschoolarship(data?.scholarship)
+              setcourses(data?.courses);
               setdormitory(data?.dormitory);
               setschoolarship(data?.schoolarship);
               setfeesCategory(data?.fees);
-              setlastSchool(data?.lastSchool);
-              setreasonforTransfer(data?.reasonforTransfer);
+              setlastSchool(data?.lastSchool?.school?.school?.school);
+              setreasonforTransfer(data?.lastSchool?.school?.school?.reason);
               setmobilenumber(data?.mobilenumber);
               setresidence(data?.physicalAddress);
               settelephone(data?.telephone);
@@ -88,6 +95,24 @@ function EditStudent() {
 
     const handleReset = (e) => {
         e.preventDefault();
+        setautoID(true)
+        setstatus("")
+        setclass("")
+        setsection("")
+        setdormitory("")
+        setschoolarship("")
+        setfeesCategory("")
+        setuserID("")
+        setdisease("")
+        setguadian([])
+        setreasonforTransfer("")
+        settelephone("")
+        setpostalAddress("")
+        setresidence("")
+        setmobilenumber("")
+        setlastSchool("")
+        setallege("")
+        sethealth();
         setname("");
         setsecondName("")
         setlastname("")
@@ -97,13 +122,9 @@ function EditStudent() {
         setnationality("")
         setplaceofBirth("")
         setreligion("")
-        sethealth("");
-        setallege("");
-        setdisease("")
 
     }
     const handleCreateSubmit = () => {
-        alert("submited");
         setloading(true)
         const fileData = new FormData();
         fileData.append("photo", profileUrl);
@@ -126,7 +147,7 @@ function EditStudent() {
             classID,
             section,
             status,
-            schoolarship,
+            scholarship: schoolarship,
             fees: feesCategory,
             lastSchool: {
                 school: lastSchool,
@@ -179,6 +200,7 @@ function EditStudent() {
                 <form action="" className="content__container">
                       <ProfilePicture 
                         profileimg={profileimg} 
+                        profileUrl={profileUrl}
                         setprofileUrl={handleChangeFile}/>
                       <PersonalInfo
                         register={register}
@@ -230,8 +252,6 @@ function EditStudent() {
                         />
                         <br className="my-5"/>
                         <Guadian guadian={guadian} setguadian={setguadian}/>
-                        <br className="my-5"/>
-                        <ProfilePicture/>
                         <br className="my-5"/>
                      <div className="row ">
                          <button 

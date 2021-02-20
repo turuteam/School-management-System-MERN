@@ -64,10 +64,11 @@ route.put('/update/:id', (req, res) => {
         if(!doc){
           return res.json({success: false, error: "does not exists"})
        }
-        return  res.json({success: true, docs});
+        return  res.json({success: true, doc});
       })
     .catch(err => {
-        res.json({success: false, error:err})
+        console.log(err)
+        res.json({success: false, error:"Failed to edit"})
     })
   
   });

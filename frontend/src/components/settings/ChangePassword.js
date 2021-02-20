@@ -32,7 +32,7 @@ function ChangePassword({id}) {
             <form action="" className="mb-5 content__container">
                 <h4>Change Password</h4>
                 <div className="row mb-3">
-                    <label for="inputEmail3" className="col-sm-3 col-form-label">Old Password</label>
+                    <label  className="col-sm-3 col-form-label">Old Password</label>
                     <div className="col-sm-9">
                         <input 
                           onChange={e => setoldpassword(e.target.value)} 
@@ -44,7 +44,7 @@ function ChangePassword({id}) {
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label for="inputPassword3" className="col-sm-3 col-form-label">New Password</label>
+                    <label  className="col-sm-3 col-form-label">New Password</label>
                     <div className="col-sm-9">
                        <input 
                         onChange={e => setnewpassword(e.target.value)} 

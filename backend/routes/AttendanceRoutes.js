@@ -21,7 +21,6 @@ route.get('/:id', async(req, res) => {
 //get One  student attendance data
 route.get('/user/:id', async(req, res) => {
     const docs = await AttendanceModel.find({'users.userID' : req.params.id});
-     console.log(docs)
     res.json(docs);
 })
 
@@ -112,7 +111,6 @@ route.post('/start/:id', async(req, res) => {
         startLocation: req.body.startLocation
     })
     .then(doc => {
-        console.log(doc)
         res.json({success: true, doc});
       })
     .catch(err => {
@@ -134,7 +132,6 @@ route.put('/update/:id', async(req, res) => {
         new: true
         })
         .then(doc => {
-            console.log(doc)
             return  res.json({success: true, message: "OK"});  
         })
         .catch(err => {

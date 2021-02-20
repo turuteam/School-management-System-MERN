@@ -1,24 +1,13 @@
 import express from "express";
 import FilesModel from "../models/FilesModel.js";
-//import {uploader} from '../middlewares/multer.js'
 
 const route = express.Router();
 
-// route.post("/", uploader.single("photo"), (req, res, next) => {
-//   try {
-//     console.log("logging req.file: ", req.file);
-//     res.send({path: `${req.file.filename}`});
-//    // res.status(200).sendFile(`${__dirname}/public/consumerPhotos/${req.file.filename}`);
-//   } 
-//   catch (err) {
-//     res.status(418).send(err);
-//   }
-// });
 
-//search
-
-//get files for teacher
-//get file for student
+route.get('/', async(req, res) => {
+  const data = await FilesModel.find();
+  res.json(data);
+})
 
 //get one by id
 route.get('/:id', async(req, res) => {
@@ -26,9 +15,9 @@ route.get('/:id', async(req, res) => {
       return res.status(400).send('Missing URL parameter: username')
     }
   await FilesModel.findOne({ _id: req.params.id })
-  .then(user => {
-      if(user){
-      return  res.json({success: true,student: user})
+  .then(doc => {
+      if(doc){
+      return  res.json({success: true,doc})
       }
       else{
       return  res.json({success: false, error: 'Does not exists'})

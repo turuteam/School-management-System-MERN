@@ -4,11 +4,15 @@
   display: flex;
   margin-bottom: 30px;
   align-items: center;
-  justify-content: space-between;
+  color: $black !important;
+  //justify-content: space-between;
 
   .card__digits {
     font-weight: 800;
     font-size: 1.7em;
+  }
+  .card__details {
+    margin-left: 10px;
   }
   h5 {
     opacity: 0.4;
@@ -16,13 +20,20 @@
   .card__icon {
     background-color: lightblue;
     border-radius: 50%;
-    padding: 30px;
+    padding: 20px;
+  }
+  &:hover {
+    transform: scale(1.02);
   }
 }
 
 .notices {
-  height: 500;
+  max-height: 500;
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .notice {
     padding: 20px;

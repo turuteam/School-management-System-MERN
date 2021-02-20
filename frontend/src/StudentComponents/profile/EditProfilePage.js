@@ -35,10 +35,8 @@ function EditProfilePage() {
 
     const [guadian, setguadian] = useState([]);
 
-    console.log(guadian)
 
     const handleEdit = () => {
-        alert("submited");
         axios.put(`/students/update/${user?.id}`, {
             name,
             middleName: secondName,

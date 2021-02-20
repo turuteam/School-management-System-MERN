@@ -16,16 +16,16 @@ route.get('/', async(req, res) => {
 
 //get one teacher by id
 route.get('/:id', async(req, res) => {
-    if(!req.params.id) {
-        return res.status(400).send('Missing URL parameter: username')
-      }
+    // if(!req.params.id) {
+    //     return res.status(400).send('Missing URL parameter: username')
+    //   }
     await TeacherModel.findOne({ userID: req.params.id, role: role.Teacher })
     .then(user => {
         if(user){
         return  res.json({success: true, teacher: user})
         }
         else{
-        return  res.json({success: false, error: 'Student does not exists'})
+        return  res.json({success: false, error: 'Staff does not exists'})
         }
     })
     .catch(err => {

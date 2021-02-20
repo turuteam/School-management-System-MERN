@@ -71,7 +71,7 @@ const _nav =  [
       {
         _tag: 'CSidebarNavItem',
         name: 'Inbox',
-        to: '/message',
+        to: '/messages',
       },
       {
         _tag: 'CSidebarNavItem',

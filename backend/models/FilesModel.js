@@ -19,7 +19,7 @@ const FilesSchema =   new Schema( {
    classID: {
        type: String
    },
-   senderId: {
+   senderID: {
        type: String
    },
    file: {

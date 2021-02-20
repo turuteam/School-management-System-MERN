@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import {set} from '../store/slices/appSlice'
+import {set, selectSidebarShow} from '../store/slices/appSlice'
 import {
   CHeader,
   CToggler,
@@ -14,7 +14,7 @@ import CIcon from '@coreui/icons-react'
 import {selectUser} from '../store/slices/userSlice';
 
 // routes config
-import routes from '../routes'
+//import routes from '../routes'
 
 import { 
   TheHeaderDropdown,
@@ -22,19 +22,26 @@ import {
   TheHeaderDropdownNotif
 }  from './index'
 
-const TheHeader = () => {
+const TheHeader = ({routes}) => {
   const dispatch = useDispatch()
   const user = useSelector(selectUser);
-  const sidebarShow = useSelector(state => state.sidebarShow)
+  const [search, setsearch] = useState("")
+  const sidebarShow = useSelector(selectSidebarShow)
+
+  const handlesearch = (e) => {
+      e.preventDefault();
+      setsearch("")
+  }
 
   const toggleSidebar = () => {
-    console.log("clicked")
+    console.log("totggle", sidebarShow)
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
     dispatch(set(val))
   }
 
   const toggleSidebarMobile = () => {
-    console.log("clicked")
+    console.log("toggle moblie")
+    console.log("totggle", sidebarShow)
     const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
     dispatch(set(val))
   }
@@ -56,19 +63,24 @@ const TheHeader = () => {
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
-          <form className="nav__search" action="">
+          <form onSubmit={handlesearch} className="nav__search">
              <SearchIcon className="icon"/>
-            <input autoFocus={true} type="text" placeholder="Find Something..."/>
+            <input 
+            value={search}
+            onChange={e => setsearch(e.target.value)}
+            autoFocus={true} 
+            type="text" 
+            placeholder="Find Something..."/>
           </form>
       </CHeaderNav>
 
       <CHeaderNav className="px-3 nav__icons">
+        <TheHeaderDropdown user={user}/>
         <TheHeaderDropdownNotif id={user?.id}/>
         <TheHeaderDropdownMssg id={user?.id}/>
-        <TheHeaderDropdown user={user}/>
       </CHeaderNav>
 
-      <CSubheader className="px-3 justify-content-end">
+      <CSubheader className="px-3 justify-content-start">
         <CBreadcrumbRouter 
           className="border-0 c-subheader-nav m-0 px-0 px-md-3" 
           routes={routes} 

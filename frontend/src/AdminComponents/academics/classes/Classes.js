@@ -4,7 +4,10 @@ import Search from '../../shared/Search';
 import {Link} from 'react-router-dom';
 import axios from '../../../store/axios';
 import {useHistory} from 'react-router-dom';
-import {errorAlert} from '../../../utils'
+import {errorAlert} from '../../../utils';
+import {useSelector} from 'react-redux';
+import { selectCampuses, selectStaff} from '../../../store/slices/schoolSlice'
+
 
 const tableHeadings = [
     {id: "classCode", name: "ID"},
@@ -12,6 +15,7 @@ const tableHeadings = [
     {id: "campusID", name: "Campus"},
     {id: "students", name: "Students"},
     {id: "teacherID", name: "Class Teacher"},
+    {id: "academic", name: "Academic Year"}
 ]
 
 function Classes() {
@@ -19,14 +23,28 @@ function Classes() {
     const [campus, setcampus] = useState("");
     const [teacher, setteacher] = useState("");
     const [classes, setclasses] = useState([]);
+    const staff = useSelector(selectStaff);
+    const [loading, setloading] = useState(false)
+    const campuses = useSelector(selectCampuses)
     const history = useHistory();
 
     useEffect(() => {
+        setloading(true)
         axios.get('/classes').then(res =>{
+            setloading(false);
+            let data = res.data;
+            let classesData = data.map(e => {
+                return {
+                    ...e, 
+                    teacherID: ((staff.find(i => i.userID === e.teacherID)?.name || "-") +  " "+ (staff.find(i => i.userID === e.teacherID)?.surname || "") ),
+                    campusID: campuses.find(i => i._id ===   e.campusID)?.name
+                }
+            })
             console.log(res.data);
-            setclasses(res.data);
+
+            setclasses(classesData);
         })
-    }, [])
+    }, [staff, campuses])
 
     const inputFields = [
            {
@@ -90,6 +108,7 @@ function Classes() {
            
              <ClassTable 
              handleEdit={handleEditClass} 
+             loading={loading}
              handleSearch = {handleSearch}
              handleDelete={handleDeleteClass}  
              data={classes} tableHeader={tableHeadings}/>

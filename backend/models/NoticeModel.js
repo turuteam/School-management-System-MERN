@@ -10,16 +10,14 @@ const NotificationsSchema =   new Schema( {
    title: {
        type: String
    },
-   message: {
+   description: {
        type: String
    },
-   sender: {
+   createdBy: {
        type: String,
    },
    receiver: {
-       type: [{
-           id: String
-       }],
+       type: [],
        default: "All"
    }
 

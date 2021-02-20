@@ -53,10 +53,18 @@ export default function CustomPaginationActionsTable({data, tableHeader, handleE
         </TableHead>
             {loading ? <TableBody className="text-center my-5 w-100">
                      <TableRow>
-                         <TableCell className="spinner-grow spinner-grow-sm" role="status"></TableCell>
-                         <TableCell className="spinner-grow spinner-grow-sm" role="status"></TableCell>
-                         <TableCell className="spinner-grow spinner-grow-sm" role="status"></TableCell>
-                         <TableCell className="spinner-grow spinner-grow-sm" role="status"></TableCell>
+                         <TableCell >
+                            <span className="spinner-grow spinner-grow-sm" role="status"></span>
+                         </TableCell>
+                         <TableCell>
+                            <span className="spinner-grow spinner-grow-sm" role="status"></span>
+                         </TableCell>
+                         <TableCell >
+                            <span className="spinner-grow spinner-grow-sm" role="status"></span>
+                         </TableCell>
+                         <TableCell >
+                               <span className="spinner-grow spinner-grow-sm" role="status"></span>
+                         </TableCell>
                      </TableRow>
              </TableBody> : 
         <TableBody>

@@ -1,18 +1,12 @@
 import React from 'react';
-import {  BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import {  BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
 import { useSelector} from 'react-redux';
+import Loading from './Loading'
 import {selectUser} from './store/slices/userSlice';
 import {SignedOutRoutes, SignedInRoutes} from './ProtectedRoutes'
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const loading = (
-  <div className="pt-3 text-center">
-    <div className="sk-spinner sk-spinner-pulse"></div>
-  </div>
-)
-
 // Containers
 const TheLayout = React.lazy(() => import('./layouts/index'));
 //const Layout = React.lazy(() => import('./containers/Layout/Layout'));
@@ -29,14 +23,9 @@ function App() {
     return (
      <Router>
        <ToastContainer/>
-          <React.Suspense fallback={loading}>
+       
+          <React.Suspense fallback={<Loading/>}>
             <Switch>
-                   {/* <SignedInRoutes
-                      isAuth={user} 
-                      exact={true}
-                      path={`/${user?.role}`} 
-                      name="Dashboard" 
-                      Component={TheLayout} /> */}
                     <SignedOutRoutes 
                       isAuth={user} 
                       exact={true}
@@ -56,12 +45,8 @@ function App() {
                         <SignedInRoutes
                             isAuth={user} 
                             path="/" 
-                            name="Home" 
-                            // render={props => <TheLayout {...props}/>} /> 
-                           Component={TheLayout} /> 
-                     {/* <Route path="/" name="Home" render={props => <Layout {...props}/>} /> */}
-                      <Redirect path="/" to={`/${user?.role}`}/>
-                       
+                            name="Home"  
+                           Component={TheLayout} />        
             </Switch>
           </React.Suspense>
          </Router>

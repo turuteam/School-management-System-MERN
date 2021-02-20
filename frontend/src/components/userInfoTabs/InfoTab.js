@@ -1,5 +1,6 @@
 import React from 'react'
 import {getCapitalize} from '../../utils'
+import moment from 'moment';
 
 
 function InfoTab({user, isStaff}) {
@@ -32,7 +33,7 @@ function InfoTab({user, isStaff}) {
             </div>
             <div className="row  mb-3">
                 <div className="col-4">Date of Birth: </div>
-                <div className="col-6">{user?.dateofBirth || "N/A"} </div>
+                <div className="col-6">{moment(user?.dateofBirth).format('D MMMM YYYY')   || "N/A"} </div>
             </div>
             <div className="row  mb-3">
                 <div className="col-4">Place of birth </div>

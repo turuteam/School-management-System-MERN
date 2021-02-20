@@ -2,9 +2,10 @@ import React from 'react'
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Avatar from '@material-ui/core/Avatar'
+import {getImgSrc} from '../../utils'
 
 
-function Profile({profileimg,setprofileUrl}) {
+function Profile({profileimg,setprofileUrl, profileUrl}) {
     return (
         <div>
              <h3>Profile Photo</h3>
@@ -14,7 +15,10 @@ function Profile({profileimg,setprofileUrl}) {
                 <PhotoCamera />
                 </IconButton>
             </label>
-            {profileimg && <Avatar  src={profileimg} alt="profile picture"/>}
+            {profileimg && 
+            <Avatar style={{width: '100px', height: "100px"}}  
+             src={profileUrl ?  profileimg : getImgSrc(profileimg)} 
+             alt="Username"/>}
         </div>
     )
 }

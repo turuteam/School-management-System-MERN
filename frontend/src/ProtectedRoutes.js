@@ -14,7 +14,7 @@ export const SignedInRoutes = ({Component, path,  isAuth, exact, name}) => {
 
 export const SignedOutRoutes = ({component, path,  isAuth, exact}) => {
     if(isAuth) {
-        return <Redirect to={`/${isAuth?.role}`}/>
+        return <Redirect to={`/`}/>
     }
     return <Route path={path} component={component} exact={exact}/>
 }

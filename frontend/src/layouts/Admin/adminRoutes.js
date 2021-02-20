@@ -28,7 +28,7 @@ const EditCourse = React.lazy(()  => import( '../../AdminComponents/academics/co
 const Notes = React.lazy(()  => import( '../../AdminComponents/academics/notes/Notes'));
 const AddNote = React.lazy(()  => import( '../../AdminComponents/academics/notes/AddNote'));
 const EditNote = React.lazy(()  => import( '../../AdminComponents/academics/notes/EditNote'));
-
+const ViewCalendar = React.lazy(()  => import( '../../AdminComponents/academics/calender/ViewCalendar'));
 
 
 //students
@@ -44,7 +44,7 @@ const Section =  React.lazy(()  => import( '../../AdminComponents/students/secti
 const Scholarships = React.lazy(()  => import( '../../AdminComponents/students/schoolarship/Scholarships'));
 const StudentDetails = React.lazy(()  => import( '../../AdminComponents/students/studentDetails/StudentDetails'));
 const EditStudent = React.lazy(() => import('../../AdminComponents/students/newStudent/EditStudent'));
-const RegisterAttendance =  React.lazy(()  => import( '../../AdminComponents/students/attendance/RegisterAttendance'));
+//const RegisterAttendance =  React.lazy(()  => import( '../../AdminComponents/students/attendance/RegisterAttendance'));
 
 
 //staff
@@ -68,9 +68,9 @@ const BankTransactions = React.lazy(()  => import( '../../AdminComponents/financ
 const Fees = React.lazy(()  => import( '../../AdminComponents/finance/setfees/SetFees'));
 const SetFees = React.lazy(()  => import( '../../AdminComponents/finance/setfees/SetNewFees'));
 const PrepareBill = React.lazy(()  => import( '../../AdminComponents/finance/PrepareBill'));
-const NonBillPayment = React.lazy(()  => import( '../../AdminComponents/finance/NonBillPayment'));
-const BillPayment = React.lazy(()  => import( '../../AdminComponents/finance/BillPayment'));
-const ViewPayment = React.lazy(()  => import( '../../AdminComponents/finance/ViewPayment'));
+const RecordExpenditure = React.lazy(()  => import( '../../AdminComponents/finance/expenditure/RecordExpenditure'));
+const BillPayment = React.lazy(()  => import( '../../AdminComponents/finance/billPayment/BillPayment'));
+const ViewPayment = React.lazy(()  => import( '../../AdminComponents/finance/expenditure/ViewPayment'));
 
 
 //canteen 
@@ -135,6 +135,12 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: Calender,   
     },
     {
+        path: '/academics/viewCalendar',
+        name: "View Calendar",
+        exact: true,
+        component: ViewCalendar
+    },
+    {
         path: "/academics/calender",
         name: "Calendar",
         exact: true,
@@ -143,6 +149,7 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
     {
         path: "/academics/calender/add",
         name: "Add Calendar",
+        exact:true,
         component: AddCalenderEvent,   
     },
     {
@@ -194,6 +201,7 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
     {
         path: "/academics/notes/add",
         name: "Add Note",
+        exact:true,
         component: AddNote,
     },
     {
@@ -207,11 +215,11 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         exact: true,
         component: AllStudents,
     },
-    {
-        path: "/students/attendance/register",
-        name: "Attendance Register",
-        component: RegisterAttendance
-    },
+    // {
+    //     path: "/students/attendance/register",
+    //     name: "Attendance Register",
+    //     component: RegisterAttendance
+    // },
     {
         path: "/students/campus",
         name: "Campuses",
@@ -290,7 +298,7 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         exact: true,
         component: Fees
     },
-  
+   
     {
         path: "/finance/fees/set",
         name: "Set Fees",
@@ -328,9 +336,9 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: BankTransactions
     },
     {
-        path: "/finance/nonbillpayment",
-        name: "Non Bill Payment",
-        component: NonBillPayment
+        path: "/finance/payment",
+        name: "View Payment",
+        component:  RecordExpenditure
     },
     {
         path: "/finance/viewpayment",

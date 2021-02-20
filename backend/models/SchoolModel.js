@@ -5,25 +5,22 @@ const { Schema } = mongoose;
 const SchoolSchema =   new Schema( {
     name: {
         type: String,
-        required: true
     },
-    subName: {
+    fullName: {
         type: String,
-        required: true
     },
     motto: {
       type: String,
     },
+    role: {
+        type: String,
+    },
     logo: String,
     address: String,
+    photoUrl: String,
     email: String,
-    teleophone: String,
-    teacherID: String,
-    repID: String,
-    date: {
-        type: Date,
-        default: Date.now
-    } 
+    telephone: String,
+    password: String,
 }, { timestamps: true })
 
-export default  mongoose.model("school", SchoolSchema);
+export default  mongoose.model("accounts", SchoolSchema);

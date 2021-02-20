@@ -24,6 +24,8 @@ function AddCourses() {
             successAlert("successfull added")
             setname("");
             setcode("");
+            setteacher("");
+            settype("");
         }).catch(() => {
             setloading(false);
             errorAlert("sorry something when wrong")

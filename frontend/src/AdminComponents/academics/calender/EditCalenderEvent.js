@@ -48,8 +48,10 @@ function EditEvent() {
           title,
           resource: type, 
           allDay: allday, 
+          day: startday,
           start,
           end ,
+          type,
           description
         }).then(res => {
             if(res.data.error){
@@ -57,7 +59,7 @@ function EditEvent() {
                 setloading(false)
                 return 0
            }
-           successAlert("successfully created")
+           successAlert("successfully updated")
            setloading(false)
         })
         .catch(err => {

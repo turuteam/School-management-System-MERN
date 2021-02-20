@@ -12,26 +12,31 @@ import store from './store/index'
 import axios from './store/axios'
 import {LoginString} from './store/localStorage'
 import { loggin, logout } from './store/slices/userSlice';
+import {setLoading} from './store/slices/appSlice'
 import {setClasses, 
         setCourses, 
         setDormitories, 
         setCampuses, 
         setSections,
         setfeesType, 
+        setAcademicYear,
+        setStaff,
         setScholarships} from './store/slices/schoolSlice';
+
 
 
 
 if(localStorage.getItem(LoginString.ID)){
   store.dispatch(loggin({
-    id: localStorage.getItem(LoginString.ID),
-    photoUrl: localStorage.getItem(LoginString.PhotoURL),
-    email: localStorage.getItem(LoginString.EMAIL),
-    name: localStorage.getItem(LoginString.NAME),
-    role: localStorage.getItem(LoginString.USERROLE),
-    lastName: localStorage.getItem(LoginString.LASTNAME),
-    middleName: localStorage.getItem(LoginString.middleName)
+    id: localStorage.getItem(LoginString?.ID || ""),
+    photoUrl: localStorage.getItem(LoginString?.PhotoURL || ""),
+    email: localStorage.getItem(LoginString?.EMAIL || ""),
+    name: localStorage.getItem(LoginString?.NAME || ""),
+    role: localStorage.getItem(LoginString?.USERROLE || ""),
+    lastName: localStorage.getItem(LoginString?.LASTNAME || ""),
+    middleName: localStorage.getItem(LoginString?.middleName || "")
   }))
+  store.dispatch(setLoading(true))
    axios.get('/classes').then(res => {
        store.dispatch(setClasses(res?.data));
    })
@@ -53,11 +58,19 @@ if(localStorage.getItem(LoginString.ID)){
   axios.get('/fees/types').then(res => {
     store.dispatch(setfeesType(res?.data))
   })
+  axios.get('/academicyear/admin').then(res => {
+    store.dispatch(setAcademicYear(res?.data))
+  })
+  axios.get('/teachers').then(res => {
+    store.dispatch(setStaff(res?.data))
+  })
+
  }
  else{
   store.dispatch(logout())
  }
- 
+ store.dispatch(setLoading(false))
+
 React.icons = icons
 
 ReactDOM.render(

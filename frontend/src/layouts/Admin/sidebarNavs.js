@@ -1,7 +1,5 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import BookIcon from '@material-ui/icons/Book';
-import PaymentIcon from '@material-ui/icons/Payment';
 
 const _nav =  [
   {
@@ -77,14 +75,9 @@ const _nav =  [
         },
         // {
         //   _tag: 'CSidebarNavItem',
-        //   name: 'Attendance',
-        //   to: '/staff/attendance',
-        // },
-        {
-          _tag: 'CSidebarNavItem',
-          name: 'Payrow',
-          to: '/staff/finance',
-        }
+        //   name: 'Payrow',
+        //   to: '/staff/finance',
+        // }
     ]
   },
   {

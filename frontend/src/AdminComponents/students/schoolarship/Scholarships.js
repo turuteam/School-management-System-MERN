@@ -8,7 +8,6 @@ import EditScholarship from './EditScholarship'
 const tableHeader = [
     {id: "name", name: "Name"},
     {id: "percentage", name: "Percentage"},
-    {id: "students", name: "Number of Students"},
     {id: "createdAt", name: "Added"},
 ]
 
@@ -68,13 +67,14 @@ function Scholarships() {
     }
 
     const onEdit = () => {
-        console.log("submiting")
+        console.log("submiting", editID)
         seteditloading(true);
         axios.put(`/scholarships/update/${editID}`, {
             name: editname,
             percentage: editpercentage,
             types: edittypes
         }).then(res => {
+            console.log(res.data)
             seteditloading(false)
             if(res.data.error){
                 errorAlert(res.data.error);
@@ -104,7 +104,7 @@ function Scholarships() {
        seteditname(selected?.name);
        setpercentage(selected?.percentage);
        setedittypes(selected?.types);
-       seteditID(selected?.editID)
+       seteditID(id)
     }
 
     const handleDelete = (id) => {

@@ -13,7 +13,7 @@ route.get('/', async(req, res) => {
 //get user connections
 route.get("/chats/:id", async (req, res) => {
   if(!req.params.id){
-      return res.json({success: false, message:" id is required"})
+      return res.json({success: false, error:" id is required"})
     }
   const messageChats = await ChatModel.find({$or: [ {acceptor_id: req.params.id} ,{ requestor_id: req.params.id }]});
   res.json(messageChats);
@@ -22,13 +22,32 @@ route.get("/chats/:id", async (req, res) => {
 //get channel chatMessage
 route.get('/chat/:id', async (req, res) => {
   if(!req.params.id){
-    return res.json({success: false, message:" id is required"})
+    return res.json({success: false, error:" id is required"})
   }
  console.log(req.params.id)
  ChatModel.findOne({_id: req.params.id})
   .then(doc => {
     console.log(doc, "doc")
      return res.json(doc)
+  })
+  .catch(err => {
+   console.log(err, "err")
+    return res.json({success: false, message: "something when wrong"})
+  })
+})
+
+
+//get notification messages 
+route.get('/messages/:id', async (req, res) => {
+  if(!req.params.id){
+    return res.json({success: false, message:" id is required"})
+  }
+ ChatModel
+ .find({$or: [ {acceptor_id: req.params.id} ,{ requestor_id: req.params.id }]})
+  .then(doc => {
+    let  messages  = doc.map(e => e.messages);
+    let Allmessages = [].concat.apply([], messages)
+     return res.json(Allmessages)
   })
   .catch(err => {
    console.log(err, "err")

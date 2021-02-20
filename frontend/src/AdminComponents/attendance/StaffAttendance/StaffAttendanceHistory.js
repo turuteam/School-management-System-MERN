@@ -46,12 +46,13 @@ function Attendance() {
           <div className="row">
               <div className="col-xs-12 col-sm-6 col-md-8">
                 <Search 
+                handleSearch={handleSearch}
                 title= "Staff's Attendance"
                 inputFields={inputFields}
                 />
               </div>
               <div className="col-xs-12 col-sm-6 col-md-4">
-                   <Link to="/students/attendance/register" className="btn blue__btn">Register Attendance</Link>
+                   <Link to="/attendance/staff/register" className="btn blue__btn">Register Attendance</Link>
               </div>
           </div>
            

@@ -2,10 +2,13 @@ import React, {useState} from 'react'
 import Search from '../shared/Search';
 import TableList from '../shared/ListTable';
 import {Link} from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import {selectClasses, selectacademicYear} from '../../store/slices/schoolSlice'
 
 function CanteenPayment() {
     const [classID, setclass] = useState("");
     const [term, setterm] = useState("")
+    const classes = useSelector(selectClasses);
 
     const paymentData = [
         {
@@ -41,12 +44,12 @@ function CanteenPayment() {
             name: "class",
             value: classID,
             onChange: setclass,
-            options: [
-                { id: "1a", name: "Class A"},
-                { id: "1b", name: "Class B"},
-                { id: "1c", name: "Class C"},
-                { id: "1d", name: "Class D"},
-            ],
+            options: classes && classes?.map(e => {
+                return{
+                    id: e.classCode,
+                    name: e.name
+                }
+            })
         },
         {
             type: "select",
@@ -63,6 +66,15 @@ function CanteenPayment() {
             ],
         }
     ]
+    
+    const handleDelete = (id) => {
+        console.log(id)
+    }
+    
+    const handleEdit = (id) => {
+        console.log(id)
+    }
+
     return (
         <div>
             <div className="row">
@@ -76,7 +88,10 @@ function CanteenPayment() {
                   </div>
             </div>
           
-            <TableList tableHeader={tableHeader}  data={paymentData} />
+            <TableList 
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            tableHeader={tableHeader}  data={paymentData} />
         </div>
     )
 }

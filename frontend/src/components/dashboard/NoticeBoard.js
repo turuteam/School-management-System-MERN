@@ -1,48 +1,34 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Notice from './Notice'
-import Divider from '@material-ui/core/Divider';
+import axios from '../../store/axios';
 
 function NoticeBoard() {
-    const notices = [
-        {
-            message: "Great School manag meneesom.",
-            sender: "admin",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f8", 
-        },
-        {
-            message: "Great School manag meneesom.",
-            sender: "admin",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f9", 
-        },
-        {
-            message: "Great School manag meneesom.",
-            sender: "admin",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f0", 
-        },
-        {
-            message: "Great School manag meneesom.",
-            sender: "admin",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f1", 
-        }
-    ]
+    const [notices, setnotices] = useState([])
+
+    useEffect(() => {
+        axios.get('/notification').then(res => {
+            setnotices(res.data);
+        })
+    }, [])
+   
     return (
         <div className="content__container notices">
            <h3>Notice Board</h3>
-           {notices && notices.map(notice => 
-           <div  key={notice._id}>
-            <Notice  
-             message={notice.message} 
-             date={notice.date}
-             id={notice._id}
-             sender={notice.sender}
-             />
-              <Divider variant="middle" />
-            </div>
-           )}
+           {notices.length > 0 ? <>{notices.map(notice => 
+                <div  key={notice._id}>
+                    <Notice  
+                      description={notice?.message} 
+                      date={notice?.date}
+                      title={notice?.title}
+                      id={notice?._id}
+                      createdBy= {notice?.createdBy}
+                      createdAt={notice?.createdAt}
+                    />
+                    <hr/>
+                </div>
+            )} </>
+                : <h5 className="text-center my-3 text-danger">No Notice yet</h5>
+           }
         
         </div>
     )

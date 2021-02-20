@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import Search from '../../shared/Search';
 import FeesTable from './FeesTable';
 import axios from '../../../store/axios';
-import AddType from './AddFessModel'
+import AddType from './AddFessModel';
+import DeleteModel from './DeleteFeesModal'
+import {errorAlert} from '../../../utils'
 
 const tableHeader = [
     {id: "code", name: "Fees Type"},
@@ -19,7 +21,10 @@ function SetFees() {
     const [fees, setfees] = useState([]);
     const [open, setOpen] = useState(false)
     const [name, setname] = useState("");
+    const [deleteID, setdeleteID] = useState("")
+    const [openDelete, setopenDelete] = useState(false)
     const [loading, setloading] = useState(false)
+    const [deleteloading, setdeleteloading] = useState(false)
 
     useEffect(() => {
         axios.get('/fees').then(res => {
@@ -68,8 +73,30 @@ function SetFees() {
         })
     }
 
-   
+    const handleDelete = (id) =>{
+        setopenDelete(true)
+        setdeleteID(id)
+    }
 
+
+     const onDelete = () => {
+         setdeleteloading(true)
+         axios.delete(`/fees/delete/${deleteID}`).then(res => {
+             setdeleteloading(false);
+             if(res.data.error){
+                errorAlert(res.data.error);
+                return 0
+             }
+             setopenDelete(false)  
+             setfees(fees.filter(e => e._id !== deleteID))
+         }).catch(err => {
+             console.log(err);
+             errorAlert("error occurred");
+         })
+
+    }
+
+   
     return (
         <div>
             <div className=" row mb-3">
@@ -78,13 +105,16 @@ function SetFees() {
                      <Link className="btn blue__btn ml-3" to="/finance/fees/set"> Set Fees</Link>
                      <button 
                         onClick={() => setOpen(true)} 
-                        className="btn blue__btn mr-3" 
+                        className="btn blue__btn ml-3" 
                         to="/finance/fees/set"> 
                        Add Fees Type
                     </button>
                 </div>
             </div>
-             <FeesTable tableHeader={tableHeader} data={fees}/>
+             <FeesTable 
+             handleDelete={handleDelete}
+             tableHeader={tableHeader} 
+             data={fees}/>
              <AddType 
              open={open} 
              name={name}
@@ -92,6 +122,12 @@ function SetFees() {
              loading={loading}
              setname={setname}
              setOpen={setOpen}/>
+             <DeleteModel 
+               handleDelete={onDelete}
+               loading={deleteloading}
+               open={openDelete}
+               setOpen={setopenDelete}
+            />
         </div>
     )
 }

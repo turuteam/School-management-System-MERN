@@ -25,6 +25,7 @@ function AddCalender() {
           title,
           resource: type, 
           allDay: allday, 
+          day: startday,
           start,
           end ,
           description
@@ -59,22 +60,22 @@ function AddCalender() {
         <div  className="content__container">
             <h3>Add New Event</h3>
             <AddForm 
-             title= {title}
-             settitle ={settitle}
-             setdescription = {setdescription}
-            description = {description} 
-            starttime = {starttime}
-            setstarttime = {setstarttime}
-            startdate = {startday}
-            setstartdate = {setstartday}
-            allday = {allday}
-            setallday = {setallday}
-            endtime = {endtime}
-            onSubmit = {handleAddEvent}
-            loading ={loading}
-            setendtime ={setendtime}
-            type = {type}
-            settype = {settype}
+                title= {title}
+                settitle ={settitle}
+                setdescription = {setdescription}
+                description = {description} 
+                starttime = {starttime}
+                setstarttime = {setstarttime}
+                startdate = {startday}
+                setstartdate = {setstartday}
+                allday = {allday}
+                setallday = {setallday}
+                endtime = {endtime}
+                onSubmit = {handleAddEvent}
+                loading ={loading}
+                setendtime ={setendtime}
+                type = {type}
+                settype = {settype}
             />
         </div>
         </>

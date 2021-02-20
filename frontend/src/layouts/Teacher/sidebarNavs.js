@@ -41,6 +41,11 @@ const _nav =  [
             _tag: 'CSidebarNavItem',
             name: 'Courses',
             to: '/academics/courses',
+          },
+          {
+            _tag: 'CSidebarNavItem',
+            name: 'School Calendar',
+            to: '/academics/calendar',
           }
     ]
   },

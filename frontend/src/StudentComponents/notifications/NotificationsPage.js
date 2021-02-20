@@ -1,32 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Search from '../../AdminComponents/shared/Search';
 import Notice from '../../components/dashboard/Notice';
-import Divider from '@material-ui/core/Divider';
+import axios from '../../store/axios'
 
 function NotificationsPage() {
     const [date, setdate] = useState("");
     const [title, settitle] = useState("")
-    const [notices, setnotices] = useState([
-        {
-            message: "Great School manag meneesom.",
-            sender: "admin",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f8", 
-        },
-        {
-            message: " Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero necessitatibus totam, obcaecati excepturi nostrum inventore ea dolor quae nulla rerum ipsam soluta veritatis minima assumenda cupiditate corporis sapiente unde tenetur vel iure commodi. Porro cumque tempora enim nam nesciunt ipsam doloribus esse, eius blanditiis iste impedit beatae tenetur magnam quisquam?",
-            sender: "admin",
-            title: "Great School manag meneesom.",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f9", 
-        },
-        {
-            message: "Great School manag meneesom.",
-            sender: "admin",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f0", 
-        },
-    ])
+    const [notices, setnotices] = useState([])
+
+    useEffect(() => {
+        axios.get('/notification').then(res => {
+            setnotices(res.data);
+            console.log(res.data)
+        })
+       
+    }, [])
 
     const inputFields = [
         {
@@ -48,22 +36,34 @@ function NotificationsPage() {
         console.log("clicked")
     }
     return (
-        <div className="content__container notices">
-            <h3>Notice Board</h3>
-            <Search  inputFields={inputFields}  handleSearch={handleSearch}/>
-            {notices && notices.map(notice => 
-           <div className=""  key={notice._id}>
-            <Notice  
-             message={notice.message} 
-             date={notice.date}
-             title={notice.title}
-             id={notice._id}
-             isReset={true}
-             sender={notice.sender}
-             />
-              <Divider variant="middle" />
+        <div className=" notices">
+            <div className="mb-5 content__container">
+                 <h3>Notice Board</h3>
+                 <Search  inputFields={inputFields}  handleSearch={handleSearch}/>
             </div>
-           )}
+            <div className="notices__container content__container">
+                {notices.length > 0 ? notices.map(notice => 
+                    <div className=""  key={notice._id}>
+                        <Notice  
+                        description={notice.message} 
+                        date={notice.date}
+                        title={notice.title}
+                        id={notice._id}
+                        isReset={true}
+                        createdAt={notice?.createdAt}
+                        createdBy={notice.sender}
+                        />
+                        <hr/>
+                    </div>
+                ) :
+                 <>
+                   <h6 className="text-danger text-center">
+                       There are no notice at the moment
+                   </h6>
+                </> }
+            </div>
+            
+           
         </div>
     )
 }

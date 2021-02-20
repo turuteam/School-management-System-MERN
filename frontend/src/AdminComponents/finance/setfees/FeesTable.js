@@ -21,7 +21,7 @@ const useStyles2 = makeStyles({
 },
 });
 
-export default function CustomPaginationActionsTable({tableHeader, data}) {
+export default function CustomPaginationActionsTable({tableHeader, data, handleDelete}) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -100,7 +100,7 @@ export default function CustomPaginationActionsTable({tableHeader, data}) {
               </TableCell>
               <TableCell  align="left">
                 <div  className="d-flex align-items-center">
-                <IconButton>
+                <IconButton onClick={() => handleDelete(row._id)}>
                       <DeleteOutlineIcon/>
                   </IconButton>
                 </div>

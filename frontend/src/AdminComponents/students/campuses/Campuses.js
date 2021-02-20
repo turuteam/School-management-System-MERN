@@ -47,17 +47,23 @@ function Campuses() {
         setid(editCampus?._id);
     }
     const onEdit = () => {
-          console.log("edited")
           setloading(true)
-          axios.put(`/campuses/update/${id}`, {name: editname,location: editlocation}).then(res => {
+          axios.put(`/campuses/update/${id}`, 
+          { 
+              name: editname,
+              location: editlocation
+          }).then(res => {
+              console.log(res.data)
               setloading(false)
               if(res.data.error){
                   errorAlert(res.data.error)
                   return 0
-              }
+                }
+             successAlert("Campus successfully edit")
               let oldArray = campuses.filter(e => e._id !==  id);
               setcampuses([ res.data.doc, ...oldArray])
               setopenEdit(false)
+              console.log(openEdit)
           }).catch(err => {
             setloading(false);
            console.log(err);

@@ -34,7 +34,6 @@ function UpdateProfile({id, profile}) {
 
     useEffect(() => {
        setprofileimg(profile)
-
     }, [profile])
 
     const handleChangeFile = (e) => {
@@ -73,8 +72,11 @@ function UpdateProfile({id, profile}) {
          } 
          else{
              console.log('no file selected')
+             errorAlert("no file selected")
          }
     }
+
+    
 
     return (
         <div>

@@ -1,7 +1,7 @@
 
 import React, {useState , useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import InfoTabs from '../../AdminComponents/students/studentDetails/StudentTabs'
+import InfoTabs from '../../components/userInfoTabs/InfoTab'
 import Profile from '../../components/profile/UpdateProfile'
 import {useSelector} from 'react-redux';
 import {selectUser} from '../../store/slices/userSlice';

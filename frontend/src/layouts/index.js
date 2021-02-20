@@ -52,7 +52,7 @@ const TheLayout = () => {
     <div className="c-app c-default-layout">
       <TheSidebar navs={getNavs()}/>
       <div className="c-wrapper">
-        <TheHeader/>
+        <TheHeader routes={getRoutes()}/>
         <div className="c-body">
           <TheContent path={user?.role} routes={getRoutes()}/>
         </div>

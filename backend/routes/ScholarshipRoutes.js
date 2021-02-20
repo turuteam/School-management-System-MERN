@@ -1,5 +1,7 @@
 import express from "express";
 import ScholarshipModel from "../models/ScholarshipsModel.js";
+///import  StudentModel from '../models/ScholarshipsModel.js';
+//import db from '../config/mongodb.js'
 
 const route = express.Router();
 
@@ -14,9 +16,9 @@ route.get('/:id', async(req, res) => {
       return res.status(400).send('Missing URL parameter: username')
     }
   await ScholarshipModel.findOne({ _id: req.params.id })
-  .then(user => {
-      if(user){
-      return  res.json({success: true,doc})
+  .then(doc => {
+      if(doc){
+         return  res.json({success: true,doc})
       }
       else{
       return  res.json({success: false, error: 'Does not exists'})
@@ -62,7 +64,8 @@ route.put('/update/:id', (req, res) => {
        return res.json({success: true, doc});
     })
     .catch(err => {
-        res.json({success: false, error:err})
+      console.log(err)
+        res.json({success: false, error:"Edit failed"})
     })
   
   });

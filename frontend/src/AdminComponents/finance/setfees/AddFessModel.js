@@ -1,10 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
@@ -43,21 +41,12 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles((theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
 
 
 
 export default function CustomizedDialogs({name, setname, open, setOpen, loading, onSubmit}) {
   const { register, handleSubmit, errors } = useForm();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -73,6 +62,7 @@ export default function CustomizedDialogs({name, setname, open, setOpen, loading
                         <label className="col-12 form-label">Fees Name</label>
                         <div className="col-12">
                             <input  
+                             ref={register({ required: true })} 
                             value={name} 
                             onChange={e => setname(e.target.value)}
                             type="type" 

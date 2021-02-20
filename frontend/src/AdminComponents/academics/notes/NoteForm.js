@@ -22,7 +22,7 @@ function NoteForm(props) {
                 <select 
                     value={classID}
                     onChange={e => setclass(e.target.value)}
-                    name="class" class="form-select">
+                    name="class" className="form-select">
                     <option selected hidden >Choose...</option>
                     {classes.length > 0 ?  classes.map(e => <option value={e.classCode} key={e.classCode}>{e.name}</option>) 
                     :
@@ -34,7 +34,7 @@ function NoteForm(props) {
                 <select 
                     value={subject}
                     onChange={e => setsubject(e.target.value)}
-                    name="class" class="form-select">
+                    name="class" className="form-select">
                     <option selected  hidden>Choose...</option>
                     {courses.length > 0 ?  courses.map(e => <option value={e.code} key={e.code}>{e.name}</option>) 
                     :
@@ -64,7 +64,7 @@ function NoteForm(props) {
                 <label className="form-label">Upload file</label>
                 <input 
                  type="file" 
-                 accept=".jpg,.jpeg,.png,.doc,.docx,.pdf"
+                 accept=".jpg,.jpeg,.png,.doc,.docx,.pdf, .zip"
                  ref={register({ required: true })}
                  onChange={e => setfile(e.target.files[0])} 
                  className="form-control" 

@@ -23,9 +23,9 @@ route.get('/types', async(req, res) => {
 
 //get one class fees
 route.get('/:id', async(req, res) => {
-    const docs = await FeesModel.findOne({_id: req.params.id});
-    if(docs){
-        return  res.json(docs);
+    const doc = await FeesModel.findOne({_id: req.params.id});
+    if(doc){
+        return  res.json(doc);
     }
     else{
         return res.json({error: "", message: "Bank not found"})

@@ -20,15 +20,16 @@ route.get('/:id', async(req, res) => {
       return res.status(400).send('Missing URL parameter: username')
     }
   await Section.findOne({ _id: req.params.id })
-  .then(docs => {
-      if(docs){
-          return  res.json({success: true,docs})
+  .then(doc => {
+      if(doc){
+          return  res.json({success: true,doc})
       }
       else{
           return  res.json({success: false, error: 'Does not exists'})
       }
   })
   .catch(err => {
+      console.log(err)
       return res.json({success: false, error: "Server error"})
   });
 })

@@ -1,24 +1,26 @@
 import express from "express";
 import {uploader} from '../middlewares/multer.js'
 import StudentModel from "../models/StudentModel.js";
-// import AttendenceModels from '../models/AttendanceModels.js';
-// import ChatModels from '../models/ChatModels.js';
-// import CoursesModels from '../models/CoursesModels.js'
+import AttendanceModel from '../models/AttendenceModel.js';
+//import ChatModels from '../models/ChatModel.js';
+import CoursesModels from '../models/CoursesModel.js'
 import ClassesModel from '../models/ClassesModel.js';
-// import CalendarModels from './odels/CalendarModels.js';
+import Campus from '../models/CampusesModel.js';
+import CalendarModel from '../models/CalenderModel.js';
 // import FilesModels from '../models/FilesModels.js';
 // import NextofKinModels from '../models/NextofKinModels.js';
 // import NonTeachersModels from '../models/NonTeachersModels.js';
-// import NotificationModels from '../models/NotificationModels.js';
+ import NotificationsModel from '../models/NoticeModel.js';
 // import ResultsModels from '../models/ResultsModels.js';
 // import TaskModels from '../models/TaskModels.js';
-// import TeacherModels from '../models/TeacherModels.js';
+ import TeacherModels from '../models/TeacherModel.js';
 // import TimeTableModels from '../models/TimeTableModels.js';
 // import DepartmentsModels from '../models/DepartmentModels.js';
 // import CanteenModels from '../models/CanteenRouter.js';
 // import BankingModels from '../models/BankingModels.js';
 // import FeesModels from '../models/FeesModels.js';\\
 import { login ,changePassword} from  '../middlewares/validate.js';
+import {role} from '../middlewares/variables.js'
 
 
 import  bcrypt from 'bcrypt';
@@ -26,6 +28,81 @@ const route = express.Router();
 
 route.get('/', async(req, res) => {
    res.send('shared rotes')
+})
+
+//staff count
+route.get('/staff/count/:id', async(req, res) => {
+  if(!req.params.id) {
+    return res.status(400).send('Missing URL parameter: username')
+  }
+  const staff =  await TeacherModels.findOne({
+    role: role.Teacher, 
+    userID: req.params.id
+  });
+
+  const notifications = await NotificationsModel.find({date: {$gte: new Date()}});
+
+  let date = new Date()
+  date.setDate(date.getDate()-30);
+  const  attendance = await AttendanceModel.find({'users.userID' : req.params.id, date: {$gte: date}});
+
+  const docs = await CalendarModel.find({date : {$gte: date}});
+
+  return  res.json({
+    success: true,
+    count :{
+         courses: staff?.courses?.length,
+         classes: staff?.classID,
+         attendance: attendance?.length,
+         notifications: notifications?.length,
+         events: docs?.length
+      }
+    })
+})
+
+
+//count
+route.get('/student/count/:id', async(req, res) => {
+  if(!req.params.id) {
+    return res.status(400).send('Missing URL parameter: username')
+  }
+  const student =  await StudentModel.findOne({
+    role: role.Student, 
+    userID: req.params.id
+  });
+
+  
+  const notifications = await NotificationsModel.find({date: {$gte: new Date()}});
+
+  let date = new Date()
+  date.setDate(date.getDate()-30);
+  const  attendance = await AttendanceModel.find({'users.userID' : req.params.id, date: {$gte: date}});
+
+  const docs = await CalendarModel.find({date : {$gte: date}});
+
+  return  res.json({
+    success: true,
+    count :{
+         courses: student?.courses?.length,
+         attendance: attendance?.length,
+         notifications: notifications?.length,
+         events: docs?.length
+      }
+    })
+})
+
+route.get('/count', async(req, res) => {
+    const students = await StudentModel.countDocuments({role: role.Student})
+
+
+    const femaleStudents = await StudentModel.countDocuments({role: role.Student, gender: "female"});
+    const maleStudents = await StudentModel.countDocuments({role: role.Student, gender: "male"});
+    
+    const staff = await TeacherModels.countDocuments({role: role.Teacher});
+    const campuses = await Campus.countDocuments();
+    const classes = await ClassesModel.countDocuments();
+    const courses =await CoursesModels.countDocuments();
+    res.json({students, staff, campuses, classes, courses, femaleStudents, maleStudents})
 })
 
 route.post('/upload/', uploader.single('photo') ,(req , res) => {
@@ -170,6 +247,24 @@ route.post('/change/password/:id', async(req, res )=> {
   })
 })
 
+
+route.delete('/user/delete/:id', (req, res) => {
+  if(!req.params.id) {
+    return res.status(400).send('Missing URL parameter: username')
+  }
+ StudentModel.findOneAndRemove({
+    userID: req.params.id
+  })
+  .then((doc) => {
+       if(!doc){
+          return
+       }
+      return res.json({success: true, message: ` ${req.params.id} is successfully DELETED`})
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+})
 
 
 export default route;

@@ -21,7 +21,7 @@ route.get('/student/:id', async(req, res) => {
     await StudentModel.findOne({ userID: req.params.id , role: role.Student})
     .then(user => {
         if(user){
-          console.log(user)
+         
         return  res.json({success: true,student: user})
         }
         else{
@@ -29,10 +29,10 @@ route.get('/student/:id', async(req, res) => {
         }
     })
     .catch(err => {
-        console.log(err)
         return res.json({success: false, error: "WRONG error"})
     });
 })
+
 
 //get studentCourses
 route.get('/student/courses/:id', async(req, res) => {
@@ -42,7 +42,6 @@ route.get('/student/courses/:id', async(req, res) => {
   await StudentModel.findOne({ userID: req.params.id , role: role.Student})
   .then(user => {
       if(user){
-        console.log(user)
       return  res.json({success: true,courses: user?.courses})
       }
       else{
@@ -50,7 +49,6 @@ route.get('/student/courses/:id', async(req, res) => {
       }
   })
   .catch(err => {
-      console.log(err)
       return res.json({success: false, error: "WRONG error"})
   });
 })
@@ -62,7 +60,50 @@ route.get('/search/:id', async(req, res) => {
   if(!req.params.id) {
       return res.status(400).send('Missing URL parameter: username')
     }
-  await StudentModel.find({ role:  role.Student, $or: [{userID: req.params.id}, {name:{ $regex: req.params.id } }, {lastname:{ $regex: req.params.id }} ]})
+  await StudentModel.find(
+    { 
+      role:  role.Student, 
+        $or: [{
+          userID: req.params.id
+        }, 
+        {
+          name:{ $regex: req.params.id }
+        }, 
+        {
+          lastname:{ $regex: req.params.id }
+        } ]
+    })
+  .then(user => {
+      if(user){
+         return  res.json({success: true, users: user})
+      }
+      else{
+         return  res.json({success: false, error: 'Student does not exists'})
+      }
+  })
+  .catch(err => {
+      return res.json({success: false, error: "WRONG error"})
+  });
+})
+
+//search students by id or name
+route.get('/search/:id/:name/:classID', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await StudentModel.find(
+    { 
+      role:  role.Student, 
+        $or: [{
+          userID: { $regex: req.params.userID}
+        }, 
+        {
+          name:{ $regex: req.params.name }
+        }, 
+        {
+          classID: req.params.classID 
+        } ]
+    })
   .then(user => {
       if(user){
          return  res.json({success: true, users: user})
@@ -76,6 +117,7 @@ route.get('/search/:id', async(req, res) => {
       return res.json({success: false, error: "WRONG error"})
   });
 })
+
 
 //get all parents 
 route.get('/parents', async(req, res) => {
@@ -129,7 +171,7 @@ route.get('/class/:id', async(req, res) => {
          return  res.json({success: true,users: user})
       }
     else{
-      return  res.json({success: false, error: 'No Students in the classå'})
+      return  res.json({success: false, error: 'No Students in this class'})
     }
   })
   .catch(err => {
@@ -145,11 +187,6 @@ route.get('/class/:id', async(req, res) => {
 //create student
 route.post('/create', async(req , res) => {
   let body = req.body
-
-  //  const {error} = create.validate(body);
-  // if(error){
-  //   return  res.json({success: false, error : error.details[0].message})
-  //  }
 
    body = {
     ...body,
@@ -171,7 +208,6 @@ route.post('/create', async(req , res) => {
         return res.json({success: false, error: "Student already exist"})
     }
 
-    console.log(studentExist)
 
     //calculate student num
     const currentYear = new Date().getFullYear();
@@ -180,10 +216,8 @@ route.post('/create', async(req , res) => {
 
     bcrypt.hash(studentId, 10, (err, hash) => {
           if(err){
-              console.log(err, "err")
             return   res.json({success: false, error: "something went wrong"})
           }
-          console.log(hash)
           const userData = {
               ...body,
               password: hash,
@@ -193,7 +227,6 @@ route.post('/create', async(req , res) => {
           StudentModel.create(userData).then(user => {
           return  res.json({success: true, student: user})
          }).catch(e => {
-             console.log(e, "e")
            return   res.json({success: false, error: "something went wrong"})
          })
      })
@@ -250,7 +283,6 @@ route.put('/changePassword/:id', async(req, res )=> {
         if (bcrypt.compareSync(req.body.oldPassword, user.password)){
               bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
                 if(err){
-                  console.log("err")
                   return res.json( { success: false, error: err })
                 }
                 StudentModel.findOneAndUpdate({
@@ -262,7 +294,7 @@ route.put('/changePassword/:id', async(req, res )=> {
                      return res.json({success: true, message: "Password successfully changed"})
                   })
                 .catch(e => {
-                  console.log("e")
+        
                     return res.json( { success: false, error: e + "e"})
                 })
             })  
@@ -284,14 +316,13 @@ route.put('/update/:id', (req, res) => {
     if(!req.params.id) {
       return res.status(400).send('Missing URL parameter: username')
     }
-    console.log(req.body)
     StudentModel.findOneAndUpdate({
       userID: req.params.id
     }, req.body, {
       new: true
     })
     .then(doc => {
-        console.log(doc)
+       
         if(!doc){
           return res.json({success: false, error: "doex not exists"})
        }
@@ -315,7 +346,6 @@ route.post('/upgrade/class', (req, res) => {
     new: true
   })
   .then(doc => {
-      console.log(doc)
       if(!doc){
         return res.json({success: false, error: "doex not exists"})
      }
@@ -338,7 +368,6 @@ route.post('/upgrade/dormitories', (req, res) => {
     new: true
   })
   .then(doc => {
-      console.log(doc)
       if(!doc){
         return res.json({success: false, error: "doex not exists"})
      }
@@ -361,7 +390,6 @@ route.post('/upgrade/campus', (req, res) => {
     new: true
   })
   .then(doc => {
-      console.log(doc)
       if(!doc){
         return res.json({success: false, error: "doex not exists"})
      }

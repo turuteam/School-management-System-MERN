@@ -11,7 +11,8 @@ function AddClass() {
     const [campus, setcampus] = useState("");
     const [teacher, setteacher] = useState("");
     const [code, setcode] = useState("");
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(false);
+    const [academic, setacademic] = useState("")
 
     const handleAddClass = () => {
         setloading(true)
@@ -20,7 +21,8 @@ function AddClass() {
             classCode: code, 
             name, 
             campusID: campus, 
-            teacherID: teacher
+            teacherID: teacher,
+            academic
         }).then(res => {
             let {data} = res;
             if(data?.error){
@@ -32,6 +34,7 @@ function AddClass() {
             setcampus("");
             setcode("");
             setname("");
+            setacademic("");
             setteacher("");
 
         }).catch((e) => {
@@ -51,6 +54,8 @@ function AddClass() {
             campus={campus} 
             setcampus={setcampus}
             code={code}
+            academic={academic}
+            setacademic={setacademic}
             loading={loading}
             setcode={setcode} 
             teacher={teacher}

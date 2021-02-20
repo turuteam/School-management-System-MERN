@@ -2,7 +2,7 @@ import React from 'react';
 import GuadianCard from '../../AdminComponents/shared/GuadianCard'
 
 function GuadanceTab({user}) {
-    console.log(user)
+    console.log(user, "guadance tab")
     return (
         <div>
             {user?.length > 0 ? user.map(e => {

@@ -62,7 +62,6 @@ route.put('/update/:id', async(req, res) => {
         new: true
         })
         .then(doc => {
-            console.log(doc)
             return  res.json({success: true, message: "OK"});  
         })
         .catch(err => {
@@ -95,7 +94,6 @@ route.put('/update/:id', async(req, res) => {
         _id: req.params.id
       })
         .then(doc => {
-            console.log(doc)
             return  res.json({success: true, message: "OK"});  
         })
         .catch(err => {

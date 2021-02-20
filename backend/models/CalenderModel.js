@@ -22,7 +22,7 @@ const CalendarSchema =   new Schema( {
     allDay: {
         type: Boolean
     },
-    date: {
+    day: {
         type: Date,
         default: Date.now
     }

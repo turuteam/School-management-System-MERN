@@ -1,14 +1,12 @@
-.student__details {
-  .student__info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.student__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    .avatar {
-      height: 150px;
-      width: 150px;
-    }
+  .avatar {
+    height: 100px;
+    width: 100px;
   }
 }
 

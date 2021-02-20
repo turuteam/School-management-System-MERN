@@ -71,6 +71,7 @@ function EditStaff() {
             setgender(data?.gender);
             setsecondName(data?.middleName);
             setdateofBirth(data?.dateofBirth);
+            setprofileimg(data?.profileUrl)
             setemail(data?.email);
             setnationality(data?.nationality);
             setplaceofBirth(data?.placeofBirth);
@@ -95,7 +96,7 @@ function EditStaff() {
             setpostalAddress(data?.postalAddress);
             setnexttelephone(data?.nextofKin?.mobile);
             setnextemail(data.nextofKin?.email);
-            setnextlastname(data.nextofKin?.name)
+            setnextlastname(data.nextofKin?.lastname)
             setnextname(data.nextofKin?.name)
             setaddress(data.nextofKin?.address);
             setoccupation(data.nextofKin?.occupation);
@@ -105,37 +106,36 @@ function EditStaff() {
     }, [id])
    
 
-    const handleReset = (e) => {
-        e.preventDefault();
-        setname(details?.name);
-        setlastname(details?.surname);
-        setgender(details?.gender);
-        setsecondName(details?.middleName);
-        setdateofBirth(details?.dateofBirth);
-        setemail(details?.email);
-        setnationality(details?.nationality);
-        setplaceofBirth(details?.placeofBirth);
-        setreligion(details?.religion);
-        settitle(details?.title);
-        setRole(details?.position);
-        setDepartment(details?.department);
-        setCampus(details?.campus);
-        setemploymentDate(details?.employmentDate);
-        setqualification(details?.qualification);
-        setyears(details?.years);
-        setsalary(details?.salary);
-        setallowance(details?.allowance);
-        setmobilenumber(details?.telephone);
-        setresidence(details?.physicalAddress);
-        settelephone(details?.mobile);
-        setpostalAddress(details?.postalAddress);
-        setnexttelephone(details?.nextofKin?.mobile);
-        setnextemail(details.nextofKin?.email);
-        setnextlastname(details.nextofKin?.name)
-        setnextname(details.nextofKin?.name)
-        setaddress(details.nextofKin?.address);
-        setoccupation(details.nextofKin?.occupation);
-        setrelationship(details.nextofKin?.relationship)
+    const handleReset = (data) => {
+        setname(data?.name);
+        setlastname(data?.surname);
+        setgender(data?.gender);
+        setsecondName(data?.middleName);
+        setdateofBirth(data?.dateofBirth);
+        setemail(data?.email);
+        setnationality(data?.nationality);
+        setplaceofBirth(data?.placeofBirth);
+        setreligion(data?.religion);
+        settitle(data?.title);
+        setRole(data?.position);
+        setDepartment(data?.department);
+        setCampus(data?.campus);
+        setemploymentDate(data?.employmentDate);
+        setqualification(data?.qualification);
+        setyears(data?.years);
+        setsalary(data?.salary);
+        setallowance(data?.allowance);
+        setmobilenumber(data?.telephone);
+        setresidence(data?.physicalAddress);
+        settelephone(data?.mobile);
+        setpostalAddress(data?.postalAddress);
+        setnexttelephone(data?.nextofKin?.mobile);
+        setnextemail(data.nextofKin?.email);
+        setnextlastname(data.nextofKin?.name)
+        setnextname(data.nextofKin?.name)
+        setaddress(data.nextofKin?.address);
+        setoccupation(data.nextofKin?.occupation);
+        setrelationship(data.nextofKin?.relationship)
     }
 
 
@@ -148,18 +148,25 @@ function EditStaff() {
                  surname:  lastname,
                 gender,
                 dateofBirth,
+                title,
                 email,
                 nationality,
                 religion,
                 placeofBirth,
                 health,
                 disease,
+                campus,
                 allege,
-                course: [],
+                courses,
                 classID,
+                allowance,
+                salary,
+                years,
+                employmentDate,
                 position: role,
-                mobilenumber,
+                mobile : mobilenumber,
                 telephone,
+                qualifications: qualification,
                 postalAddress,
                 physicalAddress: residence,
                 nextofKin: {
@@ -172,11 +179,13 @@ function EditStaff() {
                     lastname: nextlastname,
                 }
         }).then(res => {
+            console.log(res.data)
             setloading(false)
             if(res.data.error){
                 errorAlert(res.data.error);
                 return 0;
             }
+            setdetails(res.data.teacher)
             successAlert("Successfully Edited")
             
         }).catch(err => {
@@ -184,6 +193,7 @@ function EditStaff() {
             errorAlert("Something went wrong");
             setloading(false)
         })
+        
     }
 
     const handleChangeFile = (e) => {
@@ -210,6 +220,7 @@ function EditStaff() {
             <div>
                 <form action="" className="content__container">
                      <ProfilePicture 
+                        profileUrl={profileUrl}
                         profileimg={profileimg} 
                         setprofileUrl={handleChangeFile}
                        />
@@ -267,7 +278,7 @@ function EditStaff() {
                         <NextofKin 
                          lastname={nextlastname} 
                          setlastname={setnextlastname}
-                         name={name}
+                         name={nextname}
                          setname={setnextname}
                          errors={errors}
                          register={register}
@@ -295,7 +306,7 @@ function EditStaff() {
                                   <span className="visually-hidden">Loading...</span>
                                </> : "Save Changes"}
                         </button>
-                         <button onClick={handleReset} className=" col btn blue__btn">Reset</button>
+                         <button onClick={ (e) => { e.preventDefault(); handleReset(details)}} className=" col btn blue__btn">Reset</button>
                      </div>
                 </form>
 

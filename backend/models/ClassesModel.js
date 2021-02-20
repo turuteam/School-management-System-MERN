@@ -17,6 +17,12 @@ const ClassesSchema =   new Schema( {
     campusID: {
         type: String
     },
+    division: {
+        type: String,
+    },
+    academic: {
+        
+    },
     date: {
         type: Date,
         default: Date.now
