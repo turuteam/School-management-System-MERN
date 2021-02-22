@@ -1,10 +1,24 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useForm } from "react-hook-form";
+import {useSelector} from 'react-redux';
+import {selectClasses} from '../../store/slices/schoolSlice'
+import {staffPosition} from '../../data'
+import axios from '../../store/axios'
 
 function AddMemberCanteeForm(props) {
     const { register, handleSubmit, errors } = useForm();
-    let {userID,loading, role, setuserID, name, setname, classID, setclass, setpaymentPackage, onCreate} = props
+    let {userID,loading, role, 
+        setuserID, name, setname, 
+        classID, setclass, 
+        setpaymentPackage, onCreate} = props
+    const classes = useSelector(selectClasses);
+    const [paymentPlan, setpaymentPlan] = useState([])
 
+    useEffect(() => {
+        axios.get('/paymentplan').then(res => {
+            setpaymentPlan(res.data?.plans)
+        })
+    }, [])
 
     return (
     <form action="" className=" g-3">
@@ -38,10 +52,10 @@ function AddMemberCanteeForm(props) {
                 onChange={e => setclass(e.target.value)}
                 name="class" class="form-select">
                 <option defaultValue hidden  >Choose...</option>
-                <option value="2a">2A</option>
-                <option value="2a">3A</option>
-                <option value="2a">2B</option>
-                <option value="2a">2C</option>
+                {classes.length > 0  ?  
+                classes.map(e => <option key={e.classCode} value={e.classCode}>{e.name}</option>)
+                       : 
+                 <option disabled>no classes yet</option>}
             </select>
             </> 
               : 
@@ -52,67 +66,33 @@ function AddMemberCanteeForm(props) {
                     onChange={e => setclass(e.target.value)}
                     name="class" className="form-select">
                     <option defaultValue hidden  >Choose...</option>
-                    <option value="2a">2A</option>
-                    <option value="2a">3A</option>
-                    <option value="2a">2B</option>
-                    <option value="2a">2C</option>
+                    {staffPosition.length > 0  ?  staffPosition.map(e => <option key={e} value={e}>{e}</option>)
+                       : 
+                    <option disabled>no data yet</option>}
                 </select>
               </>
             }
         </div>
         <div className="col-md-8 mb-3">
-            <label  className="form-label">Select Payment Method</label>
-            <div className="form-check">
-                <input 
-                className="form-check-input" 
-                value="weekly" 
-                type="radio" 
-                onClick={(e) => setpaymentPackage(e.target.value)}
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                    Weekly  
-                </label>
-            </div>
-            <div className="form-check ">
-                <input 
-                className="form-check-input" 
-                onClick={(e) => setpaymentPackage(e.target.value)}
-                value="monthy" 
-                type="radio" 
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                   Monthy
-                </label>
-            </div>
-            <div className="form-check">
-                <input 
-                className="form-check-input" 
-                value="semester" 
-                type="radio" 
-                onClick={(e) => setpaymentPackage(e.target.value)}
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                   Semester
-                </label>
-            </div>
-            <div className="form-check">
-                <input 
-                className="form-check-input" 
-                onClick={(e) => setpaymentPackage(e.target.value)}
-                value="yearly" 
-                type="radio" 
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                   Yearly
-                </label>
-            </div>
+            <label  className="form-label">Select Payment Plan <a href="/canteen/payments/plan">View Payment Plans available</a></label>
+            <select 
+                    onChange={(e) => setpaymentPackage(e.target.value)}
+                    name="class" className="form-select">
+                    <option defaultValue hidden  >Choose...</option>
+                    {paymentPlan.length > 0  ?  
+                    paymentPlan.map(e => <option key={e._id} value={e.plan}>{e.name}</option>)
+                       : 
+                    <option disabled>no data yet</option>}
+            </select>
         </div>
         <div className="mb-3">
             <button 
             disabled={loading} 
             onClick={handleSubmit(onCreate)} 
             className="btn blue__btn">
-                {loading &&  <span className="spinner-border spinner-border-sm" role="status"></span>}
+                {loading &&  
+                <span className="spinner-border spinner-border-sm" 
+                role="status"></span>}
                 Register 
             </button>
         </div>

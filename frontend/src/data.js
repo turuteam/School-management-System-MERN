@@ -46,3 +46,20 @@ export const bankOptions = [
     "UT Bank",
     "United Bank for Africa"
 ]
+
+export const staffPosition = [
+    "Teacher",
+    "Headmaster",
+    "Accountant",
+    "Teller",
+    "Security",
+    "Proprietor",
+    "Cleaner",
+    "Cook",
+    "Admin",
+    "Technician",
+    "Janitor",
+    "Matron",
+    "Secretary",
+    "Driver"
+]

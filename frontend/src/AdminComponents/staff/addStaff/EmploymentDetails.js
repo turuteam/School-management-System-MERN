@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux';
+import {staffPosition} from '../../../data'
 import {selectClasses, 
     selectCourses,
     selectCampuses} from '../../../store/slices/schoolSlice'
@@ -30,7 +31,8 @@ function EmploymentDetails(props) {
         register,
         errors,
         handleCoursesCheckbox
-    } = props
+    } = props;
+
     return (
         <div>
                <h3>Employment Details</h3>
@@ -45,23 +47,9 @@ function EmploymentDetails(props) {
                                 className="form-select" 
                                 aria-label="Default select example">
                                 <option  defaultValue  hidden >select</option>
-                                <option value="teacher">Teacher</option>
-                                <option value="headmaster">Head Master</option>
-                                <option value="accountant">Accountant</option>
-                                <option value="teller">Teller</option>
-                                <option value="security">Security</option>
-                                <option value="proprietor">Proprietor</option>
-                                <option value="cleaner">Cleaner</option>
-                                <option value="cook">Cook</option>
-                                <option value="admin">Admin</option>
-                                <option value="technician">Technician</option>
-                                <option value="janitor">Janitor</option>
-                                <option value="matron">Matron</option>
-                                <option value="secretary">Secretary</option>
-                                <option value="driver">Driver</option>
+                                {staffPosition && staffPosition.map(e => <option value={e} key={e}>{e}</option>)}
                             </select>
                             {errors.role && <span className=" form-error text-danger mb-2">Name is required</span>}
-                            
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
                             <label  className="form-label">Departments</label>

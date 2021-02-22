@@ -73,11 +73,6 @@ const _nav =  [
           name: 'Add Staff',
           to: '/staff/new',
         },
-        // {
-        //   _tag: 'CSidebarNavItem',
-        //   name: 'Payrow',
-        //   to: '/staff/finance',
-        // }
     ]
   },
   {
@@ -173,10 +168,38 @@ const _nav =  [
     ],
   },
   {
-    _tag: 'CSidebarNavItem',
+    _tag: 'CSidebarNavDropdown',
     name: 'Canteen',
-    to: '/canteen',
-    icon:  <CIcon name="cil-notes" customClasses="c-sidebar-nav-icon sidebarIcon"/>,
+    route: '/canteen/payments',
+    icon: <CIcon name="cil-notes" customClasses="c-sidebar-nav-icon  sidebarIcon"/>,
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'All Payments',
+        to: '/canteen/payments',
+      },
+      {
+          _tag: 'CSidebarNavItem',
+          name: 'All Members',
+          to: '/canteen/members',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Add New Member',
+        to: '/canteen/members/register',
+     },
+     {
+      _tag: 'CSidebarNavItem',
+      name: 'Make Payment',
+       to: '/canteen/payments/add',
+    },
+    {
+      _tag: 'CSidebarNavItem',
+      name: ' Payment Plans',
+       to: '/canteen/payments/plan',
+    },
+
+    ]
   },
   {
     _tag: 'CSidebarNavDropdown',

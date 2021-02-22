@@ -20,6 +20,7 @@ import TaskRoutes from './routes/TaskRoutes.js';
 import Transactions from './routes/TransactionsRoutes.js';
 import TeacherRoutes from './routes/TeacherRoutes.js';
 import SchoolRoutes from './routes/SchoolRoutes.js';
+import PaymentPlanRoutes from './routes/PaymentPlanRoutes.js';
 import SharedRoutes from './routes/SharedRoutes.js';
 import StaffPay from './routes/StaffPayRoutes.js';
 import ScholarshipRoutes from './routes/ScholarshipRoutes.js';
@@ -70,6 +71,7 @@ app.use("/api/staffpay", StaffPay);
 app.use("/api/sections", SectionRoutes);
 app.use("/api/school", SchoolRoutes)
 app.use("/api/prefects", PrefectsRoutes);
+app.use("/api/paymentplan", PaymentPlanRoutes);
 app.use("/upload", UploadsRoutes);
 app.use("/api/departments", DepartmentsRoutes);
 app.use("/api/canteen", CanteenRoutes);

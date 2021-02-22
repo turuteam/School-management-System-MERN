@@ -8,6 +8,7 @@ function EditMember() {
     const [name, setname] = useState("");
     const [paymentMethod, setpaymentMethod] = useState("")
     const [loading, setloading] = useState(false)
+    const [paymentPlan, setpaymentPlan] = useState([])
     const {id}= useParams();
 
     useEffect(() => {
@@ -22,6 +23,14 @@ function EditMember() {
  
       })
     }, [id])
+
+    useEffect(() => {
+        axios.get('/paymentplan').then(res => {
+            setpaymentPlan(res.data?.plans)
+            console.log(res.data)
+        })
+    }, [])
+
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -43,7 +52,7 @@ function EditMember() {
     return (
         <div>
             <CanteenNav />
-            <h3>Edit {id} Member</h3>
+            <h3>Edit Canteen Member {id}</h3>
            <form  className="content__container">
                 <div className="col-md-6 mb-4">
                 <label  className="form-label">Name</label>
@@ -56,54 +65,16 @@ function EditMember() {
                 </div>
                 <div className="col-md-8 mb-3">
             <label  className="form-label">Select Payment Method</label>
-            <div className="form-check">
-                <input 
-                className="form-check-input" 
-                value="weekly" 
-                type="radio" 
-                checked={paymentMethod === "weekly"}
-                onClick={(e) => setpaymentMethod(e.target.value)}
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                    Weekly  
-                </label>
-            </div>
-            <div className="form-check ">
-            <input 
-                className="form-check-input" 
-                value="monthy" 
-                type="radio" 
-                checked={paymentMethod === "monthy"}
-                onClick={(e) => setpaymentMethod(e.target.value)}
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                    Monthy 
-                </label>
-            </div>
-            <div className="form-check">
-                <input 
-                className="form-check-input" 
-                value="semester" 
-                checked={paymentMethod === "semester"}
-                type="radio" 
-                onClick={(e) => setpaymentMethod(e.target.value)}
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                   Semester
-                </label>
-            </div>
-            <div className="form-check">
-                <input 
-                className="form-check-input" 
-                onClick={(e) => setpaymentMethod(e.target.value)}
-                value="yearly" 
-                checked={paymentMethod === "yearly"}
-                type="radio" 
-                name="flexRadioDefault" />
-                <label className="form-check-label" >
-                   Yearly
-                </label>
-            </div>
+            <label  className="form-label">Select Payment Plan <a href="/canteen/payments/plan">View Payment Plans available</a></label>
+            <select 
+                    onChange={(e) => setpaymentMethod(e.target.value)}
+                    name="paymentMethod" className="form-select">
+                    <option defaultValue hidden  >Choose...</option>
+                    {paymentPlan.length > 0  ?  
+                    paymentPlan.map(e => <option key={e._id} value={e.plan}>{e.name}</option>)
+                       : 
+                    <option disabled>no data yet</option>}
+            </select>
         </div>
         <div>
             <button disabled={loading} onClick={handleEdit} className="btn blue__btn">

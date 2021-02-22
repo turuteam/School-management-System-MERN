@@ -5,14 +5,27 @@ import StudentModel from '../models/StudentModel.js';
 
 const route = express.Router();
 
-//get all events
+//get all members
 route.get('/', async(req, res) => {
     const docs = await CanteenModel.find();
     res.json(docs);
 })
 
-//search event by name
-
+//get all  payments
+route.get('/payments', async(req, res) => {
+  const docs = await CanteenModel.find();
+  let payments =  docs.map(e => {
+    return ( e.payments.map(i =>{ return{
+        amount: i.amount,
+        date: i.date,
+        _id: i._id,
+        memberID: e.memberID,
+        name: e.name
+    }}) )
+  })
+  var merged = [].concat.apply([], payments);
+  res.json(merged);
+})
 
 
 //get one by id
@@ -61,6 +74,32 @@ route.post('/create', async(req, res) => {
             res.json({success: false, message:err})
       })
 });
+
+//make payment 
+route.put('/payment/:id', async(req, res) => {
+  const isExist = await CanteenModel.findOne({memberID: req.params.id});
+  if(!isExist){
+    return res.json({success: false, error: "Member does not exist"});
+  }
+
+  CanteenModel.findOneAndUpdate({
+    memberID: req.params.id
+  }, {$push: { payments: req.body }}, {
+    new: true
+  })
+  .then(doc => {
+      console.log(doc)
+      if(!doc){
+        return res.json({success: false, error: "does not exists"})
+     }
+      return  res.json({success: true, doc});
+    })
+  .catch(err => {
+      res.json({success: false, error:err})
+  })
+
+
+})
 
 
 //edit

@@ -80,6 +80,7 @@ const CanteenMembers = React.lazy(() => import('../../AdminComponents/canteen/Me
 const EditPayment = React.lazy(() => import('../../AdminComponents/canteen/AddCanteenPayment'));
 const RegisterCanteen = React.lazy(() => import('../../AdminComponents/canteen/RegisterMember'));
 const EditMember = React.lazy(() => import('../../AdminComponents/canteen/EditMember'));
+const PaymentPlan = React.lazy(() => import('../../AdminComponents/canteen/PaymentPlan'));
 
 //attendance 
 const StudentsAttendanceHistory = React.lazy(() => import('../../AdminComponents/attendance/StudentAttendance/StudentsAttendanceHistory'));
@@ -215,11 +216,6 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         exact: true,
         component: AllStudents,
     },
-    // {
-    //     path: "/students/attendance/register",
-    //     name: "Attendance Register",
-    //     component: RegisterAttendance
-    // },
     {
         path: "/students/campus",
         name: "Campuses",
@@ -346,7 +342,7 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: ViewPayment
     },
     {
-        path: "/canteen",
+        path: "/canteen/payments",
         exact: true,
         name: "canteen",
         component: Canteen
@@ -368,12 +364,18 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: EditMember
     },
     {
-        path: "/canteen/addpayment",
+        path: "/canteen/payments/add",
         name: "canteen",
+        exact:true,
         component: AddPayent
     },
     {
-        path: "/canteen/editpayment/:id",
+        path: "/canteen/payments/plan",
+        name: "canteen",
+        component: PaymentPlan
+    },
+    {
+        path: "/canteen/payments/edit/:id",
         name: "canteen",
         component: EditPayment
     },

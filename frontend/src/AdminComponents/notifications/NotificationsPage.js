@@ -5,22 +5,7 @@ import axios from '../../store/axios';
 import {errorAlert, successAlert} from '../../utils'
 
 function NotificationsPage() {
-    const [notices, setnotices] = useState([
-        {
-            description: "Great School manag meneesom. Great School manag meneesom. Great School manag meneesom. Great School manag meneesom. Great School manag meneesom.",
-            createdBy: "admin",
-            title: "Great School manag meneesom.",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f8", 
-        },
-        {
-            title: "Great School manag meneesom.",
-            description: "Great School manag meneesom.",
-            createdBy: "admin",
-            date: "2021-02-01T12:52:18.125Z",
-            _id: "6017f98273029d53819683f9", 
-        },
-    ]);
+    const [notices, setnotices] = useState([]);
     const [title, settitle] = useState("");
     const [date, setdate] = useState("");
     const [createdBy, setcreatedBy] = useState("");

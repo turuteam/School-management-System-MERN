@@ -45,7 +45,7 @@ function Notices({
             </form>
             <div className="notice__container my-5">
                 {notices?.length > 0 ?  notices?.map(e => 
-                <div className="py-3">
+                <div className="py-3" key={e._id}>
                   <Notice 
                     description={e.description} 
                     open={openEdit}

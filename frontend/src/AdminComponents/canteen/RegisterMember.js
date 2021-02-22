@@ -10,7 +10,7 @@ function RegisterMember() {
     const [role, setrole] = useState("student");
     const [classID, setclass] = useState("");
     const [packageID, setpackage] = useState("");
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(false);
 
 
     const handleaddMember = () => {
@@ -28,6 +28,12 @@ function RegisterMember() {
                  return  0;
             }
             successAlert(`member with id ${res.data.user?.memberID}`); 
+            setname("");
+            setuserID("");
+            setrole("");
+            setclass("");
+            setpackage("");
+
         }).catch(err => {
             setloading(false);
             console.log(err);
@@ -37,11 +43,9 @@ function RegisterMember() {
 
 
     return (
-
              <>
                  <Nav />
                 <h3 className="mb-3"> Register Canteen Member</h3>
-              
                 <div className="content__container">
                     <div className="row g-3 mx-3">
                     <div className="col-3 form-check">

@@ -1,38 +1,30 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Search from '../shared/Search';
 import TableList from '../shared/ListTable';
 import {Link} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import {selectClasses, selectacademicYear} from '../../store/slices/schoolSlice'
+import axios from '../../store/axios'
+import {selectClasses} from '../../store/slices/schoolSlice'
 
 function CanteenPayment() {
     const [classID, setclass] = useState("");
     const [term, setterm] = useState("")
     const classes = useSelector(selectClasses);
+    const [payments, setpayments] = useState([]);
 
-    const paymentData = [
-        {
-            id: "BK2021",
-            name: "Rudo Mapfumba",
-            amount: "123",
-            date: "21 June 2020"
-        },
-        {
-            id: "BK2021",
-            name: "Rudo Mapfumba",
-            amount: "123",
-            date: "21 June 2020"
-        },
-        {
-            id: "BK2021",
-            name: "Rudo Mapfumba",
-            amount: "123",
-            date: "21 June 2020"
-        }
-    ]
+
+    useEffect(() => {
+        axios.get('/canteen/payments').then(res => {
+            console.log(res.data);
+            setpayments(res.data)
+        })
+       
+    }, [])
+
+
     const tableHeader = [
-        {id: "id" , name: "Student ID"},
-        {id: "name" , name: " Student's Name"},
+        {id: "memberID" , name: "Canteen ID"},
+        {id: "name" , name: " Member's Name"},
         {id: "amount" , name: "Amount Paid"},
         {id: "date" , name: "Date"}
     ]
@@ -40,7 +32,7 @@ function CanteenPayment() {
     const inputFields = [
         {
             type: "select",
-            label: "Search by Class",
+            label: "Search by Canteen Member ID",
             name: "class",
             value: classID,
             onChange: setclass,
@@ -52,18 +44,11 @@ function CanteenPayment() {
             })
         },
         {
-            type: "select",
-            label: "Search by Period",
+            type: "date",
+            label: "Search by Date",
             name: "period",
             value: term,
             onChange: setterm,
-            options: [
-                { id: "today", name: "Today"},
-                { id: "week", name: "Week"},
-                { id: "month", name: "Month"},
-                { id: "term", name: "Term"},
-                { id: "year", name: "Year"},
-            ],
         }
     ]
     
@@ -79,19 +64,35 @@ function CanteenPayment() {
         <div>
             <div className="row">
                 <div className="col-xs-12 col-sm-10">
-                   <Search title="Canteen Payments" inputFields={inputFields} />   
+                   <Search 
+                    title="Canteen Payments" 
+                    inputFields={inputFields} />   
                 </div>
-                  <div  className="col-xs-12 col-sm-2">
-                       <Link to="/canteen/members/register" className="btn blue__btn mb-3">Add Canteen Member </Link>
-                       <Link to="/canteen/members" className="btn blue__btn mb-3">View All Members </Link>
-                       <Link className="btn blue__btn" to="/canteen/addpayment"> Make Payment</Link> 
+                  <div className="col-xs-12 col-sm-2">
+                       <Link 
+                           to="/canteen/members/register" 
+                           className="btn blue__btn mb-3">
+                           Add Canteen Member 
+                        </Link>
+                       <Link 
+                           to="/canteen/members" 
+                           className="btn blue__btn mb-3">
+                              View All Members 
+                        </Link>
+                        <Link 
+                           className="btn blue__btn" 
+                           to="/canteen/payments/add"> 
+                             Make Payment
+                        </Link> 
                   </div>
             </div>
           
             <TableList 
             handleDelete={handleDelete}
             handleEdit={handleEdit}
-            tableHeader={tableHeader}  data={paymentData} />
+            noActions={true}
+            tableHeader={tableHeader}  
+            data={payments} />
         </div>
     )
 }

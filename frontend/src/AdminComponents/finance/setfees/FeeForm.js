@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import {useSelector} from 'react-redux';
-import { selectFees} from '../../../store/slices/schoolSlice'
+import { selectFees, selectacademicYear} from '../../../store/slices/schoolSlice'
 
 function FeeForm({setyear, year, classID, loading,
     tution, settution, setfacility, facility, maintenance, setmaintenance, exam, setexam,
@@ -9,7 +9,10 @@ function FeeForm({setyear, year, classID, loading,
     onSubmit}) {
 
     const feesType = useSelector(selectFees);
+    const years = useSelector(selectacademicYear)
     const { register, handleSubmit, errors } = useForm();
+
+    console.log(years)
 
     return (
         <div>
@@ -21,11 +24,8 @@ function FeeForm({setyear, year, classID, loading,
                     ref={register({ required: true })} 
                     onChange={e => setyear(e.target.value)}
                     name="year" class="form-select">
-                    <option selected  >Choose...</option>
-                    <option value="2a">2021 - 2022</option>
-                    <option value="2a">2020 - 2021</option>
-                    <option value="2a">2019 - 2020</option>
-                    <option value="2a">2018 -2019</option>
+                    <option  defaultValue hidden>Choose...</option>
+                    {years.years && years.years.map(e =>  <option value={e} value={e}>{e}</option> )}
                 </select>
                 {errors.year && <span className=" form-error text-danger mb-2">This field is required</span>}
                 </div>

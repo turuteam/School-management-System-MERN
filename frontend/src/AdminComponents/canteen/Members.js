@@ -31,9 +31,9 @@ function Members() {
     }
 
     const handleDelete = (id) => {
-        setloading(true)
         let ans = window.confirm("Are you sure you want to delete");
         if(ans){
+            setloading(true)
             axios.delete(`/canteen/delete/${id}`).then(()=>{
                 setloading(false);
                 setdata(data.filter(res => res.memberID !== id))

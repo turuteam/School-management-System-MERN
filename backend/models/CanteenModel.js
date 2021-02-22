@@ -16,21 +16,24 @@ const CanteenSchema = new Schema( {
         type: String,
         required: true
     },
+    role: {
+        type: String
+    },
     paymentMethod: {
         type: String
     },
     payments: {
         type: [
             {
-                 date: {
-                     type: Date,
-                     default: Date.now
-                 },
-                 receipt: String,
-                 amount: String,
-                 covers: {
-                     period: String
-                 }
+                date: {
+                    type: Date,
+                    default: Date.now
+                },
+                receipt: String,
+                amount: String,
+                covers: {
+                    period: String
+                }
             }
         ]
     },
