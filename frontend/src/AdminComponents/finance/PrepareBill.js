@@ -1,103 +1,113 @@
-import React, {useState, useEffect} from 'react'
-import ListTable from '../shared/ListTable';
-import Search from '../shared/Search';
-import {useSelector} from 'react-redux';
-import {selectClasses, selectacademicYear} from '../../store/slices/schoolSlice'
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import ListTable from "../shared/ListTable";
+import Search from "../shared/Search";
+import { useSelector } from "react-redux";
+import { selectClasses } from "../../store/slices/schoolSlice";
+import axios from "../../store/axios";
+import { Link } from "react-router-dom";
+import { errorAlert } from "../../utils";
 
-const tableHeader  = [
-    {id: "userID" , name: "Student ID"},
-    {id: "name" , name: "Name"},
-    {id: "status" , name: "Status"},
-    {id: "bill" , name: "Current Bill"},
-]
+const tableHeader = [
+  { id: "date", name: "Date" },
+  { id: "userID", name: "Student ID" },
+  { id: "paymentMethod", name: "Payment Method" },
+  { id: "bank", name: "Bank" },
+  { id: "chequeNumber", name: "Cheque Number" },
+  { id: "amount", name: "Amount ($)" },
+];
 
 function PrepareBill() {
-    const [data, setdata] = useState([]);
-    const [classID, setclass] = useState("");
-    const [status, setstatus] = useState("");
-    const [academicYear, setacademicYear] = useState("");
-    const [term, setterm] = useState("")
+  const [data, setdata] = useState([]);
+  const [storeData, setstoreData] = useState([]);
+  const [classID, setclass] = useState("");
+  const [status, setstatus] = useState("");
+  const classes = useSelector(selectClasses);
 
-    const classes = useSelector(selectClasses);
-    const years= useSelector(selectacademicYear);
+  useEffect(() => {
+    axios.get("/transactions/students/fees").then((res) => {
+      console.log(res.data);
+      setdata(res.data);
+      setstoreData(res.data);
+    });
+  }, []);
 
+  const inputFields = [
+    {
+      label: "Search by Student ID",
+      type: "text",
+      value: classID,
+      name: "student",
+      onChange: setclass,
+    },
+    {
+      label: "Search by Status",
+      type: "select",
+      value: status,
+      onChange: setstatus,
+      options: [
+        { id: "all", name: "All Students" },
+        { id: "day", name: "Day Students" },
+        { id: "fresh-day", name: "Fresh day Students" },
+        { id: "border", name: "Border Students" },
+        { id: "fresh-border", name: "Fresh-border Border Students" },
+      ],
+    },
+  ];
 
-    useEffect(() => {
-       axios.get('/transactions/students/fees').then(res => {
-           console.log(res.data)
-           setdata(res.data.docs)
-       })
-    }, [])
+  const handleDelete = (id) => {
+    axios.delete(`/transactions/delete/${id}`).then((res) => {
+      if (res.data.error) {
+        errorAlert(res.data.error);
+      }
+      setdata(data.filter((e) => e._id !== id));
+    });
+  };
 
-   
+  const handleSearch = (e) => {
+    e.preventDefault();
+    let newData = [];
+    if (classID) {
+      newData = storeData.filter((i) =>
+        i?.userID?.toLowerCase().includes(classID?.toLowerCase())
+      );
+    }
+    if (status) {
+      newData = storeData.filter((i) =>
+        i?.status?.toLowerCase().includes(status?.toLowerCase())
+      );
+    }
+    setdata(newData);
+  };
 
-    const classesOptions = classes && classes?.map(e => {
-        return{
-            id: e.classCode,
-            name: e.name
-        }
-    })
-    const yearsOptions = years && years?.years?.map(e => {
-        return {
-            id: e,
-            name: e
-        }
-    })
+  const handleReset = (e) => {
+    e.preventDefault();
+    setdata(storeData);
+    setstatus("");
+  };
 
-    const termsOptions = years && years?.terms?.map(e => {
-        return {
-            id: e,
-            name: e
-        }
-    })
+  return (
+    <div>
+      <div className="float-right mb-5">
+        <Link className="btn blue__btn" to="/finance/students/fees">
+          Make A Payment
+        </Link>
+      </div>
+      <h3 className=" mb-5">Students Fees Transactions</h3>
 
-    
-    const inputFields = [
-        {
-            label: "Search by Class",
-            type: "select",
-            value: classID,
-            onChange: setclass,
-            options: classesOptions
-        },
-        {
-            label: "Search by Status",
-            type: "select",
-            value: status,
-            onChange: setstatus,
-            options: [
-                {value: "all", name: "All Students"}, 
-                {value: "day", name: "Day Students"},
-                {value: "fresh-day", name: "Fresh day Students"},
-                {value: "border", name: "Border Students"},
-                {value: "fresh-border", name: "Fresh-border Border Students"}
-            ]
-        },
-        {
-            label: "Search by Academic Year",
-            type: "select",
-            value: academicYear,
-            onChange: setacademicYear,
-            options: yearsOptions
-        },
-        {
-            label: "Search by Term",
-            type: "select",
-            value: term,
-            onChange: setterm,
-            options: termsOptions
-        },
-
-    ]
-
-    return (
-        <div>
-            <h3>Prepare Bill</h3>
-            <Search title="Filter Students" inputFields={inputFields} isReset={true}/>
-            <ListTable data={data} tableHeader={tableHeader} noActions={true}/>
-        </div>
-    )
+      <Search
+        title="Filter Students"
+        handleReset={handleReset}
+        handleSearch={handleSearch}
+        inputFields={inputFields}
+      />
+      <ListTable
+        data={data}
+        handleDelete={handleDelete}
+        tableHeader={tableHeader}
+        isEdit={true}
+      />
+    </div>
+  );
 }
 
-export default PrepareBill
+export default PrepareBill;

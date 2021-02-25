@@ -28,6 +28,28 @@ route.get('/:id', async(req, res) => {
   });
 })
 
+
+//get course notes
+route.get('/course/:id', async(req, res) => {
+  if(!req.params.id) {
+      return res.status(400).send('Missing URL parameter: username')
+    }
+  await FilesModel.find({ courseID: req.params.id })
+  .then(docs => {
+      if(docs){
+      return  res.json({success: true,docs})
+      }
+      else{
+      return  res.json({success: false, error: 'Does not exists'})
+      }
+  })
+  .catch(err => {
+    console.log(err)
+      return res.json({success: false, error: "Server error"})
+  });
+})
+
+
 //create task
 route.post('/create', async(req, res) => {
     let body = req.body

@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import { useForm } from "react-hook-form";
-import { bankOptions} from '../../../data'
+import { bankOptions} from '../../../data';
+import NumberFormat from 'react-number-format';
 
 function PaymentForm({applyTo, setapplyTo,bank, setbank, setchequeNo, chequeNo,
-      amount, setamount,remarks, setremarks,loading,handlePayement,
+      amount, setamount,remarks, setremarks,loading,handlePayement, balance,
      date, setdate,paymentType, setpaymentType}) {
 
         const { register, handleSubmit, errors } = useForm();
@@ -11,8 +12,10 @@ function PaymentForm({applyTo, setapplyTo,bank, setbank, setchequeNo, chequeNo,
         const handleSelectall =(e) => {
             setapplyTo({
                 all: !applyTo?.all,
-                tuition: !applyTo?.tuition,
-                examination: !applyTo?.examination
+                tuition: !applyTo?.all,
+                examination: !applyTo?.all,
+                facility: !applyTo?.all,
+                maintanance: !applyTo?.all,
              })
             
         }
@@ -22,21 +25,30 @@ function PaymentForm({applyTo, setapplyTo,bank, setbank, setchequeNo, chequeNo,
     return (
         <div className="content__container">
            <form action="">
+              
                 <div className="row mb-3">
                         <label 
                             className="col-sm-3 col-form-label">
                             Amount
                         </label>
                          <div className="col-sm-9">
+                             <strong className="text-info ">Fees Due &nbsp;
+                                    <NumberFormat 
+                                    value={balance} 
+                                    displayType={'text'} 
+                                    thousandSeparator={true} 
+                                    prefix={'$'} />
+
+                            </strong>
                               <input 
                               type="number" 
-                              ref={register({ required: true})} 
+                              ref={register({ required: true, max: balance})} 
                               value={amount}
                               onChange={e => setamount(e.target.value)}
                               className="form-control" 
                               name="amount" 
                               placeholder="Enter amount in $"/>
-                              {errors.amount && <div className="text-danger">This field is required</div>}
+                              {errors.amount && <div className="text-danger">Amount is required and it should not be above {balance} </div>}
                         </div>
                  </div>
                  <div className="row mb-3">
@@ -85,8 +97,7 @@ function PaymentForm({applyTo, setapplyTo,bank, setbank, setchequeNo, chequeNo,
                                                 <input 
                                                 className="form-check-input" 
                                                 type="checkbox" 
-                                                name="exampleRadios" 
-                                                id="exampleRadios1" 
+                                                name="exampleRadios"  
                                                 value="option1" 
                                                 onChange={() => setapplyTo({...applyTo, tuition: !applyTo?.tuition})}
                                                 checked={applyTo?.tuition}
@@ -98,15 +109,40 @@ function PaymentForm({applyTo, setapplyTo,bank, setbank, setchequeNo, chequeNo,
                                             <div className="form-check">
                                                 <input 
                                                 className="form-check-input" 
-                                                type="checkbox" 
-                                                name="exampleRadios" 
-                                                id="exampleRadios1" 
-                                                value="option1" 
+                                                type="checkbox"
+                                                value="option1"  
+                                                name="exampleRadios"  
                                                 onChange={() => setapplyTo({...applyTo, examination: !applyTo?.examination})}
                                                 checked={ applyTo?.examination}
                                                 />
                                                 <label className="form-check-label" for="exampleRadios1">
                                                     Examination Fee
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input 
+                                                className="form-check-input" 
+                                                type="checkbox" 
+                                                name="exampleRadios" 
+                                                value="option1"  
+                                                onChange={() => setapplyTo({...applyTo, maintanance: !applyTo?.maintanance})}
+                                                checked={ applyTo?.maintanance}
+                                                />
+                                                <label className="form-check-label" for="exampleRadios1">
+                                                    Maintenance Fee
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input 
+                                                className="form-check-input" 
+                                                type="checkbox" 
+                                                name="exampleRadios" 
+                                                value="option1"  
+                                                onChange={() => setapplyTo({...applyTo, facility: !applyTo?.facility})}
+                                                checked={ applyTo?.facility}
+                                                />
+                                                <label className="form-check-label" for="exampleRadios1">
+                                                    Facility Fee
                                                 </label>
                                             </div>
                                         </> 

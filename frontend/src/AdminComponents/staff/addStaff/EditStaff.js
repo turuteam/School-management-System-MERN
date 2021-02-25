@@ -41,10 +41,10 @@ function EditStaff() {
     const [department, setDepartment] = useState("")
     const [campus, setCampus] = useState("")
     const [employmentDate, setemploymentDate] = useState(null);
+    const [accountNumber, setaccountNumber] = useState("")
+    const [bank, setbank] = useState("")
     const [qualification, setqualification] = useState("")
     const [years, setyears] = useState("");
-    const [salary, setsalary] = useState("");
-    const [allowance, setallowance] = useState("");
     
     //contact details
     const [mobilenumber, setmobilenumber] = useState("");
@@ -88,8 +88,8 @@ function EditStaff() {
             setemploymentDate(data?.employmentDate);
             setqualification(data?.qualification);
             setyears(data?.years);
-            setsalary(data?.salary);
-            setallowance(data?.allowance);
+            setbank(data?.bank);
+            setaccountNumber(data?.accountNumber);
             setmobilenumber(data?.telephone);
             setresidence(data?.physicalAddress);
             settelephone(data?.mobile);
@@ -123,8 +123,8 @@ function EditStaff() {
         setemploymentDate(data?.employmentDate);
         setqualification(data?.qualification);
         setyears(data?.years);
-        setsalary(data?.salary);
-        setallowance(data?.allowance);
+        setaccountNumber(data?.accountNumber);
+        setbank(data?.bank);
         setmobilenumber(data?.telephone);
         setresidence(data?.physicalAddress);
         settelephone(data?.mobile);
@@ -159,8 +159,8 @@ function EditStaff() {
                 allege,
                 courses,
                 classID,
-                allowance,
-                salary,
+                bank,
+                accountNumber,
                 years,
                 employmentDate,
                 position: role,
@@ -214,6 +214,17 @@ function EditStaff() {
          }
     }
 
+    const handleCoursesCheckbox = (e) => {
+        console.log(e.target.checked, e.target.value);
+        if(e.target.checked){
+           setcourses([e.target.value, ...courses])
+        }
+        else{
+            setcourses(courses.filter(i => i !== i.target.value))
+        }
+
+    }
+
     return (
         <div>
             <h2>Edit Staff Member</h2>
@@ -242,23 +253,26 @@ function EditStaff() {
                       />
                         <br className="my-4"/>
                        <EmplymentDetails
-                         register={register}
-                         errors={errors}
+                           register={register}
+                            errors={errors}
                             role={role}
+                            bank={bank}
+                            setbank={setbank}
+                            accountNumber={accountNumber}
+                            setaccountNumber={setaccountNumber}
                             setRole={setRole}
+                            classID={classID}
+                            setclass={setclass}
                             department={department}
                             setDepartment={setDepartment}
                             campus={campus}
+                            handleCoursesCheckbox={handleCoursesCheckbox}
                             setCampus={setCampus}
                             employmentDate={employmentDate}
                             setemploymentDate={setemploymentDate}
                             qualification={qualification}
                             setqualification={setqualification}
                             years={years}
-                            salary={salary}
-                            allowance={allowance}
-                            setallowance={setallowance}
-                            setsalary={setsalary}
                             setyears={setyears}
                        />
                         <br className="my-4"/>

@@ -14,6 +14,10 @@ const FeesSchema =   new Schema( {
     year: String,
     day: {
        type: {
+               name: {
+                   type: String,
+                   default: "day"
+               },
                tution: String,
                facility: String,
                maintenance: String,
@@ -22,6 +26,10 @@ const FeesSchema =   new Schema( {
     },
     freshDay: {
         type: {
+            name: {
+                type: String,
+                default: "freshDay"
+            },
                 tution: String,
                 facility: String,
                 maintenance: String,
@@ -30,6 +38,10 @@ const FeesSchema =   new Schema( {
      },
      border: {
         type: {
+            name: {
+                type: String,
+                default: "border"
+            },
                 tution: String,
                 facility: String,
                 maintenance: String,
@@ -38,6 +50,10 @@ const FeesSchema =   new Schema( {
      },
      freshBorder: {
         type: {
+            name: {
+                type: String,
+                default: "freshBorder"
+            },
                 tution: String,
                 facility: String,
                 maintenance: String,

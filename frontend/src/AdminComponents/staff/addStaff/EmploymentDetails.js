@@ -1,16 +1,25 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux';
-import {staffPosition} from '../../../data'
+import axios from '../../../store/axios'
 import {selectClasses, 
     selectCourses,
     selectCampuses} from '../../../store/slices/schoolSlice'
+
 
 function EmploymentDetails(props) {
     const classes = useSelector(selectClasses);
     const courses = useSelector(selectCourses);
     const campuses = useSelector(selectCampuses);
-
+    const [positions, setpositions] = useState([]);
     const [showCheck, setshowCheck] = useState(false)
+
+    useEffect(() => {
+        axios.get('/payrow').then(res => {
+            console.log(res.data)
+             setpositions(res.data);
+        });
+    }, [])
+
     let {
         role,
         setRole,
@@ -23,13 +32,15 @@ function EmploymentDetails(props) {
         qualification,
         setqualification,
         years,
-        salary,
-        allowance,
-        setallowance,
-        setsalary,
         setyears,
+        bank,
+        setbank,
+        accountNumber,
+        setaccountNumber,
         register,
         errors,
+        classID,
+        setclass,
         handleCoursesCheckbox
     } = props;
 
@@ -37,7 +48,7 @@ function EmploymentDetails(props) {
         <div>
                <h3>Employment Details</h3>
                     <div className="row mb-3">
-                        <div className="col-xs-12 col-sm-6 col-md-4">
+                        <div className="col-xs-12 col-sm-6  mb-3">
                             <label  className="form-label">Staff Role</label>
                             <select   
                                 ref={register({ required: true })} 
@@ -47,11 +58,16 @@ function EmploymentDetails(props) {
                                 className="form-select" 
                                 aria-label="Default select example">
                                 <option  defaultValue  hidden >select</option>
-                                {staffPosition && staffPosition.map(e => <option value={e} key={e}>{e}</option>)}
+                                {positions && positions.map(e => 
+                                <option 
+                                  value={e?.code} 
+                                  key={e?._id}>
+                                  {e?.name}
+                              </option>)}
                             </select>
                             {errors.role && <span className=" form-error text-danger mb-2">Name is required</span>}
                         </div>
-                        <div className="col-xs-12 col-sm-6 col-md-4">
+                        <div className="col-xs-12 col-sm-6 mb-3">
                             <label  className="form-label">Departments</label>
                             <select 
                                 value={department} 
@@ -66,7 +82,7 @@ function EmploymentDetails(props) {
                                   }
                             </select>
                         </div>
-                        <div className="col-xs-12 col-sm-6 col-md-4">
+                        <div className="col-xs-12 col-sm-6 mb-3">
                             <label  className="form-label">Campus</label>
                             <select    
                                name="campus" 
@@ -81,9 +97,8 @@ function EmploymentDetails(props) {
                                   }
                             </select>
                         </div>
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col-xs-12 col-sm-6 col-md-4 ">
+                   
+                        <div className="col-xs-12 col-sm-6  mb-3">
                             <label className="form-label">Employment Date</label>
                             <input 
                                 name="employmentdate" 
@@ -93,7 +108,27 @@ function EmploymentDetails(props) {
                                 className="form-control" 
                               />
                         </div>
-                        <div className="col-xs-12 col-sm-6 col-md-4">
+                        <div className="col-xs-12 col-sm-6  mb-3">
+                            <label className="form-label">Bank</label>
+                            <input 
+                                name="bank" 
+                                value={bank}
+                                onChange={e => setbank(e.target.value)}
+                                type="text" 
+                                className="form-control" 
+                              />
+                        </div>
+                        <div className="col-xs-12 col-sm-6  mb-3">
+                            <label className="form-label"> Account Number</label>
+                            <input 
+                                name="accountNumber" 
+                                value={accountNumber}
+                                onChange={e => setaccountNumber(e.target.value)}
+                                type="text" 
+                                className="form-control" 
+                              />
+                        </div>
+                        <div className="col-xs-12 col-sm-6 mb-3">
                             <label  className="form-label">Qualification</label>
                             <input 
                                 name="lastschool" 
@@ -103,7 +138,7 @@ function EmploymentDetails(props) {
                                 className="form-control" 
                             />
                         </div>
-                        <div className="col-xs-12 col-sm-6  col-md-4">
+                        <div className="col-xs-12 col-sm-6  mb-3">
                             <label  className="form-label">Years with School</label>
                             <input 
                                 name="years" 
@@ -113,36 +148,12 @@ function EmploymentDetails(props) {
                                 className="form-control" 
                             />
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div className="col-xs-12 col-sm-6 ">
-                            <label className="form-label">Basic Salary </label>
-                            <input 
-                            name="salary" 
-                            value={salary}
-                            onChange={e => setsalary(e.target.value)}
-                            type="text" 
-                            className="form-control" 
-                            placeholder="monthy salary" />
-                        </div>
-                        <div className="col-xs-12 col-sm-6">
-                            <label  className="form-label">Allowance</label>
-                            <input 
-                            name="allowance" 
-                            value={allowance}
-                            onChange={e => setallowance(e.target.value)}
-                            type="text" 
-                            className="form-control" 
-                            placeholder="staff allowance" />
-                        </div> 
-                    </div>
-                    <div className="row mb-3">
-                         <div className="col-xs-12 col-sm-6 col-md-4">
+                         <div className="col-xs-12 col-sm-6  mb-3">
                             <label  className="form-label">Class</label>
                             <select    
                                name="campus" 
-                               value={campus} 
-                               onChange={e => setCampus(e.target.value)}    
+                               value={classID} 
+                               onChange={e => setclass(e.target.value)}    
                                className="form-select" 
                                aria-label="Default select example">
                                 <option defaultValue   hidden>select</option>

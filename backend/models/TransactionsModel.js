@@ -23,6 +23,15 @@ const TransactionSchema =   new Schema( {
         type: String
     },
     description: String,
+    pay: {
+        type: {
+            accountNumber: String,
+            bank: String,
+            userID: String,
+            position: String,
+            month: String
+        }
+    },
     fees: {
          type: {
              userID: String, 

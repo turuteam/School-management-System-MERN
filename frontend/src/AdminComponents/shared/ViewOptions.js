@@ -1,11 +1,14 @@
-import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import React from "react";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/userSlice";
 
-export default function SimpleMenu({id, route , history, handleDelete}) {
+export default function SimpleMenu({ id, route, history, handleDelete }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const user = useSelector(selectUser);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -17,8 +20,12 @@ export default function SimpleMenu({id, route , history, handleDelete}) {
 
   return (
     <div>
-      <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-          <MoreHorizIcon/>
+      <IconButton
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        <MoreHorizIcon />
       </IconButton>
       <Menu
         id="simple-menu"
@@ -27,9 +34,23 @@ export default function SimpleMenu({id, route , history, handleDelete}) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => history.push(`/${route}/${id}`)}>View</MenuItem>
-        <MenuItem onClick={() => history.push(`/${route}/edit/${id}`)}>Edit</MenuItem>
-       <MenuItem onClick={() => { handleDelete(id)}}>Delete</MenuItem>
+        <MenuItem onClick={() => history.push(`/${route}/${id}`)}>
+          View
+        </MenuItem>
+        {user?.role === "admin" && (
+          <>
+            <MenuItem onClick={() => history.push(`/${route}/edit/${id}`)}>
+              Edit
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleDelete(id);
+              }}
+            >
+              Delete
+            </MenuItem>
+          </>
+        )}
       </Menu>
     </div>
   );

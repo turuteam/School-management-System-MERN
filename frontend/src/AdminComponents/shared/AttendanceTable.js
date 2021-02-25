@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CheckIcon from '@material-ui/icons/Check';
 //import ClearIcon from '@material-ui/icons/Clear';
-import IconButton from '@material-ui/core/IconButton';
+//import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import RemoveIcon from '@material-ui/icons/Remove';
 import moment from 'moment';
@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function CustomizedTables({attendanceData, isStaff}) {
+export default function CustomizedTables({attendanceData, isStaff, isClass}) {
   const classes = useStyles();
 
   return (
@@ -59,7 +59,7 @@ export default function CustomizedTables({attendanceData, isStaff}) {
         <TableHead>
           <TableRow>
           <StyledTableCell  align="left">Date</StyledTableCell>
-            {!isStaff &&  <StyledTableCell  align="left">Class ID</StyledTableCell>}
+            {(!isStaff || !isClass) &&   <StyledTableCell  align="left">ClassID</StyledTableCell>}
             <StyledTableCell align="left">{isStaff ? "Staff ID" : " Student  ID"}</StyledTableCell>
             <StyledTableCell align="left">Name</StyledTableCell>
             <StyledTableCell align="left">Last Name</StyledTableCell>
@@ -74,7 +74,7 @@ export default function CustomizedTables({attendanceData, isStaff}) {
                 <StyledTableCell >
                 {moment(row.date).format('Do MMMM  YYYY') }
               </StyledTableCell>
-              {!isStaff &&  
+              { (!isStaff || !isClass) &&  
               <StyledTableCell >
                 {row.classID}
               </StyledTableCell>}

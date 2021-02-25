@@ -18,7 +18,7 @@ function SchoolCalender() {
      }, [])
     return (
         <div className="content__container">
-            <h3 className="mb-4">Event Calender</h3>
+            <h3 className="mb-4">School Event Calender</h3>
            <Calendar
                 localizer={localizer}
                 events={events}

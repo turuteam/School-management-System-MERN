@@ -10,6 +10,7 @@ const AttendanceSchema =   new Schema( {
     role: {
         type: String,
     },
+    user: String,
     users: {
         type: [
             { 

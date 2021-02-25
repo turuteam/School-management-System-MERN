@@ -28,12 +28,12 @@ function EmploymentTab({user}) {
                 <div className="col-6">{user?.experience || "N/A"} </div>
             </div>
             <div className="row  mb-3">
-                <div className="col-4">Salary: </div>
-                <div className="col-6">{user?.salary || "N/A"} </div>
+                <div className="col-4">Bank: </div>
+                <div className="col-6">{user?.bank || "N/A"} </div>
             </div>
             <div className="row  mb-3">
-                <div className="col-4">Allowance: </div>
-                <div className="col-6">{user?.salary || "N/A"} </div>
+                <div className="col-4">Account Number: </div>
+                <div className="col-6">{user?.accountNumber || "N/A"} </div>
             </div>
             <div className="row  mb-3">
                 <div className="col-4">Class: </div>

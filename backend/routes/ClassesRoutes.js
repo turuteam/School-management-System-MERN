@@ -1,7 +1,7 @@
 import express from "express";
 import ClassesModel from "../models/ClassesModel.js";
 import {stringtoLowerCaseSpace} from '../middlewares/utils.js';
-import {createClass} from '../middlewares/validate.js'
+//import {createClass} from '../middlewares/validate.js'
 const route = express.Router();
 
 route.get('/', async(req, res) => {

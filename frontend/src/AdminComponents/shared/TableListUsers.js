@@ -1,25 +1,25 @@
-import React, {useState} from 'react';
-import {  makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import Avatar from '@material-ui/core/Avatar';
-import { useHistory} from 'react-router-dom'
-import TableHeader from './TableHeader'
-import {getImgSrc, getIntial} from '../../utils';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import IconButton from '@material-ui/core/IconButton'
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import ViewActions from './ViewOptions'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Checkbox from "@material-ui/core/Checkbox";
+import Avatar from "@material-ui/core/Avatar";
+import { useHistory } from "react-router-dom";
+import TableHeader from "./TableHeader";
+import { getImgSrc, getIntial } from "../../utils";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
+import IconButton from "@material-ui/core/IconButton";
+import Popper from "@material-ui/core/Popper";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import ViewActions from "./ViewOptions";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -32,7 +32,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -47,13 +47,12 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
   },
   paper: {
-    width: '100%',
+    width: "100%",
     marginBottom: theme.spacing(2),
   },
   table: {
@@ -61,33 +60,37 @@ const useStyles = makeStyles((theme) => ({
   },
   visuallyHidden: {
     border: 0,
-    clip: 'rect(0 0 0 0)',
+    clip: "rect(0 0 0 0)",
     height: 1,
     margin: -1,
-    overflow: 'hidden',
+    overflow: "hidden",
     padding: 0,
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     width: 1,
   },
 }));
 
-export default function EnhancedTable({students,  headCells, route, handleDelete}) {
+export default function EnhancedTable({
+  students,
+  headCells,
+  route,
+  handleDelete,
+}) {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('name');
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [id, setid] = useState("")
-  
+  const [id, setid] = useState("");
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
@@ -113,7 +116,7 @@ export default function EnhancedTable({students,  headCells, route, handleDelete
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
@@ -129,20 +132,11 @@ export default function EnhancedTable({students,  headCells, route, handleDelete
     setPage(0);
   };
 
-  const handleClose = () => {
-    setOpen(null);
-  }
- 
-  
-  const handleToggle = (i) => {
-    console.log(i)
-    setOpen((prevOpen) => !prevOpen);
-    setid(i)
-  };
-
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, students.length - page * rowsPerPage);
+  const emptyRows =
+    rowsPerPage - Math.min(rowsPerPage, students?.length - page * rowsPerPage);
+  console.log(students);
 
   return (
     <div className={classes.root}>
@@ -151,7 +145,7 @@ export default function EnhancedTable({students,  headCells, route, handleDelete
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size='medium'
+            size="medium"
             aria-label="enhanced table"
           >
             <TableHeader
@@ -162,75 +156,91 @@ export default function EnhancedTable({students,  headCells, route, handleDelete
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={students.length}
+              rowCount={students?.length}
             />
-            <TableBody>
-              {stableSort(students, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(students.userID);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow
-                      hover
-                     // onClick={() => history.push(`/${route}/${row.userID}`)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.userID}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          onClick={(event) => handleClick(event, row.userID)}
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
-                      <TableCell align="left"  id={labelId} >
-                        {row.userID || "-"}
-                      </TableCell>
-                      <TableCell align="left">
-                          <Avatar  src={`${getImgSrc(row.profileUrl)}`} alt={getIntial(row.name)}></Avatar>
-                      </TableCell>
-                      <TableCell align="left">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="left"> {row.middleName || "-"}</TableCell>
-                      <TableCell align="left">{row.surname || "-"}</TableCell>
-                      <TableCell align="left">{row.classID || "-"}</TableCell>
-                      <TableCell align="left">{row.email || "-"}</TableCell>
-                      <TableCell align="left">{row.telephone || "-"}</TableCell>
-                      <TableCell align="left">{row.gender || "-"}</TableCell>
-                      <TableCell align="left">
-                         <ViewActions 
-                         id={row?.userID} 
-                         route={route} 
-                         history={history} 
-                         handleDelete={handleDelete}/>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: (53) * emptyRows }}>
-                  <TableCell colSpan={6} />
+            {students?.length > 0 ? (
+              <TableBody>
+                {stableSort(students, getComparator(order, orderBy))
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  ?.map((row, index) => {
+                    const isItemSelected = isSelected(students?.userID);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableRow
+                        hover
+                        // onClick={() => history.push(`/${route}/${row.userID}`)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.userID}
+                        selected={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            onClick={(event) => handleClick(event, row?.userID)}
+                            checked={isItemSelected}
+                            inputProps={{ "aria-labelledby": labelId }}
+                          />
+                        </TableCell>
+                        <TableCell align="left" id={labelId}>
+                          {row?.userID || "-"}
+                        </TableCell>
+                        <TableCell align="left">
+                          <Avatar
+                            src={`${getImgSrc(row?.profileUrl)}`}
+                            alt={getIntial(row?.name)}
+                          ></Avatar>
+                        </TableCell>
+                        <TableCell align="left">{row?.name}</TableCell>
+                        <TableCell align="left">
+                          {" "}
+                          {row?.middleName || "-"}
+                        </TableCell>
+                        <TableCell align="left">
+                          {row?.surname || "-"}
+                        </TableCell>
+                        <TableCell align="left">
+                          {row?.classID || "-"}
+                        </TableCell>
+                        <TableCell align="left">{row?.gender || "-"}</TableCell>
+                        <TableCell align="left">
+                          <ViewActions
+                            id={row?.userID}
+                            route={route}
+                            history={history}
+                            handleDelete={handleDelete}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan="5">NO DATA</TableCell>
                 </TableRow>
-              )}
-            </TableBody>
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={students.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        {students?.length > 5 && (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={students.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        )}
       </Paper>
-     
     </div>
   );
 }

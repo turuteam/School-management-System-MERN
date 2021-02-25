@@ -22,17 +22,21 @@ function StaffDetails() {
                   return 0
               }
               setdetails(res.data.teacher)
+        }).catch(err => {
+            console.log(err)
+            setloading(false)
         })
     }, [id])
 
-
+    console.log(details)
 
     return (
         <div>
+            staff
         {!loading && 
         <>
              <h3>Staff Details</h3>
-             {details ? <h1 className="text-danger text-center">Staff Member  not found</h1> :
+             {!details ? <h1 className="text-danger text-center">Staff Member  not found</h1> :
             <div className="row">
                 <div className="col-xs-12 col-sm-6 col-md-4">
                     <Info 

@@ -5,7 +5,6 @@ import {startAttendance,} from '../middlewares/validate.js'
 
 const route = express.Router();
 
-
 //get attendance
 route.get('/', async(req, res) => {
     const docs = await AttendanceModel.find();
@@ -13,6 +12,11 @@ route.get('/', async(req, res) => {
 })
 
 // all students attendance or staff
+route.get('/:id', async(req, res) => {
+    const docs = await AttendanceModel.find({role: req.params.id});
+    res.json(docs);
+})
+
 route.get('/:id', async(req, res) => {
     const docs = await AttendanceModel.find({role: req.params.id});
     res.json(docs);
@@ -32,7 +36,7 @@ route.get('/attendance/:id', async(req, res) => {
 })
 
 
-//attendance by class  date
+//attendance by class  
 
 //all staff attendace
 
@@ -44,38 +48,52 @@ route.post('/register', async(req, res)  => {
     const classID = req.body.classID;
     const role = req.body.role;
 
+
+    const now = new Date()
+    var start = new Date();
+     start.setHours(0,0,0,0);
+
+   var end = new Date();
+   end.setHours(23,59,59,999);
     //check if exist
-    let isExist = await AttendanceModel.findOne({classID, date: {     
-        $gte:   new Date(new Date().setDate(new Date().getDate()-1)) ,     
-        $lt :  new Date() 
-   } })
+    let isExist = await AttendanceModel.findOne({
+      classID: classID, 
+      createdAt: {     
+         $gte:  start,
+        $lt: end
+     } })
+
+   console.log(isExist , "isExist")
     if(isExist){
         AttendanceModel.updateOne({_id : isExist?._id}, {
             users
-        }).then(() => {
+        }).then((docs) => {
             console.log("already exists")
-            return res.json({success: true, message: "OK"})
+            return res.json({success: true, docs})
         }).catch(err => {
             console.log(err)
-             return  res.json({success: false, message: "something when wrong"})
+             return  res.json({success: false, error: "something when wrong"})
         })
 
     }
+    else{
+        AttendanceModel.create({
+            classID,
+            users: users,
+            role
+        }).then(data => {
+            if(data){
+                return res.json({success: true, docs: data})
+            }
+            else{
+                return  res.json({success: false, error: "something when wrong"})
+            }
+        }).catch(err => {
+            return  res.json({success: false, error: "Failed !"})
+        })
+    }
 
-    AttendanceModel.create({
-        classID,
-        users: users,
-        role
-    }).then(data => {
-        if(data){
-            return res.json({success: true, message: "OK"})
-        }
-        else{
-            return  res.json({success: false, message: "something when wrong"})
-        }
-    }).catch(err => {
-        return  res.json({success: false, message: err})
-    })
+    
 })
 
 

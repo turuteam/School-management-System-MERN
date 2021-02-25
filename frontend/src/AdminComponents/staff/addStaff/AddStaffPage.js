@@ -36,14 +36,14 @@ function NewStaff() {
     const [employmentDate, setemploymentDate] = useState("");
     const [qualification, setqualification] = useState("")
     const [years, setyears] = useState("");
-    const [salary, setsalary] = useState("");
-    const [allowance, setallowance] = useState("");
     const [health, sethealth] = useState("")
     const [allege, setallege] = useState("")
     const [disease, setdisease] = useState("")
     const [loading, setloading] = useState("")
     const [classID, setclass] = useState("")
     const [courses, setcourses] = useState([])
+    const [accountNumber, setaccountNumber] = useState("")
+    const [bank, setbank] = useState("")
 
 
     //contact details
@@ -67,8 +67,8 @@ function NewStaff() {
         setlastname(""); setCampus("");
         setgender(""); setemploymentDate("");
         setdateofBirth(""); setqualification("");
-        setemail("");   setyears("");
-        setnationality("");  setallowance("");
+        setemail("");   setyears(""); setaccountNumber("");
+        setnationality("");  setbank("");
         setplaceofBirth(""); sethealth("");
         setreligion(""); setallege("");
         settitle("");  setdisease("");
@@ -99,13 +99,15 @@ function NewStaff() {
                 profileUrl: path,
                 name,
                 middleName: secondName,
-                 surname:  lastname,
+                surname:  lastname,
                 gender,
                 dateofBirth,
                 email,
                 nationality,
                 religion,
                 placeofBirth,
+                bank,
+                accountNumber,
                 health,
                 disease,
                 allege,
@@ -201,7 +203,14 @@ function NewStaff() {
                          register={register}
                          errors={errors}
                             role={role}
+                            bank={bank}
+                            setbank={setbank}
+                            accountNumber={accountNumber}
+                            setaccountNumber={setaccountNumber}
                             setRole={setRole}
+                            classID={classID}
+                            
+                            setclass={setclass}
                             department={department}
                             setDepartment={setDepartment}
                             campus={campus}
@@ -211,10 +220,6 @@ function NewStaff() {
                             qualification={qualification}
                             setqualification={setqualification}
                             years={years}
-                            salary={salary}
-                            allowance={allowance}
-                            setallowance={setallowance}
-                            setsalary={setsalary}
                             setyears={setyears}
                             handleCoursesCheckbox={handleCoursesCheckbox}
 

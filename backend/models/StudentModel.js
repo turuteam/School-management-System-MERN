@@ -1,130 +1,134 @@
-import  mongoose from "../config/mongodb.js"
+import mongoose from "../config/mongodb.js";
 
 const { Schema } = mongoose;
 
-const StudentSchema =   new Schema( {
-    userID:{
-        type: String,
-        required: true
+const StudentSchema = new Schema(
+  {
+    userID: {
+      type: String,
+      required: true,
     },
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     surname: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     dateofBirth: {
-        type: Date
-     },
-    nationality: {
-        type: String
-     },
-     religion : {
-        type: String
-     },
-     placeOfBirth : {
-        type: String
-     },
-    email: {
-        type: String
+      type: Date,
     },
+    nationality: {
+      type: String,
+    },
+    religion: {
+      type: String,
+    },
+    placeOfBirth: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    position: String,
     middleName: {
-        type: String
+      type: String,
     },
     physicalAddress: {
-        type: String
-     },
-     postalAddress: {
-         type: String
-     },
-     dormitoryID : {
-        type: String
-     },
-     gender: {
-        type: String,
-        required: true
+      type: String,
+    },
+    postalAddress: {
+      type: String,
+    },
+    dormitoryID: {
+      type: String,
+    },
+    gender: {
+      type: String,
+      required: true,
     },
     role: {
-        type: String,
-        default: "student"
+      type: String,
+      default: "student",
     },
     status: {
-        type: String
-        //border or day scholar
-     },
-     fees: {
-        type: String
-     },
-     scholarship: {
-        type: String
-     },
+      type: String,
+      //border or day scholar
+    },
+    fees: {
+      type: String,
+    },
+    scholarship: {
+      type: String,
+    },
     telephone: {
-        type: String
+      type: String,
     },
     mobilenumber: {
-        type: String
+      type: String,
     },
     classID: {
-        type: String
+      type: String,
     },
     courses: {
-        type: [
-            {
-                courseID : String
-            }
-        ]
+      type: [
+        {
+          courseID: String,
+        },
+      ],
     },
     guadian: {
-        type: [
-            {
-                id: String,
-                relationship: String,
-                occupation: String,
-                name: String,
-                email: String,
-                mobile: String,
-                address: String,
-                lastname: String,
-            }
-        ]
+      type: [
+        {
+          id: String,
+          relationship: String,
+          occupation: String,
+          name: String,
+          email: String,
+          mobile: String,
+          address: String,
+          lastname: String,
+        },
+      ],
     },
     campusID: {
-        type: String
+      type: String,
     },
     profileUrl: {
-        type: String
-     },
+      type: String,
+    },
     grade: {
-        type: String
-     },
-     lastSchool: {
-        type:{
-            school: String,
-            reason: String
-        }
-     },
+      type: String,
+    },
+    lastSchool: {
+      type: {
+        school: String,
+        reason: String,
+      },
+    },
     password: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     health: {
-        type: String
+      type: String,
     },
     allege: {
-        type: String
+      type: String,
     },
     disease: {
-        type :String
+      type: String,
     },
     section: {
-        type: String
+      type: String,
     },
-    date: { 
-        type: Date, 
-        default: Date.now
+    date: {
+      type: Date,
+      default: Date.now,
     },
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-export default  mongoose.model("students", StudentSchema, "accounts");
+export default mongoose.model("students", StudentSchema, "accounts");

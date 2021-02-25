@@ -94,9 +94,12 @@ export default function CustomPaginationActionsTable({data, tableHeader, handleE
                    <TableCell  align="left">
                        <a href={`${getImgSrc(row?.file)}`}>{row?.file}</a>
                    </TableCell>
-                  {row.senderID === user &&
-                    <TableCell  align="left" className="d-flex align-items-center">
-                        <IconButton onClick={() => handleDelete(row._id)}>
+                 
+                    <TableCell  align="left" >
+                      <div className="d-flex align-items-center">
+                      {row.senderID === user && 
+                        <>
+                           <IconButton onClick={() => handleDelete(row._id)}>
                             <DeleteOutlineIcon/>
                         </IconButton>
                         {!isEdit &&
@@ -104,8 +107,13 @@ export default function CustomPaginationActionsTable({data, tableHeader, handleE
                           <EditIcon></EditIcon>
                         </IconButton>
                         }
+                        </>
+                      }
+
+                      </div>
+                       
                     </TableCell>
-                 }
+                 
               </TableRow>
             ))}
           </>

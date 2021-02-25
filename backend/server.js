@@ -4,7 +4,8 @@ import cors from "cors";
 
 //import routes
 import AcademicYear from './routes/CurrentYearRoutes.js';
-import StudentRoutes from './routes/StudentRoutes.js'
+import StudentRoutes from './routes/StudentRoutes.js';
+import PayrowRoutes from './routes/PayrowRoutes.js';
 import AttendanceRoutes from './routes/AttendanceRoutes.js';
 import ChatRoutes from './routes/ChatRoutes.js';
 import CoursesRoutes from './routes/CoursesRoutes.js'
@@ -72,8 +73,9 @@ app.use("/api/sections", SectionRoutes);
 app.use("/api/school", SchoolRoutes)
 app.use("/api/prefects", PrefectsRoutes);
 app.use("/api/paymentplan", PaymentPlanRoutes);
+app.use("/api/payrow", PayrowRoutes);
 app.use("/upload", UploadsRoutes);
-app.use("/api/departments", DepartmentsRoutes);
+app.use("/api/divisions", DepartmentsRoutes);
 app.use("/api/canteen", CanteenRoutes);
 app.use("/api/banking", BankingRoutes);
 app.use("/api/fees", FeesRoutes);  

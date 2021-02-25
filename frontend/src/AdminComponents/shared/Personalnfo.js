@@ -127,7 +127,7 @@ function Personalnfo(props) {
                             className="form-control" />
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div className="row mb-3">
                         <div className="col-xs-12 col-sm-6 col-md-4">
                             <label  className="form-label">Nationality</label>
                             <input 
@@ -138,7 +138,7 @@ function Personalnfo(props) {
                             className="form-control"  />
                         </div>
                         <div className="col-xs-12 col-sm-6 col-md-4">
-                            <label for="religion" 
+                            <label 
                             className="form-label">Religion</label>
                             <input 
                             type="text" 

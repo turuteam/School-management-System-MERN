@@ -21,6 +21,21 @@ route.get('/types', async(req, res) => {
        return res.json(types)
 })
 
+//get one  fee type
+route.get('/type/:name/:type', async(req, res) => {
+    if(req.params.name){
+        const doc = await FeesModel.findOne({name: req.params.name});
+        if(doc){
+           let type = (doc[req.params.type])
+            return  res.json(type);
+        }
+        else{
+            return res.json({error: "Not Found"})
+        }
+    }
+    return res.json({error: "Error"})
+})
+
 //get one class fees
 route.get('/:id', async(req, res) => {
     const doc = await FeesModel.findOne({_id: req.params.id});
@@ -43,8 +58,8 @@ route.post('/create', async(req, res) => {
 
     FeesModel.create({
         ...req.body,code: code
-     }).then(doc => {
-         return res.json({success: true, doc})
+     }).then(docs => {
+         return res.json({success: true, docs})
      }).catch(err => {
          console.log(err)
          return  res.json({success: false, message: "Something when wrong"})
@@ -56,16 +71,17 @@ route.post('/create', async(req, res) => {
 route.post('/add', async(req, res)  => {
      //code
      let code = stringtoLowerCaseSpace(req.body.name)
-
     //check if exist
-    console.log(req.body, "body")
     let isExist = await FeesModel.findOne({code: code });
     if(isExist){
-        FeesModel.updateOne({_id: isExist._id},
+        FeesModel.findOneAndUpdate({_id: isExist._id},
              req.body, 
              { new: true})
-        .then((data) => {
-            return res.json({success: true, message: "OK"})
+        .then((docs) => {
+            if(docs){
+                return res.json({success: true,  docs})
+            }
+            return res.json({success: false, error: "Failed"})
         }).catch(err => {
             return  res.json({success: false, error: err})
         })
@@ -74,12 +90,11 @@ route.post('/add', async(req, res)  => {
     FeesModel.create({
         ...req.body,code: code
      }).then(data => {
-         console.log("new", data);
-         return res.json({success: true, message: "OK"})
+         return res.json({success: true, docs: data})
      }).catch(err => {
-         return  res.json({success: false, message: "Something when wrong"})
+         console.log(err)
+         return  res.json({success: false, error: "Something when wrong"})
      })
-
    }
 })
 
@@ -92,7 +107,7 @@ route.put('/update/:id', async(req, res) => {
         new: true
         })
         .then(doc => {
-            console.log(doc)
+           
             return  res.json({success: true, message: "OK"});  
         })
         .catch(err => {
@@ -103,15 +118,12 @@ route.put('/update/:id', async(req, res) => {
 
 
 
-
-
   //delete  class fees
   route.delete('/delete/:id', async(req, res) => {
     FeesModel.findOneAndDelete({
         _id: req.params.id
       })
         .then(doc => {
-            console.log(doc)
             return  res.json({success: true, message: "OK"});  
         })
         .catch(err => {

@@ -143,11 +143,10 @@ route.get('/user/:id', async(req, res) => {
   await StudentModel.findOne({ userID: req.params.id})
   .then(user => {
       if(user){
-        console.log(user)
-      return  res.json({success: true,user})
+          return  res.json({success: true,user})
       }
       else{
-      return  res.json({success: false, error: 'User does not exists'})
+          return  res.json({success: false, error: 'User does not exists'})
       }
   })
   .catch(err => {

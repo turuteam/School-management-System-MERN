@@ -1,41 +1,30 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import {useSelector} from 'react-redux';
-import { selectFees, selectacademicYear} from '../../../store/slices/schoolSlice'
+import { selectFees} from '../../../store/slices/schoolSlice'
 
-function FeeForm({setyear, year, classID, loading,
+function FeeForm({ classID, loading,
     tution, settution, setfacility, facility, maintenance, setmaintenance, exam, setexam,
-    setclass,type, settype, 
+    setclass,type, settype, isEdit,
     onSubmit}) {
 
     const feesType = useSelector(selectFees);
-    const years = useSelector(selectacademicYear)
     const { register, handleSubmit, errors } = useForm();
 
-    console.log(years)
 
     return (
         <div>
               <form className="row content__container" action="">
-              <div className="col-md-10 mb-3">
-                <label className="form-label">Select Academic Year</label>
-                <select 
-                    value={year}
-                    ref={register({ required: true })} 
-                    onChange={e => setyear(e.target.value)}
-                    name="year" class="form-select">
-                    <option  defaultValue hidden>Choose...</option>
-                    {years.years && years.years.map(e =>  <option value={e} value={e}>{e}</option> )}
-                </select>
-                {errors.year && <span className=" form-error text-danger mb-2">This field is required</span>}
-                </div>
+
+                  { !isEdit &&
+                  <>
                 <div className="col-md-10 mb-3">
                 <label className="form-label">Select fees Category</label>
                 <select 
                    ref={register({ required: true })} 
                     value={classID}
                     onChange={e => setclass(e.target.value)}
-                    name="class" class="form-select">
+                    name="class" className="form-select">
                     <option defaultValue hidden  >Choose...</option>
                    {feesType?.length > 0 ?
                      feesType.map(option => <option key={option.code} value={option.code}>{option.name}</option>)
@@ -49,7 +38,7 @@ function FeeForm({setyear, year, classID, loading,
                     value={type}
                     ref={register({ required: true })} 
                     onChange={e => settype(e.target.value)}
-                    name="type" class="form-select">
+                    name="type" className="form-select">
                     <option defaultValue hidden  >Choose...</option>
                     <option value="border">Border</option>
                     <option value="freshBorder">Fresh Boarder</option>
@@ -58,6 +47,10 @@ function FeeForm({setyear, year, classID, loading,
                 </select>
                 {errors.type && <span className=" form-error text-danger mb-2">This field is required</span>}
                 </div>
+                </>
+             }
+
+
                 <div className="col-md-10 mb-3">
                     <div className="row mb-2">
                         <label className="col-2 form-label">Tution Fee</label>
@@ -106,7 +99,7 @@ function FeeForm({setyear, year, classID, loading,
                     onClick={handleSubmit(onSubmit)} 
                     className="btn blue__btn">
                         {loading && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
-                        Submit
+                        {isEdit ? "Save Changes" : "Submit"}
                     </button>
                 </div>
            </form>

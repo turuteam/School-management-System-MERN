@@ -5,8 +5,6 @@ import {errorAlert} from '../../../utils';
 import {useSelector} from 'react-redux';
 import {selectClasses} from '../../../store/slices/schoolSlice'
 
-
-
 function RegisterAttendance() {
     const [classID, setclassID] = useState("");
     const [loading, setloading] = useState(false)
@@ -46,7 +44,6 @@ function RegisterAttendance() {
 
     return (
         <div>
-          <h3>testing</h3>
           <div className="content__container mb-5">
               <h3>Register Today's Attendance</h3>
                <div>
@@ -58,8 +55,13 @@ function RegisterAttendance() {
                     className="form-select form-select-sm py-2" 
                     >
                         <option hidden defaultValue>Select</option>
-                        {classes.length > 0 ? 
-                            classes.map(option => <option key={option.classCode} value={option.classCode}>{option.name}</option>) 
+                        { classes.length > 0 ? 
+                            classes.map(option => 
+                            <option 
+                              key={option.classCode} 
+                              value={option.classCode}>
+                              {option.name}
+                            </option>) 
                             : <option disabled>No classes yet</option>
                         }
                   </select>
@@ -70,6 +72,7 @@ function RegisterAttendance() {
               attendanceData={students} 
               handleRegister={ handleRegisterAttendance }
               loading={loading}
+              isClass={true}
               setattendanceData={setstudents}/>}
         </div>
     )

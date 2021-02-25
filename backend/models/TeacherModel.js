@@ -47,13 +47,13 @@ const TeacherSchema =   new Schema( {
     qualifiations: {
         type: String
     },
-    salary: {
+    bank: {
         type: String
     },
-    allowance: {
+    accountNumber: {
         type: String
     },
-    positions: {
+    position: {
         type: String
     },
     telephone: {
@@ -70,16 +70,7 @@ const TeacherSchema =   new Schema( {
         type: String,
     },
     courses: {
-        type: [
-        {
-            courseID : String,
-            classID: String,
-            startDate: {
-                type: Date,
-                default: Date.now
-            }
-         }
-      ] ,
+        type: Array ,
       default: []
     },
     nextofKin: {

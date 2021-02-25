@@ -30,6 +30,10 @@ const AddNote = React.lazy(()  => import( '../../AdminComponents/academics/notes
 const EditNote = React.lazy(()  => import( '../../AdminComponents/academics/notes/EditNote'));
 const ViewCalendar = React.lazy(()  => import( '../../AdminComponents/academics/calender/ViewCalendar'));
 
+const Divisions = React.lazy(()  => import( '../../AdminComponents/academics/divisions/Divisions'));
+
+
+
 
 //students
 const AllStudents = React.lazy(()  => import( '../../AdminComponents/students/allStudents/AllStudents'));
@@ -50,10 +54,7 @@ const EditStudent = React.lazy(() => import('../../AdminComponents/students/newS
 //staff
 const AddStaff = React.lazy(()  => import( '../../AdminComponents/staff/addStaff/AddStaffPage'));
 const Staff = React.lazy(()  => import( '../../AdminComponents/staff/AllStaff'));
-
-
 const StaffDetails = React.lazy(() => import('../../AdminComponents/staff/StaffDetails'));
-const Payrow = React.lazy(()  => import( '../../AdminComponents/staff/PayrowPage'));
 const EditStaff  =  React.lazy(()  => import( '../../AdminComponents/staff/addStaff/EditStaff'));
 
 
@@ -69,9 +70,12 @@ const Fees = React.lazy(()  => import( '../../AdminComponents/finance/setfees/Se
 const SetFees = React.lazy(()  => import( '../../AdminComponents/finance/setfees/SetNewFees'));
 const PrepareBill = React.lazy(()  => import( '../../AdminComponents/finance/PrepareBill'));
 const RecordExpenditure = React.lazy(()  => import( '../../AdminComponents/finance/expenditure/RecordExpenditure'));
+const IncomeExpenditure = React.lazy(()  => import( '../../AdminComponents/finance/expenditure/RecordIncome'));
 const BillPayment = React.lazy(()  => import( '../../AdminComponents/finance/billPayment/BillPayment'));
 const ViewPayment = React.lazy(()  => import( '../../AdminComponents/finance/expenditure/ViewPayment'));
-
+const AllPayrow = React.lazy(()  => import( '../../AdminComponents/finance/staffPayrow/AllPayrow'));
+const PayrowPay = React.lazy(()  => import( '../../AdminComponents/finance/staffPayrow/PayrowPayment'));
+const Payrow = React.lazy(()  => import( '../../AdminComponents/finance/payrow/Payrow'));
 
 //canteen 
 const Canteen = React.lazy(() => import('../../AdminComponents/canteen/CanteenPayment'));
@@ -211,6 +215,11 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: EditNote,
     },
     {
+        path: "/academics/divisions",
+        name: "Divisions",
+        component: Divisions,
+    },
+    {
         path: "/students",
         name: "Students",
         exact: true,
@@ -273,14 +282,8 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: AddStaff,
     },
     {
-        path: "/staff/finance",
-        exact: true,
-        name: "Staff Payrow ",
-        component: Payrow,
-    },
-    {
         path: "/staff/edit/:id",
-        name: "Edit staff",
+        name: " Staff Edit",
         component: EditStaff
     },
     {
@@ -301,29 +304,47 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: SetFees
     },
     {
-        path: "/finance/preparebill",
-        name: "Prepare Bill",
+        path: "/finance/students",
+        name: "Students Fees",
+        exact: true,
         component: PrepareBill
     },
     {
-        path: "/finance/billpayment",
+        path: "/finance/payrow",
+        name: "Payrow Details",
+        exact: true,
+        component: Payrow
+    },
+    {
+        path: "/finance/staff/payrow",
+        name: "Staff Payrow",
+        exact: true,
+        component: AllPayrow
+    },
+    {
+        path: "/finance/staff/payrow/pay",
+        name: "Staff Payrow",
+        component: PayrowPay
+    },
+    {
+        path: "/finance/students/fees",
         name: "Bill Payment",
         component: BillPayment
     },
     {
         path: "/finance/banking",
-        name: "Banking",
+        name: "Banking Details",
         exact: true,
         component: Banking
     },
     {
         path: "/finance/banking/add",
-        name: "Banking Add",
+        name: "Banking Details Add",
         component: AddBank
     },
     {
         path: "/finance/banking/edit/:id",
-        name: "Banking Edit",
+        name: "Banking Details Edit",
         component: EditBank
     },
     {
@@ -332,13 +353,19 @@ const EditStaffAttendance = React.lazy(() => import('../../AdminComponents/atten
         component: BankTransactions
     },
     {
-        path: "/finance/payment",
-        name: "View Payment",
+        path: "/finance/transactions/expenditure",
+        name: "Record Payment",
         component:  RecordExpenditure
     },
     {
-        path: "/finance/viewpayment",
+        path: "/finance/transactions/income",
+        name: "Record Income",
+        component: IncomeExpenditure
+    },
+    {
+        path: "/finance/transactions",
         name: "View Payment",
+        exact: true,
         component: ViewPayment
     },
     {

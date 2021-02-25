@@ -5,8 +5,6 @@ import {Link} from 'react-router-dom'
 import {errorAlert, successAlert} from '../../../utils'
 
 function SetNewFees() {
-    const [year, setyear] = useState("")
-    const [term, setterm] = useState("")
     const [classID, setclass] = useState("")
     const [type, settype] = useState("");
     const [tution, settution] = useState("");
@@ -46,7 +44,7 @@ function SetNewFees() {
         else{
             return 0
         }
-         axios.post('/fees/add',{name: classID, ...obj, year, term}).then(res => {
+         axios.post('/fees/add',{name: classID, ...obj}).then(res => {
              if(res.data.error){
                  errorAlert(res.data.error);
                  return 0;
@@ -55,8 +53,6 @@ function SetNewFees() {
              settution("");
              setfacility("");
              setmaintenance("");
-             setyear("");
-             setterm("");
              setclass("");
              setexam("");
              settype("");
@@ -79,7 +75,6 @@ function SetNewFees() {
              </div>
             <h3>Set Fees</h3>
            <FeeForm 
-              year={year}
               tution={tution}
               settution={settution}
               setfacility={setfacility}
@@ -88,9 +83,6 @@ function SetNewFees() {
               setmaintenance={setmaintenance}
               exam={exam}
               setexam={setexam}
-              setyear={setyear}
-              term={term}
-              setterm={setterm}
               classID={classID}
               setclass={setclass}
               type={type}

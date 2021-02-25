@@ -11,7 +11,8 @@ function AllCourses() {
     useEffect(() => {
         axios.get(`/teachers/courses/${user?.id}`).then(res => {
             if(res.data.success){
-                setcourses(res.data?.courses)
+                console.log(res)
+                setcourses(res.data?.docs)
             }
         })
        
@@ -21,7 +22,7 @@ function AllCourses() {
         <div>
             <h3>My Tutorial Courses</h3>
             <div className="row mt-5">
-                {courses?.length > 0 ?  courses?.map(e =>  <ClassCard key={e.couserID} id={e.courseID}/>) :  <ClassCard />}
+                {courses?.length > 0 ?  courses?.map(e =>  <ClassCard key={e} id={e}/>) :  <ClassCard />}
             </div>
         </div>
     )

@@ -2,7 +2,10 @@ import React from 'react'
 import { useSelector} from 'react-redux';
 import {selectClasses, selectacademicYear} from '../../../store/slices/schoolSlice'
 
-function SearchStudent({term,loading, setterm,year, setyear, setclassID, classID,setstudentID, studentOptions, studentID}) {
+function SearchStudent({
+    term,loading, setterm,year, 
+    setyear, setclassID, classID,setstudentID,
+     studentOptions, studentID}) {
 
     const classes = useSelector(selectClasses);
     const academicYear = useSelector(selectacademicYear)
@@ -13,7 +16,7 @@ function SearchStudent({term,loading, setterm,year, setyear, setclassID, classID
             <h3>Search Student</h3>
             <form action="">
                 <div className="mb-3">
-                    <label for="inputState" className="form-label">Academic Year</label>
+                    <label  className="form-label">Academic Year</label>
                     <select 
                     name="year" 
                     value={year}
@@ -25,7 +28,7 @@ function SearchStudent({term,loading, setterm,year, setyear, setclassID, classID
                     </select>
                 </div>
                 <div className="mb-3">
-                    <label for="inputState" className="form-label">Term</label>
+                    <label  className="form-label">Term</label>
                     <select 
                     value={term}
                     onChange={e => setterm(e.target.value)}
@@ -37,7 +40,7 @@ function SearchStudent({term,loading, setterm,year, setyear, setclassID, classID
                     </select>
                 </div>
                  <div className="mb-3">
-                    <label for="inputState" className="form-label">Class</label>
+                    <label  className="form-label">Class</label>
                     <select 
                     value={classID}
                     onChange={e => setclassID(e.target.value)}
@@ -55,7 +58,7 @@ function SearchStudent({term,loading, setterm,year, setyear, setclassID, classID
                 </div>}
                 { studentOptions?.length > 0 &&
                     <div className="mb-3">
-                        <label for="inputState" className="form-label">Student</label>
+                        <label  className="form-label">Student</label>
                         <select 
                         value={studentID}
                         onChange={e => setstudentID(e.target.value)}

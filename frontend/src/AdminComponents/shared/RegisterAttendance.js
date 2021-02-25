@@ -35,7 +35,15 @@ const useStyles = makeStyles({
 });
 
 
-export default function CustomizedTables({ isStaff, handleResetAttendance ,attendanceData, setattendanceData,loading, handleRegister, isEdit}) {
+export default function CustomizedTables({ 
+   isStaff,
+   handleResetAttendance,
+   attendanceData, 
+   setattendanceData,
+   loading, 
+   handleRegister, 
+   isClass,
+   isEdit}) {
   const classes = useStyles();
 
   const registerStudent = (id) => {

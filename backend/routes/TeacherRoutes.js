@@ -1,6 +1,6 @@
 import express from "express";
 import TeacherModel from "../models/TeacherModel.js";
-import {create, login} from  '../middlewares/validate.js';
+import { login} from  '../middlewares/validate.js';
 import  bcrypt from 'bcrypt';
 import {stringtoLowerCaseSpace, stringSpace} from '../middlewares/utils.js';
 import {role} from '../middlewares/variables.js';
@@ -16,9 +16,6 @@ route.get('/', async(req, res) => {
 
 //get one teacher by id
 route.get('/:id', async(req, res) => {
-    // if(!req.params.id) {
-    //     return res.status(400).send('Missing URL parameter: username')
-    //   }
     await TeacherModel.findOne({ userID: req.params.id, role: role.Teacher })
     .then(user => {
         if(user){
@@ -187,7 +184,6 @@ TeacherModel.findOneAndUpdate({
     new: true
   })
   .then(doc => {
-      console.log(doc)
       if(doc){
         return    res.json({success: true, doc});
       }

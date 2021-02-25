@@ -50,7 +50,7 @@ function RecordExpenditure() {
 
     return (
         <div className="content__container">
-            <h3>Record Expenditure</h3>
+            <h3>Record An Expense</h3>
             <form action="">
                     <div className=" mb-3">
                          <label  
@@ -122,22 +122,22 @@ function RecordExpenditure() {
                         </div>
                  </div>
                  {paymentType === "bank-deposit" && 
-                               <div className=" mb-3">
-                                     <label  className=" col-form-label">
-                                       Bank
-                                    </label>
-                                    <div className="">
-                                        <select 
-                                            value={bank}
-                                            ref={register({ required: true})} 
-                                            onChange={e => setbank(e.target.value)}
-                                            name="students" 
-                                            className="form-select">
-                                                <option hidden defaultValue>Choose...</option>
-                                                {bankOptions && bankOptions.map(e => <option key={e} value={e}>{e}</option>)}
-                                        </select>
-                                    </div>
-                                </div>}
+                    <div className=" mb-3">
+                            <label  className=" col-form-label">
+                            Bank
+                        </label>
+                        <div className="">
+                            <select 
+                                value={bank}
+                                ref={register({ required: true})} 
+                                onChange={e => setbank(e.target.value)}
+                                name="students" 
+                                className="form-select">
+                                    <option hidden defaultValue>Choose...</option>
+                                    {bankOptions && bankOptions.map(e => <option key={e} value={e}>{e}</option>)}
+                            </select>
+                        </div>
+                    </div>}
                  {paymentType === ("cheque") &&
                     <>
                     <div className=" mb-3">

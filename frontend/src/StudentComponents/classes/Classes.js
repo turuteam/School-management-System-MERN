@@ -1,72 +1,35 @@
-import React, { useEffect, useState } from 'react'
-import {selectUser} from '../../store/slices/userSlice';
-import {useSelector} from 'react-redux'
-import axios from '../../store/axios';
+import React, { useEffect, useState } from "react";
+import { selectUser } from "../../store/slices/userSlice";
+import { useSelector } from "react-redux";
+import axios from "../../store/axios";
+import ClassDetails from "../../components/class/ClassDetails";
 
 function Classes() {
-     const user = useSelector(selectUser);
-     const [classDetails, setclassDetails] = useState({})
-     const [isClass, setisClass] = useState(null)
+  const user = useSelector(selectUser);
+  const [classID, setclassID] = useState({});
 
-     useEffect(() => {
-          axios.get(`/student/classDetails/${user?.id}`).then(response => {
-               if(response.data.success){
-                    setisClass(true);
-                    setclassDetails(response.data.docs);
-               }
-               else{
-                  setisClass(false)
-                  console.log("ERROR", response.data);
-               }
-          })
-     }, [user])
+  useEffect(() => {
+    const getData = async () => {
+      let student = await axios.get(`/user/${user?.id}`);
+      let classData = student?.data?.user;
+      console.log(classData?.classID);
+      setclassID(classData?.classID);
+    };
+    getData();
+  }, [user]);
 
-     console.log(classDetails)
-    return (
-        <div>
-            <div className="content__container">
-               <h3>Class Details</h3>
-               {isClass ?  <> 
-                <div className="row mb-3">
-                    <div className="col-4">
-                         Class
-                    </div>
-                    <div className="col-8">
-                         {classDetails?.name || "N/A"}
-                    </div>
-                </div>
-                <div className="row mb-3">
-                    <div className="col-4">
-                         Code
-                    </div>
-                    <div className="col-8">
-                        {classDetails?.classCode || "N/A"}
-                    </div>
-                </div>
-                <div className="row mb-3">
-
-                    <div className="col-4">
-                        {classDetails?.campusID || "N/A"}
-                    </div>
-                    <div className="col-8">
-                         class Code
-                    </div>
-                </div>
-                <div className="row mb-3">
-                    
-                    <div className="col-4">
-                         Class Teacher
-                    </div>
-                    <div className="col-8">
-                         {classDetails?.teacherID || "N/A"}
-                    </div>
-                </div>
-
-                </> :  <div>No Class Details yet </div>}
-            </div>
-        </div>
-    )
+  return (
+    <div>
+      <div className="content__container">
+        <h3>Class Details</h3>
+        {classID ? (
+          <ClassDetails id={classID} />
+        ) : (
+          <div>No Class Details yet </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default Classes
-
+export default Classes;

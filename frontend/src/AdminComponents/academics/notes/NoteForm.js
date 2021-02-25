@@ -3,8 +3,6 @@ import {useSelector} from 'react-redux'
 import {selectClasses, selectCourses} from '../../../store/slices/schoolSlice';
 import { useForm } from "react-hook-form";
 
-
-
 function NoteForm(props) {
      const classes = useSelector(selectClasses);
      const courses = useSelector(selectCourses);
@@ -12,11 +10,12 @@ function NoteForm(props) {
 
     let {classID, setclass, subject, setsubject, 
         topic, settopic, loading,
-        handleAdd, handleReset, isEdit,
+        handleAdd, handleReset, isEdit,role,
         setfile, notes , setnotes} = props
 
     return (
         <form className="row g-3" action="">
+            {role === "admin" && <>
             <div className="col-md-6">
                 <label className="form-label">Select Class</label>
                 <select 
@@ -41,6 +40,8 @@ function NoteForm(props) {
                      <option disabled>No courses available yet</option>}
                 </select>
             </div>
+            </>}
+
             <div className="col-12">
                 <label className="form-label">Topic</label>
                 <input  

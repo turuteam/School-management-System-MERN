@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import AddForm from './NoteForm';
 import axios from '../../../store/axios';
 import {errorAlert, successAlert} from '../../../utils';
-import GoBack from '../../shared/GoBack'
 import {useSelector} from 'react-redux'
 import  {selectUser} from '../../../store/slices/userSlice'
 
@@ -58,7 +57,6 @@ function AddNote() {
 
     return (
         <>
-          <GoBack link="/academics/notes" name="Back  to Classes List"/>
         <div className="content__container mb-5">
            <h3>Add New Notes</h3>
            <AddForm 
@@ -72,6 +70,7 @@ function AddNote() {
             loading={loading}
             handleReset={handleResetNote} 
             setfile={setfile} 
+            role={user?.role}
             handleAdd={handleAddNote}
             notes={notes}
             setnotes={setnotes}

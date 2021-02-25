@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import ListTable from '../../shared/ListTable';
 import {Link} from 'react-router-dom';
 import axios from '../../../store/axios';
-import {getTrimString} from '../../../utils'
+import {getTrimString, errorAlert} from '../../../utils';
+
 
 const tableHeader = [
     {id: "date", name: "Date"},
@@ -26,19 +27,36 @@ function ViewPayment() {
             })
             setexpenditures(data)
         })
-       
     }, [])
+
+    const handleEdit = (id) => {
+    
+
+    }
+
+    const handleDelete = (id) => {
+        axios.delete(`/transactions/delete/${id}`).then(res => {
+              if(res.data.error){
+                   errorAlert(res.data.error)
+              }
+              setexpenditures(expenditures.filter(e => e._id !== id))
+        })
+
+    }
     
     return (
         <div>
-           <h3>Expenditure</h3>
-           <div className="float-right">
-               <Link className="btn blue__btn" to="/finance/payment">Make a  Payment</Link>
+           <h3 className="">Transactions</h3>
+           <div className="float-right mb-4">
+           <Link className="btn blue__btn mr-4" to="/finance/transactions/income">Record An Income</Link>
+               <Link className="btn btn-danger" to="/finance/transactions/expenditure">Make a  Payment</Link>
            </div>
            <div className="mt-5">
                 <ListTable 
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                isEdit={true}
                 data={expenditures} 
-                noActions={true}
                 tableHeader={tableHeader}/>
            </div>
         </div>

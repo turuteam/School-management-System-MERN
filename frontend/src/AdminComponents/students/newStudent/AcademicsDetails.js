@@ -45,7 +45,8 @@ function AcademicsDetails(props) {
         handleCoursesCheckbox
      } = props
 
-    
+
+     console.log(feesType)
     return (
         <div>
                <h3>Academics Details</h3>
@@ -118,9 +119,9 @@ function AcademicsDetails(props) {
                                 aria-label="Default select example">
                                 <option defaultValue  hidden>select</option>
                                 <option value="border">Border </option>
-                                <option value="fresh-border">Fresh Border </option>
+                                <option value="freshBorder">Fresh Border </option>
                                 <option value="day">Day </option>
-                                <option value="fresh-day">Fresh Day </option>
+                                <option value="freshDay">Fresh Day </option>
                             </select>
                             {errors.status && <span className=" form-error text-danger mb-2">This field is required</span>}
                         </div>

@@ -93,6 +93,11 @@ const _nav =  [
       },
       {
         _tag: 'CSidebarNavItem',
+        name: 'Divisions',
+        to: '/academics/divisions',
+      },
+      {
+        _tag: 'CSidebarNavItem',
         name: 'School Calender',
         to: '/academics/calender',
       },
@@ -146,18 +151,28 @@ const _nav =  [
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Prepare bill',
-        to: '/finance/preparebill',
+        name: ' Payrow',
+        to: '/finance/payrow',
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Bill Payment',
-        to: '/finance/billpayment',
+        name: 'Students Fees',
+        to: '/finance/students',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: ' Fees Payment',
+        to: '/finance/students/fees',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Payrow Payment',
+        to: '/finance/staff/payrow',
       },
       {
         _tag: 'CSidebarNavItem',
         name: 'Transactions',
-        to: '/finance/viewpayment',
+        to: '/finance/transactions',
       },
       {
         _tag: 'CSidebarNavItem',

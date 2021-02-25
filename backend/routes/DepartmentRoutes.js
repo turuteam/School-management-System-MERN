@@ -13,29 +13,28 @@ route.get('/', async(req, res) => {
 //create
 route.post('/create', async(req, res) => {
     let body = req.body
-   const {error} = createDepart.validate(body);
-    if(error){
-    return  res.json({success: false, error : error.details[0].message})
-    }
 
-    body = {
-      ...body,
-      name: stringtoLowerCase(body.name)
-    }
-    const departExist = await DepartmentsModel.findOne({
-        name: body.name,
+    let code = stringtoLowerCase(body.name)
+
+    const departExist = await DepartmentsModel
+    .findOne({
+        code: code
     })
     if(departExist){
         return res.json({success: false, error: "Department already exist"})
     }
 
-    DepartmentsModel.create(body)
+    DepartmentsModel.create({
+      ...body,
+      code: code
+    })
     .then(doc => {
         console.log(doc)
         res.json({success: true, doc});
       })
     .catch(err => {
-        res.json({success: false, message:err})
+        console.log(err)
+        res.json({success: false, message:"failed"})
     })
   });
 

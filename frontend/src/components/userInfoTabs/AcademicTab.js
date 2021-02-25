@@ -12,18 +12,12 @@ function AcademicTab({user}) {
 
     useEffect(() => {
         if(user?.fees){
-            // axios.get(`/fees/${user?.fees}`).then(res => {
-            //     console.log(res);
-            //     setfees(res.data?.doc)
-            // })
             let type = feesSelector.find(e => e.code === user?.fees);
-            console.log(type)
             setfees(type?.name)
          }
 
          if(user?.scholarship){
             axios.get(`/scholarships/${user?.scholarship}`).then(res => {
-                console.log(res);
                 setscholarship(res.data?.doc?.name)
             })
          }
@@ -31,12 +25,9 @@ function AcademicTab({user}) {
         if(user?.section){
             axios.get(`/sections/${user?.section}`).then(res => {
                 setsection(res.data.doc?.name)
-                console.log(res);
             });
         }
-         
-        
-    }, [user])
+    }, [user, feesSelector])
 
 
     return (
@@ -53,6 +44,12 @@ function AcademicTab({user}) {
                 <div className="col-4">Student Status </div>
                 <div className="col-6">{user?.status} </div>
             </div>
+            {user?.status === ("border" || "freshBorder")  &&
+             <div className="row  mb-3">
+                <div className="col-4">Dormitory </div>
+                <div className="col-6">{user?.dormitoryID} </div>
+            </div>
+            }
             <div className="row  mb-3">
                 <div className="col-4">Scholarship </div>
                 <div className="col-6">{scholarship || "N/A"}</div>

@@ -100,3 +100,20 @@ a {
   width: 100px !important;
   height: 100px !important;
 }
+
+.blue_bg {
+  background-color: $darkBlue !important;
+  color: aliceblue !important;
+}
+
+.blue_color {
+  color: $darkBlue !important;
+}
+
+.orange_bg {
+  background-color: $orange !important;
+}
+
+.orange_color {
+  color: $orange !important;
+}
