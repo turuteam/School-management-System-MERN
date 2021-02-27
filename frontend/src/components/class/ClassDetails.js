@@ -66,8 +66,8 @@ function AllClasses({ id }) {
             <div className="mb-4 text-center">
               <h6>Total Number of Students</h6>
               <h5>
-                {students.length > 0 ? (
-                  students.length
+                {students?.length > 0 ? (
+                  students?.length
                 ) : (
                   <span className="text-danger">no students yet </span>
                 )}

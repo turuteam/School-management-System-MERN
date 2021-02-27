@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 const tableHeadings = [
   { id: "resource", name: "Type" },
   { id: "title", name: "Event" },
-  { id: "date", name: "Date" },
+  { id: "day", name: "Date" },
   { id: "start", name: "Starts" },
   { id: "end", name: "Ends" },
 ];
@@ -90,7 +90,7 @@ function Calender() {
             </Link>
           )}
           <Link
-            to="/academics/calendar/view"
+            to="/academics/calender/view"
             className="btn btn__lg blue__btn ml-2"
           >
             View Calendar

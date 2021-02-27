@@ -76,8 +76,7 @@ function NewStudent() {
     }
   };
 
-  const handleReset = (e) => {
-    e.preventDefault();
+  const handleReset = () => {
     setautoID(true);
     setstatus("");
     setclass("");
@@ -121,12 +120,11 @@ function NewStudent() {
         })
       );
     }
-    // axios.post('/upload', fileData, {}).then((res) => {
-    //     const path= res.data.path;
     axios
       .post("/students/create", {
         profileUrl: path?.data?.path,
         name,
+        setuserID: autoID ? null : userID,
         middleName: secondName,
         surname: lastname,
         gender,
@@ -161,7 +159,9 @@ function NewStudent() {
           errorAlert(response.data.error);
           return 0;
         }
-        successAlert("successfully added");
+        successAlert(
+          `stundent ${response.data.student.userID} successfully added`
+        );
         handleReset();
       })
       .catch((err) => {
@@ -297,7 +297,13 @@ function NewStudent() {
                 "Create"
               )}
             </button>
-            <button onClick={handleReset} className="col btn blue__btn">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleReset();
+              }}
+              className="col btn blue__btn"
+            >
               Reset
             </button>
           </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ComplexDonut from "react-svg-donuts/dist/complex";
 import "react-svg-donuts/dist/index.css";
-import { PieChart } from "react-minimal-pie-chart";
 
 function Population({ maleStudents, femaleStudents }) {
   const [students, setstudents] = useState({
@@ -11,11 +10,13 @@ function Population({ maleStudents, femaleStudents }) {
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
+    setloading(true);
     if (maleStudents && femaleStudents) {
       setstudents({
         female: maleStudents,
         male: femaleStudents,
       });
+      setloading(false);
     }
   }, [maleStudents, femaleStudents]);
 
@@ -34,11 +35,11 @@ function Population({ maleStudents, femaleStudents }) {
           radius={40}
           segments={[
             {
-              color: "#ffa201",
+              color: "#051f3e",
               value: students?.female,
             },
             {
-              color: "#051f3e",
+              color: "#ffa201",
               value: students?.male,
             },
           ]}

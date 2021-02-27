@@ -32,10 +32,10 @@ function BillPayment() {
   const [balance, setbalance] = useState(0);
   const [totalBill, settotalBill] = useState(0);
   const [totalPaid, settotalPaid] = useState(0);
+  const [message, setmessage] = useState("");
 
   const handleSelectStudent = async (id) => {
     setstudentID(id);
-
     let transactionData = await axios.get(`/transactions/student/${id}`);
     settransactions(transactionData.data);
 
@@ -43,9 +43,15 @@ function BillPayment() {
     let student = studentData.data?.student;
     console.log(student);
     setuser(student);
+    let allFees = await axios.get(`/fees`);
+    console.log(allFees, "status");
+
+    if (student?.status === "" || student?.fees === "") {
+      setmessage("fees not set");
+    }
 
     let feesData = await axios.get(
-      `/fees/type/${student?.fees}/${student?.status}`
+      `/fees/type/${student?.status}/${student?.fees}`
     );
     console.log(feesData);
     setfeetype(feesData?.data);
@@ -58,6 +64,8 @@ function BillPayment() {
     const paid = transactionData.data?.reduce((accumulator, element) => {
       return Number(accumulator) + Number(element?.amount);
     }, 0);
+
+    console.log(bill, paid);
     settotalBill(bill);
     settotalPaid(paid);
     setbalance(bill - paid);

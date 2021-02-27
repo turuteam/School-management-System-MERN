@@ -93,7 +93,7 @@ function Canteen() {
       });
   };
 
-  let plan = paymentPlan.find((e) => e.plan === member?.paymentMethod);
+  let plan = paymentPlan?.find((e) => e.plan === member?.paymentMethod);
 
   return (
     <div>
@@ -138,8 +138,8 @@ function Canteen() {
               <option defaultValue hidden>
                 Choose...
               </option>
-              {paymentPlan.length > 0 ? (
-                paymentPlan.map((e) => (
+              {paymentPlan?.length > 0 ? (
+                paymentPlan?.map((e) => (
                   <option key={e._id} value={e.plan}>
                     {e.name}
                   </option>

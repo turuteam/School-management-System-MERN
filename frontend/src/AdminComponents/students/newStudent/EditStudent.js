@@ -178,7 +178,7 @@ function EditStudent() {
           errorAlert(response.data.error);
           return 0;
         }
-        successAlert("successfully added");
+        successAlert("successfully updated");
         setstudentDetails(response.data.student);
       })
       .catch((err) => {

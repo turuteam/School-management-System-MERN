@@ -13,6 +13,8 @@ import CanteenNav from "./CanteenNav";
 function PaymentPlan() {
   const user = useSelector(selectUser);
   const [planData, setplanData] = useState({});
+  const [plansData, setplansData] = useState([]);
+  const [services, setservices] = useState([]);
   const [open, setOpen] = useState(false);
   const [openEditService, setopenEditService] = useState(false);
   const [openAddService, setopenAddService] = useState(false);
@@ -39,6 +41,8 @@ function PaymentPlan() {
   useEffect(() => {
     axios.get("/paymentplan").then((res) => {
       setplanData(res.data);
+      setservices(res.data.services);
+      setplansData(res.data.plans);
       console.log(res.data);
     });
   }, []);
@@ -60,7 +64,8 @@ function PaymentPlan() {
         setdescriptions({});
         settitle("");
         successAlert("Changes Saved");
-        setplanData(res.data.doc);
+        console.log(res.data.doc);
+        setservices(res.data.doc.services);
       })
       .catch(() => {
         setloading(false);
@@ -70,21 +75,24 @@ function PaymentPlan() {
 
   const handleClickOpen = () => {
     let plans = planData?.plans;
-    setname({
-      plan1: plans[0].name,
-      plan2: plans[1].name,
-      plan3: plans[2].name,
-    });
-    setdescriptions({
-      plan1: plans[0].description,
-      plan2: plans[1].description,
-      plan3: plans[2].description,
-    });
-    setprices({
-      plan1: plans[0].price,
-      plan2: plans[1].price,
-      plan3: plans[2].price,
-    });
+    if (plans) {
+      setname({
+        plan1: plans[0]?.name,
+        plan2: plans[1]?.name,
+        plan3: plans[2]?.name,
+      });
+      setdescriptions({
+        plan1: plans[0]?.description,
+        plan2: plans[1]?.description,
+        plan3: plans[2]?.description,
+      });
+      setprices({
+        plan1: plans[0]?.price,
+        plan2: plans[1]?.price,
+        plan3: plans[2]?.price,
+      });
+    }
+
     setOpen(true);
   };
 
@@ -108,7 +116,8 @@ function PaymentPlan() {
         setopenEditService(false);
         setdescriptions({});
         successAlert("Changes Saved");
-        setplanData(res.data.doc);
+        console.log(res.data.doc);
+        setservices(res.data.doc.services);
       })
       .catch((err) => {
         setloading(false);
@@ -125,7 +134,8 @@ function PaymentPlan() {
           errorAlert(res.data.error);
           return 0;
         }
-        setplanData(res.data.doc);
+        console.log(services.filter((i) => i._id !== id));
+        setservices(services.filter((i) => i._id !== id));
       })
       .catch((err) => {
         console.log(err);
@@ -167,7 +177,8 @@ function PaymentPlan() {
         setdescriptions({});
         setname({});
         successAlert("Changes Saved");
-        setplanData(res.data.doc);
+        console.log(res.data.doc);
+        setplansData(res.data.doc.plans);
       })
       .catch((err) => {
         setloading(false);
@@ -190,8 +201,8 @@ function PaymentPlan() {
                 <small> What kind of plan are you interested in </small>
               </p>
             </th>
-            {planData &&
-              planData.plans?.map((plan) => (
+            {plansData &&
+              plansData?.map((plan) => (
                 <th key={plan._id} scope="col">
                   <h5>
                     <strong>{plan?.name}</strong>
@@ -216,25 +227,27 @@ function PaymentPlan() {
           </tr>
         </thead>
         <tbody>
-          {planData.services &&
-            planData.services.map((service) => (
+          {services &&
+            services.map((service) => (
               <tr key={service._id}>
                 <th scope="row">{service?.name}</th>
                 <td>{service?.plan1}</td>
                 <td>{service?.plan2}</td>
                 <td>{service?.plan3}</td>
                 {user?.role === "admin" && (
-                  <td className="d-flex">
-                    <IconButton
-                      onClick={() => handleClickEditOpen(service?._id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDeleteService(service?._id)}
-                    >
-                      <DeleteForeverIcon />
-                    </IconButton>
+                  <td>
+                    <div className="d-flex">
+                      <IconButton
+                        onClick={() => handleClickEditOpen(service?._id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleDeleteService(service?._id)}
+                      >
+                        <DeleteForeverIcon />
+                      </IconButton>
+                    </div>
                   </td>
                 )}
               </tr>

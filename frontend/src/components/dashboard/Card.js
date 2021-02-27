@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CountUp from "react-countup";
 
-function Card({ icon, title, value, link }) {
+function Card({ icon, title, value, link, isPercentage }) {
   const colors = ["#2ad7c5", "#ffa201", "#f939a1"];
+  console.log(value);
 
   let bgColor = colors[Math.floor(Math.random() * colors.length)];
 
@@ -18,6 +19,7 @@ function Card({ icon, title, value, link }) {
           <div className="card__digits">
             <strong>
               <CountUp end={value}></CountUp>
+              {isPercentage && "%"}
             </strong>
           </div>
         </div>

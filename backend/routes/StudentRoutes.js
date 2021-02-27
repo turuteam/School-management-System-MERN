@@ -206,6 +206,12 @@ route.post("/create", async (req, res) => {
   const number = await StudentModel.countDocuments({ role: role.Student });
   let studentId = "BK" + currentYear + (number + 1);
 
+  //check if userid exist
+  const studentIDexist = await StudentModel.findOne({ userID: studentId });
+  if (studentIDexist) {
+    studentId = "BK" + currentYear + (number + 2);
+  }
+
   bcrypt.hash(studentId, 10, (err, hash) => {
     if (err) {
       return res.json({ success: false, error: "something went wrong" });
