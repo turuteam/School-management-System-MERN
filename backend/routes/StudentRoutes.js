@@ -180,13 +180,6 @@ route.get("/class/:id", async (req, res) => {
 route.post("/create", async (req, res) => {
   let body = req.body;
 
-  // body = {
-  //   ...body,
-  //   name: stringtoLowerCaseSpace(body?.name),
-  //   surname: stringtoLowerCaseSpace(body?.surname),
-  //   email: stringSpace(body?.email),
-  // };
-
   const studentExist = await StudentModel.findOne({
     $and: [
       {
@@ -243,7 +236,6 @@ route.post("/signin", async (req, res) => {
   if (error) {
     return res.send({ error: error.details[0].message });
   }
-
   StudentModel.findOne({
     userID: body.userID,
     role: body.role,

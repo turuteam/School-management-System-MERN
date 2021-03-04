@@ -10,6 +10,7 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import AcademicYear from "../../AdminComponents/dashboard/AcademicYear";
+import Loading from "../../Loading";
 
 function Index() {
   const [count, setcount] = useState({
@@ -22,9 +23,9 @@ function Index() {
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
-    setloading(false);
+    setloading(true);
     axios.get(`/student/count/${user?.id}`).then((res) => {
-      setloading(true);
+      setloading(false);
       console.log(res.data);
       setcount(res.data.count);
     });
@@ -34,6 +35,7 @@ function Index() {
 
   return (
     <div className="student__dashboard">
+      {loading && <Loading />}
       <div className="row">
         <Cards
           icon={<ImportContactsIcon />}

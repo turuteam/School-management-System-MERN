@@ -56,8 +56,9 @@ function AddPrefect({
   };
 
   const handleSelectStudent = (id) => {
-    let selectedstudent = students.find((e) => (e.userID = id));
-    setname(selectedstudent?.name + selectedstudent?.surname);
+    let selectedstudent = students.find((e) => e.id === id);
+    console.log(id, selectedstudent);
+    setname(selectedstudent?.name + " " + selectedstudent?.surname);
     setuserID(selectedstudent?.userID);
   };
 

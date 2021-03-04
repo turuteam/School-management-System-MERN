@@ -20,10 +20,12 @@ import { useDispatch } from "react-redux";
 import { loggin } from "../../store/slices/userSlice";
 import { LoginString } from "../../store/localStorage";
 import { errorAlert } from "../../utils";
+import { Link } from "react-router-dom";
+import { handleLogin } from "../../store/apiCall";
 
 const Login = ({ history }) => {
-  const [userId, setuserId] = useState("admin");
-  const [password, setpassword] = useState("BK20211");
+  const [userId, setuserId] = useState("");
+  const [password, setpassword] = useState("");
   const [loading, setloading] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const dispatch = useDispatch();
@@ -37,24 +39,7 @@ const Login = ({ history }) => {
         setloading(false);
         if (data.success === true) {
           const user = data?.user;
-          dispatch(
-            loggin({
-              id: user?.userID,
-              name: user?.name,
-              email: user?.email,
-              photoUrl: user?.profileUrl,
-              role: user?.role,
-              lastName: user?.surname,
-              middleName: user?.middleName,
-            })
-          );
-          localStorage.setItem(LoginString.ID, user?.userID);
-          localStorage.setItem(LoginString.PhotoURL, user?.profileUrl);
-          localStorage.setItem(LoginString.NAME, user?.name);
-          localStorage.setItem(LoginString.EMAIL, user?.email);
-          localStorage.setItem(LoginString.USERROLE, user?.role);
-          localStorage.setItem(LoginString.LASTNAME, user?.surname);
-          localStorage.setItem(LoginString.MIDNAME, user?.middleName);
+          handleLogin(user);
           history.push("/");
         } else {
           console.log(data);
@@ -87,6 +72,7 @@ const Login = ({ history }) => {
                       </CInputGroupPrepend>
                       <input
                         value={userId}
+                        className="form-control  col-6"
                         name="userId"
                         ref={register({ required: true })}
                         onChange={(e) => setuserId(e.target.value)}
@@ -96,13 +82,12 @@ const Login = ({ history }) => {
                         autoComplete="username"
                       />
                       <br />
-                      {errors.userId && (
-                        <span className=" form-error text-danger mb-2">
-                          This field is required
-                        </span>
-                      )}
                     </CInputGroup>
-
+                    {errors.userId && (
+                      <span className=" form-error text-danger mb-2">
+                        This field is required
+                      </span>
+                    )}
                     <CInputGroup className="mb-4">
                       <CInputGroupPrepend>
                         <CInputGroupText>
@@ -111,6 +96,7 @@ const Login = ({ history }) => {
                       </CInputGroupPrepend>
                       <input
                         type="password"
+                        className="form-control  col-6"
                         placeholder="Password"
                         name="password"
                         ref={register({ required: true })}
@@ -120,15 +106,20 @@ const Login = ({ history }) => {
                         autoComplete="current-password"
                       />
                       <br />
-                      {errors.password && (
-                        <span className="form-error text-danger mb-2">
-                          This field is required
-                        </span>
-                      )}
                     </CInputGroup>
-
+                    {errors.password && (
+                      <span className="form-error text-danger mb-2">
+                        This field is required
+                      </span>
+                    )}
+                    <CRow>
+                      <CCol xs="6" className="mb-3">
+                        <Link to="/password/forget">Forget password</Link>
+                      </CCol>
+                    </CRow>
                     <CRow>
                       <CCol xs="6">
+                        <p></p>
                         <CButton
                           disabled={loading}
                           onClick={handleSubmit(handleSignin)}

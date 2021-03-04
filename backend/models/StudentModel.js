@@ -8,6 +8,8 @@ const StudentSchema = new Schema(
       type: String,
       required: true,
     },
+    resetPassowrdToken: String,
+    resetPasswordExpires: Date,
     name: {
       type: String,
       required: true,

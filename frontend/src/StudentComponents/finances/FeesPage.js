@@ -28,10 +28,13 @@ function FeesPage() {
 
       let student = await axios.get(`/students/student/${user?.id}`);
 
+      console.log(student);
+
       const feesData = await axios.get(
         `/fees/type/${student.data.student?.fees}/${student.data.student?.status}`
       );
       setfees(feesData.data);
+      console.log(feesData.data);
       const bill = Object.values(feesData.data).reduce(
         (t, value) => Number(t) + Number(value),
         0

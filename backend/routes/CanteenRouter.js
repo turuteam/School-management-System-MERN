@@ -159,7 +159,8 @@ route.delete("/delete/:id", (req, res) => {
       res.json(doc);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      console.log(err);
+      res.status(500).json({ error: "Failed" });
     });
 });
 

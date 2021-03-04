@@ -14,7 +14,10 @@ import AcademicYear from "../../AdminComponents/dashboard/AcademicYear";
 
 function Index() {
   const user = useSelector(selectUser);
-  const [count, setcount] = useState({});
+  const [count, setcount] = useState({
+    // courses: 0,
+    // notifications: 0,
+  });
   const [loading, setloading] = useState(false);
 
   useEffect(() => {
@@ -33,33 +36,34 @@ function Index() {
       <div className="row">
         <Cards
           icon={<ClassIcon />}
-          title="Classes"
+          title="Class"
+          text={true}
           value={count?.classes}
           link={"/academics/classes"}
         />
         <Cards
           icon={<ImportContactsIcon />}
           title="Courses"
-          value={count?.courses}
+          value={count?.courses || 0}
           link={"/academics/courses"}
         />
         <Cards
           icon={<NotificationsActiveIcon />}
           title="Notifications"
-          value={count?.notifications}
+          value={count?.notifications || 0}
           link={"/notifications"}
         />
         <Cards
           icon={<CalendarTodayIcon />}
           title="Events"
-          value={count?.events}
+          value={count?.events || 0}
           link="/"
         />
         <Cards
           icon={<CallToActionIcon />}
           title="Attendance"
           isPercentage={true}
-          value={attendancePercentage.toFixed(2)}
+          value={attendancePercentage.toFixed(2) || 0}
           link="/attendance"
         />
       </div>

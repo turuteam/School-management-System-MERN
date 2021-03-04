@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "../../../store/axios";
-import { schoolDepart } from "../../../data";
+//import { schoolDepart } from "../../../data";
 import {
   selectClasses,
   selectCourses,
   selectCampuses,
+  selectDepartments,
 } from "../../../store/slices/schoolSlice";
 
 function EmploymentDetails(props) {
   const classes = useSelector(selectClasses);
   const courses = useSelector(selectCourses);
   const campuses = useSelector(selectCampuses);
+  const departments = useSelector(selectDepartments);
   const [positions, setpositions] = useState([]);
   const [showCheck, setshowCheck] = useState(false);
 
@@ -88,9 +90,9 @@ function EmploymentDetails(props) {
             <option defaultValue hidden>
               select
             </option>
-            {schoolDepart.length > 0 ? (
-              schoolDepart.map((e) => (
-                <option key={e.id} value={e._d}>
+            {departments.length > 0 ? (
+              departments.map((e) => (
+                <option key={e._id} value={e.code}>
                   {e.name}
                 </option>
               ))

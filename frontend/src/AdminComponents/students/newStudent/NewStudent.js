@@ -66,6 +66,7 @@ function NewStudent() {
       errorAlert("image is too large");
     } else if (selected) {
       setprofileUrl(selected);
+      // setprofileimg(URL.createObjectURL(selected));
       const fileReader = new FileReader();
       fileReader.readAsDataURL(selected);
       fileReader.onloadend = () => {

@@ -3,7 +3,11 @@ import Search from "../shared/Search";
 import StaffTable from "../shared/TableListUsers";
 import axios from "../../store/axios";
 import { errorAlert } from "../../utils";
+import TableContainer from "@material-ui/core/TableContainer";
 import Loading from "../../Loading";
+import jsPDF from "jspdf";
+import { pdf } from "../../components/tables/pdf";
+import Paper from "@material-ui/core/Paper";
 
 const headCells = [
   { id: "userID", numeric: false, disablePadding: false, label: "Teacher ID" },
@@ -35,6 +39,20 @@ function AllStaff() {
     });
   }, []);
 
+  const generatePDF = () => {
+    const headers = [
+      { key: "userID", label: "UserID" },
+      { key: "name", label: "Name" },
+      { key: "middleName", label: "Middle Name" },
+      { key: "surname", label: " SurName" },
+      { key: "gender", label: "Gender" },
+      { key: "classID", label: "Class" },
+    ];
+
+    pdf({ data: staff, headers, filename: "AllStaff" });
+  };
+
+  console.log(staff);
   const handleDelete = (id) => {
     let ans = window.confirm(`Are sure you want to delete user ${id}`);
     if (ans) {
@@ -90,24 +108,28 @@ function AllStaff() {
 
   return (
     <>
-      {loading ? (
-        <Loading />
-      ) : (
-        <div className="content__container">
-          <Search
-            inputFields={inputFields}
-            handleSearch={handleSearch}
-            handleReset={handleReset}
-          />
-          <StaffTable
-            route="staff"
-            loading={loading}
-            students={staff}
-            handleDelete={handleDelete}
-            headCells={headCells}
-          />
-        </div>
-      )}
+      {loading && <Loading />}
+      <div className="content__container">
+        <Search
+          inputFields={inputFields}
+          handleSearch={handleSearch}
+          handleReset={handleReset}
+        />
+      </div>
+
+      <StaffTable
+        route="staff"
+        loading={loading}
+        students={staff}
+        handleDelete={handleDelete}
+        headCells={headCells}
+      />
+
+      <div className="d-flex justify-content-end">
+        <button onClick={generatePDF} className="btn orange__btn ">
+          Download PDF
+        </button>
+      </div>
     </>
   );
 }

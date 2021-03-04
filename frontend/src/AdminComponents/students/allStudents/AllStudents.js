@@ -5,6 +5,7 @@ import axios from "../../../store/axios";
 import { selectClasses } from "../../../store/slices/schoolSlice";
 import { useSelector } from "react-redux";
 import { errorAlert } from "../../../utils";
+import { pdf } from "../../../components/tables/pdf";
 
 const headCells = [
   { id: "userID", numeric: false, disablePadding: false, label: "StudentID" },
@@ -43,6 +44,19 @@ function AllStudents() {
       setstoreData(res.data);
     });
   }, []);
+
+  const generatePDF = () => {
+    const headers = [
+      { key: "userID", label: "UserID" },
+      { key: "name", label: "Name" },
+      { key: "middleName", label: "Middle Name" },
+      { key: "surname", label: " SurName" },
+      { key: "gender", label: "Gender" },
+      { key: "classID", label: "Class" },
+    ];
+
+    pdf({ data: students, headers, filename: "Allstudents" });
+  };
 
   const handleReset = (e) => {
     e.preventDefault();
@@ -126,6 +140,12 @@ function AllStudents() {
         students={students}
         headCells={headCells}
       />
+
+      <div className="d-flex justify-content-end">
+        <button onClick={generatePDF} className="btn orange__btn ">
+          Download PDF
+        </button>
+      </div>
     </div>
   );
 }

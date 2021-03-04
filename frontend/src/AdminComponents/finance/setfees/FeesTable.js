@@ -100,7 +100,7 @@ export default function CustomPaginationActionsTable({
                           "-"
                         )}
                       </ul>
-                      <div className="d-flex flex-column justify-content-around">
+                      <div className="d-flex flex-row justify-content-between align-items-center">
                         <strong className="text-info">
                           Total{" "}
                           {getTotal(
@@ -149,7 +149,7 @@ export default function CustomPaginationActionsTable({
                         "-"
                       )}
                     </ul>
-                    <div className="d-flex flex-column justify-content-around">
+                    <div className="d-flex flex-row justify-content-between align-items-center">
                       <strong className="text-info">
                         Total{" "}
                         {getTotal(

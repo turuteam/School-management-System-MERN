@@ -1,111 +1,116 @@
-import  mongoose from "../config/mongodb.js"
+import mongoose from "../config/mongodb.js";
 
 const { Schema } = mongoose;
 
-const TeacherSchema =   new Schema( {
+const TeacherSchema = new Schema(
+  {
     userID: String,
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
+    resetPassowrdToken: String,
+    resetPasswordExpires: Date,
     surname: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     middleName: {
-        type: String
+      type: String,
     },
     title: {
-        type: String
+      type: String,
     },
     email: {
-        type: String
+      type: String,
     },
     physicalAddress: {
-        type: String
-     },
-     postalAddress: {
-         type: String
-     },
-     gender: {
-        type: String,
-        required: true
+      type: String,
+    },
+    postalAddress: {
+      type: String,
+    },
+    gender: {
+      type: String,
+      required: true,
     },
     dateofBirth: {
-        type: String
+      type: String,
     },
     placeofBirth: {
-        type: String
+      type: String,
     },
     department: {
-        type: String
+      type: String,
     },
     role: {
-        type: String,
-        default: "teacher"
+      type: String,
+      default: "teacher",
     },
     qualifiations: {
-        type: String
+      type: String,
     },
     bank: {
-        type: String
+      type: String,
     },
     accountNumber: {
-        type: String
+      type: String,
     },
     position: {
-        type: String
+      type: String,
     },
     telephone: {
-        type: String
+      type: String,
     },
     mobile: {
-        type: String
+      type: String,
     },
     password: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     classID: {
-        type: String,
+      type: String,
     },
     courses: {
-        type: Array ,
-      default: []
+      type: Array,
+      default: [],
     },
     nextofKin: {
-        type: {
-            relationship: String,
-            occupation: String,
-            name: String,
-            email: String,
-            mobile: String,
-            address: String,
-            lastname: String,
-        }
+      type: {
+        relationship: String,
+        occupation: String,
+        name: String,
+        email: String,
+        mobile: String,
+        address: String,
+        lastname: String,
+      },
     },
     profileUrl: {
-        type: String
+      type: String,
     },
     health: {
-        type: String
+      type: String,
     },
     allege: {
-        type: String
+      type: String,
     },
     disease: {
-        type :String
+      type: String,
     },
     nationality: {
-        type: String
+      type: String,
     },
     religion: {
-        type: String,
+      type: String,
     },
-    date: { 
-        type: Date, 
-        default: Date.now
+    date: {
+      type: Date,
+      default: Date.now,
     },
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-export default  mongoose.model("teachers", TeacherSchema, "accounts");
+export default mongoose.model("teachers", TeacherSchema, "accounts");

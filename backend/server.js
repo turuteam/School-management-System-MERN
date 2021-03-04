@@ -1,7 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 
+dotenv.config();
 //import routes
 import AcademicYear from "./routes/CurrentYearRoutes.js";
 import StudentRoutes from "./routes/StudentRoutes.js";
@@ -27,6 +29,7 @@ import StaffPay from "./routes/StaffPayRoutes.js";
 import ScholarshipRoutes from "./routes/ScholarshipRoutes.js";
 import SectionRoutes from "./routes/SectionRoutes.js";
 import DepartmentsRoutes from "./routes/DepartmentRoutes.js";
+import DivisionRoutes from "./routes/DivisionRoutes.js";
 import UploadsRoutes from "./routes/Uploads.js";
 import CanteenRoutes from "./routes/CanteenRouter.js";
 import BankingRoutes from "./routes/BankingRoutes.js";
@@ -75,7 +78,8 @@ app.use("/api/prefects", PrefectsRoutes);
 app.use("/api/paymentplan", PaymentPlanRoutes);
 app.use("/api/payrow", PayrowRoutes);
 app.use("/upload", UploadsRoutes);
-app.use("/api/divisions", DepartmentsRoutes);
+app.use("/api/departments", DepartmentsRoutes);
+app.use("/api/divisions", DivisionRoutes);
 app.use("/api/canteen", CanteenRoutes);
 app.use("/api/banking", BankingRoutes);
 app.use("/api/fees", FeesRoutes);

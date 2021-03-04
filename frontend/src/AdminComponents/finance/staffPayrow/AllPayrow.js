@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import ListTable from "../../shared/ListTable";
+import ListTable from "../billPayment/PaymentTable";
 import Search from "../../shared/Search";
 import { useSelector } from "react-redux";
 import { selectStaff } from "../../../store/slices/schoolSlice";
 import axios from "../../../store/axios";
 import { Link } from "react-router-dom";
 import { errorAlert } from "../../../utils";
+import { useHistory } from "react-router-dom";
 
 const tableHeader = [
   { id: "date", name: "Date" },
@@ -21,6 +22,7 @@ function PayrowAll() {
   const [storeData, setstoreData] = useState([]);
   const [status, setstatus] = useState("");
   const staff = useSelector(selectStaff);
+  const history = useHistory();
 
   useEffect(() => {
     axios.get("/transactions/staff/pay").then((res) => {
@@ -76,6 +78,12 @@ function PayrowAll() {
     setdata(newData);
   };
 
+  const handleEdit = (id) => {
+    axios.get(`/transactions/${id}`).then(async (res) => {
+      history.push(`/finance/staff/payrow/payslip/${res.data?.pay?.userID}`);
+    });
+  };
+
   const handleReset = (e) => {
     e.preventDefault();
     setdata(storeData);
@@ -98,9 +106,9 @@ function PayrowAll() {
       />
       <ListTable
         data={data}
+        handleEdit={handleEdit}
         handleDelete={handleDelete}
         tableHeader={tableHeader}
-        isEdit={true}
       />
     </div>
   );

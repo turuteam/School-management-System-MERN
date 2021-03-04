@@ -112,12 +112,21 @@ route.put("/update/:id", async (req, res) => {
     .then((doc) => {
       console.log(doc);
       if (!doc) {
-        return res.json({ success: false, error: "does not exists" });
+        // return res.json({ success: false, error: "does not exists" });
+        PaymentPlanModel.create({ ...req.body, dataID: "paymentPlan" })
+          .then((docs) => {
+            console.log(docs);
+            res.json({ success: true, doc: docs });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.json({ success: false, message: err });
+          });
       }
       return res.json({ success: true, doc });
     })
     .catch((err) => {
-      res.json({ success: false, error: err });
+      res.json({ success: false, error: "Failed" });
     });
 });
 

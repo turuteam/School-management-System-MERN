@@ -82,12 +82,12 @@ function Courses() {
       );
     }
     if (depart) {
-      newClasses = storeData.filter((i) =>
+      newClasses = newClasses.filter((i) =>
         i?.type.toLowerCase().includes(depart?.toLowerCase())
       );
     }
     if (teacher) {
-      newClasses = storeData.filter((i) =>
+      newClasses = newClasses.filter((i) =>
         i?.teacher.toLowerCase().includes(teacher?.toLowerCase())
       );
     }

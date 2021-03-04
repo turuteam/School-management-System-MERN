@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,14 +12,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { useHistory } from "react-router-dom";
 import TableHeader from "./TableHeader";
 import { getImgSrc, getIntial } from "../../utils";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import IconButton from "@material-ui/core/IconButton";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import ViewActions from "./ViewOptions";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -84,9 +77,9 @@ export default function EnhancedTable({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const history = useHistory();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const [id, setid] = useState("");
+  // const [open, setOpen] = React.useState(false);
+  // const anchorRef = React.useRef(null);
+  // const [id, setid] = useState("");
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";

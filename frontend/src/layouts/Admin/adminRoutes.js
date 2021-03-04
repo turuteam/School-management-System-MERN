@@ -6,6 +6,10 @@ const Dashboard = React.lazy(() =>
 const Settings = React.lazy(() =>
   import("../../AdminComponents/settings/SettingsPage")
 );
+const Profile = React.lazy(() =>
+  import("../../AdminComponents/Profile/Profile")
+);
+
 const Notifications = React.lazy(() =>
   import("../../AdminComponents/notifications/NotificationsPage")
 );
@@ -73,6 +77,10 @@ const ViewCalendar = React.lazy(() =>
 
 const Divisions = React.lazy(() =>
   import("../../AdminComponents/academics/divisions/Divisions")
+);
+
+const Departments = React.lazy(() =>
+  import("../../AdminComponents/academics/departments/Departments")
 );
 
 //students
@@ -166,6 +174,10 @@ const Payrow = React.lazy(() =>
   import("../../AdminComponents/finance/payrow/Payrow")
 );
 
+const PaymentReceipt = React.lazy(() =>
+  import("../../AdminComponents/finance/billPayment/PaymentReceipt")
+);
+
 //canteen
 const Canteen = React.lazy(() =>
   import("../../AdminComponents/canteen/CanteenPayment")
@@ -217,12 +229,22 @@ const EditStaffAttendance = React.lazy(() =>
   import("../../AdminComponents/attendance/StaffAttendance/EditStaffAttendance")
 );
 
+const PaySlip = React.lazy(() =>
+  import("../../AdminComponents/finance/staffPayrow/PaySlip")
+);
+
 const routes = [
   {
     path: "/",
     name: "Dashboard",
     exact: true,
     component: Dashboard,
+  },
+  {
+    path: "/profile",
+    name: "Admin Profile",
+    exact: true,
+    component: Profile,
   },
   {
     path: "/attendance/students",
@@ -340,6 +362,11 @@ const routes = [
     component: Divisions,
   },
   {
+    path: "/academics/departments",
+    name: "Departments",
+    component: Departments,
+  },
+  {
     path: "/students",
     name: "Students",
     exact: true,
@@ -442,8 +469,14 @@ const routes = [
     component: AllPayrow,
   },
   {
+    path: "/finance/staff/payrow/payslip/:id",
+    name: "PaySlip",
+    component: PaySlip,
+  },
+  {
     path: "/finance/staff/payrow/pay",
     name: "Staff Payrow",
+    exact: true,
     component: PayrowPay,
   },
   {
@@ -487,6 +520,12 @@ const routes = [
     name: "View Payment",
     exact: true,
     component: ViewPayment,
+  },
+  {
+    path: "/finance/transactions/receipt/:id",
+    name: " Payment Receipt",
+    exact: true,
+    component: PaymentReceipt,
   },
   {
     path: "/canteen/payments",

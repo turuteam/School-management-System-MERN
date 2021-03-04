@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
 import moment from "moment";
 import EditForm from "./ChangeMembership";
+import Loading from "../../Loading";
 
 const tableHeader = [
   { id: "date", name: "Date" },
@@ -76,6 +77,16 @@ function Canteen() {
       });
   };
 
+  const handleSignout = () => {
+    axios.delete(`/canteen/delete/${user?.id}`).then((res) => {
+      if (res.data?.error) {
+        errorAlert(res.data?.error);
+        return 0;
+      }
+      setmember(null);
+    });
+  };
+
   const handleEdit = () => {
     setloading(true);
     axios
@@ -97,6 +108,7 @@ function Canteen() {
 
   return (
     <div>
+      {loading && <Loading />}
       {member ? (
         <>
           <div className="d-flex justify-content-end mb-2">
@@ -110,15 +122,26 @@ function Canteen() {
               Change Membership Plan
             </button>
           </div>
+
           <div className="blue_bg p-3 mb-4">
-            <h4>
-              Membership ID{" "}
-              <span className="orange_color">{member?.memberID}</span>{" "}
-            </h4>
-            <h6>Join at {moment().format("D MMMM YYYY")}</h6>
-            <h6>
-              Payment Plan <span className="orange_color">{plan?.name}</span>{" "}
-            </h6>
+            <div className="d-flex justify-content-between">
+              <div>
+                <h4>
+                  Membership ID{" "}
+                  <span className="orange_color">{member?.memberID}</span>{" "}
+                </h4>
+                <h6>Join at {moment().format("D MMMM YYYY")}</h6>
+                <h6>
+                  Payment Plan{" "}
+                  <span className="orange_color">{plan?.name}</span>{" "}
+                </h6>
+              </div>
+              <div>
+                <button className="btn btn-danger" onClick={handleSignout}>
+                  Sign out your membership
+                </button>
+              </div>
+            </div>
           </div>
           <TableList noActions={true} data={data} tableHeader={tableHeader} />
         </>

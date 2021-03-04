@@ -3,6 +3,7 @@ import SearchStudent from "./SearchStudent";
 import PaymentForm from "./PaymentForm";
 import ViewStudent from "./ViewStudent";
 import axios from "../../../store/axios";
+import Loading from "../../../Loading";
 import { errorAlert, successAlert } from "../../../utils";
 
 function BillPayment() {
@@ -35,23 +36,19 @@ function BillPayment() {
   const [message, setmessage] = useState("");
 
   const handleSelectStudent = async (id) => {
+    setloading(true);
     setstudentID(id);
     let transactionData = await axios.get(`/transactions/student/${id}`);
     settransactions(transactionData.data);
 
     let studentData = await axios.get(`/students/student/${id}`);
     let student = studentData.data?.student;
-    console.log(student);
-    setuser(student);
-    let allFees = await axios.get(`/fees`);
-    console.log(allFees, "status");
 
-    if (student?.status === "" || student?.fees === "") {
-      setmessage("fees not set");
-    }
+    setuser(student);
+    //let allFees = await axios.get(`/fees`);
 
     let feesData = await axios.get(
-      `/fees/type/${student?.status}/${student?.fees}`
+      `/fees/type/${student?.fees}/${student?.status}`
     );
     console.log(feesData);
     setfeetype(feesData?.data);
@@ -65,7 +62,6 @@ function BillPayment() {
       return Number(accumulator) + Number(element?.amount);
     }, 0);
 
-    console.log(bill, paid);
     settotalBill(bill);
     settotalPaid(paid);
     setbalance(bill - paid);
@@ -140,15 +136,12 @@ function BillPayment() {
 
   return (
     <div>
+      {loading && <Loading />}
       <h3>Student Bill Payment</h3>
       <div className="row">
         <div className="col-sm-6">
           <SearchStudent
-            year={year}
-            term={term}
             loading={loadingStudents}
-            setterm={setterm}
-            setyear={setyear}
             studentID={studentID}
             setstudentID={handleSelectStudent}
             setclassID={handleSelectClass}
@@ -163,6 +156,10 @@ function BillPayment() {
                 <PaymentForm
                   balance={balance}
                   amount={amount}
+                  year={year}
+                  term={term}
+                  setterm={setterm}
+                  setyear={setyear}
                   chequeNo={chequeNo}
                   setchequeNo={setchequeNo}
                   bank={bank}

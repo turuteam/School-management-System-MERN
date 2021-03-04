@@ -1,26 +1,34 @@
-import  mongoose from "../config/mongodb.js"
+import mongoose from "../config/mongodb.js";
 
 const { Schema } = mongoose;
 
-const SchoolSchema =   new Schema( {
+const SchoolSchema = new Schema(
+  {
     name: {
-        type: String,
+      type: String,
     },
     fullName: {
-        type: String,
+      type: String,
     },
     motto: {
       type: String,
     },
     role: {
-        type: String,
+      type: String,
     },
+    userID: {
+      type: String,
+    },
+    resetPassowrdToken: String,
+    resetPasswordExpires: Date,
     logo: String,
     address: String,
     photoUrl: String,
     email: String,
     telephone: String,
     password: String,
-}, { timestamps: true })
+  },
+  { timestamps: true }
+);
 
-export default  mongoose.model("accounts", SchoolSchema);
+export default mongoose.model("accounts", SchoolSchema);

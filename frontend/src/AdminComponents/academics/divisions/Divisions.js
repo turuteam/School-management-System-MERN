@@ -8,7 +8,6 @@ import DivisionForm from "./DivisionForm";
 const tableHeadings = [
   { id: "createdAt", name: "Created At" },
   { id: "name", name: "Name" },
-  { id: "classes", name: "Class Number" },
   { id: "description", name: "Description" },
 ];
 
@@ -47,11 +46,12 @@ function Division() {
   const handleDelete = (id) => {
     const ans = window.confirm("are you sure you want to delete");
     if (ans) {
-      axios.delete(`/divisions/delete/${id}`).then((res) => {
+      axios.delete(`/division/delete/${id}`).then((res) => {
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
+        console.log(divisions, id);
         setdivisions(divisions.filter((e) => e._id !== id));
       });
     }
@@ -126,9 +126,11 @@ function Division() {
   const handleSearch = (e) => {
     e.preventDefault();
     let newClasses = [];
-    if (name) {
-      newClasses = storedata.filter((i) =>
-        i?.name.toLowerCase().includes(searchQuery?.toLowerCase())
+    if (searchQuery) {
+      newClasses = storedata.filter(
+        (i) =>
+          i?.name.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+          i?.description.toLowerCase().includes(searchQuery?.toLowerCase())
       );
     }
     setdivisions(newClasses);

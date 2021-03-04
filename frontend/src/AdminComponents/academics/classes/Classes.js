@@ -114,19 +114,17 @@ function Classes() {
       );
     }
     if (campus) {
-      newClasses = storeData.filter((i) =>
+      newClasses = newClasses.filter((i) =>
         i?.campusID.toLowerCase().includes(campus?.toLowerCase())
       );
     }
     if (teacher) {
-      newClasses = storeData.filter((i) =>
+      newClasses = newClasses.filter((i) =>
         i?.teacherID.toLowerCase().includes(teacher?.toLowerCase())
       );
     }
     setclasses(newClasses);
   };
-
-  console.log(classes);
 
   return (
     <div>

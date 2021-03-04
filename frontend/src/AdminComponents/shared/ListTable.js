@@ -98,7 +98,7 @@ export default function CustomPaginationActionsTable({
         ) : (
           <TableBody>
             {data?.length <= 0 ? (
-              <TableRow className="text-center my-5"> No data yet </TableRow>
+              <TableRow className="text-center my-5"> No data </TableRow>
             ) : (
               <>
                 {(rowsPerPage > 0
@@ -118,26 +118,25 @@ export default function CustomPaginationActionsTable({
                         </TableCell>
                       ))}
                     {!noActions && (
-                      <TableCell
-                        align="left"
-                        className="d-flex align-items-center"
-                      >
-                        <IconButton
-                          onClick={() =>
-                            handleDelete(isCanteen ? row.memberID : row._id)
-                          }
-                        >
-                          <DeleteOutlineIcon />
-                        </IconButton>
-                        {!isEdit && (
+                      <TableCell align="left">
+                        <div className="d-flex align-items-center">
                           <IconButton
                             onClick={() =>
-                              handleEdit(isCanteen ? row.memberID : row._id)
+                              handleDelete(isCanteen ? row.memberID : row._id)
                             }
                           >
-                            <EditIcon></EditIcon>
+                            <DeleteOutlineIcon />
                           </IconButton>
-                        )}
+                          {!isEdit && (
+                            <IconButton
+                              onClick={() =>
+                                handleEdit(isCanteen ? row.memberID : row._id)
+                              }
+                            >
+                              <EditIcon></EditIcon>
+                            </IconButton>
+                          )}
+                        </div>
                       </TableCell>
                     )}
                   </TableRow>

@@ -7,7 +7,10 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
-import ListTable from "../../shared/ListTable";
+import ListTable from "./PaymentTable";
+import axios from "../../../store/axios";
+import { useHistory } from "react-router-dom";
+import { errorAlert, successAlert } from "../../../utils";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -43,9 +46,23 @@ export default function ViewStudentPayment({
   balance,
 }) {
   const classes = useStyles();
-
+  const history = useHistory();
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleDelete = (id) => {
+    axios.delete(`/transactions/delete/${id}`).then((res) => {
+      if (res.data.error) {
+        errorAlert(res.data.error);
+        return 0;
+      }
+      successAlert("Transaction successfully cancelled");
+    });
+  };
+
+  const handleEdit = (id) => {
+    history.push(`/finance/transactions/receipt/${id}`);
   };
 
   return (
@@ -70,6 +87,8 @@ export default function ViewStudentPayment({
       </AppBar>
       <div className="mt-5">
         <ListTable
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
           noActions={true}
           data={transactions}
           tableHeader={tableHeader}

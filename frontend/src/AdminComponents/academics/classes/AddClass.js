@@ -35,7 +35,7 @@ function AddClass() {
         }
         successAlert(`${data.doc?.classCode} is successfully added`);
         setloading(false);
-        dispatch(classes([data.doc, ...classes]));
+        dispatch(setClasses([data.doc, ...classes]));
         setcampus("");
         setcode("");
         setname("");
@@ -43,6 +43,7 @@ function AddClass() {
         setteacher("");
       })
       .catch((e) => {
+        console.log(e);
         errorAlert("something when wrong");
         setloading(false);
       });

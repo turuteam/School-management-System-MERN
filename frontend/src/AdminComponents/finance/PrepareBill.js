@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ListTable from "../shared/ListTable";
+import ListTable from "./billPayment/PaymentTable";
 import Search from "../shared/Search";
 import { useSelector } from "react-redux";
 import { selectClasses } from "../../store/slices/schoolSlice";
 import axios from "../../store/axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { errorAlert } from "../../utils";
 
 const tableHeader = [
@@ -22,6 +22,7 @@ function PrepareBill() {
   const [classID, setclass] = useState("");
   const [status, setstatus] = useState("");
   const classes = useSelector(selectClasses);
+  const history = useHistory();
 
   useEffect(() => {
     axios.get("/transactions/students/fees").then((res) => {
@@ -85,6 +86,10 @@ function PrepareBill() {
     setstatus("");
   };
 
+  const handleEdit = (id) => {
+    history.push(`/finance/transactions/receipt/${id}`);
+  };
+
   return (
     <div>
       <div className="float-right mb-5">
@@ -102,6 +107,7 @@ function PrepareBill() {
       />
       <ListTable
         data={data}
+        handleEdit={handleEdit}
         handleDelete={handleDelete}
         tableHeader={tableHeader}
         isEdit={true}

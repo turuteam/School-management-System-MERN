@@ -167,19 +167,21 @@ function NotificationsPage() {
         createdby={createdBy}
         setcreatedby={setcreatedBy}
       />
-      <Notice
-        searchDate={searchDate}
-        openEdit={openEdit}
-        handleReset={handleReset}
-        setopenEdit={setopenEdit}
-        handleSearch={handleSearch}
-        setsearchDate={setsearchDate}
-        searchTitle={searchTitle}
-        setsearchTitle={setsearchTitle}
-        notices={notices}
-        handleDelete={handleDelete}
-        editData={editData}
-      />
+      <div id="notifications">
+        <Notice
+          searchDate={searchDate}
+          openEdit={openEdit}
+          handleReset={handleReset}
+          setopenEdit={setopenEdit}
+          handleSearch={handleSearch}
+          setsearchDate={setsearchDate}
+          searchTitle={searchTitle}
+          setsearchTitle={setsearchTitle}
+          notices={notices}
+          handleDelete={handleDelete}
+          editData={editData}
+        />
+      </div>
     </div>
   );
 }

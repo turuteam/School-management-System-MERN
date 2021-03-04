@@ -21,6 +21,25 @@ input:focus {
   outline: none;
 }
 
+.search__container {
+  position: relative;
+
+  .search__results {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    background-color: $white;
+    top: 100%;
+    box-shadow: 0px 0px 9px 3px rgba(41, 41, 41, 0.25);
+
+    li {
+      list-style: none;
+      padding: 10px 20px;
+      border-bottom: 1px solid $darkBlue;
+    }
+  }
+}
+
 .nav__search {
   display: flex;
   opacity: 0.5;
