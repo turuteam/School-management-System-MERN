@@ -3,7 +3,6 @@ import Search from "../shared/Search";
 import StaffTable from "../shared/TableListUsers";
 import axios from "../../store/axios";
 import { errorAlert } from "../../utils";
-import TableContainer from "@material-ui/core/TableContainer";
 import Loading from "../../Loading";
 import jsPDF from "jspdf";
 import { pdf } from "../../components/tables/pdf";
@@ -39,6 +38,8 @@ function AllStaff() {
     });
   }, []);
 
+  console.log(staff);
+
   const generatePDF = () => {
     const headers = [
       { key: "userID", label: "UserID" },
@@ -61,6 +62,22 @@ function AllStaff() {
           errorAlert(res.data.error);
         }
         setstaff(staff.filter((i) => i.userID !== id));
+      });
+    }
+  };
+
+  const handleWithdraw = (i) => {
+    let ans = window.confirm(
+      `Are you sure you want to withdraw this staff member ${i}`
+    );
+    console.log(ans);
+    if (ans) {
+      axios.put(`/teachers/update/${i}`, { withdraw: true }).then((res) => {
+        console.log(res.data);
+        if (res.data.error) {
+          errorAlert(res.data.error);
+        }
+        setstaff(staff.filter((e) => e.userID !== i));
       });
     }
   };
@@ -109,7 +126,7 @@ function AllStaff() {
   return (
     <>
       {loading && <Loading />}
-      <div className="content__container">
+      <div className="content__container mb-5">
         <Search
           inputFields={inputFields}
           handleSearch={handleSearch}
@@ -121,6 +138,7 @@ function AllStaff() {
         route="staff"
         loading={loading}
         students={staff}
+        handleWithdraw={handleWithdraw}
         handleDelete={handleDelete}
         headCells={headCells}
       />

@@ -18,7 +18,7 @@ function Notices({
     <div className="content__container">
       <h3>Notice Board</h3>
       <form action="" className="row">
-        <div className="col-sm-3">
+        <div className="col-sm-4 mb-3">
           <input
             type="text"
             value={searchDate}
@@ -27,7 +27,7 @@ function Notices({
             className="form-control"
           />
         </div>
-        <div className="col-sm-3">
+        <div className="col-sm-4 mb-3">
           <input
             type="text"
             value={searchTitle}
@@ -36,13 +36,17 @@ function Notices({
             className="form-control"
           />
         </div>
-        <div className="col-sm-3">
-          <button onClick={handleSearch} className="btn blue__btn">
-            Search
-          </button>
-          <button onClick={handleReset} className="btn orange__btn ml-5">
-            Reset
-          </button>
+        <div className="col-sm-3 d-flex justify-content-between">
+          <div>
+            <button onClick={handleSearch} className="btn blue__btn">
+              Search
+            </button>
+          </div>
+          <div>
+            <button onClick={handleReset} className="btn orange__btn">
+              Reset
+            </button>
+          </div>
         </div>
       </form>
       <div className="notice__container my-5">

@@ -6,12 +6,10 @@ const TheFooter = () => {
 
   return (
     <CFooter fixed={false}>
-      <div>
-        <p className="text-center">
-          © 2015 - {year.getFullYear()} Darrel Technologies Limited. All Rights
-          Reserved.
-        </p>
-      </div>
+      <p className="text-center  w-100 mt-3">
+        © 2015 - {year.getFullYear()} Darrel Technologies Limited. All Rights
+        Reserved.
+      </p>
     </CFooter>
   );
 };

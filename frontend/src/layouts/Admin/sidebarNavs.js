@@ -34,7 +34,16 @@ const _nav = [
         name: "Registration New",
         to: "/students/new",
       },
-
+      {
+        _tag: "CSidebarNavItem",
+        name: "Past Students",
+        to: "/students/paststudents",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Withdrawn Students",
+        to: "/students/withdrawstudents",
+      },
       {
         _tag: "CSidebarNavItem",
         name: "Campuses",
@@ -118,6 +127,16 @@ const _nav = [
       },
       {
         _tag: "CSidebarNavItem",
+        name: "Class Groups",
+        to: "/academics/classgroups",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Year Groups",
+        to: "/academics/yeargroups",
+      },
+      {
+        _tag: "CSidebarNavItem",
         name: "Divisions",
         to: "/academics/divisions",
       },
@@ -130,6 +149,26 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Notes",
         to: "/academics/notes",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "SBA",
+        to: "/academics/sba",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Progress Reports",
+        to: "/academics/progressreports",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Combined Reports",
+        to: "/academics/combinedreports",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Correspondances",
+        to: "/academics/correspondance",
       },
     ],
   },
@@ -178,7 +217,7 @@ const _nav = [
       },
       {
         _tag: "CSidebarNavItem",
-        name: " Payrow",
+        name: "Set Payrow",
         to: "/finance/payrow",
       },
       {
@@ -193,7 +232,22 @@ const _nav = [
       },
       {
         _tag: "CSidebarNavItem",
-        name: "Payrow Payment",
+        name: "Salary Deductions",
+        to: "/finance/salarydeductions",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Bank Advice",
+        to: "/finance/bankadvice",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Non Billable Payments",
+        to: "/finance/nonbill",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Staff Payrow",
         to: "/finance/staff/payrow",
       },
       {
@@ -245,6 +299,36 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavDropdown",
+    name: "Store and Inventory",
+    route: "/store",
+    icon: (
+      <CIcon name="cil-notes" customClasses="c-sidebar-nav-icon  sidebarIcon" />
+    ),
+    _children: [
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Store",
+      //   to: "/store",
+      // },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Inventory",
+        to: "/store/inventory",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Sales",
+        to: "/store/sales",
+      },
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Reports",
+      //   to: "/store/reports",
+      // },
+    ],
+  },
+  {
+    _tag: "CSidebarNavDropdown",
     name: "Message",
     route: "/messages",
     icon: (
@@ -285,6 +369,17 @@ const _nav = [
         to: "/messages/billreminder",
       },
     ],
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Reports",
+    to: "/reports",
+    icon: (
+      <CIcon
+        name="cil-settings"
+        customClasses="c-sidebar-nav-icon sidebarIcon"
+      />
+    ),
   },
   {
     _tag: "CSidebarNavItem",

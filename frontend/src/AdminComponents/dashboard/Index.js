@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Cards from "./Cards";
 import SchoolCalender from "../../components/dashboard/SchoolCalender";
 import Population from "./SchoolPopulation";
-//import Attendance from './Attendance';
+import StaffPopulation from "./StaffPopulation";
+import Attendance from "./Attendance";
 import NoticeBoard from "../../components/dashboard/NoticeBoard";
 import AcademicYear from "./AcademicYear";
 import axios from "../../store/axios";
@@ -21,6 +22,7 @@ function Index() {
     axios.get("/count").then((res) => {
       if (res?.data) {
         setcount(res.data);
+        console.log(res.data);
         setloading(false);
       }
     });
@@ -28,7 +30,6 @@ function Index() {
 
   useEffect(() => {
     axios.get("/calendar").then((res) => {
-      console.log(res.data);
       setevents(res.data);
     });
   }, []);
@@ -40,11 +41,17 @@ function Index() {
         {/* cards */}
         <Cards counts={count} />
         <div className="row mb-5">
-          <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
+          <div className="col-xs-12 col-sm-12 col-md-8  mb-5">
             <SchoolCalender events={events} user={user.role} />
           </div>
-          <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
+          <div className="col-xs-12 col-sm-12 col-md-4  mb-5">
             <NoticeBoard isDashboard={true} user={user.role} />
+          </div>
+          <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
+            <Attendance />
+          </div>
+          <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
+            <AcademicYear isEdit={true} />
           </div>
           <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
             {!loading && (
@@ -55,7 +62,12 @@ function Index() {
             )}
           </div>
           <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
-            <AcademicYear isEdit={true} />
+            {!loading && (
+              <StaffPopulation
+                femaleStudents={count?.femaleStaff}
+                maleStudents={count?.maleStaff}
+              />
+            )}
           </div>
         </div>
       </>

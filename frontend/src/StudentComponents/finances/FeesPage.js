@@ -23,10 +23,12 @@ function FeesPage() {
 
   useEffect(() => {
     const getData = async () => {
-      let transactions = await axios.get(`/transactions/student/${user?.id}`);
+      let transactions = await axios.get(
+        `/transactions/student/${user?.userID}`
+      );
       setpayments(transactions.data);
 
-      let student = await axios.get(`/students/student/${user?.id}`);
+      let student = await axios.get(`/students/student/${user?.userID}`);
 
       console.log(student);
 

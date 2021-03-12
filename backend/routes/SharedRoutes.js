@@ -10,9 +10,7 @@ import PrefectsModel from "../models/PrefectsModel.js";
 import Sections from "../models/SectionModel.js";
 import NotificationsModel from "../models/NoticeModel.js";
 import ScholarshipsModels from "../models/ScholarshipsModel.js";
-// import TaskModels from '../models/TaskModels.js';
 import TeacherModels from "../models/TeacherModel.js";
-// import TimeTableModels from '../models/TimeTableModels.js';
 import DepartmentsModels from "../models/DepartmentsModel.js";
 import { login, changePassword } from "../middlewares/validate.js";
 import { role } from "../middlewares/variables.js";
@@ -211,6 +209,30 @@ route.get("/count/attendance", async (req, res) => {
 
   let arr = [];
   for (let y = 0; y < daysInMonth; y++) {
+    const todayData = await AttendanceModel.find({
+      createdAt: {
+        $gte: moment(today).add(y, "days").toDate(),
+        $lte: moment(today).add(y, "days").endOf("day").toDate(),
+      },
+    });
+    let num = todayData.reduce(function (accumulator, currentValue) {
+      return accumulator + currentValue.users.length;
+    }, 0); //
+    arr.push({
+      date: moment(today).add(y, "days").toDate(),
+      value: num || 0,
+    });
+  }
+
+  res.json(arr);
+});
+
+route.get("/count/attendance/week/:start", async (req, res) => {
+  var start = req.params.start;
+  const today = moment(start).startOf("day").toDate();
+
+  let arr = [];
+  for (let y = 0; y < 7; y++) {
     const todayData = await AttendanceModel.find({
       createdAt: {
         $gte: moment(today).add(y, "days").toDate(),

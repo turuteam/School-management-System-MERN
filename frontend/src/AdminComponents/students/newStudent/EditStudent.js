@@ -11,12 +11,13 @@ import { errorAlert, successAlert } from "../../../utils";
 import { update } from "../../../store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import GuadianCard from "../../shared/GuadianCard";
+import moment from "moment";
 
 function EditStudent() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const [studentDetails, setstudentDetails] = useState({});
+  // const [studentDetails, setstudentDetails] = useState({});
 
   //personal
   const [name, setname] = useState("");
@@ -49,7 +50,7 @@ function EditStudent() {
   const [schoolarship, setschoolarship] = useState("");
   const [feesCategory, setfeesCategory] = useState("");
   const [lastSchool, setlastSchool] = useState("");
-  const [courses, setcourses] = useState([]);
+  const [division, setdivision] = useState("");
   const [reasonforTransfer, setreasonforTransfer] = useState("");
   //contact details
   const [mobilenumber, setmobilenumber] = useState("");
@@ -62,24 +63,23 @@ function EditStudent() {
   useEffect(() => {
     axios.get(`/students/student/${id}`).then((res) => {
       let data = res.data.student;
-      setstudentDetails(data);
       setname(data?.name);
       setlastname(data?.surname);
       setsecondName(data?.middleName);
       setgender(data?.gender);
-      setdateofBirth(data?.dateofBirth);
+      setdateofBirth(moment(data?.dateofBirth).format("YYYY-MM-D"));
       setemail(data?.email);
       setnationality(data?.nationality);
       setplaceofBirth(data?.placeofBirth);
       setreligion(data?.religion);
       sethealth(data?.health);
+      setdivision(data?.division);
       setallege(data?.allege);
       setdisease(data?.disease);
       setclass(data?.classID);
       setsection(data?.section);
       setstatus(data?.status);
       setschoolarship(data?.scholarship);
-      setcourses(data?.courses);
       setdormitory(data?.dormitoryID);
       setschoolarship(data?.schoolarship);
       setfeesCategory(data?.fees);
@@ -108,6 +108,7 @@ function EditStudent() {
     setguadian([]);
     setreasonforTransfer("");
     settelephone("");
+    setdivision("");
     setpostalAddress("");
     setresidence("");
     setmobilenumber("");
@@ -154,7 +155,7 @@ function EditStudent() {
         placeofBirth,
         health,
         disease,
-        courses: courses,
+        division,
         allege,
         classID,
         section,
@@ -179,7 +180,7 @@ function EditStudent() {
           return 0;
         }
         successAlert("successfully updated");
-        setstudentDetails(response.data.student);
+        // setstudentDetails(response.data.student);
       })
       .catch((err) => {
         setloading(false);
@@ -202,18 +203,6 @@ function EditStudent() {
     } else {
       console.log("no file selected");
     }
-  };
-
-  const handleCoursesCheckbox = (e) => {
-    console.log(e.target.value);
-    let course = courses.find((i) => i.courseID === e.target.value);
-
-    if (course) {
-      setcourses([courses.filter((i) => i.courseID !== e.target.value)]);
-    } else {
-      setcourses([{ courseID: e.target.value, courses }, ...courses]);
-    }
-    console.log(courses);
   };
 
   const handleDeleteGuadian = (ID) => {
@@ -263,13 +252,14 @@ function EditStudent() {
             register={register}
             errors={errors}
             isEdit={true}
-            handleCoursesCheckbox={handleCoursesCheckbox}
             autoID={autoID}
             setautoID={setautoID}
             userID={userID}
             setuserID={setuserID}
             classID={classID}
             setclass={setclass}
+            division={division}
+            setdivision={setdivision}
             section={section}
             setsection={setsection}
             status={status}

@@ -5,23 +5,24 @@ import { errorAlert, successAlert } from "../../utils";
 import {
   selectacademicYear,
   setAcademicYear,
+  selectYearGroup,
 } from "../../store/slices/schoolSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 function AcademicYear({ isEdit }) {
   const [open, setOpen] = useState(false);
   const [from, setfrom] = useState("");
-  const [to, setto] = useState("");
   const [term, setterm] = useState("");
   const [loading, setloading] = useState(false);
   const academicYear = useSelector(selectacademicYear);
+  const years = useSelector(selectYearGroup);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
     setloading(true);
     axios
       .post(`/academicyear/set/admin`, {
-        currentYear: `${from}-${to}`,
+        currentYear: `${from}`,
         currentTerm: term,
       })
       .then((res) => {
@@ -71,12 +72,11 @@ function AcademicYear({ isEdit }) {
         </div>
       </div>
       <AcademicYearModel
-        to={to}
-        setto={setto}
         from={from}
         setfrom={setfrom}
         open={open}
         term={term}
+        years={years}
         loading={loading}
         handleSubmit={handleSubmit}
         setterm={setterm}

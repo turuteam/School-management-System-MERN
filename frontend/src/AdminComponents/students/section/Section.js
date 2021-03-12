@@ -46,8 +46,7 @@ function Campuses() {
     seteditname(editSections?.name);
     setid(editID);
   };
-  const onEdit = (e) => {
-    e.preventDefault();
+  const onEdit = () => {
     setloading(true);
     axios
       .put(`/sections/update/${id}`, { name: editname })
@@ -105,7 +104,7 @@ function Campuses() {
     <div>
       <h3>Sections</h3>
       <div className="row">
-        <div className="col-sm-12 col-md-4">
+        <div className="col-sm-12 mb-5">
           <AddSection
             loading={createLoading}
             name={name}
@@ -113,7 +112,7 @@ function Campuses() {
             onSubmit={handleAddSection}
           />
         </div>
-        <div className="col-sm-12 col-md-8">
+        <div className="col-sm-12">
           <ListSection
             handleEdit={handleEdit}
             handleDelete={handleDelete}

@@ -18,6 +18,13 @@ const TeacherSchema = new Schema(
     middleName: {
       type: String,
     },
+    lastLogin: {
+      type: Date,
+    },
+    withdraw: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: String,
     },

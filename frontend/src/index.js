@@ -10,22 +10,6 @@ import { icons } from "./assets/icons";
 import { Provider } from "react-redux";
 import { initFunc } from "./store/apiCall";
 import store from "./store/index";
-//import axios from "./store/axios";
-// import { LoginString } from "./store/localStorage";
-// import { loggin, logout } from "./store/slices/userSlice";
-// import { setLoading } from "./store/slices/appSlice";
-// import {
-//   setClasses,
-//   setCourses,
-//   setDormitories,
-//   setCampuses,
-//   setSections,
-//   setfeesType,
-//   setAcademicYear,
-//   setStaff,
-//   setScholarships,
-// } from "./store/slices/schoolSlice";
-
 initFunc();
 React.icons = icons;
 

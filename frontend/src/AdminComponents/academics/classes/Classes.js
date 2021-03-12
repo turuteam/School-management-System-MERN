@@ -16,8 +16,12 @@ const tableHeadings = [
   { id: "classCode", name: "ID" },
   { id: "name", name: "Class" },
   { id: "campusID", name: "Campus" },
-  { id: "students", name: "Students" },
+  { id: "group", name: "Group" },
+  { id: "division", name: "Division" },
+  { id: "prefect", name: "Prefect" },
   { id: "teacherID", name: "Class Teacher" },
+  { id: "sba", name: "S.B.A Config" },
+  { id: "sbaStaff", name: "SBA Staff" },
 ];
 
 function Classes() {
@@ -40,7 +44,8 @@ function Classes() {
       let classesData = data.map((e) => {
         return {
           ...e,
-          students: 0,
+          num: 0,
+          sba: e.sba ? "set" : "not set",
           teacherID:
             (staff.find((i) => i.userID === e.teacherID)?.name || "-") +
             " " +

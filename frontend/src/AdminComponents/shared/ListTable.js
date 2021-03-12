@@ -14,7 +14,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import TablePaginationActions from "./TablePagination";
 import moment from "moment";
-
+import Tooltip from "@material-ui/core/Tooltip";
+import TocIcon from "@material-ui/icons/Toc";
 const useStyles2 = makeStyles({
   table: {
     width: "100%",
@@ -29,6 +30,7 @@ export default function CustomPaginationActionsTable({
   loading,
   isCanteen,
   isEdit,
+  isItems,
   noActions,
 }) {
   const classes = useStyles2();
@@ -120,21 +122,27 @@ export default function CustomPaginationActionsTable({
                     {!noActions && (
                       <TableCell align="left">
                         <div className="d-flex align-items-center">
-                          <IconButton
-                            onClick={() =>
-                              handleDelete(isCanteen ? row.memberID : row._id)
-                            }
+                          <Tooltip
+                            title={isItems ? "Manage Inventory" : "delete"}
                           >
-                            <DeleteOutlineIcon />
-                          </IconButton>
-                          {!isEdit && (
                             <IconButton
                               onClick={() =>
-                                handleEdit(isCanteen ? row.memberID : row._id)
+                                handleDelete(isCanteen ? row.memberID : row._id)
                               }
                             >
-                              <EditIcon></EditIcon>
+                              {isItems ? <TocIcon /> : <DeleteOutlineIcon />}
                             </IconButton>
+                          </Tooltip>
+                          {!isEdit && (
+                            <Tooltip title="edit">
+                              <IconButton
+                                onClick={() =>
+                                  handleEdit(isCanteen ? row.memberID : row._id)
+                                }
+                              >
+                                <EditIcon></EditIcon>
+                              </IconButton>
+                            </Tooltip>
                           )}
                         </div>
                       </TableCell>
@@ -143,9 +151,8 @@ export default function CustomPaginationActionsTable({
                 ))}
               </>
             )}
-
             {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
+              <TableRow style={{ height: 53 }}>
                 <TableCell colSpan={6} />
               </TableRow>
             )}

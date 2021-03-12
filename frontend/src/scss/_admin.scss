@@ -27,8 +27,12 @@
   }
 }
 
+.dashboard__attendance {
+  height: 50vh;
+}
 .notices {
   max-height: 500;
+  min-height: 100%;
   overflow: scroll;
 
   &::-webkit-scrollbar {

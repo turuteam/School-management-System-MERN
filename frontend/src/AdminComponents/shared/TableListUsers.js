@@ -68,6 +68,7 @@ export default function EnhancedTable({
   students,
   headCells,
   route,
+  handleWithdraw,
   handleDelete,
 }) {
   const classes = useStyles();
@@ -77,9 +78,6 @@ export default function EnhancedTable({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const history = useHistory();
-  // const [open, setOpen] = React.useState(false);
-  // const anchorRef = React.useRef(null);
-  // const [id, setid] = useState("");
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -125,7 +123,7 @@ export default function EnhancedTable({
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (userID) => selected.indexOf(userID) !== -1;
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, students?.length - page * rowsPerPage);
@@ -156,7 +154,7 @@ export default function EnhancedTable({
                 {stableSort(students, getComparator(order, orderBy))
                   ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   ?.map((row, index) => {
-                    const isItemSelected = isSelected(students?.userID);
+                    const isItemSelected = isSelected(row?.userID);
                     const labelId = `enhanced-table-checkbox-${index}`;
                     return (
                       <TableRow
@@ -193,14 +191,20 @@ export default function EnhancedTable({
                           {row?.surname || "-"}
                         </TableCell>
                         <TableCell align="left">
+                          {row?.status || row?.position}
+                        </TableCell>
+                        <TableCell align="left">
                           {row?.classID || "-"}
                         </TableCell>
+
                         <TableCell align="left">{row?.gender || "-"}</TableCell>
                         <TableCell align="left">
                           <ViewActions
                             id={row?.userID}
                             route={route}
+                            isWithdraw={row?.withdraw}
                             history={history}
+                            handleWithdraw={handleWithdraw}
                             handleDelete={handleDelete}
                           />
                         </TableCell>

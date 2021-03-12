@@ -13,6 +13,25 @@ export const monthYear = [
   { name: "December", id: 11 },
 ];
 
+export const studentStatus = [
+  {
+    id: "border",
+    name: "Border",
+  },
+  {
+    id: "freshBorder",
+    name: "Fresh Border",
+  },
+  {
+    id: "freshDay",
+    name: "Fresh Day",
+  },
+  {
+    id: "day",
+    name: "Day",
+  },
+];
+
 export const schoolDepart = [
   { name: "arts", id: "Arts and History" },
   { name: "science", id: "Science and technolodge" },

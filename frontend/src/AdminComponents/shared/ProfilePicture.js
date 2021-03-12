@@ -5,7 +5,6 @@ import Avatar from "@material-ui/core/Avatar";
 import { getImgSrc } from "../../utils";
 
 function Profile({ profileimg, setprofileUrl, profileUrl }) {
-  console.log(profileimg);
   return (
     <div>
       <h3>Profile Photo</h3>

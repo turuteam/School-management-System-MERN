@@ -4,13 +4,8 @@ import { getImgSrc } from "../../utils";
 function ProfileInfo({ admin }) {
   return (
     <div className="content__container mb-5 text-center">
-      <div className="logo">
-        <img
-          width="200"
-          height="200"
-          src={getImgSrc(admin?.profileUrl)}
-          alt=""
-        />
+      <div className="">
+        <img width="200px" src={getImgSrc(admin?.profileUrl)} alt="" />
       </div>
       <div className="mb-3">
         <h3>{admin?.fullName}</h3>
@@ -20,20 +15,20 @@ function ProfileInfo({ admin }) {
         <div className="col">
           <h6>Email</h6>
           <h5>
-            <strong>{admin?.email}</strong>{" "}
+            <strong>{admin?.email || "not set"}</strong>{" "}
           </h5>
         </div>
         <div className="col">
           <h6>Telephone</h6>
           <h5>
             {" "}
-            <strong>{admin?.telephone}</strong>
+            <strong>{admin?.telephone || "not set"}</strong>
           </h5>
         </div>
         <div className="col">
           <h6>Address</h6>
           <h5>
-            <strong>{admin?.address}</strong>{" "}
+            <strong>{admin?.address || "not set"}</strong>{" "}
           </h5>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { login } from "../middlewares/validate.js";
 import bcrypt from "bcrypt";
 import { stringtoLowerCaseSpace, stringSpace } from "../middlewares/utils.js";
 import { role } from "../middlewares/variables.js";
+import Payrow from "../models/PayRow.Model.js";
 
 const route = express.Router();
 
@@ -22,6 +23,43 @@ route.get("/:id", async (req, res) => {
       } else {
         return res.json({ success: false, error: "Staff does not exists" });
       }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.json({ success: false, error: "Server error" });
+    });
+});
+
+//get teacher bank details
+route.get("/bank/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).send("Missing URL parameter: username");
+  }
+
+  const getSalary = async (id) => {
+    let data = await Payrow.findOne({ code: id });
+    // console.log(data);
+    if (data) {
+      let salary =
+        Number(data?.salary) + Number(data?.allowance) + Number(data?.bonus);
+      console.log(salary);
+      return salary;
+    }
+    return 0;
+  };
+
+  await TeacherModel.find({ role: role.Teacher, bank: req.params.id })
+    .then((users) => {
+      let data = users?.map((e) => {
+        return {
+          bank: e.bank,
+          name: e.name + " " + e.surname,
+          accountNumber: e.accountNumber,
+          salary: getSalary(e.position),
+          _id: e._id,
+        };
+      });
+      return res.json({ success: true, docs: data || [] });
     })
     .catch((err) => {
       console.log(err);

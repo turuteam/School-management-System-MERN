@@ -1,16 +1,58 @@
 import express from "express";
 import StudentModel from "../models/StudentModel.js";
+import CourseModel from "../models/CoursesModel.js";
 import bcrypt from "bcrypt";
 import { login, changePassword } from "../middlewares/validate.js";
-import { stringtoLowerCaseSpace, stringSpace } from "../middlewares/utils.js";
+import { stringtoLowerCaseSpace } from "../middlewares/utils.js";
 import { role } from "../middlewares/variables.js";
+import ClassesModel from "../models/ClassesModel.js";
 
 const route = express.Router();
 
 //get all students
 route.get("/", async (req, res) => {
   const data = await StudentModel.find({ role: role.Student });
-  res.json(data);
+  let docs = data.filter((e) => e.withdraw !== true);
+  res.json(docs);
+});
+
+//withdraw
+route.get("/withdraw", async (req, res) => {
+  const data = await StudentModel.find({
+    role: role.Student,
+  });
+  let docs = data.filter((e) => e.withdraw === true);
+  res.json(docs);
+});
+
+route.get("/past", async (req, res) => {
+  const data = await StudentModel.find({
+    role: role.Student,
+  });
+
+  let isExist = async (id) => {
+    let result = await ClassesModel.findOne({ classCode: id });
+    console.log(id);
+    return result;
+  };
+
+  let allData = data.map((user) => {
+    return {
+      role: user?.role,
+      withdraw: user?.withdraw,
+      name: user?.name,
+      userID: user?.userID,
+      middleName: user?.middleName,
+      gender: user?.gender,
+      profileUrl: user?.profileUrl,
+      status: user?.status,
+      classID: user?.classID,
+      exists: isExist(user?.classID) ? true : false,
+    };
+  });
+
+  let pastStudents = allData.filter((e) => e.exists === false);
+  res.json(pastStudents);
 });
 
 //get one student by id
@@ -37,8 +79,9 @@ route.get("/student/courses/:id", async (req, res) => {
     return res.status(400).send("Missing URL parameter: username");
   }
   await StudentModel.findOne({ userID: req.params.id, role: role.Student })
-    .then((user) => {
+    .then(async (user) => {
       if (user) {
+        await CourseModel.find({ code: user?.classID });
         return res.json({ success: true, courses: user?.courses });
       } else {
         return res.json({ success: false, error: "Student does not exists" });
@@ -205,6 +248,8 @@ route.post("/create", async (req, res) => {
     studentId = "BK" + currentYear + (number + 2);
   }
 
+  let setuserID = body.setuserID;
+
   bcrypt.hash(studentId, 10, (err, hash) => {
     if (err) {
       return res.json({ success: false, error: "something went wrong" });
@@ -212,7 +257,7 @@ route.post("/create", async (req, res) => {
     const userData = {
       ...body,
       password: hash,
-      userID: studentId,
+      userID: setuserID ? setuserID : studentId,
     };
     StudentModel.create(userData)
       .then((user) => {

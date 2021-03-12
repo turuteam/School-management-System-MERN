@@ -115,7 +115,7 @@ function Personalnfo(props) {
       </div>
       <div className="row mb-3">
         <div className="col-xs-12 col-sm-6 col-md-4">
-          <label className="form-label">Gender *</label>
+          <label className="form-label"> Gender *</label>
           <select
             className="form-control"
             ref={register({ required: true })}
@@ -143,7 +143,9 @@ function Personalnfo(props) {
             value={dateofBirth}
             name="dateofBirth"
             ref={register}
-            onChange={(e) => setdateofBirth(e.target.value)}
+            onChange={(e) => {
+              setdateofBirth(e.target.value);
+            }}
             type="date"
             className="form-control"
           />
@@ -158,6 +160,11 @@ function Personalnfo(props) {
             name="email"
             className="form-control"
           />
+          {errors.email && (
+            <span className=" form-error text-danger mb-2">
+              Valid email is required
+            </span>
+          )}
         </div>
       </div>
       <div className="row mb-3">

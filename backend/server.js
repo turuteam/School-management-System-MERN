@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
-//import routes
+
 import AcademicYear from "./routes/CurrentYearRoutes.js";
 import StudentRoutes from "./routes/StudentRoutes.js";
 import PayrowRoutes from "./routes/PayrowRoutes.js";
@@ -13,6 +13,8 @@ import ChatRoutes from "./routes/ChatRoutes.js";
 import CoursesRoutes from "./routes/CoursesRoutes.js";
 import ClassesRoutes from "./routes/ClassesRoutes.js";
 import CampusRoutes from "./routes/CampusRoutes.js";
+import CorrespondanceRoutes from "./routes/CorrespondanceRoutes.js";
+import YearGroupRoutes from "./routes/YeargroupRoutes.js";
 import CalendarRoutes from "./routes/CalendarRoutes.js";
 import DormitoriesRoutes from "./routes/DormitoriesRoutes.js";
 import PrefectsRoutes from "./routes/PrefectsRoutes.js";
@@ -30,10 +32,16 @@ import ScholarshipRoutes from "./routes/ScholarshipRoutes.js";
 import SectionRoutes from "./routes/SectionRoutes.js";
 import DepartmentsRoutes from "./routes/DepartmentRoutes.js";
 import DivisionRoutes from "./routes/DivisionRoutes.js";
+import DeductionsRoutes from "./routes/DeductionsRoutes.js";
 import UploadsRoutes from "./routes/Uploads.js";
 import CanteenRoutes from "./routes/CanteenRouter.js";
 import BankingRoutes from "./routes/BankingRoutes.js";
 import FeesRoutes from "./routes/FeesRoutes.js";
+import StoreItems from "./routes/StoreItemsRoutes.js";
+import StoreSales from "./routes/StoreSalesRoutes.js";
+import UsersRoutes from "./routes/UsersRoutes.js";
+import SBARoutes from "./routes/SBARoutes.js";
+import NonPaymentRoutes from "./routes/NonBillPaymentRoutes.js";
 
 import path from "path";
 const __dirname = path.resolve(path.dirname(""));
@@ -62,6 +70,8 @@ app.use("/api/classes", ClassesRoutes);
 app.use("/api/courses", CoursesRoutes);
 app.use("/api/campuses", CampusRoutes);
 app.use("/api/calendar", CalendarRoutes);
+app.use("/api/correspondance", CorrespondanceRoutes);
+app.use("/api/yeargroup", YearGroupRoutes);
 app.use("/api/dormitories", DormitoriesRoutes);
 app.use("/api/notes", FilesRoutes);
 app.use("/api/nextofkin", NextofKinRoutes);
@@ -83,6 +93,12 @@ app.use("/api/divisions", DivisionRoutes);
 app.use("/api/canteen", CanteenRoutes);
 app.use("/api/banking", BankingRoutes);
 app.use("/api/fees", FeesRoutes);
+app.use("/api/store/items", StoreItems);
+app.use("/api/store/sales", StoreSales);
+app.use("/api/users", UsersRoutes);
+app.use("/api/sba", SBARoutes);
+app.use("/api/deductions", DeductionsRoutes);
+app.use("/api/nonbillpayment", NonPaymentRoutes);
 
 app.listen(PORT, () => {
   return console.log(`listening on port ${PORT}`);

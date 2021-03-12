@@ -12,7 +12,7 @@ function ProfilePage() {
   const [userDetails, setuserDetails] = useState({});
 
   useEffect(() => {
-    axios.get(`/students/student/${user?.id}`).then((res) => {
+    axios.get(`/students/student/${user?.userID}`).then((res) => {
       setuserDetails(res.data.student);
     });
   }, [user]);
@@ -22,7 +22,7 @@ function ProfilePage() {
       <h3>About Me</h3>
       <div className="row mb-5">
         <div className="col-xs-12 col-sm-6 col-md-4">
-          <Profile profile={user?.photoUrl} id={user?.id} />
+          <Profile profile={user?.photoUrl} id={user?.userID} />
         </div>
         <div className="col-xs-12 col-sm-6 col-md-8">
           <h3>

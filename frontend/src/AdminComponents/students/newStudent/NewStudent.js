@@ -44,8 +44,8 @@ function NewStudent() {
   const [schoolarship, setschoolarship] = useState("");
   const [feesCategory, setfeesCategory] = useState("");
   const [lastSchool, setlastSchool] = useState("");
+  const [division, setdivision] = useState("");
   const [reasonforTransfer, setreasonforTransfer] = useState("");
-  const [courses, setcourses] = useState([]);
 
   //contact details
   const [mobilenumber, setmobilenumber] = useState("");
@@ -86,7 +86,6 @@ function NewStudent() {
     setschoolarship("");
     setfeesCategory("");
     setuserID("");
-    setcourses([]);
     setdisease("");
     setguadian([]);
     setreasonforTransfer("");
@@ -97,6 +96,7 @@ function NewStudent() {
     setlastSchool("");
     setallege("");
     sethealth();
+    setdivision("");
     setname("");
     setsecondName("");
     setlastname("");
@@ -138,8 +138,8 @@ function NewStudent() {
         disease,
         allege,
         classID,
+        division,
         dormitoryID: dormitory,
-        courses: courses,
         section,
         status,
         scholarship: schoolarship,
@@ -172,25 +172,14 @@ function NewStudent() {
       });
   };
 
-  const handleCoursesCheckbox = (e) => {
-    console.log(e.target.value);
-    let course = courses.find((i) => i.courseID === e.target.value);
-
-    if (course) {
-      setcourses([courses.filter((i) => i.courseID !== e.target.value)]);
-    } else {
-      setcourses([{ courseID: e.target.value, courses }, ...courses]);
-    }
-    console.log(courses);
-  };
-
   return (
     <div>
       <h2>Add New Students</h2>
       <div>
-        <form action="" className="content__container">
+        <form className="content__container">
           <ProfilePicture
             profileimg={profileimg}
+            profileUrl={profileUrl}
             setprofileUrl={handleChangeFile}
           />
           <br className="my-5" />
@@ -225,7 +214,6 @@ function NewStudent() {
           <br className="my-5" />
           <Academics
             register={register}
-            handleCoursesCheckbox={handleCoursesCheckbox}
             errors={errors}
             autoID={autoID}
             setautoID={setautoID}
@@ -233,12 +221,12 @@ function NewStudent() {
             setuserID={setuserID}
             classID={classID}
             setclass={setclass}
+            division={division}
+            setdivision={setdivision}
             section={section}
             setsection={setsection}
             status={status}
             setstatus={setstatus}
-            coursesArr={courses}
-            setcourse={setcourses}
             dormitory={dormitory}
             setdormitory={setdormitory}
             schoolarship={schoolarship}

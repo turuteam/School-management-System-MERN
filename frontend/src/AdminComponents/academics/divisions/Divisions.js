@@ -26,7 +26,6 @@ function Division() {
   useEffect(() => {
     setloading(true);
     axios.get("/divisions").then((res) => {
-      console.log(res.data);
       setdivisions(res.data);
       setstoredata(res.data);
       setloading(false);
@@ -46,12 +45,11 @@ function Division() {
   const handleDelete = (id) => {
     const ans = window.confirm("are you sure you want to delete");
     if (ans) {
-      axios.delete(`/division/delete/${id}`).then((res) => {
+      axios.delete(`/divisions/delete/${id}`).then((res) => {
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
-        console.log(divisions, id);
         setdivisions(divisions.filter((e) => e._id !== id));
       });
     }

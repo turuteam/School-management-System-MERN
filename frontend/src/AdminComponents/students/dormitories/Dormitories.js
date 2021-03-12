@@ -77,16 +77,12 @@ function Dormitories() {
     seteditID(editdormitory?._id);
   };
 
-  const onEdit = (e) => {
-    console.log(editID);
-    e.preventDefault();
-    console.log("edited");
+  const onEdit = () => {
     setloading(true);
     axios
       .put(`/dormitories/update/${editID}`, { name: editname })
       .then((res) => {
         setloading(false);
-        console.log(res);
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
@@ -95,11 +91,9 @@ function Dormitories() {
         setdormitories([res.data.docs, ...oldArray]);
         seteditname("");
         setopen(false);
-        console.log("Done");
       })
       .catch((err) => {
         setloading(false);
-        console.log(err);
         errorAlert("something when wrong");
       });
   };
@@ -108,7 +102,7 @@ function Dormitories() {
     <div className="dormitories__page">
       <h3>Dormitories</h3>
       <div className="row">
-        <div className="col-sm-12 col-md-4">
+        <div className="col-sm-12 mb-5">
           <AddDormitories
             name={name}
             setname={setname}
@@ -116,7 +110,7 @@ function Dormitories() {
             onSubmit={handleCreate}
           />
         </div>
-        <div className="col-sm-12 col-md-8">
+        <div className="col-sm-12 ">
           <DormitoryList
             handleDelete={handleDelete}
             handleEdit={handleEdit}

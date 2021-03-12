@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Search from "../../shared/Search";
+import Search from "./Search";
 import StudentsTable from "../../shared/TableListUsers";
 import axios from "../../../store/axios";
 import { selectClasses } from "../../../store/slices/schoolSlice";
 import { useSelector } from "react-redux";
 import { errorAlert } from "../../../utils";
 import { pdf } from "../../../components/tables/pdf";
+import { Link } from "react-router-dom";
+import { studentStatus } from "../../../data";
+import AddIcon from "@material-ui/icons/Add";
+import Loading from "../../../Loading";
 
 const headCells = [
   { id: "userID", numeric: false, disablePadding: false, label: "StudentID" },
@@ -13,11 +17,11 @@ const headCells = [
   { id: "name", numeric: false, disablePadding: true, label: "Name" },
   {
     id: "middlename",
-
     disablePadding: true,
     label: "Middle Name",
   },
   { id: "surname", disablePadding: true, label: "Last Name" },
+  { id: "status", disablePadding: false, label: "Status" },
   { id: "class", disablePadding: false, label: "Class" },
   { id: "Gender", disablePadding: false, label: "Gender" },
 ];
@@ -26,9 +30,12 @@ function AllStudents() {
   const [name, setname] = useState("");
   const [id, setid] = useState("");
   const [classID, setclass] = useState("");
+  const [status, setstatus] = useState("");
   const [students, setstudents] = useState([]);
+  const [gender, setgender] = useState("");
   const classes = useSelector(selectClasses);
   const [storeData, setstoreData] = useState([]);
+  const [loading, setloading] = useState(false);
 
   const classesOptions = classes.map((e) => {
     return {
@@ -38,8 +45,9 @@ function AllStudents() {
   });
 
   useEffect(() => {
+    setloading(true);
     axios.get("/students").then((res) => {
-      console.log(res.data);
+      setloading(false);
       setstudents(res.data);
       setstoreData(res.data);
     });
@@ -52,6 +60,7 @@ function AllStudents() {
       { key: "middleName", label: "Middle Name" },
       { key: "surname", label: " SurName" },
       { key: "gender", label: "Gender" },
+      { key: "status", label: "Status" },
       { key: "classID", label: "Class" },
     ];
 
@@ -89,6 +98,25 @@ function AllStudents() {
       name: "Class",
       onChange: setclass,
     },
+    {
+      type: "select",
+      options: [
+        { id: "female", name: "Female" },
+        { id: "male", name: "male" },
+      ],
+      label: "Search by Gender",
+      value: gender,
+      name: "Class",
+      onChange: setgender,
+    },
+    {
+      type: "select",
+      options: studentStatus,
+      label: "Search by Status",
+      value: status,
+      name: "Class",
+      onChange: setstatus,
+    },
   ];
 
   const handleSearch = (e) => {
@@ -100,15 +128,25 @@ function AllStudents() {
       );
     }
     if (name) {
-      newStudents = storeData.filter(
+      newStudents = newStudents.filter(
         (i) =>
           i.name.toLowerCase().includes(name.toLowerCase()) ||
           i.surname.toLowerCase().includes(name.toLowerCase())
       );
     }
     if (id) {
-      newStudents = storeData.filter((i) =>
+      newStudents = newStudents.filter((i) =>
         i.userID.toLowerCase().includes(id.toLowerCase())
+      );
+    }
+    if (status) {
+      newStudents = newStudents.filter((i) =>
+        i.status.toLowerCase().includes(status.toLowerCase())
+      );
+    }
+    if (gender) {
+      newStudents = newStudents.filter((i) =>
+        i.gender.toLowerCase().includes(gender.toLowerCase())
       );
     }
     setstudents(newStudents);
@@ -126,16 +164,40 @@ function AllStudents() {
     }
   };
 
+  const handleWithdraw = (i) => {
+    let ans = window.confirm(
+      `Are you sure you want to withdraw this student ${i}`
+    );
+    console.log(ans);
+    if (ans) {
+      axios.put(`/students/update/${i}`, { withdraw: true }).then((res) => {
+        console.log(res.data);
+        if (res.data.error) {
+          errorAlert(res.data.error);
+        }
+        setstudents(students.filter((e) => e.userID !== i));
+      });
+    }
+  };
+
   return (
     <div>
+      {loading && <Loading />}
       <Search
         title=""
         handleReset={handleReset}
         handleSearch={handleSearch}
         inputFields={inputFields}
       />
+      <div className="d-flex justify-content-end mb-3">
+        <Link className="btn btn-outline-info" to="/students/new">
+          <AddIcon />
+          Add New Student
+        </Link>
+      </div>
       <StudentsTable
         route="students"
+        handleWithdraw={handleWithdraw}
         handleDelete={handleDelete}
         students={students}
         headCells={headCells}

@@ -6,7 +6,14 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
 
-export default function SimpleMenu({ id, route, history, handleDelete }) {
+export default function SimpleMenu({
+  id,
+  route,
+  history,
+  isWithdraw,
+  handleDelete,
+  handleWithdraw,
+}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const user = useSelector(selectUser);
 
@@ -38,18 +45,27 @@ export default function SimpleMenu({ id, route, history, handleDelete }) {
           View
         </MenuItem>
         {user?.role === "admin" && (
-          <>
-            <MenuItem onClick={() => history.push(`/${route}/edit/${id}`)}>
-              Edit
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleDelete(id);
-              }}
-            >
-              Delete
-            </MenuItem>
-          </>
+          <MenuItem onClick={() => history.push(`/${route}/edit/${id}`)}>
+            Edit
+          </MenuItem>
+        )}
+        {user?.role === "admin" && (
+          <MenuItem
+            onClick={() => {
+              handleWithdraw(id);
+            }}
+          >
+            {isWithdraw ? "UnWithdraw" : "Withdraw"}
+          </MenuItem>
+        )}
+        {user?.role === "admin" && (
+          <MenuItem
+            onClick={() => {
+              handleDelete(id);
+            }}
+          >
+            Delete
+          </MenuItem>
         )}
       </Menu>
     </div>

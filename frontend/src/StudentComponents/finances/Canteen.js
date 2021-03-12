@@ -32,16 +32,18 @@ function Canteen() {
 
   useEffect(() => {
     axios
-      .get(`/canteen/user/${user?.id}`)
+      .get(`/canteen/user/${user?.userID}`)
       .then(async (res) => {
         if (res.data.success) {
           setmember(res.data.user);
           setdata(res.data.user.payments);
           setpackage(res.data.user.paymentMethod);
         } else {
-          await axios.get(`/students/student/${user?.id}`).then((response) => {
-            setclassID(response?.data?.student);
-          });
+          await axios
+            .get(`/students/student/${user?.userID}`)
+            .then((response) => {
+              setclassID(response?.data?.student);
+            });
           setmember(null);
         }
       })

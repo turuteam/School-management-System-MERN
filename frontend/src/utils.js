@@ -26,6 +26,21 @@ export const errorAlert = (text) => {
   });
 };
 
+export const getYearsList = (length) => {
+  const min = new Date().getFullYear();
+  const max = min + length;
+
+  const yearArray = () => {
+    let arr = [];
+    for (let index = min; index < max; index++) {
+      arr.push(index);
+    }
+    return arr;
+  };
+
+  return yearArray();
+};
+
 export const getEmailPattern = () =>
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

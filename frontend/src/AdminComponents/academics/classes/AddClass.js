@@ -16,6 +16,11 @@ function AddClass() {
   const [academic, setacademic] = useState("");
   const dispatch = useDispatch();
   const classes = useSelector(selectClasses);
+  const [division, setdivision] = useState("");
+  const [group, setgroup] = useState("");
+  const [prefect, setprefect] = useState("");
+  const [sba, setsba] = useState(false);
+  const [sbaStaff, setsbaStaff] = useState("");
 
   const handleAddClass = () => {
     setloading(true);
@@ -26,6 +31,11 @@ function AddClass() {
         campusID: campus,
         teacherID: teacher,
         academic,
+        prefect,
+        division,
+        sba,
+        group,
+        sbaStaff,
       })
       .then((res) => {
         let { data } = res;
@@ -67,6 +77,16 @@ function AddClass() {
           teacher={teacher}
           handleAddClass={handleAddClass}
           setteacher={setteacher}
+          setdivision={setdivision}
+          division={division}
+          setgroup={setgroup}
+          group={group}
+          setprefect={setprefect}
+          prefects={prefect}
+          sba={sba}
+          setsba={setsba}
+          sbaStaff={sbaStaff}
+          setsbaStaff={setsbaStaff}
         />
       </div>
     </>

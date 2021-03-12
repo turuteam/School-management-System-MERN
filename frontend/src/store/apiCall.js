@@ -8,7 +8,9 @@ import {
   setfeesType,
   setAcademicYear,
   setStaff,
+  setDivisions,
   setDepartments,
+  setYeargroup,
   setScholarships,
 } from "./slices/schoolSlice";
 import store from "./index";
@@ -38,10 +40,15 @@ export const callData = () => {
   axios.get("/departments").then((res) => {
     store.dispatch(setDepartments(res?.data));
   });
+  axios.get("/divisions").then((res) => {
+    store.dispatch(setDivisions(res?.data));
+  });
   axios.get("/fees/types").then((res) => {
     store.dispatch(setfeesType(res?.data));
   });
-
+  axios.get("/yeargroup").then((res) => {
+    store.dispatch(setYeargroup(res?.data));
+  });
   axios.get("/academicyear/admin").then((res) => {
     store.dispatch(setAcademicYear(res?.data));
   });
@@ -53,6 +60,7 @@ export const callData = () => {
 export const handleAutoLogin = () => {
   store.dispatch(
     loggin({
+      userID: localStorage.getItem(LoginString?.ID || ""),
       id: localStorage.getItem(LoginString?.ID || ""),
       photoUrl: localStorage.getItem(LoginString?.PhotoURL || ""),
       email: localStorage.getItem(LoginString?.EMAIL || ""),
@@ -68,6 +76,7 @@ export const handleAutoLogin = () => {
 export const handleLogin = (user) => {
   store.dispatch(
     loggin({
+      userID: user?.userID,
       id: user?.userID,
       name: user?.name,
       email: user?.email,

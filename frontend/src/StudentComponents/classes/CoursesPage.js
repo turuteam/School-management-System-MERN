@@ -9,7 +9,7 @@ function CoursesPage() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    axios.get(`/students/student/courses/${user?.id}`).then((res) => {
+    axios.get(`/students/student/courses/${user?.userID}`).then((res) => {
       console.log(res.data);
       if (res.data.success) {
         setcourses(res.data.courses);

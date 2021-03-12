@@ -62,26 +62,7 @@ route.put("/update/:id", (req, res) => {
 });
 
 //delete
-route.delete("/delete/id", (req, res) => {
-  if (!req.params.id) {
-    return res.status(400).send("Missing URL parameter: username");
-  }
-  DivisionModel.findOneAndRemove({
-    _id: req.params.id,
-  })
-    .then((doc) => {
-      res.json(doc);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-});
-
-//delete
-route.post("/delete/id", (req, res) => {
-  if (!req.params.id) {
-    return res.status(400).send("Missing URL parameter: username");
-  }
+route.delete("/delete/:id", (req, res) => {
   DivisionModel.findOneAndRemove({
     _id: req.params.id,
   })

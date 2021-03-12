@@ -53,6 +53,9 @@ const AddClass = React.lazy(() =>
 const EditClass = React.lazy(() =>
   import("../../AdminComponents/academics/classes/EditClass")
 );
+const ClassGroup = React.lazy(() =>
+  import("../../AdminComponents/academics/classGroups/Classgroup")
+);
 const Courses = React.lazy(() =>
   import("../../AdminComponents/academics/courses/Courses")
 );
@@ -75,6 +78,10 @@ const ViewCalendar = React.lazy(() =>
   import("../../AdminComponents/academics/calender/ViewCalendar")
 );
 
+const YearGroups = React.lazy(() =>
+  import("../../AdminComponents/academics/yearGroups/YearGroups")
+);
+
 const Divisions = React.lazy(() =>
   import("../../AdminComponents/academics/divisions/Divisions")
 );
@@ -82,6 +89,33 @@ const Divisions = React.lazy(() =>
 const Departments = React.lazy(() =>
   import("../../AdminComponents/academics/departments/Departments")
 );
+
+const Correspondence = React.lazy(() =>
+  import("../../AdminComponents/academics/correspondances/Correspondances")
+);
+const AddCorrespondence = React.lazy(() =>
+  import("../../AdminComponents/academics/correspondances/AddCorrespondance")
+);
+const EditCorrespondence = React.lazy(() =>
+  import("../../AdminComponents/academics/correspondances/EditCorrespondance")
+);
+
+const ViewCorrespondence = React.lazy(() =>
+  import("../../AdminComponents/academics/correspondances/ViewCorrespondance")
+);
+
+const ProgressReports = React.lazy(() =>
+  import("../../AdminComponents/academics/progressReports/ProgressReports")
+);
+
+const ProgressReportCard = React.lazy(() =>
+  import("../../AdminComponents/academics/progressReports/ReportCard")
+);
+
+const CombinedReports = React.lazy(() =>
+  import("../../AdminComponents/academics/combinedReports/CombinedReports")
+);
+const SBA = React.lazy(() => import("../../AdminComponents/academics/sba/SBA"));
 
 //students
 const AllStudents = React.lazy(() =>
@@ -115,7 +149,6 @@ const StudentDetails = React.lazy(() =>
 const EditStudent = React.lazy(() =>
   import("../../AdminComponents/students/newStudent/EditStudent")
 );
-//const RegisterAttendance =  React.lazy(()  => import( '../../AdminComponents/students/attendance/RegisterAttendance'));
 
 //staff
 const AddStaff = React.lazy(() =>
@@ -130,6 +163,9 @@ const EditStaff = React.lazy(() =>
 );
 
 //finance
+const NonBillPayment = React.lazy(() =>
+  import("../../AdminComponents/finance/nonBillPayment/NonBillPayment")
+);
 const Banking = React.lazy(() =>
   import("../../AdminComponents/finance/banking/Banking")
 );
@@ -172,6 +208,10 @@ const PayrowPay = React.lazy(() =>
 );
 const Payrow = React.lazy(() =>
   import("../../AdminComponents/finance/payrow/Payrow")
+);
+
+const SalaryDeductions = React.lazy(() =>
+  import("../../AdminComponents/finance/salaryDeductions/Deductions")
 );
 
 const PaymentReceipt = React.lazy(() =>
@@ -233,6 +273,48 @@ const PaySlip = React.lazy(() =>
   import("../../AdminComponents/finance/staffPayrow/PaySlip")
 );
 
+const BankAdvice = React.lazy(() =>
+  import("../../AdminComponents/finance/bankAdvice/Advice")
+);
+
+const PastStudents = React.lazy(() =>
+  import("../../AdminComponents/students/pastStudents/PastStudents")
+);
+
+const WithdrawStudents = React.lazy(() =>
+  import("../../AdminComponents/students/withdrawnStudents/WithdrawnStudents")
+);
+
+//store
+const Store = React.lazy(() =>
+  import("../../AdminComponents/store/store/Store")
+);
+
+//sale
+const Sales = React.lazy(() =>
+  import("../../AdminComponents/store/sales/Sales")
+);
+
+const SalesReceipt = React.lazy(() =>
+  import("../../AdminComponents/store/sales/Receipt")
+);
+
+const Inventory = React.lazy(() =>
+  import("../../AdminComponents/store/inventory/Inventory")
+);
+
+const Reports = React.lazy(() =>
+  import("../../AdminComponents/store/reports/Reports")
+);
+
+const ReportReceipt = React.lazy(() =>
+  import("../../AdminComponents/store/reports/PaymentsReceipt")
+);
+
+const ManageUsers = React.lazy(() =>
+  import("../../AdminComponents/users/ManageUsers")
+);
+
 const routes = [
   {
     path: "/",
@@ -241,10 +323,51 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: "/profile",
+    path: "/reports",
     name: "Admin Profile",
     exact: true,
     component: Profile,
+  },
+  {
+    path: "/profile",
+    name: "Manage User",
+    exact: true,
+    component: ManageUsers,
+  },
+
+  {
+    path: "/store/sales",
+    name: "Sales",
+    exact: true,
+    component: Sales,
+  },
+  {
+    path: "/store/sales/receipt/:id",
+    name: "Sales Receipt",
+    component: SalesReceipt,
+  },
+  {
+    path: "/store",
+    name: "Store",
+    exact: true,
+    component: Store,
+  },
+  {
+    path: "/store/inventory",
+    name: "Store Inventory",
+    exact: true,
+    component: Inventory,
+  },
+  {
+    path: "/store/reports",
+    name: "Store Reports",
+    exact: true,
+    component: Reports,
+  },
+  {
+    path: "/store/reports/receipt/:id",
+    name: "Sales Report",
+    component: ReportReceipt,
   },
   {
     path: "/attendance/students",
@@ -314,6 +437,11 @@ const routes = [
     component: Classes,
   },
   {
+    path: "/academics/classgroups",
+    name: "Class Group",
+    component: ClassGroup,
+  },
+  {
     path: "/academics/classes/add",
     name: "Classes",
     component: AddClass,
@@ -367,10 +495,69 @@ const routes = [
     component: Departments,
   },
   {
+    path: "/academics/yeargroups",
+    name: "Year Groups",
+    component: YearGroups,
+  },
+  {
+    path: "/academics/correspondance",
+    name: "Correspondences",
+    exact: true,
+    component: Correspondence,
+  },
+  {
+    path: "/academics/correspondance/add",
+    name: "Add Correspondence",
+    component: AddCorrespondence,
+  },
+  {
+    path: "/academics/correspondance/edit/:id",
+    name: "Edit Correspondence",
+    component: EditCorrespondence,
+  },
+  {
+    path: "/academics/correspondance/view/:id",
+    name: "View Correspondence",
+    component: ViewCorrespondence,
+  },
+  {
+    path: "/academics/sba",
+    name: "SBA",
+    component: SBA,
+  },
+  {
+    path: "/academics/combinedreports",
+    name: "Combined Reports",
+    component: CombinedReports,
+  },
+  {
+    path: "/academics/progressreports",
+    name: "Progress Reports",
+    exact: true,
+    component: ProgressReports,
+  },
+  {
+    path: "/academics/progressreports/report/:id/:year/:term",
+    name: "Progress Report Card",
+    component: ProgressReportCard,
+  },
+  {
     path: "/students",
     name: "Students",
     exact: true,
     component: AllStudents,
+  },
+  {
+    path: "/students/paststudents",
+    name: "Past Students",
+    exact: true,
+    component: PastStudents,
+  },
+  {
+    path: "/students/withdrawstudents",
+    name: "Past Students",
+    exact: true,
+    component: WithdrawStudents,
   },
   {
     path: "/students/campus",
@@ -444,7 +631,12 @@ const routes = [
     exact: true,
     component: Fees,
   },
-
+  {
+    path: "/finance/nonbill",
+    name: "Non Bill Payment",
+    exact: true,
+    component: NonBillPayment,
+  },
   {
     path: "/finance/fees/set",
     name: "Set Fees",
@@ -455,6 +647,11 @@ const routes = [
     name: "Students Fees",
     exact: true,
     component: PrepareBill,
+  },
+  {
+    path: "/finance/salarydeductions",
+    name: "Salary Deductions",
+    component: SalaryDeductions,
   },
   {
     path: "/finance/payrow",
@@ -489,6 +686,12 @@ const routes = [
     name: "Banking Details",
     exact: true,
     component: Banking,
+  },
+  {
+    path: "/finance/bankadvice",
+    name: "Bank Advice",
+    exact: true,
+    component: BankAdvice,
   },
   {
     path: "/finance/banking/add",

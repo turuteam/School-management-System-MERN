@@ -8,18 +8,16 @@ import { selectUser } from "./store/slices/userSlice";
 import { SignedOutRoutes, SignedInRoutes } from "./ProtectedRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// Containers
-const TheLayout = React.lazy(() => import("./layouts/index"));
-//const Layout = React.lazy(() => import('./containers/Layout/Layout'));
 
-// Pages
+const TheLayout = React.lazy(() => import("./layouts/index"));
+
 const Login = React.lazy(() => import("./pages/login/Login"));
 const Reset = React.lazy(() => import("./pages/reset/Reset"));
 const ForgetPassword = React.lazy(() =>
   import("./pages/forget/ForgetPassword")
 );
 const Page404 = React.lazy(() => import("./pages/page404/Page404"));
-const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
+const Page500 = React.lazy(() => import("./pages/page500/Page500"));
 
 function App() {
   const user = useSelector(selectUser);

@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "../../../store/axios";
 import { useSelector } from "react-redux";
-import { selectDepartments } from "../../../store/slices/schoolSlice";
+import {
+  selectDepartments,
+  selectClasses,
+} from "../../../store/slices/schoolSlice";
 
 function CourseForm(props) {
   const [teachers, setteachers] = useState([]);
   const departments = useSelector(selectDepartments);
-
+  const classes = useSelector(selectClasses);
   useEffect(() => {
     axios.get("/teachers").then((res) => {
       setteachers(res.data);
@@ -28,6 +31,8 @@ function CourseForm(props) {
     onSubmit,
     loading,
     isEdit,
+    classID,
+    handleSetclasses,
   } = props;
 
   return (
@@ -65,7 +70,7 @@ function CourseForm(props) {
         )}
       </div>
       <div className="mb-3">
-        <label className="form-label">Course Departments</label>
+        <label className="form-label">Departments</label>
         <select
           name="type"
           value={type}
@@ -87,7 +92,32 @@ function CourseForm(props) {
           )}
         </select>
       </div>
+
       <div className="mb-3">
+        <label className="form-label">Classes</label>
+        <select
+          name="type"
+          value={classID}
+          onChange={(e) => handleSetclasses(e.target.value)}
+          id="inputState"
+          className="form-select"
+        >
+          <option defaultValue hidden>
+            Choose...
+          </option>
+          {classes.length > 0 ? (
+            classes.map((e) => (
+              <option key={e._id} value={e.code}>
+                {e.name}
+              </option>
+            ))
+          ) : (
+            <option disabled>No departments yet</option>
+          )}
+        </select>
+      </div>
+
+      <div className="mb-5">
         <label className="form-label">Course Teacher</label>
         <select
           name="type"
@@ -110,8 +140,8 @@ function CourseForm(props) {
           )}
         </select>
       </div>
-      <div className="col-12">
-        <button disabled={loading} type="submit" className="btn btn-primary">
+      <div className="mb-3">
+        <button disabled={loading} type="submit" className="btn blue__btn">
           {loading && (
             <span
               className="spinner-border spinner-border-sm"

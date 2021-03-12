@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Notice from "./Notice";
 import axios from "../../store/axios";
 import { Link } from "react-router-dom";
+import { getTrimString } from "../../utils";
 
 function NoticeBoard({ user }) {
   const [notices, setnotices] = useState([]);
@@ -11,19 +12,24 @@ function NoticeBoard({ user }) {
       setnotices(res.data);
     });
   }, []);
+
   let max = 5;
   let length = notices.length;
 
   return (
     <div className="content__container notices">
       <div className="d-flex justify-content-between align-items-center">
-        <h3>Notice Board</h3>
-        {user === "admin" && (
-          <Link className="btn blue__btn" to="/notifications">
-            {" "}
-            Add New Notice
-          </Link>
-        )}
+        <div>
+          <h3>Notice Board</h3>
+        </div>
+        <div>
+          {user === "admin" && (
+            <Link className="btn blue__btn" to="/notifications">
+              {" "}
+              Add New Notice
+            </Link>
+          )}
+        </div>
       </div>
 
       {notices.length > 0 ? (
@@ -31,7 +37,7 @@ function NoticeBoard({ user }) {
           {notices.slice(0, max).map((notice) => (
             <div key={notice._id}>
               <Notice
-                description={notice?.message}
+                description={getTrimString(notice?.description, 100)}
                 date={notice?.date}
                 title={notice?.title}
                 id={notice?._id}

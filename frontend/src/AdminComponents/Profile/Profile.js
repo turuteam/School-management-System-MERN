@@ -10,9 +10,9 @@ function Profile() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    axios.get(`/school/user/${user?.id}`).then((res) => {
-      let data = res?.data.user;
-      setadmin(data);
+    axios.get(`/school`).then((res) => {
+      console.log(res);
+      setadmin(res.data);
     });
   }, [user]);
 

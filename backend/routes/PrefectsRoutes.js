@@ -6,8 +6,8 @@ const route = express.Router();
 
 //get all
 route.get("/", async (req, res) => {
-  const currentyear = new Date().getFullYear();
-  const data = await PrefectsModel.find();
+  //const currentyear = new Date().getFullYear();
+  const data = await PrefectsModel.find({});
   //.where("endYear").gt(currentyear);
   res.json(data);
 });

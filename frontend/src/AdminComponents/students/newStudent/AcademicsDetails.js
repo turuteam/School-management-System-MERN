@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
+import { studentStatus } from "../../../data";
 import {
   selectClasses,
-  selectCourses,
   selectDormitories,
   selectScholarship,
   selectSection,
+  selectDivisions,
   selectFees,
   selectCampuses,
 } from "../../../store/slices/schoolSlice";
 
 function AcademicsDetails(props) {
   const classes = useSelector(selectClasses);
-  const courses = useSelector(selectCourses);
   const dormitories = useSelector(selectDormitories);
   const scholarship = useSelector(selectScholarship);
   const sections = useSelector(selectSection);
   const campuses = useSelector(selectCampuses);
+  const divisions = useSelector(selectDivisions);
   const feesType = useSelector(selectFees);
-  const [showCheck, setshowCheck] = useState(false);
 
   let {
     register,
@@ -31,6 +31,8 @@ function AcademicsDetails(props) {
     setclass,
     section,
     setsection,
+    division,
+    setdivision,
     status,
     setstatus,
     dormitory,
@@ -47,7 +49,6 @@ function AcademicsDetails(props) {
     handleCoursesCheckbox,
   } = props;
 
-  console.log(feesType);
   return (
     <div>
       <h3>Academics Details</h3>
@@ -67,7 +68,6 @@ function AcademicsDetails(props) {
                   checked={autoID}
                 />
               </div>
-              {/* <input name="tel" type="tel" className="form-control"  /> */}
             </div>
             {!autoID && (
               <div className="col-xs-12 col-sm-6 ">
@@ -85,7 +85,7 @@ function AcademicsDetails(props) {
         )}
       </div>
       <div class="row mb-3">
-        <div className="col-xs-12 col-sm-6 col-md-4">
+        <div className="col-xs-12 col-sm-6 col-md-4 ">
           <label className="form-label">Class</label>
           <select
             ref={register({ required: true })}
@@ -138,6 +138,29 @@ function AcademicsDetails(props) {
           </select>
         </div>
         <div className="col-xs-12 col-sm-6 col-md-4">
+          <label className="form-label">Divisions</label>
+          <select
+            value={division}
+            onChange={(e) => setdivision(e.target.value)}
+            name="house"
+            className="form-select"
+            aria-label="Default select example"
+          >
+            <option defaultValue hidden>
+              select
+            </option>
+            {divisions.length > 0 ? (
+              divisions.map((e) => (
+                <option key={e._id} value={e._id}>
+                  {e.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>No data yet</option>
+            )}
+          </select>
+        </div>
+        <div className="col-xs-12 col-sm-6 col-md-4 mb-3">
           <label className="form-label">Status</label>
           <select
             ref={register({ required: true })}
@@ -150,10 +173,12 @@ function AcademicsDetails(props) {
             <option defaultValue hidden>
               select
             </option>
-            <option value="border">Border </option>
-            <option value="freshBorder">Fresh Border </option>
-            <option value="day">Day </option>
-            <option value="freshDay">Fresh Day </option>
+            {studentStatus &&
+              studentStatus.map((e) => (
+                <option key={e.id} value={e.id}>
+                  {e.name}{" "}
+                </option>
+              ))}
           </select>
           {errors.status && (
             <span className=" form-error text-danger mb-2">
@@ -259,11 +284,11 @@ function AcademicsDetails(props) {
         </div>
       </div>
       <div class="row mb-3">
-        <div className="col-xs-12 col-sm-6 col-md-4">
+        {/* <div className="col-xs-12 col-sm-6 col-md-4">
           <label className="form-label">Courses</label>
           <div className="selectBox">
             <select
-              value="courses"
+              defaultValue="courses"
               onClick={() => setshowCheck(!showCheck)}
               className="form-select"
             >
@@ -291,8 +316,9 @@ function AcademicsDetails(props) {
                 )}
               </div>
             )}
-          </div>
-        </div>
+          </div> 
+        </div>*/}
+
         <div className="col-xs-12 col-sm-6 col-md-4">
           <label className="form-label">Last School Attended</label>
           <input

@@ -60,7 +60,7 @@ function MessageStudent() {
     e.preventDefault();
     if (message && recipient) {
       axios
-        .post(`/chats/send/user/${sender?.id}/${recipient}`, {
+        .post(`/chats/send/user/${sender?.userID}/${recipient}`, {
           message,
           senderID: sender?.id,
         })

@@ -21,7 +21,6 @@ route.get("/", async (req, res) => {
   let classData = docs.map((e) => {
     return e;
   });
-  console.log(classData);
   res.json(classData);
 });
 

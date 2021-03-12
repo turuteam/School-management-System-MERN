@@ -1,27 +1,42 @@
-import  mongoose from "../config/mongodb.js"
+import mongoose from "../config/mongodb.js";
 
 const { Schema } = mongoose;
 
-const CourserSchema =   new Schema( {
+const CourserSchema = new Schema(
+  {
     date: {
-        type: Date,
-        default: Date.now
+      type: Date,
+      default: Date.now,
     },
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     code: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
+    },
+    classID: {
+      type: String,
+    },
+    classes: [
+      {
+        classID: String,
+        teacherID: String,
+      },
+    ],
+    department: {
+      type: String,
     },
     type: {
-        type: String
+      type: String,
     },
     teacher: {
-        type: String
+      type: String,
     },
-    default: []
-}, { timestamps: true })
+    default: [],
+  },
+  { timestamps: true }
+);
 
-export default  mongoose.model("courses", CourserSchema);
+export default mongoose.model("courses", CourserSchema);

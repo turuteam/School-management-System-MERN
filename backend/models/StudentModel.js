@@ -125,6 +125,22 @@ const StudentSchema = new Schema(
     section: {
       type: String,
     },
+    division: {
+      type: String,
+    },
+    lastLogin: {
+      type: Date,
+    },
+    past: {
+      type: {
+        status: true,
+        date: Date,
+      },
+    },
+    withdraw: {
+      type: Boolean,
+      default: false,
+    },
     date: {
       type: Date,
       default: Date.now,

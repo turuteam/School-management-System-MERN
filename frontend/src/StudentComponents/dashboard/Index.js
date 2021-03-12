@@ -24,7 +24,7 @@ function Index() {
 
   useEffect(() => {
     setloading(true);
-    axios.get(`/student/count/${user?.id}`).then((res) => {
+    axios.get(`/student/count/${user?.userID}`).then((res) => {
       setloading(false);
       console.log(res.data);
       setcount(res.data.count);

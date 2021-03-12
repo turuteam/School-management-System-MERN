@@ -10,7 +10,7 @@ function AllClasses() {
 
   useEffect(() => {
     const getData = async () => {
-      let teacher = await axios.get(`/user/${user?.id}`);
+      let teacher = await axios.get(`/user/${user?.userID}`);
       let classData = teacher?.data?.user;
       setclassID(classData?.classID);
     };

@@ -15,9 +15,9 @@ function MessageAdmin() {
     e.preventDefault();
     if (message && recipient) {
       axios
-        .post(`/chats/send/user/${user?.id}/${recipient}`, {
+        .post(`/chats/send/user/${user?.userID}/${recipient}`, {
           message,
-          senderID: user?.id,
+          senderID: user?.userID,
         })
         .then((res) => {
           if (res.data.error) {
