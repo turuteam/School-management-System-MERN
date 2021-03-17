@@ -6,6 +6,7 @@ import { login, changePassword } from "../middlewares/validate.js";
 import { stringtoLowerCaseSpace } from "../middlewares/utils.js";
 import { role } from "../middlewares/variables.js";
 import ClassesModel from "../models/ClassesModel.js";
+import TransactionsModel from "../models/TransactionsModel.js";
 
 const route = express.Router();
 
@@ -55,6 +56,42 @@ route.get("/past", async (req, res) => {
   res.json(pastStudents);
 });
 
+//unpaid fees
+route.get("/unpaidfees", async (req, res) => {
+  const docs = await TransactionsModel.find({
+    category: { $regex: "fees" },
+    type: "income",
+  });
+
+  let data = docs.map((e) => {
+    return {
+      amount: e?.amount,
+      userID: e?.fees.userID,
+      bank: e.bank,
+      type: e.type,
+      academicYear: e.fees.academicYear,
+      term: e.fees.term,
+      _id: e._id,
+    };
+  });
+  const students = await StudentModel.find({ role: role.Student });
+  let results = students.map((e) => {
+    let fees = data.find((i) => i.userID === e.userID);
+    return {
+      userID: e.userID,
+      name: e.name + " " + e.surname,
+      classID: e.classID,
+      amount: fees?.amount || 0,
+      academicYear: fees?.academicYear || null,
+      term: fees?.term || null,
+      status: e?.status,
+      fees: e?.fees,
+    };
+  });
+
+  res.json(results);
+});
+
 //get one student by id
 route.get("/student/:id", async (req, res) => {
   if (!req.params.id) {
@@ -73,6 +110,30 @@ route.get("/student/:id", async (req, res) => {
     });
 });
 
+//admission
+route.get("/student/admission/:from/:to", async (req, res) => {
+  const admission = await StudentModel.countDocuments({
+    role: role.Student,
+    createdAt: { $gte: req.params.from, $lte: req.params.to },
+  });
+  const border = await StudentModel.countDocuments({
+    role: role.Student,
+    createdAt: { $gte: req.params.from, $lte: req.params.to },
+    status: "border",
+  });
+  const day = await StudentModel.countDocuments({
+    role: role.Student,
+    createdAt: { $gte: req.params.from, $lte: req.params.to },
+    status: "day",
+  });
+
+  res.json({
+    admission,
+    border,
+    day,
+  });
+});
+
 //get studentCourses
 route.get("/student/courses/:id", async (req, res) => {
   if (!req.params.id) {
@@ -88,6 +149,32 @@ route.get("/student/courses/:id", async (req, res) => {
       }
     })
     .catch((err) => {
+      return res.json({ success: false, error: "WRONG error" });
+    });
+});
+
+//get category num
+route.get("/number/:category/:value", async (req, res) => {
+  // if (!req.params.id) {
+  //   return res.status(400).send("Missing URL parameter: username");
+  // }
+  await StudentModel.find({
+    role: role.Student,
+    [req.params.category]: req.params.value,
+  })
+    .then((user) => {
+      return res.json({
+        success: true,
+        docs: user.map((e) => {
+          return {
+            status: e.status,
+            fees: e.fees,
+          };
+        }),
+      });
+    })
+    .catch((err) => {
+      console.log(err);
       return res.json({ success: false, error: "WRONG error" });
     });
 });

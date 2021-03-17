@@ -36,7 +36,7 @@ function ViewCorrespondance() {
           Print
         </button>
       </div>
-      <div className="content__container p-4 pb-5">
+      <div id="section-to-print" className="content__container p-4 pb-5">
         <div className="text-center">
           <img width="100px" src={getImgSrc(school?.profileUrl)} alt="" />
           <h4>{school?.fullName}</h4>

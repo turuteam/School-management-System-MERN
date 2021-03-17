@@ -7,6 +7,7 @@ import NextofKin from "../../shared/NextofKin";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import axios from "../../../store/axios";
+import moment from "moment";
 import { errorAlert, successAlert } from "../../../utils";
 
 function EditStaff() {
@@ -26,8 +27,6 @@ function EditStaff() {
   const [allege, setallege] = useState("");
   const [disease, setdisease] = useState("");
   const [loading, setloading] = useState("");
-  const [classID, setclass] = useState("");
-  const [courses, setcourses] = useState([]);
 
   const [profileUrl, setprofileUrl] = useState("");
   const [profileimg, setprofileimg] = useState("");
@@ -44,6 +43,10 @@ function EditStaff() {
   const [bank, setbank] = useState("");
   const [qualification, setqualification] = useState("");
   const [years, setyears] = useState("");
+  const [ssnit, setssnit] = useState(false);
+  const [taxNumber, settaxNumber] = useState("");
+  const [salary, setsalary] = useState("");
+  const [allowance, setallowance] = useState("");
 
   //contact details
   const [mobilenumber, setmobilenumber] = useState("");
@@ -69,7 +72,9 @@ function EditStaff() {
       setlastname(data?.surname);
       setgender(data?.gender);
       setsecondName(data?.middleName);
-      setdateofBirth(data?.dateofBirth);
+      setdateofBirth(
+        data?.dateofBirth ? moment(data?.dateofBirth).format("YYYY-MM-D") : ""
+      );
       setprofileimg(data?.profileUrl);
       setemail(data?.email);
       setnationality(data?.nationality);
@@ -79,8 +84,10 @@ function EditStaff() {
       sethealth(data?.health);
       setallege(data?.allege);
       setdisease(data?.disease);
-      setclass(data?.classID);
-      setcourses(data?.courses);
+      setssnit(data?.ssnit);
+      settaxNumber(data?.taxNumber);
+      setsalary(data?.salary);
+      setallowance(data?.allowance);
       setRole(data?.position);
       setDepartment(data?.department);
       setCampus(data?.campus);
@@ -154,8 +161,10 @@ function EditStaff() {
         disease,
         campus,
         allege,
-        courses,
-        classID,
+        allowance,
+        salary,
+        ssnit,
+        taxNumber,
         bank,
         accountNumber,
         years,
@@ -209,15 +218,6 @@ function EditStaff() {
     }
   };
 
-  const handleCoursesCheckbox = (e) => {
-    console.log(e.target.checked, e.target.value);
-    if (e.target.checked) {
-      setcourses([e.target.value, ...courses]);
-    } else {
-      setcourses(courses.filter((i) => i !== i.target.value));
-    }
-  };
-
   return (
     <div>
       <h2>Edit Staff Member</h2>
@@ -263,13 +263,18 @@ function EditStaff() {
             setbank={setbank}
             accountNumber={accountNumber}
             setaccountNumber={setaccountNumber}
+            ssnit={ssnit}
+            setssnit={setssnit}
+            salary={salary}
+            setsalary={setsalary}
+            allowance={allowance}
+            setallowance={setallowance}
+            taxNumber={taxNumber}
+            settaxNumber={settaxNumber}
             setRole={setRole}
-            classID={classID}
-            setclass={setclass}
             department={department}
             setDepartment={setDepartment}
             campus={campus}
-            handleCoursesCheckbox={handleCoursesCheckbox}
             setCampus={setCampus}
             employmentDate={employmentDate}
             setemploymentDate={setemploymentDate}

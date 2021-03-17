@@ -76,13 +76,6 @@ const TeacherSchema = new Schema(
       type: String,
       required: true,
     },
-    classID: {
-      type: String,
-    },
-    courses: {
-      type: Array,
-      default: [],
-    },
     nextofKin: {
       type: {
         relationship: String,
@@ -95,6 +88,18 @@ const TeacherSchema = new Schema(
       },
     },
     profileUrl: {
+      type: String,
+    },
+    salary: {
+      type: String,
+    },
+    allowance: {
+      type: String,
+    },
+    ssnit: {
+      type: String,
+    },
+    taxNumber: {
       type: String,
     },
     health: {

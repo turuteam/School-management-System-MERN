@@ -83,12 +83,27 @@ export const expenditureCat = [
 ];
 
 export const bankOptions = [
+  "Access Bank Ghana",
+  "African Investment Bank",
+  "Agricultural Developement Bank of Ghana",
+  "Ahantaman Rural Bank",
+  "CAL Bank",
+  "Ecobank Ghana",
+  "Fidelity Bank",
+  "Intercontinental Bank",
+  "HFC Bank",
+  "Consolidated Bank of Ghana",
   "Barclays Bank",
+  "Merchant Bank Ghana Limited",
+  "Guaranty Trust Bank",
   "Stanbic",
   "Standard Chartered Bank",
+  "National City Bank",
+  "Northern City Bank",
   "Trust Bank",
   "UT Bank",
   "United Bank for Africa",
+  "Zenith Bank",
 ];
 
 export const staffPosition = [

@@ -252,25 +252,6 @@ function ClassForm(props) {
             onChange={() => setsba(!sba)}
             inputProps={{ "aria-label": "primary checkbox" }}
           />
-          {/* <select
-            id="campus"
-            className="form-select"
-            value={sba}
-            onChange={(e) => setsba(e.target.value)}
-          >
-            <option defaultValue hidden>
-              Choose...
-            </option>
-            {campuses?.length > 0 ? (
-              campuses?.map((e) => (
-                <option key={e._id} value={e._id}>
-                  {e.name}
-                </option>
-              ))
-            ) : (
-              <option disabled>No campuses yet</option>
-            )}
-          </select> */}
         </div>
       </div>
       <div className="row mb-3">

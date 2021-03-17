@@ -41,6 +41,21 @@ export const getYearsList = (length) => {
   return yearArray();
 };
 
+export const getYearsPast = (length) => {
+  const max = new Date().getFullYear();
+  const min = max - length;
+
+  const yearArray = () => {
+    let arr = [];
+    for (let index = max; index > min; index--) {
+      arr.push(index);
+    }
+    return arr;
+  };
+
+  return yearArray();
+};
+
 export const getEmailPattern = () =>
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

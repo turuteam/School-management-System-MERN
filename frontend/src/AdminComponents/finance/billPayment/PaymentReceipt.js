@@ -45,7 +45,7 @@ function PaymentReceipt() {
 
   return (
     <>
-      <div className="border content__container mb-5">
+      <div className="border content__container mb-5" id="section-to-print">
         <div className="text-center border-bottom p-3">
           <h2>{state?.fullName}</h2>
           <p>{state?.motto}</p>

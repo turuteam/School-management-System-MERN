@@ -54,8 +54,9 @@ function NonBillPayment() {
         bank,
         chequeNum,
         year,
-        studentID,
+        student: studentID,
         term,
+        paymentType,
         remarks,
       })
       .then((res) => {

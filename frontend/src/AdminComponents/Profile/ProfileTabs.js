@@ -11,6 +11,9 @@ import Summary from "./SummaryTab";
 import AttendanceTab from "./AttendanceTabs";
 import StudentsTab from "./StudentsTabs";
 import StaffTab from "./StaffTabs";
+import FinancialTab from "./FinancialTabs";
+import ActivityTab from "./ActivityTabs";
+import Academics from "./AcademicTabs";
 import axios from "../../store/axios";
 
 function TabPanel(props) {
@@ -90,9 +93,12 @@ export default function FullWidthTabs({ user }) {
           aria-label="full width tabs example"
         >
           <Tab label="Summary" {...a11yProps(0)} />
-          <Tab label="Attendance Reports" {...a11yProps(1)} />
-          <Tab label="Students Reports" {...a11yProps(2)} />
-          <Tab label="Staff Reports" {...a11yProps(3)} />
+          <Tab label="Academics Reports" {...a11yProps(1)} />
+          <Tab label="Attendance Reports" {...a11yProps(2)} />
+          <Tab label="Students Reports" {...a11yProps(3)} />
+          <Tab label="Staff Reports" {...a11yProps(4)} />
+          <Tab label="Financial  Reports" {...a11yProps(5)} />
+          <Tab label="Activity Reports" {...a11yProps(6)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -104,13 +110,22 @@ export default function FullWidthTabs({ user }) {
           <Summary count={count} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <AttendanceTab count={count} />
+          <Academics count={count} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <StudentsTab count={count} />
+          <AttendanceTab count={count} />
         </TabPanel>
         <TabPanel value={value} index={3} dir={theme.direction}>
+          <StudentsTab count={count} />
+        </TabPanel>
+        <TabPanel value={value} index={4} dir={theme.direction}>
           <StaffTab count={count} />
+        </TabPanel>
+        <TabPanel value={value} index={5} dir={theme.direction}>
+          <FinancialTab count={count} />
+        </TabPanel>
+        <TabPanel value={value} index={6} dir={theme.direction}>
+          <ActivityTab count={count} />
         </TabPanel>
       </SwipeableViews>
     </div>

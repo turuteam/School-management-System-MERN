@@ -65,7 +65,7 @@ export default function FullScreenDialog({
           </IconButton>
         </Toolbar>
       </AppBar>
-      <div className="mt-3 p-5">
+      <div className="mt-3 p-5" id="section-to-print">
         <h5>
           <strong>{salutations}</strong>
         </h5>

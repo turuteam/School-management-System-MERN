@@ -105,7 +105,6 @@ route.post("/send/user/:id/:id2", async (req, res) => {
       acceptor_id: req.params.id2,
     })
       .then((response) => {
-        console.log(response);
         ChatModel.findOneAndUpdate(
           {
             _id: response._id,
@@ -116,7 +115,6 @@ route.post("/send/user/:id/:id2", async (req, res) => {
           }
         )
           .then((doc) => {
-            console.log(doc);
             if (!doc) {
               return res.json({ success: false, error: "doex not exists" });
             }
@@ -127,7 +125,6 @@ route.post("/send/user/:id/:id2", async (req, res) => {
           });
       })
       .catch((err) => {
-        console.log(err);
         return res.json({ success: false, error: err });
       });
   } else {
@@ -141,7 +138,6 @@ route.post("/send/user/:id/:id2", async (req, res) => {
       }
     )
       .then((doc) => {
-        console.log(doc);
         if (!doc) {
           return res.json({ success: false, error: "doex not exists" });
         }

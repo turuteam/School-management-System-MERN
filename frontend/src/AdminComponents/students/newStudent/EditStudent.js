@@ -67,7 +67,7 @@ function EditStudent() {
       setlastname(data?.surname);
       setsecondName(data?.middleName);
       setgender(data?.gender);
-      setdateofBirth(moment(data?.dateofBirth).format("YYYY-MM-D"));
+      setdateofBirth(data?.dateofBirth ? moment(data?.dateofBirth).format("YYYY-MM-D") : " ");
       setemail(data?.email);
       setnationality(data?.nationality);
       setplaceofBirth(data?.placeofBirth);

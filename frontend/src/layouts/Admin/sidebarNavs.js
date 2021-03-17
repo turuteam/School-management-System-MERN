@@ -89,6 +89,11 @@ const _nav = [
     _children: [
       {
         _tag: "CSidebarNavItem",
+        name: "Departments",
+        to: "/academics/departments",
+      },
+      {
+        _tag: "CSidebarNavItem",
         name: "All Staff",
         to: "/staff",
       },
@@ -96,6 +101,41 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Add Staff",
         to: "/staff/new",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Salary Deductions",
+        to: "/finance/salarydeductions",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Staff Payrow",
+        to: "/finance/staff/payrow",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Paye Deductions",
+        to: "/finance/staff/paydeductions",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Trustee Contribution",
+        to: "/finance/trustee",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "SSNIT Contributions",
+        to: "/finance/ssnit",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Paye Calculator",
+        to: "/finance/payrow/calculator",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Bank Advice",
+        to: "/finance/bankadvice",
       },
     ],
   },
@@ -120,11 +160,7 @@ const _nav = [
         name: "Courses",
         to: "/academics/courses",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Departments",
-        to: "/academics/departments",
-      },
+
       {
         _tag: "CSidebarNavItem",
         name: "Class Groups",
@@ -232,14 +268,10 @@ const _nav = [
       },
       {
         _tag: "CSidebarNavItem",
-        name: "Salary Deductions",
-        to: "/finance/salarydeductions",
+        name: " Debtors List",
+        to: "/finance/debtors",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Bank Advice",
-        to: "/finance/bankadvice",
-      },
+
       {
         _tag: "CSidebarNavItem",
         name: "Non Billable Payments",
@@ -247,9 +279,10 @@ const _nav = [
       },
       {
         _tag: "CSidebarNavItem",
-        name: "Staff Payrow",
-        to: "/finance/staff/payrow",
+        name: "Bill Reminder",
+        to: "/finance/billreminder",
       },
+
       {
         _tag: "CSidebarNavItem",
         name: "Transactions",

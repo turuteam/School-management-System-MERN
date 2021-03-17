@@ -1,16 +1,18 @@
-//promoting students by student
+//add banks dropdown on adding staff bank details
 
-//attendance group  
-//year groups \\
-//past n withdrawn students \\
-//set userID \\
+- pay calculator (ssnit 13.5%) trust 5% tax 20%
 
-sBA
+// paye deductions
 
-//bank advice
+- ssnit contribution
+- trustee contributiona
+  -activity logs
+- finance reports
+- attendance reports
 
-//salary deductionn
+bill reminder
+debtors list
 
-//school store
+// academic reports
 
-//users
+//activity logs

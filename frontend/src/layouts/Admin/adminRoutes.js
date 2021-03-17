@@ -218,6 +218,25 @@ const PaymentReceipt = React.lazy(() =>
   import("../../AdminComponents/finance/billPayment/PaymentReceipt")
 );
 
+const DebtorsList = React.lazy(() =>
+  import("../../AdminComponents/finance/debtors/DebtorsList")
+);
+
+const FinanceBillReminder = React.lazy(() =>
+  import("../../AdminComponents/finance/billReminder/DebtorsList")
+);
+
+const PayeeCalculator = React.lazy(() =>
+  import("../../AdminComponents/finance/payeCalculator/Calculator")
+);
+const SSNITContribution = React.lazy(() =>
+  import("../../AdminComponents/finance/ssnitContributions/Contributions")
+);
+
+const TrusteeContribution = React.lazy(() =>
+  import("../../AdminComponents/finance/trusteeContributions/Contributions")
+);
+
 //canteen
 const Canteen = React.lazy(() =>
   import("../../AdminComponents/canteen/CanteenPayment")
@@ -277,6 +296,10 @@ const BankAdvice = React.lazy(() =>
   import("../../AdminComponents/finance/bankAdvice/Advice")
 );
 
+const PayeDeductions = React.lazy(() =>
+  import("../../AdminComponents/finance/payeeDeductions/Deductions")
+);
+
 const PastStudents = React.lazy(() =>
   import("../../AdminComponents/students/pastStudents/PastStudents")
 );
@@ -307,8 +330,92 @@ const Reports = React.lazy(() =>
   import("../../AdminComponents/store/reports/Reports")
 );
 
+const NonBillReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/NonBillPayment")
+);
+
 const ReportReceipt = React.lazy(() =>
   import("../../AdminComponents/store/reports/PaymentsReceipt")
+);
+
+//reports
+const BillPaymentReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/BillPaymentReports")
+);
+const NonBillPaymentReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/NonBillPayment")
+);
+
+const ItemizedBillPaymentReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/ItemizedPayment")
+);
+
+const ExpenditureReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/ExpenditureReports")
+);
+
+const SupplementaryIncomeReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/SupplementaryIncome")
+);
+
+const IncomeStatement = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/IncomeStatement")
+);
+
+const ExpectedRevenueReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/ExpectedRevenueReport")
+);
+
+const StudentPaymentReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/StudentPaymentHistory")
+);
+
+const ClassLedgerReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/ClassLedger")
+);
+
+const CancelPaymentReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/CanceledPayment")
+);
+
+const TellerReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/TellerReports")
+);
+
+const AcademicTransripts = React.lazy(() =>
+  import("../../AdminComponents/Profile/academicsReports/AcademicTranscripts")
+);
+
+const AdmissionReport = React.lazy(() =>
+  import("../../AdminComponents/Profile/academicsReports/AdmissionReport")
+);
+
+const ClassGroupTerminalReport = React.lazy(() =>
+  import(
+    "../../AdminComponents/Profile/academicsReports/ClassGroupTerminalReports"
+  )
+);
+
+const ClassTerminalReport = React.lazy(() =>
+  import("../../AdminComponents/Profile/academicsReports/ClassTerminalReports")
+);
+
+const EndofYearReport = React.lazy(() =>
+  import("../../AdminComponents/Profile/academicsReports/EndofYearReport")
+);
+
+const EnrollmentStatics = React.lazy(() =>
+  import("../../AdminComponents/Profile/academicsReports/EnrollmentStatics")
+);
+
+const YearGroupTerminalReport = React.lazy(() =>
+  import(
+    "../../AdminComponents/Profile/academicsReports/YearGroupTerminalReport"
+  )
+);
+
+const NonDebtorsReports = React.lazy(() =>
+  import("../../AdminComponents/Profile/financialReports/NonDebtorsReport")
 );
 
 const ManageUsers = React.lazy(() =>
@@ -327,6 +434,101 @@ const routes = [
     name: "Admin Profile",
     exact: true,
     component: Profile,
+  },
+  {
+    path: "/reports/academic",
+    name: "Academic Transcripts",
+    component: AcademicTransripts,
+  },
+  {
+    path: "/reports/admission",
+    name: "Academic Admission Report",
+    component: AdmissionReport,
+  },
+  {
+    path: "/reports/classgroupterminal",
+    name: "Class Group Terminal Report",
+    component: ClassGroupTerminalReport,
+  },
+  {
+    path: "/reports/classterminal",
+    name: "Class Terminal Report",
+    component: ClassTerminalReport,
+  },
+  {
+    path: "/reports/endofyear",
+    name: "End of Year Report",
+    component: EndofYearReport,
+  },
+  {
+    path: "/reports/enrollmentstatics",
+    name: "Enrollment Statics",
+    component: EnrollmentStatics,
+  },
+  {
+    path: "/reports/enrollmentstatics",
+    name: "Enrollment Statics",
+    component: EnrollmentStatics,
+  },
+  {
+    path: "/reports/yeargroupterminal",
+    name: "Year Group Terminal Report",
+    component: YearGroupTerminalReport,
+  },
+  {
+    path: "/reports/nonbillpayment",
+    name: "Non Bill Payment Report",
+    component: NonBillPaymentReports,
+  },
+  {
+    path: "/reports/itemizedbillpayment",
+    name: "Itemized Bill Payment Summary",
+    component: ItemizedBillPaymentReports,
+  },
+  {
+    path: "/reports/expenditure",
+    name: "Expenditure Report",
+    component: ExpenditureReports,
+  },
+  {
+    path: "/reports/supplementaryincome",
+    name: "Supplementary Income Report",
+    component: SupplementaryIncomeReports,
+  },
+  {
+    path: "/reports/incomestatement",
+    name: "Income Statement",
+    component: IncomeStatement,
+  },
+  {
+    path: "/reports/expectedrevenue",
+    name: "Expected Revenue Report",
+    component: ExpectedRevenueReports,
+  },
+  {
+    path: "/reports/studentpaymentshistory",
+    name: "Student Payments History",
+    component: StudentPaymentReports,
+  },
+  {
+    path: "/reports/classledger",
+    name: "Class Ledger Report",
+    component: ClassLedgerReports,
+  },
+  {
+    path: "/reports/canceledpayments",
+    name: "Canceled Payments",
+    component: CancelPaymentReports,
+  },
+  {
+    path: "/reports/teller",
+    name: "Teller Reports",
+    component: TellerReports,
+  },
+  {
+    path: "/reports/nondebtors",
+    name: "Non Debtors Reports",
+    component: NonDebtorsReports,
   },
   {
     path: "/profile",
@@ -363,6 +565,12 @@ const routes = [
     name: "Store Reports",
     exact: true,
     component: Reports,
+  },
+  {
+    path: "/reports/finance/nonbill",
+    name: "Non Bill Payment Reports",
+    exact: true,
+    component: NonBillReports,
   },
   {
     path: "/store/reports/receipt/:id",
@@ -654,16 +862,37 @@ const routes = [
     component: SalaryDeductions,
   },
   {
+    path: "/finance/billreminder",
+    name: "Bill Reminder",
+    component: FinanceBillReminder,
+  },
+  {
     path: "/finance/payrow",
     name: "Payrow Details",
     exact: true,
     component: Payrow,
   },
   {
+    path: "/finance/debtors",
+    name: "Debtors List",
+    exact: true,
+    component: DebtorsList,
+  },
+  {
     path: "/finance/staff/payrow",
     name: "Staff Payrow",
     exact: true,
     component: AllPayrow,
+  },
+  {
+    path: "/finance/ssnit",
+    name: "Staff SSNIT Contribution",
+    component: SSNITContribution,
+  },
+  {
+    path: "/finance/trustee",
+    name: "Staff Trustee Contribution",
+    component: TrusteeContribution,
   },
   {
     path: "/finance/staff/payrow/payslip/:id",
@@ -686,6 +915,18 @@ const routes = [
     name: "Banking Details",
     exact: true,
     component: Banking,
+  },
+  {
+    path: "/finance/payrow/calculator",
+    name: "Paye Calculator",
+    exact: true,
+    component: PayeeCalculator,
+  },
+  {
+    path: "/finance/staff/paydeductions",
+    name: "Paye Deductions",
+    exact: true,
+    component: PayeDeductions,
   },
   {
     path: "/finance/bankadvice",

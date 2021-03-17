@@ -1,36 +1,39 @@
-import  mongoose from "../config/mongodb.js"
+import mongoose from "../config/mongodb.js";
 
 const { Schema } = mongoose;
 
-const BankingSchema =   new Schema( {
+const BankingSchema = new Schema(
+  {
     useID: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     basicSalary: {
-        type: String
+      type: String,
     },
     bank: {
-        type: String
+      type: String,
     },
     employeeSSF: {
-        type: String
+      type: String,
     },
     transactions: {
-        type: [
-            {
-                date: {
-                    type: Date,
-                    default: Date.now
-                },
-                allowance: String,
-                grossIncome: String,
-                deductions: String,
-                tax: String,
-                netSalary: String
-            }
-        ]
-    }
-}, { timestamps: true })
+      type: [
+        {
+          date: {
+            type: Date,
+            default: Date.now,
+          },
+          allowance: String,
+          grossIncome: String,
+          deductions: String,
+          tax: String,
+          netSalary: String,
+        },
+      ],
+    },
+  },
+  { timestamps: true }
+);
 
-export default  mongoose.model("staffpay", BankingSchema);
+export default mongoose.model("staffpay", BankingSchema);

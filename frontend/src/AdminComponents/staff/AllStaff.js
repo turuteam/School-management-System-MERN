@@ -4,7 +4,6 @@ import StaffTable from "../shared/TableListUsers";
 import axios from "../../store/axios";
 import { errorAlert } from "../../utils";
 import Loading from "../../Loading";
-import jsPDF from "jspdf";
 import { pdf } from "../../components/tables/pdf";
 import Paper from "@material-ui/core/Paper";
 

@@ -71,25 +71,7 @@ export default function CustomPaginationActionsTable({
         {loading ? (
           <TableBody className="text-center my-5 w-100">
             <TableRow>
-              <TableCell>
-                <span
-                  className="spinner-grow spinner-grow-sm"
-                  role="status"
-                ></span>
-              </TableCell>
-              <TableCell>
-                <span
-                  className="spinner-grow spinner-grow-sm"
-                  role="status"
-                ></span>
-              </TableCell>
-              <TableCell>
-                <span
-                  className="spinner-grow spinner-grow-sm"
-                  role="status"
-                ></span>
-              </TableCell>
-              <TableCell>
+              <TableCell colSpan={tableHeader.lenght}>
                 <span
                   className="spinner-grow spinner-grow-sm"
                   role="status"
@@ -100,7 +82,14 @@ export default function CustomPaginationActionsTable({
         ) : (
           <TableBody>
             {data?.length <= 0 ? (
-              <TableRow className="text-center my-5"> No data </TableRow>
+              <TableRow>
+                <TableCell
+                  colSpan={tableHeader.length + 1}
+                  className="text-center"
+                >
+                  No Data
+                </TableCell>
+              </TableRow>
             ) : (
               <>
                 {(rowsPerPage > 0

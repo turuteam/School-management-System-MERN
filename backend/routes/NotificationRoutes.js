@@ -17,16 +17,16 @@ route.get("/past", async (req, res) => {
 //get this month events
 route.get("/upcoming", async (req, res) => {
   let now = new Date();
-  // let end = new Date(
-  //   now.getFullYear(),
-  //   now.getMonth(),
-  //   now.getDate() + 1,
-  //   30,
-  //   59,
-  //   59
-  // );
+  let end = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1,
+    30,
+    59,
+    59
+  );
   const data = await NotificationsModal.find({
-    date: { $gte: now },
+    date: { $gte: now, $lte: end },
   });
   res.json(data);
 });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-//import { Chart } from "react-chartjs-2";
+import { useSelector } from "react-redux";
+import { selectClasses } from "../../store/slices/schoolSlice";
 import { Bar } from "@reactchartjs/react-chart.js";
 import { monthYear } from "../../data";
 import moment from "moment";
@@ -14,6 +15,10 @@ var start = new Date(year, month, 1);
 function AttendanceTabs() {
   const [dates, setdates] = useState([]);
   const [datas, setdatas] = useState([]);
+  const [period, setperiod] = useState("");
+  const [classID, setclassID] = useState("");
+  const classes = useSelector(selectClasses);
+  const [loading, setloading] = useState("");
 
   useEffect(() => {
     let arr = [];
@@ -25,6 +30,10 @@ function AttendanceTabs() {
     setdates(arr);
     //setdatas(d);
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+  };
 
   useEffect(() => {
     axios.get("/count/attendance").then((res) => {
@@ -59,6 +68,70 @@ function AttendanceTabs() {
 
   return (
     <div>
+      <div className="content__container mb-3">
+        <form action="" className="row">
+          <div className="mb-3 col-sm-4">
+            <label className="form-label">Class</label>
+            <select
+              name="type"
+              value={classID}
+              onChange={(e) => setclassID(e.target.value)}
+              id="inputState"
+              className="form-select"
+            >
+              <option defaultValue hidden>
+                Choose...
+              </option>
+              {classes.length > 0 ? (
+                classes.map((e) => (
+                  <option key={e._id} value={e.classCode}>
+                    {e.name}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No class yet</option>
+              )}
+            </select>
+          </div>
+          <div className="mb-3 col-sm-4">
+            <label className="form-label">Period</label>
+            <select
+              name="type"
+              value={period}
+              onChange={(e) => setperiod(e.target.value)}
+              id="inputState"
+              className="form-select"
+            >
+              <option defaultValue hidden>
+                Choose...
+              </option>
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="thisweek">This Week</option>
+              <option value="lastweek">Last Week</option>
+              <option value="thismonth">This Month</option>
+              <option value="lastmonth">Last Month</option>
+            </select>
+          </div>
+          <div className="mb-3 col-sm-4">
+            <button
+              onClick={handleSearch}
+              disabled={loading}
+              type="submit"
+              className="btn blue__btn"
+            >
+              {loading && (
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              )}
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
       <h3 className="mb-5">
         Attendance Report for {monthYear[month]?.name} {year}
       </h3>

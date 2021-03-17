@@ -159,7 +159,7 @@ function AllStudents() {
         if (res.data.error) {
           errorAlert(res.data.error);
         }
-        setstudents(students.filter((e) => e.userID !== id));
+        setstudents(students.filter((e) => e.userID !== i));
       });
     }
   };

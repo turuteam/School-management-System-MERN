@@ -65,13 +65,13 @@ const TheHeaderDropdownMssg = () => {
                     <div className="font-weight-bold text-truncate">
                       {getCapitalize(e?.senderID)}
                     </div>
+                    <div className="small text-muted text-truncate">
+                      {" "}
+                      {getTrimString(e?.message, 50)}{" "}
+                    </div>
                     <small className="text-muted float-right mt-1">
                       {timeStamp(e?.date)}
                     </small>
-                    <div className="small text-muted text-truncate">
-                      {" "}
-                      {getTrimString(e?.message, 100)}{" "}
-                    </div>
                   </div>
                 </div>
               </CDropdownItem>

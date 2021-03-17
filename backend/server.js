@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+import ActivityRoutes from "./routes/ActivityRoutes.js";
 import AcademicYear from "./routes/CurrentYearRoutes.js";
 import StudentRoutes from "./routes/StudentRoutes.js";
 import PayrowRoutes from "./routes/PayrowRoutes.js";
@@ -63,6 +64,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/students", StudentRoutes);
+app.use("/api/activitylog", ActivityRoutes);
 app.use("/api/attendance", AttendanceRoutes);
 app.use("/api/academicyear", AcademicYear);
 app.use("/api/chats", ChatRoutes);

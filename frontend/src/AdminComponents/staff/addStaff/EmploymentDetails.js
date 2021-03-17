@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "../../../store/axios";
-//import { schoolDepart } from "../../../data";
+import { bankOptions } from "../../../data";
+
 import {
-  selectClasses,
-  selectCourses,
   selectCampuses,
   selectDepartments,
 } from "../../../store/slices/schoolSlice";
 
 function EmploymentDetails(props) {
-  const classes = useSelector(selectClasses);
-  const courses = useSelector(selectCourses);
   const campuses = useSelector(selectCampuses);
   const departments = useSelector(selectDepartments);
   const [positions, setpositions] = useState([]);
-  const [showCheck, setshowCheck] = useState(false);
 
   useEffect(() => {
     axios.get("/payrow").then((res) => {
@@ -43,9 +39,14 @@ function EmploymentDetails(props) {
     setaccountNumber,
     register,
     errors,
-    classID,
-    setclass,
-    handleCoursesCheckbox,
+    salary,
+    setsalary,
+    allowance,
+    setallowance,
+    ssnit,
+    setssnit,
+    taxNumber,
+    settaxNumber,
   } = props;
 
   return (
@@ -137,13 +138,26 @@ function EmploymentDetails(props) {
         </div>
         <div className="col-xs-12 col-sm-6  mb-3">
           <label className="form-label">Bank</label>
-          <input
-            name="bank"
+          <select
+            name="campus"
             value={bank}
             onChange={(e) => setbank(e.target.value)}
-            type="text"
-            className="form-control"
-          />
+            className="form-select"
+            aria-label="Default select example"
+          >
+            <option defaultValue hidden>
+              select
+            </option>
+            {bankOptions.length > 0 ? (
+              bankOptions.map((e) => (
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              ))
+            ) : (
+              <option disabled>No data yet</option>
+            )}
+          </select>
         </div>
         <div className="col-xs-12 col-sm-6  mb-3">
           <label className="form-label"> Account Number</label>
@@ -155,6 +169,33 @@ function EmploymentDetails(props) {
             className="form-control"
           />
         </div>
+
+        <div className="col-xs-12 col-sm-6">
+          <label htmlFor="name" className="form-label">
+            Is SSNIT Contributor
+          </label>
+          <div className="form-check form-switch">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              onChange={() => setssnit(!ssnit)}
+              id="flexSwitchCheckChecked"
+              checked={ssnit}
+            />
+          </div>
+        </div>
+        {ssnit && (
+          <div className="col-xs-12 col-sm-6 mb-3">
+            <label className="form-label">Tax Identification Number</label>
+            <input
+              name="lastschool"
+              value={taxNumber}
+              onChange={(e) => settaxNumber(e.target.value)}
+              type="text"
+              className="form-control"
+            />
+          </div>
+        )}
         <div className="col-xs-12 col-sm-6 mb-3">
           <label className="form-label">Qualification</label>
           <input
@@ -162,6 +203,26 @@ function EmploymentDetails(props) {
             value={qualification}
             onChange={(e) => setqualification(e.target.value)}
             type="text"
+            className="form-control"
+          />
+        </div>
+        <div className="col-xs-12 col-sm-6  mb-3">
+          <label className="form-label">Basic Salary</label>
+          <input
+            name="years"
+            value={salary}
+            onChange={(e) => setsalary(e.target.value)}
+            type="number"
+            className="form-control"
+          />
+        </div>
+        <div className="col-xs-12 col-sm-6  mb-3">
+          <label className="form-label">Allowance</label>
+          <input
+            name="years"
+            value={allowance}
+            onChange={(e) => setallowance(e.target.value)}
+            type="number"
             className="form-control"
           />
         </div>
@@ -174,62 +235,6 @@ function EmploymentDetails(props) {
             type="number"
             className="form-control"
           />
-        </div>
-        <div className="col-xs-12 col-sm-6  mb-3">
-          <label className="form-label">Class</label>
-          <select
-            name="campus"
-            value={classID}
-            onChange={(e) => setclass(e.target.value)}
-            className="form-select"
-            aria-label="Default select example"
-          >
-            <option defaultValue hidden>
-              select
-            </option>
-            {classes.length > 0 ? (
-              classes.map((e) => (
-                <option key={e.classCode} value={e.classCode}>
-                  {e.name}
-                </option>
-              ))
-            ) : (
-              <option disabled>No data yet</option>
-            )}
-          </select>
-        </div>
-        <div className="col-xs-12 col-sm-6 col-md-4">
-          <label className="form-label">Courses</label>
-          <div className="selectBox">
-            <select
-              onClick={() => setshowCheck(!showCheck)}
-              className="form-select"
-            >
-              <option hidden>Select options</option>
-            </select>
-            {showCheck && (
-              <div className="showcheckboxes">
-                {courses.length > 0 ? (
-                  <>
-                    {courses.map((e) => (
-                      <div key={e.code} value={e.code} className="form-check ">
-                        <input
-                          onChange={handleCoursesCheckbox}
-                          className="form-check-input"
-                          type="checkbox"
-                          value={e.code}
-                          id="flexCheckDefault"
-                        />
-                        <label className="form-check-label">{e.name}</label>
-                      </div>
-                    ))}
-                  </>
-                ) : (
-                  <option disabled>No data yet</option>
-                )}
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
