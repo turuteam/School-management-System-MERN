@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Table from "../../components/tables/PeriodAttendanceTable";
 import { selectClasses } from "../../store/slices/schoolSlice";
 import { Bar } from "@reactchartjs/react-chart.js";
 import { monthYear } from "../../data";
 import moment from "moment";
 import axios from "../../store/axios";
+import { errorAlert } from "../../utils";
 
 const date = new Date();
 const month = date.getMonth();
@@ -19,6 +21,16 @@ function AttendanceTabs() {
   const [classID, setclassID] = useState("");
   const classes = useSelector(selectClasses);
   const [loading, setloading] = useState("");
+  const [show, setshow] = useState(false);
+  const [attendanceData, setattendanceData] = useState([]);
+  //const [storeData, setstoreData] = useState([]);
+  // const [attendance, setattendance] = useState([]);
+
+  // useEffect(() => {
+  //   axios.get("/attendance/student").then((res) => {
+  //    // setattendance(res.data);
+  //   });
+  // }, []);
 
   useEffect(() => {
     let arr = [];
@@ -28,11 +40,38 @@ function AttendanceTabs() {
       d.push(Math.floor(Math.random() * Math.floor(100)));
     }
     setdates(arr);
-    //setdatas(d);
   }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
+    setloading(false);
+    if (!classID) {
+      return errorAlert("Please select class");
+    }
+    if (!period) {
+      return errorAlert("Please select period");
+    }
+    setloading(true);
+    axios.get(`/students/class/${classID}`).then((res) => {
+      setloading(false);
+      if (res.data.error) {
+        setshow(true);
+        return setattendanceData([]);
+      }
+      let newData = res.data.users.map((i) => {
+        return {
+          userID: i.userID,
+          name: i.name,
+          surname: i.surname,
+          classID: i.classID,
+          gender: i.gender,
+          status: i.status,
+          attendance: Number(period),
+        };
+      });
+      setshow(true);
+      setattendanceData(newData);
+    });
   };
 
   useEffect(() => {
@@ -66,8 +105,11 @@ function AttendanceTabs() {
     },
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
   return (
-    <div>
+    <div id="section-to-print">
       <div className="content__container mb-3">
         <form action="" className="row">
           <div className="mb-3 col-sm-4">
@@ -105,12 +147,12 @@ function AttendanceTabs() {
               <option defaultValue hidden>
                 Choose...
               </option>
-              <option value="today">Today</option>
-              <option value="yesterday">Yesterday</option>
-              <option value="thisweek">This Week</option>
-              <option value="lastweek">Last Week</option>
-              <option value="thismonth">This Month</option>
-              <option value="lastmonth">Last Month</option>
+              <option value="1">Today</option>
+              <option value="2">Yesterday</option>
+              <option value="7">This Week</option>
+              <option value="7">Last Week</option>
+              <option value="30">This Month</option>
+              <option value="30">Last Month</option>
             </select>
           </div>
           <div className="mb-3 col-sm-4">
@@ -118,7 +160,7 @@ function AttendanceTabs() {
               onClick={handleSearch}
               disabled={loading}
               type="submit"
-              className="btn blue__btn"
+              className="btn blue__btn mt-3"
             >
               {loading && (
                 <span
@@ -132,6 +174,19 @@ function AttendanceTabs() {
           </div>
         </form>
       </div>
+      {show && (
+        <div className="mb-3">
+          <div id="section-to-print">
+            <Table attendanceData={attendanceData} />
+          </div>
+          <div className="d-flex justify-content-center my-3">
+            <button className="btn blue__btn mr-2">Save</button>
+            <button onClick={handlePrint} className="btn blue__btn">
+              Print
+            </button>
+          </div>
+        </div>
+      )}
       <h3 className="mb-5">
         Attendance Report for {monthYear[month]?.name} {year}
       </h3>

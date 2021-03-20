@@ -72,7 +72,6 @@ function DebtorsList() {
 
   let debtors = selected.map((e) => {
     let student = data.find((i) => i.userID === e);
-
     return {
       ...student,
     };
@@ -80,7 +79,7 @@ function DebtorsList() {
 
   return (
     <div>
-      <h3> Debtors List</h3>
+      <h3> Bill Reminder</h3>
       <div className="content__container mb-5">
         <Search
           year={year}
@@ -110,7 +109,7 @@ function DebtorsList() {
           <div className="content__container" id="section-to-print">
             <div className="text-center">
               <h3>
-                DEBTORS LIST FOR th {term}/ {year}
+                DEBTORS LIST FOR {term}/ {year}
               </h3>
             </div>
             <Table
@@ -136,8 +135,20 @@ function DebtorsList() {
           </div>
         </>
       )}
-      <Message debtors={debtors} open={openMessage} setOpen={setopenMessage} />
-      <Reminder debtors={debtors} open={openLetter} setOpen={setopenLetter} />
+      {debtors.length > 0 && (
+        <>
+          <Message
+            debtors={debtors}
+            open={openMessage}
+            setOpen={setopenMessage}
+          />
+          <Reminder
+            debtors={debtors}
+            open={openLetter}
+            setOpen={setopenLetter}
+          />
+        </>
+      )}
     </div>
   );
 }

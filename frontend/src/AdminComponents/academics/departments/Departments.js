@@ -25,12 +25,17 @@ function Division() {
 
   useEffect(() => {
     setloading(true);
-    axios.get("/departments").then((res) => {
-      console.log(res.data);
-      setdivisions(res.data);
-      setstoredata(res.data);
-      setloading(false);
-    });
+    axios
+      .get("/departments")
+      .then((res) => {
+        setloading(false);
+        setdivisions(res.data);
+        setstoredata(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setloading(false);
+      });
   }, []);
 
   const inputFields = [
@@ -163,7 +168,6 @@ function Division() {
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         data={divisions}
-        loading={loading}
         handleSearch={handleSearch}
         tableHeader={tableHeadings}
       />

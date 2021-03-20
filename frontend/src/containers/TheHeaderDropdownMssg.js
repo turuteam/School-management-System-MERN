@@ -25,10 +25,10 @@ const TheHeaderDropdownMssg = () => {
   const [messages, setmessages] = useState([]);
 
   useEffect(() => {
-    axios.get(`chats/messages/${user?.id}`).then((res) => {
+    axios.get(`/chats/user/${user?.id}`).then((res) => {
       let data = res.data;
       data.slice(0, 5).sort(function (x, y) {
-        return y.date - x.date;
+        return y?.date - x?.date;
       });
       setmessages(data);
     });

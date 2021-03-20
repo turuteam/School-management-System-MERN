@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import ListTable from "../../shared/ListTable";
+//import ListTable from "../../shared/ListTable";
 import axios from "../../../store/axios";
-import { getTrimString, errorAlert } from "../../../utils";
+//import { getTrimString, errorAlert } from "../../../utils";
 import { useSelector } from "react-redux";
 import {
   selectYearGroup,
-  selectFees,
+  //selectFees,
   selectCampuses,
   selectDivisions,
   selectDormitories,
   selectSection,
   selectClasses,
 } from "../../../store/slices/schoolSlice";
-import moment from "moment";
+//import moment from "moment";
 import { selectUser } from "../../../store/slices/userSlice";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import PrintIcon from "@material-ui/icons/Print";
@@ -33,7 +33,6 @@ function ViewPayment() {
   const dormitories = useSelector(selectDormitories);
   const division = useSelector(selectDivisions);
   const campus = useSelector(selectCampuses);
-  const [amount, setamount] = useState("");
 
   console.log(fees);
 

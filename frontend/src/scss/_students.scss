@@ -58,3 +58,14 @@
 .profileContainer:hover .profileIcon {
   display: block;
 }
+
+.students__container {
+  border: 1px solid #ccc;
+  width: 100%;
+
+  li {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+}

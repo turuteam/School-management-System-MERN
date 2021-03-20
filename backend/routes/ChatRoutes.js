@@ -1,12 +1,77 @@
 import express from "express";
 import ChatModel from "../models/ChatModel.js";
 import { sendFriendRequest, sendMessage } from "../middlewares/validate.js";
+import twilio from "twilio";
 
 const route = express.Router();
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 route.get("/", async (req, res) => {
   const docs = await ChatModel.find();
   res.json(docs);
+});
+
+route.post("/user", async (req, res) => {
+  await ChatModel.create(body)
+    .then((doc) => {
+      res.send(JSON.stringify({ success: true, doc }));
+    })
+    .catch((err) => {
+      console.log(err, "error");
+      res.send(
+        JSON.stringify({
+          error: `Failed`,
+        })
+      );
+    });
+});
+
+route.post("/", (req, res) => {
+  res.header("Content-Type", "application/json");
+  console.log(req.body);
+  client.messages
+    .create({
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: req.body.telephone,
+      body: req.body.message,
+    })
+    .then(async () => {
+      console.log("message send");
+      await ChatModel.create(body);
+      res.send(JSON.stringify({ success: true }));
+    })
+    .catch((err) => {
+      console.log(err, "error");
+      res.send(
+        JSON.stringify({
+          error: `Phone number ${req.body.telephone} is not valid for ${req.body.userID}`,
+        })
+      );
+    });
+});
+
+//get chat uer
+route.get("/user/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.json({ success: false, error: " id is required" });
+  }
+  const messageChats = await ChatModel.find({
+    userID: req.params.id,
+  });
+  res.json(messageChats);
+});
+
+route.get("/send/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.json({ success: false, error: " id is required" });
+  }
+  const messageChats = await ChatModel.find({
+    sender: req.params.id,
+  });
+  res.json(messageChats);
 });
 
 //get user connections
@@ -98,7 +163,6 @@ route.post("/send/user/:id/:id2", async (req, res) => {
   });
 
   //if no connection , create one
-  console.log(checkConnection);
   if (!checkConnection) {
     ChatModel.create({
       requestor_id: req.params.id,
@@ -194,7 +258,7 @@ route.put("/send/:id", (req, res) => {
 });
 
 //delete message
-route.delete("/delete/:id", (req, res) => {
+route.delete("/deletes/:id", (req, res) => {
   if (!req.params.id) {
     return res.status(400).send("Missing URL parameter: username");
   }
@@ -275,6 +339,17 @@ route.delete("/deleteAll/:id", (req, res) => {
     .catch((err) => {
       res.json({ success: false, message: err });
     });
+});
+
+route.delete("/delete/:id", (req, res) => {
+  ChatModel.findOneAndDelete({ _id: req.params.id }).then((e) => {
+    res.json({ doc: e });
+  });
+});
+route.delete("/deleteAll", (req, res) => {
+  ChatModel.deleteMany({}).then((docs) => {
+    res.json({ docs });
+  });
 });
 
 export default route;

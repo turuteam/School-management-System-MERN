@@ -152,7 +152,6 @@ function Classes() {
       <ClassTable
         handleEdit={handleEditClass}
         loading={loading}
-        handleSearch={handleSearch}
         handleDelete={handleDeleteClass}
         data={classes}
         tableHeader={tableHeadings}

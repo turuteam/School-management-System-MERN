@@ -13,7 +13,8 @@ function AcademicTranscripts() {
   const [loading, setloading] = useState("");
   const [show, setshow] = useState(false);
   const [school, setschool] = useState({});
-  const [data, setdata] = useState([]);
+  // const [data, setdata] = useState([]);
+  const data = [];
   const [studentDetails, setstudentDetails] = useState({});
 
   const years = useSelector(selectYearGroup);
@@ -29,7 +30,9 @@ function AcademicTranscripts() {
     if (!studentID) {
       return errorAlert("select student");
     }
+    setloading(true);
     axios.get(`/students/student/${studentID}`).then((res) => {
+      setloading(false);
       if (res.data.error) {
         return errorAlert("Student does not exist");
       }

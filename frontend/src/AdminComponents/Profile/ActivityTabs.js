@@ -24,7 +24,9 @@ function ActivityTabs() {
   }, []);
 
   const handleSearch = (e) => {
+    setloading(true);
     e.preventDefault();
+    setloading(false);
   };
 
   return (

@@ -60,9 +60,10 @@ function MessageStudent() {
     e.preventDefault();
     if (message && recipient) {
       axios
-        .post(`/chats/send/user/${sender?.userID}/${recipient}`, {
+        .post(`/chats`, {
           message,
-          senderID: sender?.id,
+          sender: sender?.id,
+          userID: recipient,
         })
         .then((res) => {
           if (res.data.error) {

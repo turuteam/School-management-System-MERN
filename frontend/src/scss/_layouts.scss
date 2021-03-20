@@ -143,15 +143,15 @@ a {
   //border: 1px solid red;
 }
 
-
-.backgroundColor{
+.backgroundColor {
   background-color: $background;
 }
 @media print {
   body * {
     visibility: hidden;
   }
-  #section-to-print, #section-to-print * {
+  #section-to-print,
+  #section-to-print * {
     visibility: visible;
   }
   #section-to-print {
@@ -160,4 +160,8 @@ a {
     width: 100%;
     top: 0;
   }
+}
+
+ul li {
+  list-style: none;
 }

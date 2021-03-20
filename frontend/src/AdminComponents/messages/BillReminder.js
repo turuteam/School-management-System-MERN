@@ -1,63 +1,144 @@
-import React, { useState } from "react";
-import SendToForm from "../../components/messages/SendToForm";
+import React, { useEffect, useState } from "react";
+import Search from "../finance/billReminder/Search";
+import Table from "../finance/billReminder/Table";
 import axios from "../../store/axios";
-import { errorAlert, successAlert } from "../../utils";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../store/slices/userSlice";
+import Message from "../finance/billReminder/SendMessage";
 
-function BillReminder() {
-  const [message, setmessage] = useState("");
-  const [recipientsOptions, setrecipientsOptions] = useState([]);
-  const [recipient, setrecipient] = useState("");
-  const sender = useSelector(selectUser);
+const tableHeader = [
+  { id: "userID", name: "Student ID" },
+  { id: "name", name: "Name" },
+  { id: "classID", name: "Class" },
+  { id: "bill", name: "Bill" },
+  { id: "arrears", name: "Arrears" },
+  { id: "total", name: "Total Bill" },
+  { id: "amount", name: "Amount Paid" },
+  { id: "percentage", name: "Percentage Paid" },
+  { id: "owe", name: "Amount Owed" },
+];
 
-  const options = [
-    { id: "fees", name: "Fees Debtors" },
-    { id: "canteen", name: "Canteen debtors" },
-  ];
+function DebtorsList() {
+  const [data, setdata] = useState([]);
+  const [year, setyear] = useState("");
+  const [term, setterm] = useState("");
+  const [listby, setlistby] = useState("");
+  const [listValue, setlistValue] = useState("");
+  const [filterValue, setfilterValue] = useState("");
+  const [filterBy, setfilterBy] = useState("");
+  const [amount, setamount] = useState("");
+  const [pastStudents, setpastStudents] = useState("");
+  const [withdrawStudent, setwithdrawStudent] = useState("");
+  const [show, setshow] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [fees, setfees] = useState([]);
+  const [openLetter, setopenLetter] = useState(false);
+  const [openMessage, setopenMessage] = useState(false);
+  const [selected, setSelected] = useState([]);
 
-  const onSend = (e) => {
-    e.preventDefault();
-    if (message && recipient) {
-      axios
-        .post(`/chats/send/user/${sender?.id}/${recipient}`, {
-          message,
-          senderID: sender?.id,
-        })
-        .then((res) => {
-          if (res.data.error) {
-            errorAlert(res.data.error);
-            return 0;
-          }
-          successAlert("message send");
-          setmessage("");
-        });
-    }
+  useEffect(() => {
+    axios.get("/fees").then((res) => {
+      setfees(res.data);
+    });
+  }, []);
+
+  const handleSearch = () => {
+    setloading(true);
+    let bal = (u) => {
+      let fee = fees.find((z) => z?.code === u?.fees);
+      return fee
+        ? Object.values(fee[u.status]).reduce(
+            (t, v) => Number(t) + Number(v),
+            0
+          )
+        : 0;
+    };
+    axios.get(`/students/unpaidfees`).then((res) => {
+      let students = res.data.map((e) => {
+        let total = bal(e);
+        return {
+          ...e,
+          arrears: 0,
+          bill: total,
+          owe: total - e.amount,
+          total,
+          percentage: ((e.amount / total) * 100).toFixed(2),
+        };
+      });
+      setdata(students.filter((e) => e.amount !== e.total));
+      setshow(true);
+      setloading(false);
+    });
   };
 
-  const searchOptions = () => {
-    return options.map((option) => (
-      <option key={option.id} value={option.id}>
-        {option.name}
-      </option>
-    ));
-  };
+  let debtors = selected.map((e) => {
+    let student = data.find((i) => i.userID === e);
+    return {
+      ...student,
+    };
+  });
 
   return (
     <div>
-      <SendToForm
-        message={message}
-        setmessage={setmessage}
-        onSend={onSend}
-        recipientsOptions={recipientsOptions}
-        recipient={recipient}
-        setrecipient={setrecipient}
-        sender={sender?.id}
-        searchOptions={searchOptions}
-        sendto="Bill Reminder"
-      />
+      <h3>SMS Bill Reminder</h3>
+      <div className="content__container mb-5">
+        <Search
+          year={year}
+          setyear={setyear}
+          term={term}
+          listby={listby}
+          setlistby={setlistby}
+          amount={amount}
+          listValue={listValue}
+          setlistValue={setlistValue}
+          filterValue={filterValue}
+          setfilterValue={setfilterValue}
+          setamount={setamount}
+          filterBy={filterBy}
+          handleSearch={handleSearch}
+          setfilterBy={setfilterBy}
+          pastStudents={pastStudents}
+          setpastStudents={setpastStudents}
+          withdrawStudent={withdrawStudent}
+          setwithdrawStudent={setwithdrawStudent}
+          setterm={setterm}
+          loading={loading}
+        />
+      </div>
+      {show && (
+        <>
+          <div className="content__container" id="section-to-print">
+            <div className="text-center">
+              <h3>
+                DEBTORS LIST FOR {term} - {year}
+              </h3>
+            </div>
+            <Table
+              selected={selected}
+              setSelected={setSelected}
+              tableHeader={tableHeader}
+              data={data}
+            />
+          </div>
+          <div className="text-center my-2">
+            <button
+              onClick={() => setopenMessage(true)}
+              className="btn blue__btn ml-3"
+            >
+              send message
+            </button>
+          </div>
+        </>
+      )}
+      {debtors.length > 0 && (
+        <>
+          <Message
+            debtors={debtors}
+            open={openMessage}
+            setOpen={setopenMessage}
+          />
+        </>
+      )}
     </div>
   );
 }
 
-export default BillReminder;
+export default DebtorsList;

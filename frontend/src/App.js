@@ -23,6 +23,8 @@ function App() {
   const user = useSelector(selectUser);
   const loading = useSelector(selectShowLoading);
 
+  console.log(loading);
+
   return (
     <Router>
       <ToastContainer />

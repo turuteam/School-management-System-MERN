@@ -30,11 +30,16 @@ function AllStaff() {
 
   useEffect(() => {
     setloading(true);
-    axios.get("/teachers").then((res) => {
-      setloading(false);
-      setstaff(res.data);
-      setstoreData(res.data);
-    });
+    axios
+      .get("/teachers")
+      .then((res) => {
+        setloading(false);
+        setstaff(res.data);
+        setstoreData(res.data);
+      })
+      .catch((err) => {
+        setloading(false);
+      });
   }, []);
 
   console.log(staff);

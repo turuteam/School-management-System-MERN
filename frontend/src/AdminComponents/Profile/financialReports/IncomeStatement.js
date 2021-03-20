@@ -15,16 +15,16 @@ function IncomeStatement() {
   const [from, setfrom] = useState(firstday);
   const [to, setto] = useState(moment().format("YYYY-MM-DD"));
   const [loading, setloading] = useState("");
-
-  const [data, setdata] = useState([
+  const data = [
     { name: "Revenue", id: "" },
     { name: "Fee Payments", id: "0" },
     { name: "Other Income", id: "0" },
     { name: "Expenses", id: "-" },
     { name: "Net income", id: "0" },
-  ]);
+  ];
 
   const handleSearch = () => {
+    setloading(false);
     console.log("searching...");
   };
 

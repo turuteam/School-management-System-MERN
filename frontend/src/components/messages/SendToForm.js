@@ -10,6 +10,7 @@ function SendToForm({
   sendto,
   searchOptions,
   loading,
+  error,
 }) {
   return (
     <form action="" className=" content__container form__sender">
@@ -55,15 +56,24 @@ function SendToForm({
             className="form-control"
             name=""
             rows="10"
+            required
             placeholder="Type here"
           ></textarea>
         </div>
+        {error && <div className="text-danger text-center mb-2">{error}</div>}
         <div className="col-12">
           <button
             disabled={loading}
             onClick={onSend}
             className="btn blue__btn w-100"
           >
+            {loading && (
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            )}
             Send
           </button>
         </div>

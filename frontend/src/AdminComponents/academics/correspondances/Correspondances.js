@@ -84,6 +84,7 @@ function Corresponses() {
       <div className="row">
         <Search
           title="Correspondances"
+          loading={loading}
           inputFields={inputFields}
           handleSearch={handleSearch}
           handleReset={handleReset}

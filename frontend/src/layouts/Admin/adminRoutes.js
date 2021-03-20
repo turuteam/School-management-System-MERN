@@ -476,6 +476,11 @@ const routes = [
     component: YearGroupTerminalReport,
   },
   {
+    path: "/reports/billpayment",
+    name: "Bill Payment Report",
+    component: BillPaymentReports,
+  },
+  {
     path: "/reports/nonbillpayment",
     name: "Non Bill Payment Report",
     component: NonBillPaymentReports,
@@ -527,7 +532,7 @@ const routes = [
   },
   {
     path: "/reports/nondebtors",
-    name: "Non Debtors Reports",
+    name: " Debtors Reports",
     component: NonDebtorsReports,
   },
   {

@@ -43,24 +43,28 @@ export default function FullScreenDialog({ open, setOpen, debtors }) {
     setloading(true);
     if (message) {
       debtors.map(async (d) => {
+        if (!d?.telephone || !d?.mobilenumber) {
+          setloading(false);
+          return errorAlert(`user ${d.userID} does not have phone number`);
+        }
         await axios
-          .post(`/chats/send/user/${sender?.id}/${d.userID}`, {
+          .post(`/chats`, {
             message,
-            senderID: sender?.id,
+            telephone: d?.telephone || d?.mobilenumber,
+            sender: sender?.id,
+            userID: d.userID,
           })
           .then((res) => {
+            setloading(false);
             if (res.data.error) {
-              errorAlert(res.data.error);
-              return 0;
+              return errorAlert(res.data.error);
             }
-            // successAlert("message send");
-            // setmessage("");
+            successAlert(`message send to ${d.userID}`);
           })
           .catch((err) => {
             setloading(false);
+            return errorAlert(`Failed to send to ${d.userID} `);
           });
-        setloading(false);
-        return successAlert("message send");
       });
     }
   };

@@ -7,7 +7,7 @@ import { selectUser } from "../../../store/slices/userSlice";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import PrintIcon from "@material-ui/icons/Print";
 import { selectYearGroup } from "../../../store/slices/schoolSlice";
-import { pdf } from "../../../components/tables/pdf";
+//import { pdf } from "../../../components/tables/pdf";
 import moment from "moment";
 import ExcelExport from "../../../components/tables/ExcelExport";
 
@@ -53,19 +53,19 @@ function ViewPayment() {
     window.print();
   };
 
-  const handleSave = () => {
-    const headers = [
-      { key: "date", label: "Date" },
-      { key: "paymentMethod", label: "Type" },
-      { key: "userID", label: "Student" },
-      { key: "amount", label: "Amount" },
-      { key: "_id", label: "Receipt Number" },
-      { key: "academicYear", label: "Year" },
-      { key: "term", label: "Term Semester" },
-    ];
+  // const handleSave = () => {
+  //   const headers = [
+  //     { key: "date", label: "Date" },
+  //     { key: "paymentMethod", label: "Type" },
+  //     { key: "userID", label: "Student" },
+  //     { key: "amount", label: "Amount" },
+  //     { key: "_id", label: "Receipt Number" },
+  //     { key: "academicYear", label: "Year" },
+  //     { key: "term", label: "Term Semester" },
+  //   ];
 
-    pdf({ data: expenditures, headers, filename: "Bill Payment Reports" });
-  };
+  //   pdf({ data: expenditures, headers, filename: "Bill Payment Reports" });
+  // };
 
   const handleSearch = (e) => {
     e.preventDefault();

@@ -270,7 +270,7 @@ route.get("/parents/:id", async (req, res) => {
   }
   await StudentModel.findOne({ _id: req.params.id })
     .then((user) => {
-      if (user.guadian?.lenght > 0) {
+      if (user.guadian?.length > 0) {
         return res.json({ success: true, docs: user.guadian });
       } else {
         return res.json({
@@ -281,7 +281,7 @@ route.get("/parents/:id", async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      return res.json({ success: false, error: "WRONG error" });
+      return res.json({ success: false, error: "WRONG ERROR" });
     });
 });
 

@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+//import pino from "express-pino-logger";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -57,6 +58,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/consumerPhotos"));
 app.use(express.static("./public"));
+//app.use(pino);
 
 //routes
 app.get("/", (req, res) => {

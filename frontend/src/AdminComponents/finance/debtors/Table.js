@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Link } from "react-router-dom";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+//import VisibilityIcon from "@material-ui/icons/Visibility";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import PaymentIcon from "@material-ui/icons/Payment";
 import Tooltip from "@material-ui/core/Tooltip";

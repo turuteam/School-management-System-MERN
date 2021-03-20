@@ -21,10 +21,13 @@ function MessageAdmin() {
     e.preventDefault();
     if (message && recipient) {
       axios
-        .post(`/chats/send/user/${user?.userID}/${recipient}`, {
+        .post(`/chats/user`, {
           message,
-          senderID: user?.userID,
+          sender: user?.userID,
+          userID: recipient,
+          telephone: "",
         })
+
         .then((res) => {
           if (res.data.error) {
             errorAlert(res.data.error);

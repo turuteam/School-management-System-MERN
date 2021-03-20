@@ -31,9 +31,10 @@ function MessageTeacher() {
     if (message && recipient) {
       setloading(true);
       axios
-        .post(`/chats/send/user/${user?.userID}/${recipient}`, {
+        .post(`/chats/user`, {
           message,
           senderID: user?.userID,
+          userID: recipient,
         })
         .then((res) => {
           setloading(false);

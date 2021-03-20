@@ -3,7 +3,6 @@ import axios from "../../../store/axios";
 import ListTable from "../../../AdminComponents/shared/ListTable";
 import { useSelector } from "react-redux";
 import { selectYearGroup } from "../../../store/slices/schoolSlice";
-import { selectUser } from "../../../store/slices/userSlice";
 import moment from "moment";
 
 let thismonth = moment().month();
@@ -28,18 +27,21 @@ function NonBillPayment() {
   const [from, setfrom] = useState(dayOne);
   const [to, setto] = useState(moment().format("YYYY-MM-DD"));
   const [loading, setloading] = useState(false);
-  const user = useSelector(selectUser);
   const years = useSelector(selectYearGroup);
 
   useEffect(() => {
+    setloading(true);
     axios.get(`/nonbillpayment`).then((res) => {
       setdata([]);
+      setloading(false);
     });
   }, []);
 
   console.log(data);
 
-  const handleSearch = () => {};
+  const handleSearch = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div>
