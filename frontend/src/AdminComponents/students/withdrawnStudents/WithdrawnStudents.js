@@ -157,6 +157,7 @@ function AllStudents() {
         handleDelete={handleDelete}
         students={students}
         headCells={headCells}
+        noData="No withdrawn students yet"
       />
       <div className="d-flex justify-content-end">
         <button onClick={generatePDF} className="btn orange__btn ">

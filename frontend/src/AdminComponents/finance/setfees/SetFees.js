@@ -32,18 +32,23 @@ function SetFees() {
 
   useEffect(() => {
     axios.get("/fees").then((res) => {
+      console.log(res.data);
       setfees(res.data);
     });
   }, []);
 
   const handleAddNew = () => {
     setloading(true);
-    axios.post("/fees/create", { name }).then((res) => {
+    axios.post("/fees/create", { name }).then(async (res) => {
       setloading(false);
       setfees([res.data.docs, ...fees]);
       dispatch(setfeesType([...feesType, { name, code: res.data.docs?.code }]));
       setOpen(false);
       setname("");
+      await axios.post("/activitylog/create", {
+        activity: ` ${name} fees type was created`,
+        user: "admin",
+      });
     });
   };
 
@@ -62,7 +67,7 @@ function SetFees() {
     setdeleteloading(true);
     axios
       .delete(`/fees/delete/${deleteID}`)
-      .then((res) => {
+      .then(async (res) => {
         setdeleteloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -71,6 +76,11 @@ function SetFees() {
         setopenDelete(false);
         setfees(fees.filter((e) => e._id !== deleteID));
         dispatch(setfeesType(feesType.filter((i) => i._id !== deleteID)));
+        let deleted = fees.find((e) => e._id === deleteID);
+        await axios.post("/activitylog/create", {
+          activity: ` ${deleted?.name} fees  was deleted`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -80,7 +90,7 @@ function SetFees() {
 
   return (
     <div>
-      <h3>School Fees Structure</h3>
+      <h3>Current School Fees </h3>
       <div className=" row mb-3">
         <div className="d-flex justify-content-end">
           <Link className="btn blue__btn ml-3" to="/finance/fees/set">

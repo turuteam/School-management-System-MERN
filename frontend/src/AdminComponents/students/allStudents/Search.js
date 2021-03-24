@@ -29,12 +29,15 @@ function Search(props) {
                     <option hidden defaultValue>
                       Select
                     </option>
-                    {input?.options &&
+                    {input?.options.length > 0 ? (
                       input?.options.map((option) => (
                         <option key={option.id} value={option.id}>
                           {option.name}
                         </option>
-                      ))}
+                      ))
+                    ) : (
+                      <option disabled>No data </option>
+                    )}
                   </select>
                 ) : (
                   <input

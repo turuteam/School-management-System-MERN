@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
 import axios from "../../store/axios";
 import { useForm } from "react-hook-form";
+import moment from "moment";
 import GuadianCard from "../../AdminComponents/shared/GuadianCard";
 import { errorAlert, successAlert } from "../../utils";
 
@@ -84,7 +85,9 @@ function EditProfilePage() {
       setname(data?.name);
       setlastname(data?.surname);
       setgender(data?.gender);
-      setdateofBirth(data?.dateofBirth);
+      setdateofBirth(
+        data?.dateofBirth ? moment(data?.dateofBirth).format("YYYY-MM-DD") : ""
+      );
       setemail(data?.email);
       setnationality(data?.nationality);
       setplaceofBirth(data?.placeofBirth);

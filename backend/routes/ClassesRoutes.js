@@ -9,14 +9,14 @@ const route = express.Router();
 route.get("/", async (req, res) => {
   const docs = await ClassesModel.find();
 
-  let getStudents = async (id) => {
-    let num = await StudentModel.countDocuments({
-      role: role.Student,
-      classID: id,
-    });
+  // let getStudents = async (id) => {
+  //   let num = await StudentModel.countDocuments({
+  //     role: role.Student,
+  //     classID: id,
+  //   });
 
-    return num;
-  };
+  //   return num;
+  // };
   // const students = await StudentModel.countDocuments({ role: role.Student });
   let classData = docs.map((e) => {
     return e;
@@ -30,6 +30,24 @@ route.get("/:id", async (req, res) => {
     return res.status(400).send("Missing URL parameter: username");
   }
   await ClassesModel.findOne({ _id: req.params.id })
+    .then((docs) => {
+      if (docs) {
+        return res.json({ success: true, docs });
+      } else {
+        return res.json({ success: false, error: "Does not exists" });
+      }
+    })
+    .catch((err) => {
+      return res.json({ success: false, error: "Server error" });
+    });
+});
+
+//teacher ID
+route.get("/teacher/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).send("Missing URL parameter: username");
+  }
+  await ClassesModel.find({ teacherID: req.params.id })
     .then((docs) => {
       if (docs) {
         return res.json({ success: true, docs });

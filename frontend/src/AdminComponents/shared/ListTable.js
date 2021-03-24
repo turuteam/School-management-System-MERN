@@ -32,6 +32,7 @@ export default function CustomPaginationActionsTable({
   isEdit,
   isItems,
   noActions,
+  noData,
 }) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
@@ -85,9 +86,9 @@ export default function CustomPaginationActionsTable({
               <TableRow>
                 <TableCell
                   colSpan={tableHeader.length + 1}
-                  className="text-center"
+                  className="text-center text-danger"
                 >
-                  No Data
+                  {noData || "No data"}
                 </TableCell>
               </TableRow>
             ) : (

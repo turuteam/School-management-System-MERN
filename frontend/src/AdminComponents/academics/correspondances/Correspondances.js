@@ -9,7 +9,7 @@ import { errorAlert } from "../../../utils";
 const tableHeadings = [
   { id: "createdAt", name: "Created At" },
   { id: "subject", name: "Subject" },
-  { id: "createdBy", name: "Created By" },
+  { id: "signature", name: "Created By" },
 ];
 
 function Corresponses() {

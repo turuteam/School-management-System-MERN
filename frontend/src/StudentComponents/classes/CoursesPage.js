@@ -9,12 +9,16 @@ function CoursesPage() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    axios.get(`/students/student/courses/${user?.userID}`).then((res) => {
-      console.log(res.data);
-      if (res.data.success) {
-        setcourses(res.data.courses);
-      }
-    });
+    const getdata = async () => {
+      let data = await axios.get(`/students/student/${user?.userID}`);
+      let classID = data.data.student?.classID;
+      await axios.get(`/courses/class/${classID}`).then((res) => {
+        if (res.data.success) {
+          setcourses(res.data.docs);
+        }
+      });
+    };
+    getdata();
   }, [user]);
 
   return (
@@ -22,7 +26,7 @@ function CoursesPage() {
       <h3>My Courses</h3>
       <div className="row mt-5">
         {courses.length > 0 ? (
-          courses.map((e) => <ClassCard key={e.courseID} id={e.courseID} />)
+          courses.map((e) => <ClassCard key={e.code} id={e.code} />)
         ) : (
           <ClassCard />
         )}

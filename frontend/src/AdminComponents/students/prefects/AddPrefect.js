@@ -24,9 +24,12 @@ function AddPrefect({
 }) {
   const classes = useSelector(selectClasses);
   const [students, setstudents] = useState([]);
+  const [selectedStudent, setselectedStudent] = useState("");
   const { register, handleSubmit, errors, reset } = useForm();
 
   const handleSearchbyClass = (e) => {
+    setname("");
+    setuserID("");
     axios.get(`/students/class/${e}`).then((res) => {
       console.log(res.data);
       if (res.data.error) {
@@ -59,7 +62,8 @@ function AddPrefect({
     let selectedstudent = students.find((e) => e.id === id);
     console.log(id, selectedstudent);
     setname(selectedstudent?.name + " " + selectedstudent?.surname);
-    setuserID(selectedstudent?.userID);
+    setuserID(selectedstudent?.id);
+    setselectedStudent(id);
   };
 
   return (
@@ -93,6 +97,7 @@ function AddPrefect({
                 onChange={(e) => handleSelectStudent(e.target.value)}
                 id="inputState"
                 className="form-select"
+                value={selectedStudent}
               >
                 <option defaultValue hidden>
                   Choose...

@@ -143,6 +143,7 @@ function AllStudents() {
         route="students"
         handleDelete={handleDelete}
         students={students}
+        noData="No past students yet"
         headCells={headCells}
       />
       <div className="d-flex justify-content-end">

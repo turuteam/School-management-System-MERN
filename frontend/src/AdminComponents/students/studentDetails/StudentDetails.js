@@ -29,8 +29,6 @@ function StudentDetails() {
       });
   }, [id]);
 
-  console.log(details, "details");
-
   return (
     <div className="student__details">
       {!loading ? (

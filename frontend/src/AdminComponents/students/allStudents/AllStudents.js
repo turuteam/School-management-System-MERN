@@ -95,18 +95,19 @@ function AllStudents() {
       options: classesOptions,
       label: "Search by Class",
       value: classID,
-      name: "Class",
+      name: "class",
       onChange: setclass,
     },
     {
       type: "select",
       options: [
-        { id: "female", name: "Female" },
+        { id: "female", name: "female" },
         { id: "male", name: "male" },
+        { id: "other", name: "other" },
       ],
       label: "Search by Gender",
       value: gender,
-      name: "Class",
+      name: "gender",
       onChange: setgender,
     },
     {
@@ -114,7 +115,7 @@ function AllStudents() {
       options: studentStatus,
       label: "Search by Status",
       value: status,
-      name: "Class",
+      name: "status",
       onChange: setstatus,
     },
   ];
@@ -200,6 +201,7 @@ function AllStudents() {
         handleWithdraw={handleWithdraw}
         handleDelete={handleDelete}
         students={students}
+        noData="No sudents in the database yet"
         headCells={headCells}
       />
 

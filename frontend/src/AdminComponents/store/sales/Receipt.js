@@ -40,8 +40,9 @@ function Receipt() {
           Print
         </button>
       </div>
-      <div className="content__container">
+      <div className="content__container" id="section-to-print">
         {loading && <Loading />}
+        <h3>Sales Reciept</h3>
         <div className="text-center">
           <img
             src={getImgSrc(school?.profileUrl)}

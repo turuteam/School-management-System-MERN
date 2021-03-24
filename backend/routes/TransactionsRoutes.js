@@ -1,6 +1,6 @@
 import express from "express";
 import TransactionsModel from "../models/TransactionsModel.js";
-import moment from "moment";
+//import moment from "moment";
 
 const route = express.Router();
 
@@ -53,21 +53,15 @@ route.get("/staff/pay", async (req, res) => {
   }
 });
 
-route.get("/staff/pay/:month/:year", async (req, res) => {
-  console.log(req.params.year);
+route.get("/pay/:year/:month", async (req, res) => {
   const docs = await TransactionsModel.find({
     category: { $regex: "pay" },
     type: "expenditure",
+    "pay.month": req.params.month,
+    "pay.year": req.params.year,
   });
   if (docs) {
-    let monthData = docs.filter((e) => {
-      console.log(moment(e.date).year());
-      return (
-        e.pay?.month === req.params.month
-        //moment(e.date).year() === req.params.year
-      );
-    });
-    return res.json({ docs: monthData });
+    return res.json({ docs });
   } else {
     return res.json({ error: "no data" });
   }

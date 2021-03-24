@@ -3,12 +3,13 @@ import Info from "../../components/userInfoTabs/UserInfo";
 import StaffTabs from "../../components/userInfoTabs/StaffTabs";
 import axios from "../../store/axios";
 import { errorAlert } from "../../utils";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 function StaffDetails() {
   const [details, setdetails] = useState({});
   const { id } = useParams();
   const [loading, setloading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     setloading(true);
@@ -17,7 +18,8 @@ function StaffDetails() {
       .then((res) => {
         setloading(false);
         if (res.data.error) {
-          errorAlert(res.data.error);
+          history.push("/staff");
+          // errorAlert(res.data.error);
           return 0;
         }
         setdetails(res.data.teacher);
@@ -26,7 +28,7 @@ function StaffDetails() {
         console.log(err);
         setloading(false);
       });
-  }, [id]);
+  }, [id, history]);
 
   console.log(details);
 

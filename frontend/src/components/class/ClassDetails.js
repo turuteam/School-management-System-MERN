@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
 import { selectStaff, selectCampuses } from "../../store/slices/schoolSlice";
-//import {selectUser} from '../../store/slices/userSlice';
 
 const headCells = [
   { id: "userID", numeric: false, disablePadding: false, label: "StudentID" },
@@ -25,34 +24,26 @@ const headCells = [
 function AllClasses({ id }) {
   const [students, setstudents] = useState([]);
   const [classDetails, setclassDetails] = useState({});
-  const [loading, setloading] = useState(false);
+
   const staff = useSelector(selectStaff);
   const campus = useSelector(selectCampuses);
   const user = useSelector(selectUser);
 
   const classTeacher = staff.find((e) => e.userID === classDetails?.teacherID);
-  console.log(classTeacher);
 
   const classcampus = campus.find((e) => e._id === classDetails?.campusID);
 
   useEffect(() => {
     const getData = async () => {
-      setloading(true);
       await axios.get(`/classes/classCode/${id}`).then((res) => {
         setclassDetails(res.data.docs);
-        console.log(res.data);
       });
       await axios
         .get(`/students/class/${id}`)
         .then((res) => {
-          setloading(false);
           setstudents(res.data.users);
-          console.log(res.data);
         })
-        .catch((err) => {
-          setloading(false);
-          console.log(err);
-        });
+        .catch((err) => {});
     };
     getData();
   }, [id]);
@@ -117,14 +108,13 @@ function AllClasses({ id }) {
             </Link>
           </div>
           <h3 className="my-5">Class Students</h3>
-          <StudentsTable
-            route="students"
-            loading={loading}
-            students={students}
-            headCells={headCells}
-          />
         </>
       )}
+      <StudentsTable
+        route="students"
+        students={students}
+        headCells={headCells}
+      />
     </div>
   );
 }

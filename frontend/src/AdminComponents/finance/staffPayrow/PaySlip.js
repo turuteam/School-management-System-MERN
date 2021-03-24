@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../../store/axios";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import moment from "moment";
-import { errorAlert, successAlert } from "../../../utils";
 import { monthYear } from "../../../data";
 
 const today = new Date();
@@ -12,7 +11,6 @@ function PaySlip() {
   const [payrow, setpayrow] = useState({});
   const [user, setuser] = useState({});
   const { id } = useParams();
-  const history = useHistory();
 
   useEffect(() => {
     axios.get("/school").then((res) => {
@@ -37,20 +35,9 @@ function PaySlip() {
     window.print();
   };
 
-  const handleDelete = () => {
-    axios.delete(`/transactions/delete/${id}`).then((res) => {
-      if (res.data.error) {
-        errorAlert(res.data.error);
-        return 0;
-      }
-      history.goBack();
-      // history.push("/finance/transactions");
-    });
-  };
-
   return (
     <>
-      <div className="border content__container mb-4">
+      <div className="border content__container mb-4" id="section-to-print">
         <div className="text-center border-bottom p-3">
           <h2>{state?.fullName}</h2>
           <p>{state?.motto}</p>

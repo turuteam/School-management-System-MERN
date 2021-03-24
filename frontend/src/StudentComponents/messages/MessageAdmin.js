@@ -9,6 +9,7 @@ function MessageAdmin() {
   const [message, setmessage] = useState("");
   const [recipient, setrecipient] = useState("admin");
   const user = useSelector(selectUser);
+  const [loading, setloading] = useState(false);
 
   const recipientOptions = [
     {
@@ -20,21 +21,27 @@ function MessageAdmin() {
   const onSend = (e) => {
     e.preventDefault();
     if (message && recipient) {
+      setloading(true);
       axios
         .post(`/chats/user`, {
           message,
-          sender: user?.userID,
+          sender: user?.id,
           userID: recipient,
           telephone: "",
         })
-
         .then((res) => {
+          console.log(res);
+          setloading(false);
           if (res.data.error) {
             errorAlert(res.data.error);
             return 0;
           }
           successAlert("message send");
           setmessage("");
+        })
+        .catch((err) => {
+          console.log(err);
+          setloading(false);
         });
     }
   };
@@ -53,6 +60,7 @@ function MessageAdmin() {
         message={message}
         setmessage={setmessage}
         onSend={onSend}
+        loading={loading}
         recipient={recipient}
         searchOptions={searchOptions}
         sendto="School Admin"

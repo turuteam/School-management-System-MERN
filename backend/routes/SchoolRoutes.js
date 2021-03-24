@@ -66,7 +66,14 @@ route.put("/update/:id", async (req, res) => {
       if (user) {
         return res.json({ success: true, user });
       } else {
-        return res.json({ error: "something when wrong", success: false });
+        SchoolModel.create(req.body)
+          .then((doc) => {
+            return res.json({ success: true, user: doc });
+          })
+          .catch((e) => {
+            console.log(e);
+            return res.json({ success: false, error: "something went wrong" });
+          });
       }
     })
     .catch((err) => {

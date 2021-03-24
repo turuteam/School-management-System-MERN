@@ -3,7 +3,7 @@ import PersonalInfo from "../../AdminComponents/shared/Personalnfo";
 import ContactDetails from "../../AdminComponents/shared/Contact";
 import NextofKin from "../../AdminComponents/shared/NextofKin";
 import { useForm } from "react-hook-form";
-
+import moment from "moment";
 import axios from "../../store/axios";
 import { errorAlert, successAlert } from "../../utils";
 import { selectUser } from "../../store/slices/userSlice";
@@ -54,7 +54,9 @@ function EditProfile() {
       setlastname(data?.surname);
       setgender(data?.gender);
       setsecondName(data?.middleName);
-      setdateofBirth(data?.dateofBirth);
+      setdateofBirth(
+        data?.dateofBirth ? moment(data?.dateofBirth).format("YYYY-MM-DD") : ""
+      );
       setemail(data?.email);
       setnationality(data?.nationality);
       setplaceofBirth(data?.placeofBirth);

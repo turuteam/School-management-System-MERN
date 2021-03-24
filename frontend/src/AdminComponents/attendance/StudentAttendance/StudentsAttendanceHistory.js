@@ -86,7 +86,15 @@ function Attendance() {
         </div>
       </div>
 
-      <Table attendanceData={attendanceData} />
+      <div className="content__container">
+        <div className="d-flex justify-content-between mb-3">
+          <h3>Attendance Record</h3>
+          <Link to="/attendance/students/register" className="btn blue__btn">
+            Register Attendance
+          </Link>
+        </div>
+        <Table attendanceData={attendanceData} />
+      </div>
     </div>
   );
 }

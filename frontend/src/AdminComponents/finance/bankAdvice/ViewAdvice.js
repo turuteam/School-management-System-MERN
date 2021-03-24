@@ -104,12 +104,14 @@ export default function FullScreenDialog({
           <p>{body}</p>
         </div>
         <div>{author}</div>
+      </div>
+      {staff.length > 0 && (
         <div className="mt-5">
           <button onClick={handlePrint} className="btn blue__btn">
             Print Report
           </button>
         </div>
-      </div>
+      )}
     </Dialog>
   );
 }

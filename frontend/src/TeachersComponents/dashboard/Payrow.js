@@ -45,7 +45,6 @@ function Payrow() {
         };
       });
       setpayrowData(monthData);
-
       let staffData = await axios.get(`/teachers/${user?.userID}`);
       let staff = staffData.data?.teacher;
       setaccountNumber(staff?.accountNumber);

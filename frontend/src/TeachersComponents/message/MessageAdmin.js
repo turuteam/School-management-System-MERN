@@ -10,16 +10,20 @@ function MessageAdmin() {
   const [recipient, setrecipient] = useState("");
   const recipientOptions = [{ id: "admin", name: "admin" }];
   const user = useSelector(selectUser);
+  const [loading, setloading] = useState("");
 
   const onSend = (e) => {
     e.preventDefault();
     if (message && recipient) {
+      setloading(true);
       axios
-        .post(`/chats/send/user/${user?.userID}/${recipient}`, {
+        .post(`/chats/user`, {
           message,
-          senderID: user?.userID,
+          userID: recipient,
+          sender: user?.userID,
         })
         .then((res) => {
+          setloading(false);
           if (res.data.error) {
             errorAlert(res.data.error);
             return 0;
@@ -48,6 +52,7 @@ function MessageAdmin() {
         recipientsOptions={recipientOptions}
         recipient={recipient}
         sendto="School Admin"
+        loading={loading}
         searchOptions={searchOptions}
         setrecipient={setrecipient}
         sender={user?.id}

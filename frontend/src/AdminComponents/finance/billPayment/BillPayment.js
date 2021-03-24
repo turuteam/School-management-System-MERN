@@ -178,7 +178,11 @@ function BillPayment() {
                 />
               ) : (
                 <div className="content__container text-center">
-                  <h5 className="text-info">Fees is fully paid</h5>
+                  <h5 className="text-info">
+                    {totalBill === 0
+                      ? " fees  not set yet"
+                      : "Fees is fully paid"}{" "}
+                  </h5>
                 </div>
               )}
             </>

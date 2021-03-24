@@ -54,6 +54,10 @@ function BulkMessage() {
                     successAlert("message send to all staff members");
                     setmessage("");
                   })
+                  .catch((err) => {
+                    setloading(false);
+                    console.log(err);
+                  })
             );
           });
         case "students":
@@ -62,7 +66,7 @@ function BulkMessage() {
             students.map(
               async (re) =>
                 await axios
-                  .post(`/chats/send/user/${sender?.id}/${re?.userID}`, {
+                  .post(`/chats`, {
                     message,
                     userID: re?.userID,
                     telephone: re.telephone || re?.mobilenumber,
@@ -76,6 +80,10 @@ function BulkMessage() {
                     }
                     successAlert("message send to all students");
                     setmessage("");
+                  })
+                  .catch((err) => {
+                    setloading(false);
+                    console.log(err);
                   })
             );
           });
@@ -100,6 +108,10 @@ function BulkMessage() {
                     }
                     successAlert("message send to all parents");
                     setmessage("");
+                  })
+                  .catch((err) => {
+                    setloading(false);
+                    console.log(err);
                   })
             );
           });

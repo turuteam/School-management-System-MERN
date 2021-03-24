@@ -51,6 +51,7 @@ function EditStudent() {
   const [feesCategory, setfeesCategory] = useState("");
   const [lastSchool, setlastSchool] = useState("");
   const [division, setdivision] = useState("");
+  const [campus, setcampus] = useState("");
   const [reasonforTransfer, setreasonforTransfer] = useState("");
   //contact details
   const [mobilenumber, setmobilenumber] = useState("");
@@ -67,7 +68,9 @@ function EditStudent() {
       setlastname(data?.surname);
       setsecondName(data?.middleName);
       setgender(data?.gender);
-      setdateofBirth(data?.dateofBirth ? moment(data?.dateofBirth).format("YYYY-MM-D") : " ");
+      setdateofBirth(
+        data?.dateofBirth ? moment(data?.dateofBirth).format("YYYY-MM-D") : " "
+      );
       setemail(data?.email);
       setnationality(data?.nationality);
       setplaceofBirth(data?.placeofBirth);
@@ -75,6 +78,7 @@ function EditStudent() {
       sethealth(data?.health);
       setdivision(data?.division);
       setallege(data?.allege);
+      setcampus(data?.campusID);
       setdisease(data?.disease);
       setclass(data?.classID);
       setsection(data?.section);
@@ -88,7 +92,7 @@ function EditStudent() {
       setmobilenumber(data?.mobilenumber);
       setresidence(data?.physicalAddress);
       settelephone(data?.telephone);
-      setpostalAddress(data.postalAddress);
+      setpostalAddress(data?.postalAddress);
       setguadian(data?.guadian);
       setprofileimg(data?.profileUrl);
     });
@@ -116,6 +120,7 @@ function EditStudent() {
     setallege("");
     sethealth();
     setname("");
+    setcampus("");
     setsecondName("");
     setlastname("");
     setgender("");
@@ -158,6 +163,7 @@ function EditStudent() {
         division,
         allege,
         classID,
+        campusID: campus,
         section,
         dormitoryID: dormitory,
         status,
@@ -173,14 +179,17 @@ function EditStudent() {
         physicalAddress: residence,
         guadian,
       })
-      .then((response) => {
+      .then(async (response) => {
         setloading(false);
         if (response.data.error) {
           errorAlert(response.data.error);
           return 0;
         }
         successAlert("successfully updated");
-        // setstudentDetails(response.data.student);
+        await axios.post("/activitylog/create", {
+          activity: `student  ${name} ${lastname} was edited`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         setloading(false);
@@ -265,6 +274,8 @@ function EditStudent() {
             status={status}
             setstatus={setstatus}
             dormitory={dormitory}
+            campus={campus}
+            setcampus={setcampus}
             setdormitory={setdormitory}
             schoolarship={schoolarship}
             setschoolarship={setschoolarship}

@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 import axios from "../../../store/axios";
 import moment from "moment";
 import { errorAlert, successAlert } from "../../../utils";
+import { useSelector, useDispatch } from "react-redux";
+import { selectStaff, setStaff } from "../../../store/slices/schoolSlice";
 
 function EditStaff() {
   const { id } = useParams();
@@ -30,6 +32,9 @@ function EditStaff() {
 
   const [profileUrl, setprofileUrl] = useState("");
   const [profileimg, setprofileimg] = useState("");
+
+  const dispatch = useDispatch();
+  const staff = useSelector(selectStaff);
 
   //form verification
   const { register, handleSubmit, errors } = useForm();
@@ -73,12 +78,12 @@ function EditStaff() {
       setgender(data?.gender);
       setsecondName(data?.middleName);
       setdateofBirth(
-        data?.dateofBirth ? moment(data?.dateofBirth).format("YYYY-MM-D") : ""
+        data?.dateofBirth ? moment(data?.dateOfBirth).format("YYYY-MM-D") : ""
       );
       setprofileimg(data?.profileUrl);
       setemail(data?.email);
       setnationality(data?.nationality);
-      setplaceofBirth(data?.placeofBirth);
+      setplaceofBirth(data?.placeOfBirth);
       setreligion(data?.religion);
       settitle(data?.title);
       sethealth(data?.health);
@@ -98,7 +103,7 @@ function EditStaff() {
       setaccountNumber(data?.accountNumber);
       setmobilenumber(data?.telephone);
       setresidence(data?.physicalAddress);
-      settelephone(data?.mobile);
+      settelephone(data?.mobilenumber);
       setpostalAddress(data?.postalAddress);
       setnexttelephone(data?.nextofKin?.mobile);
       setnextemail(data.nextofKin?.email);
@@ -151,15 +156,16 @@ function EditStaff() {
         middleName: secondName,
         surname: lastname,
         gender,
-        dateofBirth,
+        dateOfBirth: dateofBirth,
         title,
         email,
         nationality,
         religion,
-        placeofBirth,
+        placeOfBirth: placeofBirth,
         health,
         disease,
-        campus,
+        campusID: campus,
+        department,
         allege,
         allowance,
         salary,
@@ -170,7 +176,7 @@ function EditStaff() {
         years,
         employmentDate,
         position: role,
-        mobile: mobilenumber,
+        mobilenumber,
         telephone,
         qualifications: qualification,
         postalAddress,
@@ -185,15 +191,21 @@ function EditStaff() {
           lastname: nextlastname,
         },
       })
-      .then((res) => {
+      .then(async (res) => {
         console.log(res.data);
         setloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
-          return 0;
         }
         setdetails(res.data.teacher);
         successAlert("Successfully Edited");
+        dispatch(
+          setStaff(staff.map((i) => (i.userID === id ? res.data.teacher : i)))
+        );
+        await axios.post("/activitylog/create", {
+          activity: `staff member  ${name} ${lastname} was edited`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);

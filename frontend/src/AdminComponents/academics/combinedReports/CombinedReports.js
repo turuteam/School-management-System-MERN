@@ -10,8 +10,10 @@ function CombinedReports() {
   const [year, setyear] = useState("");
   const [classID, setclass] = useState("");
   const [loading, setloading] = useState(false);
+  const [show, setshow] = useState(false);
 
   const handleSearch = (e) => {
+    setshow(false);
     e.preventDefault();
     setloading(true);
     if (classID === "" || term === "" || year === "") {
@@ -22,6 +24,7 @@ function CombinedReports() {
       setloading(false);
       console.log(result);
       setdata(result.data.docs);
+      setshow(true);
     });
   };
 
@@ -41,8 +44,7 @@ function CombinedReports() {
           handleSearch={handleSearch}
         />
       </div>
-
-      {data.length > 0 && <Table rows={data} classID={classID} />}
+      {show && <Table rows={data} classID={classID} />}
     </div>
   );
 }

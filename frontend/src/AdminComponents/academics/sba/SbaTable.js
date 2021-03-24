@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-function SbaTable({ rows, handleEdit }) {
+function SbaTable({ rows, handleEdit, setclassWork }) {
   const classes = useStyles();
 
   const calculateClassWork = (obj) => {

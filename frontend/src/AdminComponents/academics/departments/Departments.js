@@ -4,7 +4,8 @@ import Search from "../../shared/Search";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
 import DivisionForm from "./DepartmentForm";
-
+import { useDispatch } from "react-redux";
+import { setDepartments } from "../../../store/slices/schoolSlice";
 const tableHeadings = [
   { id: "createdAt", name: "Created At" },
   { id: "name", name: "Name" },
@@ -22,6 +23,7 @@ function Division() {
   const [divisions, setdivisions] = useState([]);
   const [storedata, setstoredata] = useState([]);
   const [openEdit, setopenEdit] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setloading(true);
@@ -51,13 +53,19 @@ function Division() {
   const handleDelete = (id) => {
     const ans = window.confirm("are you sure you want to delete");
     if (ans) {
-      axios.delete(`/departments/delete/${id}`).then((res) => {
+      axios.delete(`/departments/delete/${id}`).then(async (res) => {
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
         console.log(divisions, id);
         setdivisions(divisions.filter((e) => e._id !== id));
+        let deleted = divisions.find((e) => e._id === id);
+        dispatch(setDepartments(divisions.filter((e) => e._id !== id)));
+        await axios.post("/activitylog/create", {
+          activity: `department ${deleted?.name} was deleted`,
+          user: "admin",
+        });
       });
     }
   };
@@ -80,7 +88,7 @@ function Division() {
         name,
         description,
       })
-      .then((res) => {
+      .then(async (res) => {
         setaddLoading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -91,6 +99,10 @@ function Division() {
         setname("");
         setdescription("");
         setdivisions([res.data.doc, ...divisions]);
+        await axios.post("/activitylog/create", {
+          activity: `department ${res.data.doc?.name} was created`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -106,7 +118,7 @@ function Division() {
         name,
         description,
       })
-      .then((res) => {
+      .then(async (res) => {
         setaddLoading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -116,10 +128,14 @@ function Division() {
         setopenEdit(false);
         setname("");
         setdescription("");
-        let index = divisions.findIndex((e) => e._id === editID);
-        var data = divisions;
-        data[index] = res.data.doc;
-        setdivisions(data);
+
+        setdivisions(
+          divisions.map((i) => (i._id === editID ? res.data.doc : i))
+        );
+        await axios.post("/activitylog/create", {
+          activity: ` ${res.data.doc?.name} department was edited`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -149,28 +165,30 @@ function Division() {
 
   return (
     <div>
-      <div className="row">
-        <div className="col-xs-12 col-sm-8 col-md-10">
-          <Search
-            handleReset={handleReset}
-            handleSearch={handleSearch}
-            title="Departments"
-            inputFields={inputFields}
-          />
-        </div>
-        <div className="col-xs-12 col-sm-4 col-md-2">
+      <Search
+        handleReset={handleReset}
+        handleSearch={handleSearch}
+        title="Search for a department"
+        inputFields={inputFields}
+      />
+
+      <div className="content__container">
+        <div className="d-flex justify-content-between mb-2">
+          <h3>Department List</h3>
           <button onClick={handleOpenAdd} className="btn orange__btn btn__lg">
             Add New Departments
           </button>
         </div>
+        <CourseTable
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          data={divisions}
+          noData="There are no departments in the database yet"
+          handleSearch={handleSearch}
+          tableHeader={tableHeadings}
+        />
       </div>
-      <CourseTable
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        data={divisions}
-        handleSearch={handleSearch}
-        tableHeader={tableHeadings}
-      />
+
       <DivisionForm
         open={openEdit}
         setOpen={setopenEdit}

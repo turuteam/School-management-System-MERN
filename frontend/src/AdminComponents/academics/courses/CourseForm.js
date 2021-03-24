@@ -107,7 +107,7 @@ function CourseForm(props) {
           </option>
           {classes.length > 0 ? (
             classes.map((e) => (
-              <option key={e._id} value={e.code}>
+              <option key={e._id} value={e.classCode}>
                 {e.name}
               </option>
             ))
@@ -131,7 +131,7 @@ function CourseForm(props) {
           </option>
           {teachers.length > 0 ? (
             teachers.map((e) => (
-              <option key={e.userID}>
+              <option key={e?.userID} value={e?.userID}>
                 {e.name} {e.surname}
               </option>
             ))

@@ -11,6 +11,7 @@ import Sections from "../models/SectionModel.js";
 import NotificationsModel from "../models/NoticeModel.js";
 import ScholarshipsModels from "../models/ScholarshipsModel.js";
 import TeacherModels from "../models/TeacherModel.js";
+import DivisionsModels from "../models/DivisionModel.js";
 import DepartmentsModels from "../models/DepartmentsModel.js";
 import { login, changePassword } from "../middlewares/validate.js";
 import { role } from "../middlewares/variables.js";
@@ -176,7 +177,7 @@ route.get("/count", async (req, res) => {
   const courses = await CoursesModels.countDocuments();
   const departments = await DepartmentsModels.countDocuments();
   const scholarships = await ScholarshipsModels.countDocuments();
-
+  const divisions = await DivisionsModels.countDocuments();
   res.json({
     todayBirthdayStudents,
     todayBirthdayStaff,
@@ -189,6 +190,7 @@ route.get("/count", async (req, res) => {
     students,
     staff,
     campuses,
+    divisions,
     scholarships,
     classes,
     courses,

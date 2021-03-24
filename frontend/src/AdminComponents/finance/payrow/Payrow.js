@@ -36,7 +36,7 @@ function PaymentPlan() {
         allowance,
         bonus,
       })
-      .then((res) => {
+      .then(async (res) => {
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
@@ -49,6 +49,10 @@ function PaymentPlan() {
         setname("");
         successAlert("Changes Saved");
         setplanData([res.data.doc, ...planData]);
+        await axios.post("/activitylog/create", {
+          activity: ` ${name} payrow was created`,
+          user: "admin",
+        });
       })
       .catch(() => {
         setloading(false);
@@ -74,7 +78,7 @@ function PaymentPlan() {
         allowance,
         bonus,
       })
-      .then((res) => {
+      .then(async (res) => {
         setloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -90,6 +94,10 @@ function PaymentPlan() {
         let index = planData.findIndex((e) => e._id === editID);
         newData[index] = res.data.doc;
         setplanData(newData);
+        await axios.post("/activitylog/create", {
+          activity: ` ${name} payrow was edited`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         setloading(false);
@@ -116,7 +124,6 @@ function PaymentPlan() {
 
   return (
     <div>
-      {/* <CanteenNav /> */}
       <h3 className="my-5">Staff Payrow Details</h3>
       <table className="table content__container">
         <thead>

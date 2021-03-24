@@ -7,6 +7,8 @@ import NextofKin from "../../shared/NextofKin";
 import { useForm } from "react-hook-form";
 import { errorAlert, successAlert } from "../../../utils";
 import axios from "../../../store/axios";
+import { useSelector, useDispatch } from "react-redux";
+import { selectStaff, setStaff } from "../../../store/slices/schoolSlice";
 
 function NewStaff() {
   //personal
@@ -24,6 +26,8 @@ function NewStaff() {
   const [allege, setallege] = useState("");
   const [disease, setdisease] = useState("");
   const [loading, setloading] = useState("");
+  const dispatch = useDispatch();
+  const staff = useSelector(selectStaff);
 
   const [profileUrl, setprofileUrl] = useState("");
   const [profileimg, setprofileimg] = useState("");
@@ -119,6 +123,7 @@ function NewStaff() {
           middleName: secondName,
           surname: lastname,
           gender,
+          title,
           dateofBirth,
           email,
           nationality,
@@ -126,10 +131,15 @@ function NewStaff() {
           placeofBirth,
           bank,
           accountNumber,
+          qualifications: qualification,
+          campusID: campus,
+          employmentDate,
           health,
           disease,
           allege,
           allowance,
+          department,
+          years,
           salary,
           ssnit,
           taxNumber,
@@ -148,12 +158,17 @@ function NewStaff() {
             lastname: nextlastname,
           },
         })
-        .then((response) => {
+        .then(async (response) => {
           setloading(false);
           if (response.data.error) {
             errorAlert(response.data.error);
             return 0;
           }
+          dispatch(setStaff([res.data.teacher, ...staff]));
+          await axios.post("/activitylog/create", {
+            activity: `staff member ${name} ${lastname} was created`,
+            user: "admin",
+          });
           handleReset();
           successAlert("successfully added");
         })

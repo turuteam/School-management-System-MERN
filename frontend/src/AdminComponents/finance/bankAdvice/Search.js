@@ -31,8 +31,8 @@ function Search({
           </option>
           {years?.length > 0 ? (
             years.map((option) => (
-              <option key={option.year} value={option.year}>
-                {option.year}
+              <option key={option} value={option}>
+                {option}
               </option>
             ))
           ) : (

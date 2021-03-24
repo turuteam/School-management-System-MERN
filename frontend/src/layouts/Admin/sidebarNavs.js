@@ -248,7 +248,7 @@ const _nav = [
     _children: [
       {
         _tag: "CSidebarNavItem",
-        name: " Fees",
+        name: "Set Fees",
         to: "/finance/fees",
       },
       {

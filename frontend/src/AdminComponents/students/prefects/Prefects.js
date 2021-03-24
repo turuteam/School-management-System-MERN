@@ -86,7 +86,7 @@ function Prefects() {
         startYear: min,
         endYear,
       })
-      .then((res) => {
+      .then(async (res) => {
         setloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -99,6 +99,10 @@ function Prefects() {
         setstartYear("");
         setendYear("");
         setprefects([res.data.doc, ...prefects]);
+        await axios.post("/activitylog/create", {
+          activity: `prefect  ${name} was added`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -116,7 +120,7 @@ function Prefects() {
         endYear: editendYear,
         userID: edituserID,
       })
-      .then((res) => {
+      .then(async (res) => {
         seteditloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -130,6 +134,10 @@ function Prefects() {
         setendYear("");
         let filteredData = prefects.filter((e) => e._id !== editid);
         setprefects([res.data.doc, ...filteredData]);
+        await axios.post("/activitylog/create", {
+          activity: `prefect  ${name}  was edited`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -163,6 +171,7 @@ function Prefects() {
           <PrefectsList
             handleEdit={handleedit}
             loading={dataloading}
+            noData="No prefects yet"
             handleDelete={handleDelete}
             data={prefects}
             tableHeader={tableHeader}
@@ -179,7 +188,7 @@ function Prefects() {
         setendYear={seteditendYear}
         endYear={editendYear}
         position={editposition}
-        setposition={editposition}
+        setposition={seteditposition}
         userID={edituserID}
         setuserID={setedituserID}
         yearOptions={yearArray()}

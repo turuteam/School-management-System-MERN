@@ -19,12 +19,9 @@ const CourserSchema = new Schema(
     classID: {
       type: String,
     },
-    classes: [
-      {
-        classID: String,
-        teacherID: String,
-      },
-    ],
+    classes: {
+      type: Array,
+    },
     department: {
       type: String,
     },

@@ -3,6 +3,7 @@ import Search from "./Search";
 import Table from "./Table";
 import axios from "../../../store/axios";
 import Excel from "../../../components/tables/ExcelExport";
+import { errorAlert } from "src/utils";
 
 const tableHeader = [
   { id: "userID", name: "Student ID" },
@@ -30,6 +31,8 @@ function DebtorsList() {
   const [show, setshow] = useState(false);
   const [loading, setloading] = useState(false);
   const [fees, setfees] = useState([]);
+  const [selectedterm, setselectedterm] = useState("");
+  const [selectedyear, setselectedyear] = useState("");
 
   useEffect(() => {
     axios.get("/fees").then((res) => {
@@ -38,6 +41,12 @@ function DebtorsList() {
   }, []);
 
   const handleSearch = () => {
+    if (!year) {
+      return errorAlert("Please select year");
+    }
+    if (!term) {
+      return errorAlert("Please select term");
+    }
     setloading(true);
     let bal = (u) => {
       let fee = fees.find((z) => z?.code === u?.fees);
@@ -57,12 +66,14 @@ function DebtorsList() {
           bill: total,
           owe: total - e.amount,
           total,
-          percentage: ((e.amount / total) * 100).toFixed(2),
+          percentage: ((e.amount / total) * 100).toFixed(0),
         };
       });
-      setdata(students.filter((e) => e.amount !== e.total));
+      setdata(students.filter((e) => Number(e.percentage) !== 100));
       setshow(true);
       setloading(false);
+      setselectedyear(year);
+      setselectedterm(term);
     });
   };
 
@@ -102,10 +113,14 @@ function DebtorsList() {
           <div className="content__container" id="section-to-print">
             <div className="text-center">
               <h3>
-                DEBTORS LIST FOR th {term}/ {year}
+                DEBTORS LIST FOR Term {selectedterm}/ {selectedyear}
               </h3>
             </div>
-            <Table tableHeader={tableHeader} data={data} />
+            <Table
+              noData="No debtors yet"
+              tableHeader={tableHeader}
+              data={data}
+            />
           </div>
           <div className="text-center my-3">
             <button onClick={handlePrint} className="btn blue__btn mr-2">

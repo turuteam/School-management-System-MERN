@@ -48,6 +48,9 @@ const Notifications = React.lazy(() =>
 const Classes = React.lazy(() =>
   import("../../TeachersComponents/academics/AllClasses")
 );
+const ClassDetails = React.lazy(() =>
+  import("../../TeachersComponents/academics/ClassDetails")
+);
 const ClassesAttendance = React.lazy(() =>
   import("../../components/class/AttendancePastRecords")
 );
@@ -141,6 +144,12 @@ const routes = [
     exact: true,
   },
   {
+    path: "/academics/classes/:id",
+    name: "Classes Details",
+    component: ClassDetails,
+  },
+
+  {
     path: "/academics/courses",
     name: "Courses",
     exact: true,
@@ -158,7 +167,7 @@ const routes = [
     component: Calendar,
   },
   {
-    path: "/academics/calendar/view",
+    path: "/academics/calender/view",
     name: "View Calendar",
     component: ViewCalendar,
   },

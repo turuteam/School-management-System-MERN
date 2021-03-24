@@ -18,6 +18,9 @@ const ChatSchema = new Schema(
     parent: {
       type: String,
     },
+    sender: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

@@ -9,8 +9,6 @@ route.get("/", async (req, res) => {
   res.json(docs);
 });
 
-//search event by name
-
 //get one by id
 route.get("/:id", async (req, res) => {
   if (!req.params.id) {
@@ -67,17 +65,10 @@ route.post("/set/:id", async (req, res) => {
       new: true,
     }
   )
-    .then((doc) => {
+    .then(async (doc) => {
       if (!doc) {
-        //return res.json({success: false, error: "does not exists"})
-        CurrentModel.create(body)
-          .then((docs) => {
-            res.json({ success: true, doc: docs });
-          })
-          .catch((err) => {
-            console.log(err);
-            res.json({ success: false, error: err });
-          });
+        let docs = await CurrentModel.create(req.body);
+        res.json({ success: true, docs: docs });
       }
       return res.json({ success: true, docs: doc });
     })

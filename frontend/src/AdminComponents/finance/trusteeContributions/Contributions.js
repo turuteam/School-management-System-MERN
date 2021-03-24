@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import axios from "../../../store/axios";
-import Loading from "../../../Loading";
 import { monthYear } from "../../../data";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/slices/userSlice";
-import { errorAlert, getYearsPast } from "../../../utils";
+import { getYearsPast, errorAlert } from "../../../utils";
+import Export from "../../../components/tables/ExcelExport";
 
 const tableHeader = [
   { id: "userID", name: "Staff ID" },
@@ -19,44 +19,72 @@ const tableHeader = [
 
 function Contributions() {
   const [data, setdata] = useState([]);
+  const [staff, setstaff] = useState([]);
   const years = getYearsPast(20);
   const [year, setyear] = useState("");
   const [month, setmonth] = useState("");
   const [loading, setloading] = useState(false);
   const [show, setshow] = useState(false);
   const user = useSelector(selectUser);
+  const [selectedyear, setselectedyear] = useState("");
+  const [selectedmonth, setselectedmonth] = useState("");
 
-  const handleSearch = () => {
-    setloading(true);
-    axios.get("/transactions/staff/pay").then((res) => {
-      setdata(
-        res.data?.map(
-          async (e) =>
-            await axios.get(`/teachers/${e.userID}`).then((result) => {
-              return {
-                userID: result?.resultserID,
-                position: result?.position,
-                name: result?.name,
-                surname: result?.surname,
-                taxNumber: result?.taxNumber,
-                salary: result?.salary,
-                ssnit: result?.ssnit,
-                allowance: result?.salary,
-              };
-            })
-        )
-      );
-      setloading(false);
-      setshow(true);
-      // setdata(res.data);
+  useEffect(() => {
+    axios.get(`/teachers`).then((res) => {
+      setstaff(res.data);
     });
+  });
+
+  const handleSearch = (n) => {
+    n.preventDefault();
+    if (!year) {
+      return errorAlert("Please select year");
+    }
+    if (!month) {
+      return errorAlert("Please select month");
+    }
+    setloading(true);
+    if (year && month) {
+      axios
+        .get(`/transactions/pay/${year}/${month}`)
+        .then((res) => {
+          console.log(res);
+          setloading(false);
+          setdata(
+            res.data.docs &&
+              res.data.docs?.map((e) => {
+                let result = staff.find((i) => i.userID === e.userID);
+                return {
+                  userID: result?.userID,
+                  position: result?.position,
+                  name: result?.name,
+                  surname: result?.surname,
+                  taxNumber: result?.taxNumber,
+                  salary: result?.salary,
+                  ssnit: result?.ssnit,
+                  allowance: result?.salary,
+                };
+              })
+          );
+          setloading(false);
+          setshow(true);
+          setselectedmonth(month);
+          setselectedyear(year);
+        })
+        .catch((err) => {
+          console.log(err, "ERROR");
+
+          setloading(false);
+        });
+    }
   };
 
-  console.log(data);
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
     <div>
-      {loading && <Loading />}
       <form action="" className="content__container mb-5">
         <div className="row">
           <div className="col-sm-4">
@@ -122,14 +150,28 @@ function Contributions() {
       {show && (
         <div className="content__container">
           {" "}
-          <h3>
-            <strong>{user?.name}</strong>
-          </h3>
-          <h5>5% January Petra Trust Contribution List</h5>
-          <Table data={data} tableHeader={tableHeader} />
+          <div id="section-to-print">
+            <h3>
+              <strong>{user?.name}</strong>
+            </h3>
+            <h5>
+              5% January Petra Trust Contribution List for{" "}
+              {selectedmonth && monthYear[selectedmonth].name} {selectedyear}
+            </h5>
+            <Table data={data} tableHeader={tableHeader} />
+          </div>
           <div className="d-flex justify-content-end mt-5">
-            <button className="btn blue__btn"> View / Print</button>
-            <button className="btn blue__btn ml-2"> Export to Excel</button>
+            <button onClick={handlePrint} className="btn blue__btn mr-2">
+              {" "}
+              View / Print
+            </button>
+
+            <Export
+              className="btn blue__btn ml-2"
+              data={data}
+              columns={tableHeader}
+            ></Export>
+            {/* <button className="btn blue__btn ml-2"> Export to Excel</button> */}
           </div>
         </div>
       )}

@@ -17,7 +17,6 @@ function SBA() {
     a4: "",
   });
   const [position, setposition] = useState("");
-  const [loading, setloading] = useState(false);
   const [openEdit, setopenEdit] = useState(false);
   const [term, setterm] = useState("");
   const [classID, setclassID] = useState("");
@@ -26,6 +25,7 @@ function SBA() {
   const [isSet, setisSet] = useState(false);
   const [selectedUser, setselectedUser] = useState({});
   const [loadingClass, setloadingClass] = useState(false);
+  const [loadingSubmit, setloadingSubmit] = useState(false);
 
   const handleSearch = (e) => {
     setisSet(false);
@@ -57,7 +57,7 @@ function SBA() {
   };
 
   const handleonSubmit = () => {
-    setloading(true);
+    setloadingSubmit(true);
     axios
       .put(`/sba/update/student/${data?._id}/${selectedUser?._id}`, {
         classWork,
@@ -68,15 +68,15 @@ function SBA() {
       })
       .then((res) => {
         setopenEdit(false);
-        setloading(false);
-        setstudents(res.data?.students);
+        setloadingSubmit(false);
+        setstudents(res.data.doc?.students);
         console.log(res.data);
       });
   };
 
   return (
     <div>
-      <h3>SBA</h3>
+      <h3>S.B.A</h3>
       <div className="mb-3">
         <Search
           academicYear={year}
@@ -91,14 +91,20 @@ function SBA() {
           handleSearch={handleSearch}
         />
       </div>
-      {isSet && <SBATable rows={students} handleEdit={handleEdit} />}
+      {isSet && (
+        <SBATable
+          setclassWork={setclassWork}
+          rows={students}
+          handleEdit={handleEdit}
+        />
+      )}
 
       <Edit
         name={selectedUser?.name}
         userID={selectedUser?.userID}
         exam={exam}
         classID={classID}
-        loading={loading}
+        loading={loadingSubmit}
         setposition={setposition}
         position={position}
         setexam={setexam}

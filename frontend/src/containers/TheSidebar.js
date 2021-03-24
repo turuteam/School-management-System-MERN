@@ -1,5 +1,5 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   CCreateElement,
   CSidebar,
@@ -10,22 +10,19 @@ import {
   CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
-} from '@coreui/react'
-import {selectSidebarShow} from '../store/slices/appSlice'
+} from "@coreui/react";
+import { selectSidebarShow } from "../store/slices/appSlice";
+import logo from "../assets/icons/logo.png";
 
-import logo from '../assets/icons/logo.png'
-
-// sidebar nav config
-
-const TheSidebar = ({navs}) => {
-  const dispatch = useDispatch()
-  const show = useSelector(selectSidebarShow)
+const TheSidebar = ({ navs }) => {
+  const dispatch = useDispatch();
+  const show = useSelector(selectSidebarShow);
 
   return (
     <CSidebar
-    className="sidebar__main"
+      className="sidebar__main"
       show={show}
-      onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
+      onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none nav__brand" to="/">
         <img
@@ -34,9 +31,7 @@ const TheSidebar = ({navs}) => {
           alt="logo-negative"
           height={35}
         />
-         {/* <CSidebarMinimizer className="c-d-md-down-none sidebar__minimizer"/> */}
       </CSidebarBrand>
-     
       <CSidebarNav>
         <CCreateElement
           items={navs}
@@ -44,13 +39,13 @@ const TheSidebar = ({navs}) => {
             CSidebarNavDivider,
             CSidebarNavDropdown,
             CSidebarNavItem,
-            CSidebarNavTitle
+            CSidebarNavTitle,
           }}
         />
       </CSidebarNav>
-      <CSidebarMinimizer className="c-d-md-down-none"/>
+      <CSidebarMinimizer className="c-d-md-down-none" />
     </CSidebar>
-  )
-}
+  );
+};
 
-export default React.memo(TheSidebar)
+export default React.memo(TheSidebar);

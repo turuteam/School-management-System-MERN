@@ -31,6 +31,7 @@ function Deductions() {
 
   useEffect(() => {
     axios.get("/deductions").then((res) => {
+      console.log(res.data);
       setdata(
         res.data.map((e) => {
           return {
@@ -41,6 +42,7 @@ function Deductions() {
       );
     });
   }, []);
+  console.log(data);
 
   const handleSetStaff = (e) => {
     staff.includes(e.target.value);
@@ -84,7 +86,7 @@ function Deductions() {
         staff: editstaff,
         amount: editamount,
       })
-      .then((res) => {
+      .then(async (res) => {
         seteditLoading(false);
         if (res.data.error) {
           return errorAlert(res.data.error);
@@ -100,6 +102,10 @@ function Deductions() {
         seteditamount("");
         seteditstaff([]);
         setopenEdit(false);
+        await axios.post("/activitylog/create", {
+          activity: `salary deductions was edited`,
+          user: "admin",
+        });
       });
   };
 
@@ -111,7 +117,7 @@ function Deductions() {
         staff,
         amount,
       })
-      .then((res) => {
+      .then(async (res) => {
         setloading(false);
         if (res.data.error) {
           return errorAlert(res.data.error);
@@ -121,6 +127,10 @@ function Deductions() {
         setname("");
         setamount("");
         setstaff([]);
+        await axios.post("/activitylog/create", {
+          activity: `salary deductions is added`,
+          user: "admin",
+        });
       });
   };
 

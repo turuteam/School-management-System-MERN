@@ -35,12 +35,17 @@ function Classgroup() {
   const handleDelete = (id) => {
     const ans = window.confirm("are you sure you want to delete");
     if (ans) {
-      axios.delete(`/fees/delete/${id}`).then((res) => {
+      axios.delete(`/fees/delete/${id}`).then(async (res) => {
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
+        await axios.post("/activitylog/create", {
+          activity: ` class group was ${id} deleted`,
+          user: "admin",
+        });
         setclassgroup(classgroup.filter((e) => e._id !== id));
+        dispatch(setfeesType(classgroup.filter((e) => e._id !== id)));
       });
     }
   };
@@ -49,7 +54,7 @@ function Classgroup() {
     setaddLoading(true);
     axios
       .post("/fees/create", { name })
-      .then((res) => {
+      .then(async (res) => {
         setaddLoading(false);
         setclassgroup([res.data.docs, ...classgroup]);
         successAlert("Successfully created");
@@ -57,6 +62,10 @@ function Classgroup() {
           setfeesType([...classgroup, { name, code: res.data.docs?.code }])
         );
         setname("");
+        await axios.post("/activitylog/create", {
+          activity: `new class group ${name}`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);

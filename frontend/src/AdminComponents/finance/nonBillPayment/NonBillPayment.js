@@ -89,26 +89,28 @@ function NonBillPayment() {
         studentID={studentID}
         setstudentID={handleSelectStudent}
       />
-      <Payment
-        setremarks={setremarks}
-        chequeNo={chequeNum}
-        setdate={setdate}
-        setchequeNo={setchequeNum}
-        paymentType={paymentType}
-        setpaymentType={setpaymentType}
-        term={term}
-        remarks={remarks}
-        amount={amount}
-        setamount={setamount}
-        bank={bank}
-        setbank={setbank}
-        date={date}
-        loading={loadingPayment}
-        handlePayement={handlePayment}
-        year={year}
-        setyear={setyear}
-        setterm={setterm}
-      />
+      {studentID && (
+        <Payment
+          setremarks={setremarks}
+          chequeNo={chequeNum}
+          setdate={setdate}
+          setchequeNo={setchequeNum}
+          paymentType={paymentType}
+          setpaymentType={setpaymentType}
+          term={term}
+          remarks={remarks}
+          amount={amount}
+          setamount={setamount}
+          bank={bank}
+          setbank={setbank}
+          date={date}
+          loading={loadingPayment}
+          handlePayement={handlePayment}
+          year={year}
+          setyear={setyear}
+          setterm={setterm}
+        />
+      )}
     </div>
   );
 }

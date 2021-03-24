@@ -13,6 +13,7 @@ function ProfilePage() {
 
   useEffect(() => {
     axios.get(`/students/student/${user?.userID}`).then((res) => {
+      console.log(res.data);
       setuserDetails(res.data.student);
     });
   }, [user]);

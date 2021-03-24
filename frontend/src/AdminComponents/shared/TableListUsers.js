@@ -70,6 +70,7 @@ export default function EnhancedTable({
   route,
   handleWithdraw,
   handleDelete,
+  noData,
 }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -159,7 +160,6 @@ export default function EnhancedTable({
                     return (
                       <TableRow
                         hover
-                        // onClick={() => history.push(`/${route}/${row.userID}`)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -193,10 +193,11 @@ export default function EnhancedTable({
                         <TableCell align="left">
                           {row?.status || row?.position}
                         </TableCell>
-                        <TableCell align="left">
-                          {row?.classID || "-"}
-                        </TableCell>
-
+                        {row?.role === "student" && (
+                          <TableCell align="left">
+                            {row?.classID || "-"}
+                          </TableCell>
+                        )}
                         <TableCell align="left">{row?.gender || "-"}</TableCell>
                         <TableCell align="left">
                           <ViewActions
@@ -220,8 +221,18 @@ export default function EnhancedTable({
             ) : (
               <TableBody>
                 <TableRow>
-                  <TableCell colSpan="5">NO DATA</TableCell>
+                  <TableCell
+                    className="text-danger text-center"
+                    colSpan={headCells.length + 2}
+                  >
+                    {noData || "NO DATA"}
+                  </TableCell>
                 </TableRow>
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
               </TableBody>
             )}
           </Table>

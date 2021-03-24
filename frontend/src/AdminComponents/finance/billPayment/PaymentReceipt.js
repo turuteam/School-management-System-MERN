@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "../../../store/axios";
 import { useParams, useHistory } from "react-router-dom";
 import moment from "moment";
-import { errorAlert, successAlert } from "../../../utils";
+import { errorAlert } from "../../../utils";
 
 function PaymentReceipt() {
   const [state, setstate] = useState({});

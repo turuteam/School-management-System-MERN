@@ -11,10 +11,12 @@ function EditCourse() {
   const [loading, setloading] = useState("");
   const [type, settype] = useState("");
   const [teacher, setteacher] = useState("");
+  const [classID, setclassID] = useState("");
   const { id } = useParams();
   const [classesArr, setclassesArr] = useState([]);
 
   const handleSetclasses = (e) => {
+    setclassID(e);
     setclassesArr([...classesArr, e]);
   };
 
@@ -25,7 +27,7 @@ function EditCourse() {
         return 0;
       }
       const { docs } = res.data;
-
+      setclassID(docs?.classID);
       setname(docs?.name);
       settype(docs?.type);
       setteacher(docs?.teacher);
@@ -41,6 +43,7 @@ function EditCourse() {
         code,
         type,
         teacher,
+        classID,
         classes: classesArr,
       })
       .then((res) => {
@@ -72,6 +75,7 @@ function EditCourse() {
           handleSetclasses={handleSetclasses}
           loading={loading}
           setname={setname}
+          classID={classID}
           code={code}
           isEdit={true}
           setcode={setcode}

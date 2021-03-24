@@ -15,7 +15,7 @@ route.get("/", async (req, res) => {
 });
 
 route.post("/user", async (req, res) => {
-  await ChatModel.create(body)
+  await ChatModel.create(req.body)
     .then((doc) => {
       res.send(JSON.stringify({ success: true, doc }));
     })

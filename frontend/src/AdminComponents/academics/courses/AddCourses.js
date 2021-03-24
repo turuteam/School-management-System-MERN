@@ -3,6 +3,8 @@ import AddForm from "./CourseForm";
 import GoBack from "../../shared/GoBack";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
+import { useDispatch, useSelector } from "react-redux";
+import { setCourses, selectCourses } from "../../../store/slices/schoolSlice";
 
 function AddCourses() {
   const [name, setname] = useState("");
@@ -12,9 +14,16 @@ function AddCourses() {
   const [teacher, setteacher] = useState("");
   const [classesArr, setclassesArr] = useState([]);
   const [classID, setclassID] = useState("");
+  const dispatch = useDispatch();
+  const courses = useSelector(selectCourses);
+
+  // useEffect(() => {
+  //     axios.get('/').then(res => {
+
+  //     })
+  // }, [])
 
   const handleSetclasses = (e) => {
-    console.log(e);
     setclassID(e);
     let newClasses = classesArr.push(e);
     setclassesArr(newClasses);
@@ -28,6 +37,7 @@ function AddCourses() {
         code,
         type,
         teacher,
+        classID,
         classes: classesArr,
       })
       .then((res) => {
@@ -36,6 +46,7 @@ function AddCourses() {
           errorAlert(res.data.error);
           return 0;
         }
+        dispatch(setCourses([res.data.doc, ...courses]));
         setloading(false);
         successAlert("successfull added");
         setname("");

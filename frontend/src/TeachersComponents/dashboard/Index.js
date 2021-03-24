@@ -14,16 +14,10 @@ import AcademicYear from "../../AdminComponents/dashboard/AcademicYear";
 
 function Index() {
   const user = useSelector(selectUser);
-  const [count, setcount] = useState({
-    // courses: 0,
-    // notifications: 0,
-  });
-  const [loading, setloading] = useState(false);
+  const [count, setcount] = useState({});
 
   useEffect(() => {
-    setloading(true);
     axios.get(`/staff/count/${user?.userID}`).then((res) => {
-      setloading(false);
       console.log(res.data);
       setcount(res.data.count);
     });

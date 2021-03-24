@@ -54,7 +54,7 @@ function SettingsPage() {
     console.log(editfullname);
     axios
       .put(`/school/update/${admin?.userID}`, {
-        fullname: editfullname,
+        fullName: editfullname,
       })
       .then((res) => {
         seteditloading(false);

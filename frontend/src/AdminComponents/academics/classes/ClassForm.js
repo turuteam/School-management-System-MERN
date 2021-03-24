@@ -7,6 +7,7 @@ import {
   selectStaff,
   selectFees,
   selectDivisions,
+  selectYearGroup,
 } from "../../../store/slices/schoolSlice";
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -15,6 +16,7 @@ function ClassForm(props) {
   const divisions = useSelector(selectDivisions);
   const groups = useSelector(selectFees);
   const staff = useSelector(selectStaff);
+  const years = useSelector(selectYearGroup);
   const { register, handleSubmit, errors } = useForm();
   let {
     name,
@@ -44,6 +46,8 @@ function ClassForm(props) {
 
   const [prefects, setprefects] = useState([]);
 
+  console.log(years);
+
   useEffect(() => {
     axios.get("/prefects").then((res) => {
       setprefects(res.data);
@@ -54,7 +58,7 @@ function ClassForm(props) {
     <form onSubmit={handleSubmit(handleAddClass)} action="">
       <div className="row mb-3">
         <label htmlFor="name" className="col-sm-2 col-form-label">
-          Academic Calendar
+          Academic Year
         </label>
         <div className="col-sm-10">
           <select
@@ -66,8 +70,15 @@ function ClassForm(props) {
             <option defaultValue hidden>
               Choose...
             </option>
-            <option value="Trimester">Trimester</option>
-            <option value="Semester">Semester</option>
+            {years.length > 0 ? (
+              years.map((e) => (
+                <option value={e.year} key={e.year}>
+                  {e.year}
+                </option>
+              ))
+            ) : (
+              <option disabled>No data</option>
+            )}
           </select>
         </div>
       </div>

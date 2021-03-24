@@ -54,7 +54,7 @@ function Upgrade() {
     }
     axios
       .put(`/students/update/${student}`, { classID: newClass })
-      .then((res) => {
+      .then(async (res) => {
         if (res.data.error) {
           return errorAlert(res.data.error);
         }
@@ -62,6 +62,10 @@ function Upgrade() {
         setoldClass("");
         setnewClass("");
         setstudent("");
+        await axios.post("/activitylog/create", {
+          activity: `student ${student} was moved to class ${newClass}`,
+          user: "admin",
+        });
       });
   };
 
@@ -75,13 +79,17 @@ function Upgrade() {
       setloading({ ...loading, classes: true });
       axios
         .post("/students/upgrade/class", { currentclass, nextclass })
-        .then((res) => {
+        .then(async (res) => {
           setloading({ ...loading, classes: false });
           if (res.data.error) {
             errorAlert(res.data.error);
             return 0;
           }
           successAlert("Changes are successfully done");
+          await axios.post("/activitylog/create", {
+            activity: `students in class ${currentclass} were moved to class ${nextclass}`,
+            user: "admin",
+          });
           setcurrentclass("");
           setnextclass("");
         })
@@ -103,7 +111,7 @@ function Upgrade() {
       setloading({ ...loading, classes: true });
       axios
         .post("/students/upgrade/campus", { currentcampus, nextcampus })
-        .then((res) => {
+        .then(async (res) => {
           setloading({ ...loading, campuses: false });
           if (res.data.error) {
             errorAlert(res.data.error);
@@ -112,6 +120,10 @@ function Upgrade() {
           successAlert("Changes are successfully done");
           setcurrentcampus("");
           setnextcampus("");
+          await axios.post("/activitylog/create", {
+            activity: `students in campus ${currentcampus} were moved to campus ${nextcampus}`,
+            user: "admin",
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -134,7 +146,7 @@ function Upgrade() {
           currentdormitories,
           nextdormitories,
         })
-        .then((res) => {
+        .then(async (res) => {
           setloading({ ...loading, dormitories: false });
           if (res.data.error) {
             errorAlert(res.data.error);
@@ -143,6 +155,10 @@ function Upgrade() {
           successAlert("Changes are successfully done");
           setcurrentdormitories("");
           setnextdormitories("");
+          await axios.post("/activitylog/create", {
+            activity: `dormitory ${currentdormitories} were moved to dormitory ${nextdormitories}`,
+            user: "admin",
+          });
         })
         .catch((err) => {
           console.log(err);

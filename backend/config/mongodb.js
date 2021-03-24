@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 //LOCAL_DB_CONNECT  -localhost database
 //DB_CONNECT  -online database
 dotenv.config();
-const connection_url = process.env.DB_CONNECT;
+const connection_url = process.env.LOCAL_DB_CONNECT;
 
 mongoose.connect(connection_url, {
   useCreateIndex: true,

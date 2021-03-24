@@ -4,7 +4,7 @@ import Letter from "./Letter";
 import { selectFees, selectYearGroup } from "../../../store/slices/schoolSlice";
 import Search from "./Search";
 import axios from "../../../store/axios";
-import { errorAlert } from "../../../utils";
+import { errorAlert, getYearsPast } from "../../../utils";
 import ViewAdvice from "./ViewAdvice";
 
 function Advice() {
@@ -13,15 +13,19 @@ function Advice() {
   const [year, setyear] = useState("");
   const [month, setmonth] = useState("");
   const [bank, setbank] = useState("");
+  const years = getYearsPast(10);
   const [body, setbody] = useState(
     "We attached herewith cheque No {cheque_number_here} {bank_name_here}, and amount of GH¢ 0.00 ( ) being salaries for March, 2021 in respect of the names below."
   );
   const [author, setauthor] = useState("The Accountant");
-  const years = useSelector(selectYearGroup);
+  //const years = useSelector(selectYearGroup);
   const [staff, setstaff] = useState([]);
   const [loading, setloading] = useState(false);
   const [showLetter, setshowLetter] = useState(false);
   const [open, setOpen] = useState(false);
+  const [selectedyear, setselectedyear] = useState("");
+  const [selectedmonth, setselectedmonth] = useState("");
+  const [selectedbank, setselectedbank] = useState("");
 
   const getStaff = (e) => {
     setbank(e.target.value);
@@ -43,6 +47,9 @@ function Advice() {
       setloading(false);
       setshowLetter(true);
       setstaff(res.data.docs);
+      setselectedmonth(month);
+      setselectedyear(year);
+      setselectedbank(bank);
     });
   };
 
@@ -71,15 +78,15 @@ function Advice() {
             subject={subject}
             body={body}
             staff={staff}
-            month={month}
-            bank={bank}
-            year={year}
+            month={selectedmonth}
+            bank={selectedbank}
+            year={selectedyear}
             setbody={setbody}
             author={author}
             setauthor={setauthor}
           />
 
-          {staff.length === 0 && (
+          {staff.length > 0 && (
             <div>
               <button onClick={() => setOpen(true)} className="btn blue__btn">
                 View / Print Report
@@ -90,8 +97,8 @@ function Advice() {
       )}
       <ViewAdvice
         salutations={salutations}
-        month={month}
-        year={year}
+        month={selectedmonth}
+        year={selectedyear}
         staff={staff}
         subject={subject}
         open={open}

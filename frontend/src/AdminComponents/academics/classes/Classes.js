@@ -85,13 +85,18 @@ function Classes() {
   const handleDeleteClass = (id) => {
     const ans = window.confirm("are you sure you want to delete");
     if (ans) {
-      axios.delete(`/classes/delete/${id}`).then((res) => {
+      axios.delete(`/classes/delete/${id}`).then(async (res) => {
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
         setclasses(classes.filter((course) => course._id !== id));
+        let deleted = classes.find((course) => course._id === id);
         dispatch(setClasses(classes.filter((course) => course._id !== id)));
+        await axios.post("/activitylog/create", {
+          activity: ` ${deleted?.name} class was deleted`,
+          user: "admin",
+        });
       });
     }
   };
@@ -133,29 +138,27 @@ function Classes() {
 
   return (
     <div>
-      <div className="row">
-        <div className="col-xs-12 col-sm-8 col-md-10">
-          <Search
-            title="Classes List"
-            inputFields={inputFields}
-            handleSearch={handleSearch}
-            handleReset={handleReset}
-          />
-        </div>
-        <div className="col-xs-12 col-sm-4 col-md-2">
+      <Search
+        title="Search classes "
+        inputFields={inputFields}
+        handleSearch={handleSearch}
+        handleReset={handleReset}
+      />
+      <div className="content__container">
+        <div className="d-flex justify-content-between mb-2">
+          <h3>Classes List</h3>
           <Link to="/academics/classes/add" className="btn orange__btn btn__lg">
             Add New Class
           </Link>
         </div>
+        <ClassTable
+          handleEdit={handleEditClass}
+          loading={loading}
+          handleDelete={handleDeleteClass}
+          data={classes}
+          tableHeader={tableHeadings}
+        />
       </div>
-
-      <ClassTable
-        handleEdit={handleEditClass}
-        loading={loading}
-        handleDelete={handleDeleteClass}
-        data={classes}
-        tableHeader={tableHeadings}
-      />
     </div>
   );
 }

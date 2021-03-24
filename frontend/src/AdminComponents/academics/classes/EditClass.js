@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ClassForm from "./ClassForm";
 import axios from "../../../store/axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { successAlert, errorAlert } from "../../../utils";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import { useDispatch, useSelector } from "react-redux";
+import { selectClasses, setClasses } from "../../../store/slices/schoolSlice";
 
 function EditClass() {
   const [name, setname] = useState("");
@@ -18,6 +19,8 @@ function EditClass() {
   const [sba, setsba] = useState("");
   const [sbaStaff, setsbaStaff] = useState(false);
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const classes = useSelector(selectClasses);
 
   useEffect(() => {
     axios.get(`/classes/${id}`).then((res) => {
@@ -54,14 +57,22 @@ function EditClass() {
         group,
         sbaStaff,
       })
-      .then((res) => {
+      .then(async (res) => {
+        setloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
           setloading(false);
           return 0;
         }
         successAlert("successfully edited");
-        setloading(false);
+
+        dispatch(
+          setClasses(classes.map((i) => (i._id === id ? res.data?.doc : i)))
+        );
+        await axios.post("/activitylog/create", {
+          activity: ` ${name} class was edited`,
+          user: "admin",
+        });
       })
       .catch(() => {
         errorAlert("something went wrong");
@@ -70,12 +81,6 @@ function EditClass() {
 
   return (
     <>
-      <div className="d-flex justify-content-end mb-5">
-        <Link to="/academics/classes" className="link">
-          <ArrowBackIosIcon className="icon" />
-          Back to Classes List
-        </Link>
-      </div>
       <div className="content__container">
         <h3>Edit Class</h3>
         <ClassForm

@@ -5,7 +5,6 @@ import axios from "../../store/axios";
 import { errorAlert } from "../../utils";
 import Loading from "../../Loading";
 import { pdf } from "../../components/tables/pdf";
-import Paper from "@material-ui/core/Paper";
 
 const headCells = [
   { id: "userID", numeric: false, disablePadding: false, label: "Teacher ID" },
@@ -17,8 +16,8 @@ const headCells = [
     label: "Middle Name",
   },
   { id: "surname", disablePadding: true, label: "Last Name" },
-  { id: "class", disablePadding: false, label: "Class" },
-  { id: "Gender", disablePadding: false, label: "Gender" },
+  { id: "position", disablePadding: false, label: "Position" },
+  { id: "gender", disablePadding: false, label: "Gender" },
 ];
 
 function AllStaff() {
@@ -42,8 +41,6 @@ function AllStaff() {
       });
   }, []);
 
-  console.log(staff);
-
   const generatePDF = () => {
     const headers = [
       { key: "userID", label: "UserID" },
@@ -57,7 +54,6 @@ function AllStaff() {
     pdf({ data: staff, headers, filename: "AllStaff" });
   };
 
-  console.log(staff);
   const handleDelete = (id) => {
     let ans = window.confirm(`Are sure you want to delete user ${id}`);
     if (ans) {
@@ -74,10 +70,9 @@ function AllStaff() {
     let ans = window.confirm(
       `Are you sure you want to withdraw this staff member ${i}`
     );
-    console.log(ans);
+
     if (ans) {
       axios.put(`/teachers/update/${i}`, { withdraw: true }).then((res) => {
-        console.log(res.data);
         if (res.data.error) {
           errorAlert(res.data.error);
         }
@@ -114,14 +109,14 @@ function AllStaff() {
     {
       type: "text",
       label: "Search by Name",
-      name: "",
+      name: "name",
       value: name,
       onChange: setname,
     },
     {
       type: "text",
       label: "Search by UserID",
-      name: "",
+      name: "userID",
       value: userID,
       onChange: setuserID,
     },
@@ -141,6 +136,7 @@ function AllStaff() {
       <StaffTable
         route="staff"
         loading={loading}
+        noData="No staff members yet"
         students={staff}
         handleWithdraw={handleWithdraw}
         handleDelete={handleDelete}

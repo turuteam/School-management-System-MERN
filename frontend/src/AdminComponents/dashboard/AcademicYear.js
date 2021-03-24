@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AcademicYearModel from "./AcademicYearModal";
 import axios from "../../store/axios";
 import { errorAlert, successAlert } from "../../utils";
 import {
   selectacademicYear,
   setAcademicYear,
-  selectYearGroup,
 } from "../../store/slices/schoolSlice";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -15,8 +14,14 @@ function AcademicYear({ isEdit }) {
   const [term, setterm] = useState("");
   const [loading, setloading] = useState(false);
   const academicYear = useSelector(selectacademicYear);
-  const years = useSelector(selectYearGroup);
   const dispatch = useDispatch();
+  const [years, setyears] = useState([]);
+
+  useEffect(() => {
+    axios.get("/yeargroup").then((res) => {
+      setyears(res.data);
+    });
+  }, []);
 
   const handleSubmit = () => {
     setloading(true);
@@ -34,10 +39,10 @@ function AcademicYear({ isEdit }) {
         setOpen(false);
         successAlert("successfully set");
         dispatch(setAcademicYear(res.data.docs));
-        console.log(res.data);
+        setfrom("");
+        setterm("");
       })
       .catch((err) => {
-        console.log(err);
         setloading(false);
         errorAlert("Error");
       });
@@ -50,27 +55,31 @@ function AcademicYear({ isEdit }) {
         {isEdit && (
           <div>
             <button onClick={() => setOpen(true)} className="btn blue__btn">
-              Change{" "}
+              {academicYear?.error ? "Set" : "Change"}
             </button>
           </div>
         )}
       </div>
-      <div className="d-flex justify-content-between">
-        <div className="badge bg-success ">
-          <h6 className="text-warning">
-            {" "}
-            <strong> Year</strong>
-          </h6>
-          <h4>{academicYear?.currentYear}</h4>
+      {academicYear?.error ? (
+        <div className="badge bg-danger  p-3">Not set yet</div>
+      ) : (
+        <div className="d-flex justify-content-between">
+          <div className="badge bg-success ">
+            <h6 className="text-warning">
+              {" "}
+              <strong> Year</strong>
+            </h6>
+            <h4>{academicYear?.currentYear}</h4>
+          </div>
+          <div className="badge bg-success">
+            <h6 className="text-warning">
+              {" "}
+              <strong> Term</strong>
+            </h6>
+            <h4>{academicYear?.currentTerm}</h4>
+          </div>
         </div>
-        <div className="badge bg-success">
-          <h6 className="text-warning">
-            {" "}
-            <strong> Term</strong>
-          </h6>
-          <h4>{academicYear?.currentTerm}</h4>
-        </div>
-      </div>
+      )}
       <AcademicYearModel
         from={from}
         setfrom={setfrom}

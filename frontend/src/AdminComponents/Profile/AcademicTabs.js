@@ -20,14 +20,22 @@ function AcademicTabs({ count }) {
           <Card
             title="Division"
             name={count?.divisions || 0}
-            route="/divisions"
+            route="/academics/divisions"
           />
         </div>
         <div className="col-sm-6 col-md-4">
-          <Card title="Classes" name={count?.classes} route="/classes" />
+          <Card
+            title="Classes"
+            name={count?.classes}
+            route="/academics/classes"
+          />
         </div>
         <div className="col-sm-6 col-md-4">
-          <Card title="Courses" name={count?.courses} route="/classes" />
+          <Card
+            title="Courses"
+            name={count?.courses}
+            route="/academics/classes"
+          />
         </div>
         <div className="col-sm-6 col-md-4">
           <Card

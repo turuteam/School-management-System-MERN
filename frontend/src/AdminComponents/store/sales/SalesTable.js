@@ -49,7 +49,11 @@ export default function CustomPaginationActionsTable({ data }) {
         </TableHead>
         <TableBody>
           {data?.length <= 0 ? (
-            <TableRow className="text-center my-5"> No data </TableRow>
+            <TableRow>
+              <TableCell colSpan={4} className="text-center my-5">
+                No data
+              </TableCell>
+            </TableRow>
           ) : (
             <>
               {(rowsPerPage > 0

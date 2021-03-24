@@ -50,12 +50,15 @@ function SbaTable({ rows, classID }) {
   };
 
   return (
-    <div>
-      <div className="d-flex justify-content-between mb-3">
+    <div className="content__container">
+      <button onClick={handlePrint} className="btn blue__btn float-right">
+        Print <PrintIcon />
+      </button>
+      <div
+        className="d-flex justify-content-between mb-3"
+        id="section-to-print"
+      >
         <h3>Results for Class {classID}</h3>
-        <button onClick={handlePrint} className="btn blue__btn">
-          Print <PrintIcon />
-        </button>
       </div>
       <TableContainer className="mb-5" component={Paper}>
         <Table className={classes.table} aria-label="spanning table">
@@ -104,6 +107,13 @@ function SbaTable({ rows, classID }) {
                 </TableCell>
               </TableRow>
             ))}
+            {rows.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-danger">
+                  No data yet
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

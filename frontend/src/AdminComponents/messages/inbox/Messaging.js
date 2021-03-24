@@ -113,10 +113,28 @@ function Messaging() {
     axios
       .delete(`/chats/delete/${id}`)
       .then((res) => {
+        console.log(res);
         if (res.data.error) {
           return errorAlert(res.data.error);
         }
         setmessages(messages.filter((i) => i._id !== id));
+      })
+      .catch((err) => {
+        console.log(err);
+        errorAlert("Failed");
+      });
+  };
+
+  const handleDeleteSend = (id) => {
+    console.log(id);
+    axios
+      .delete(`/chats/delete/${id}`)
+      .then((res) => {
+        console.log(res);
+        if (res.data.error) {
+          return errorAlert(res.data.error);
+        }
+        setmessages(sendMessages.filter((i) => i._id !== id));
       })
       .catch((err) => {
         console.log(err);
@@ -165,7 +183,7 @@ function Messaging() {
         </Tabs>
         <TabPanel value={value} index={0}>
           <Table
-            handleDelete={handleDelete}
+            handleDelete={handleDeleteSend}
             data={sendMessages}
             isEdit={true}
             tableHeader={tableHeader}

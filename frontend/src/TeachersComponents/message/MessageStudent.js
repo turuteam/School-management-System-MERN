@@ -60,7 +60,7 @@ function MessageStudent() {
     e.preventDefault();
     if (message && recipient) {
       axios
-        .post(`/chats`, {
+        .post(`/chats/user`, {
           message,
           sender: sender?.id,
           userID: recipient,
@@ -111,7 +111,7 @@ function MessageStudent() {
               Choose...
             </option>
             {classes.map((e) => (
-              <option key={e._id} value={e._id}>
+              <option key={e._id} value={e.classCode}>
                 {e.name}
               </option>
             ))}

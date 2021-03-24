@@ -4,6 +4,8 @@ import ListSection from "../../shared/ListTable";
 import EditSection from "./EditSection";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
+import { useDispatch } from "react-redux";
+import { setSections } from "../../../store/slices/schoolSlice";
 
 const tableHeader = [
   { id: "_id", name: "ID" },
@@ -11,7 +13,7 @@ const tableHeader = [
   { id: "createdAt", name: "Added" },
 ];
 
-function Campuses() {
+function Sections() {
   const [openEdit, setopenEdit] = useState(false);
   const [name, setname] = useState("");
   const [editname, seteditname] = useState("");
@@ -20,18 +22,24 @@ function Campuses() {
   const [createLoading, setcreateLoading] = useState(false);
   const [dataloading, setdataloading] = useState([]);
   const [sections, setsections] = useState([]);
+  const dispatch = useDispatch();
 
   const handleDelete = (delID) => {
     setloading(true);
     axios
       .delete(`/sections/delete/${delID}`)
-      .then((res) => {
+      .then(async (res) => {
         setloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
         setsections(sections.filter((i) => i._id !== delID));
+        dispatch(setSections(sections.filter((i) => i._id !== delID)));
+        await axios.post("/activitylog/create", {
+          activity: `section ${id} was deleted`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         setloading(false);
@@ -50,14 +58,20 @@ function Campuses() {
     setloading(true);
     axios
       .put(`/sections/update/${id}`, { name: editname })
-      .then((res) => {
+      .then(async (res) => {
         setloading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
-        let oldArray = sections.filter((e) => e._id !== id);
-        setsections([res.data?.doc, ...oldArray]);
+        setsections(sections.map((i) => (i._id === id ? res.data?.doc : i)));
+        dispatch(
+          setSections(sections.map((i) => (i._id === id ? res.data?.doc : i)))
+        );
+        await axios.post("/activitylog/create", {
+          activity: `section ${editname} was edited`,
+          user: "admin",
+        });
         setopenEdit(false);
       })
       .catch((err) => {
@@ -81,7 +95,7 @@ function Campuses() {
     setcreateLoading(true);
     axios
       .post("/sections/create", { name })
-      .then((res) => {
+      .then(async (res) => {
         console.log("submited");
         console.log(res);
         setcreateLoading(false);
@@ -91,6 +105,11 @@ function Campuses() {
         }
         successAlert("successfully created");
         setsections([res.data.doc, ...sections]);
+        dispatch(setSections([res.data.doc, ...sections]));
+        await axios.post("/activitylog/create", {
+          activity: `section ${name} was added`,
+          user: "admin",
+        });
         setname("");
       })
       .catch((err) => {
@@ -134,4 +153,4 @@ function Campuses() {
   );
 }
 
-export default Campuses;
+export default Sections;

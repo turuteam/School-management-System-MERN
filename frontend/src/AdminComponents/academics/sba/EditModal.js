@@ -75,7 +75,7 @@ export default function FullScreenDialog({
             <label className="form-label">A1</label>
             <input
               value={classWork?.a1}
-              ref={register({ max: 25 })}
+              ref={register({ max: 26 })}
               onChange={(e) =>
                 setclassWork({ ...classWork, a1: Number(e.target.value) })
               }
@@ -93,7 +93,7 @@ export default function FullScreenDialog({
             <label className="form-label">A2</label>
             <input
               value={classWork?.a2}
-              ref={register({ max: 25 })}
+              ref={register({ max: 26 })}
               onChange={(e) =>
                 setclassWork({ ...classWork, a2: Number(e.target.value) })
               }
@@ -101,9 +101,9 @@ export default function FullScreenDialog({
               className="form-control"
               name="a2"
             />
-            {errors.topic && (
+            {errors.a2 && (
               <span className=" form-error text-danger mb-2">
-                This field is required
+                This field is required and Max = 20
               </span>
             )}
           </div>
@@ -119,9 +119,9 @@ export default function FullScreenDialog({
               className="form-control"
               name="a3"
             />
-            {errors.topic && (
+            {errors.a3 && (
               <span className=" form-error text-danger mb-2">
-                This field is required
+                This field is required and Max = 20
               </span>
             )}
           </div>
@@ -137,9 +137,9 @@ export default function FullScreenDialog({
               className="form-control"
               name="a4"
             />
-            {errors.topic && (
+            {errors.a4 && (
               <span className=" form-error text-danger mb-2">
-                This field is required
+                This field is required and Max = 20
               </span>
             )}
           </div>
@@ -148,15 +148,15 @@ export default function FullScreenDialog({
           <label className="form-label">Exam Mark</label>
           <input
             value={exam}
-            ref={register({ max: 100 })}
+            ref={register({ max: 100 + 1 })}
             onChange={(e) => setexam(Number(e.target.value))}
             type="number"
             className="form-control col-6"
             name="exams"
           />
-          {errors.topic && (
+          {errors.exams && (
             <span className=" form-error text-danger mb-2">
-              This field is required
+              This field is required and Max = 100
             </span>
           )}
         </div>
@@ -164,17 +164,11 @@ export default function FullScreenDialog({
           <label className="form-label">Position</label>
           <input
             value={position}
-            ref={register({ max: 100 })}
             onChange={(e) => setposition(Number(e.target.value))}
             type="number"
             className="form-control col-6"
             name="position"
           />
-          {errors.topic && (
-            <span className=" form-error text-danger mb-2">
-              This field is required
-            </span>
-          )}
         </div>
         <div className="mb-3">
           <button

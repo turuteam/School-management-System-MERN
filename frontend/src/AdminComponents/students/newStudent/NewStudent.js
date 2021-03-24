@@ -39,6 +39,7 @@ function NewStudent() {
   const [userID, setuserID] = useState("");
   const [classID, setclass] = useState("");
   const [section, setsection] = useState("");
+  const [campus, setcampus] = useState("");
   const [status, setstatus] = useState(null);
   const [dormitory, setdormitory] = useState("");
   const [schoolarship, setschoolarship] = useState("");
@@ -97,6 +98,7 @@ function NewStudent() {
     setallege("");
     sethealth();
     setdivision("");
+    setcampus("");
     setname("");
     setsecondName("");
     setlastname("");
@@ -142,6 +144,7 @@ function NewStudent() {
         dormitoryID: dormitory,
         section,
         status,
+        campusID: campus,
         scholarship: schoolarship,
         fees: feesCategory,
         lastSchool: {
@@ -154,12 +157,16 @@ function NewStudent() {
         physicalAddress: residence,
         guadian,
       })
-      .then((response) => {
+      .then(async (response) => {
         setloading(false);
         if (response.data.error) {
           errorAlert(response.data.error);
           return 0;
         }
+        await axios.post("/activitylog/create", {
+          activity: `student  ${name} ${lastname} was created`,
+          user: "admin",
+        });
         successAlert(
           `stundent ${response.data.student.userID} successfully added`
         );
@@ -234,6 +241,8 @@ function NewStudent() {
             feesCategory={feesCategory}
             setfeesCategory={setfeesCategory}
             lastSchool={lastSchool}
+            campus={campus}
+            setcampus={setcampus}
             setlastSchool={setlastSchool}
             reasonforTransfer={reasonforTransfer}
             setreasonforTransfer={setreasonforTransfer}

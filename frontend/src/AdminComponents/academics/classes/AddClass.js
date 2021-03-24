@@ -3,7 +3,7 @@ import React from "react";
 import ClassForm from "./ClassForm";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
-import GoBack from "../../shared/GoBack";
+//import GoBack from "../../shared/GoBack";
 import { useDispatch, useSelector } from "react-redux";
 import { selectClasses, setClasses } from "../../../store/slices/schoolSlice";
 
@@ -37,8 +37,9 @@ function AddClass() {
         group,
         sbaStaff,
       })
-      .then((res) => {
+      .then(async (res) => {
         let { data } = res;
+        setloading(false);
         if (data?.error) {
           errorAlert(data.error);
           return 0;
@@ -46,11 +47,17 @@ function AddClass() {
         successAlert(`${data.doc?.classCode} is successfully added`);
         setloading(false);
         dispatch(setClasses([data.doc, ...classes]));
+        await axios.post("/activitylog/create", {
+          activity: ` ${name} class was created`,
+          user: "admin",
+        });
         setcampus("");
         setcode("");
         setname("");
         setacademic("");
         setteacher("");
+        setgroup("");
+        setdivision("");
       })
       .catch((e) => {
         console.log(e);
@@ -61,7 +68,7 @@ function AddClass() {
 
   return (
     <>
-      <GoBack link="/academics/classes" name="Back  to Classes List" />
+      {/* <GoBack link="/academics/classes" name="Back  to Classes List" /> */}
       <div className="content__container">
         <h3>Add Class</h3>
         <ClassForm

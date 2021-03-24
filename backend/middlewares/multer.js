@@ -2,12 +2,10 @@ import multer from "multer";
 import path from "path";
 import { v4 } from "uuid";
 import fs from "fs/promises";
-//import GridFSStorage  from 'multer-gridfs-storage'
 
-import  dotenv from 'dotenv';
+import dotenv from "dotenv";
 
-
-dotenv.config()
+dotenv.config();
 const connection_url = process.env.DB_CONNECT;
 
 export const UPLOAD_DIRECTORY = "./consumerPhotos";
@@ -24,10 +22,10 @@ const checkIfDirectoryExists = async () => {
 
 const storage = multer.diskStorage({
   async destination(req, file, callback) {
-      //console.log(file)
+    //console.log(file)
     try {
       await checkIfDirectoryExists();
-     // console.log(file, "multer file")
+      // console.log(file, "multer file")
       callback(null, UPLOAD_DIRECTORY);
     } catch (err) {
       callback(err);
@@ -37,7 +35,7 @@ const storage = multer.diskStorage({
   async filename(req, file, callback) {
     const fileExtension = path.extname(file.originalname);
     const fileName = `${v4()}${fileExtension}`;
-   // console.log(fileName, "filename")
+    // console.log(fileName, "filename")
     callback(null, fileName);
   },
 });

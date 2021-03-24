@@ -14,6 +14,7 @@ function Classes() {
     const getData = async () => {
       setloading(true);
       let student = await axios.get(`/user/${user?.userID}`);
+
       let classData = student?.data?.user;
       console.log(classData?.classID);
       setclassID(classData?.classID);
@@ -26,7 +27,6 @@ function Classes() {
     <div>
       {loading && <Loading />}
       <div className="content__container">
-        <h3>Class Details</h3>
         {classID ? (
           <ClassDetails id={classID} />
         ) : (

@@ -15,6 +15,7 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import TablePaginationActions from "../tables/TablePagination";
 import Tooltip from "@material-ui/core/Tooltip";
 import TocIcon from "@material-ui/icons/Toc";
+
 const useStyles2 = makeStyles({
   table: {
     width: "100%",

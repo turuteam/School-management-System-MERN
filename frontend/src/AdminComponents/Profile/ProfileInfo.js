@@ -5,7 +5,7 @@ function ProfileInfo({ admin }) {
   return (
     <div className="content__container mb-5 text-center">
       <div className="">
-        <img width="200px" src={getImgSrc(admin?.profileUrl)} alt="" />
+        <img height="200px" src={getImgSrc(admin?.profileUrl)} alt="" />
       </div>
       <div className="mb-3">
         <h3>{admin?.fullName}</h3>

@@ -24,7 +24,9 @@ function Attendance() {
 
   useEffect(() => {
     axios.get("/attendance/students").then((res) => {
+      console.log(res.data);
       let classData = res.data.filter((e) => e.classID === id);
+      console.log(classData);
       setstoredata(classData);
       setattendanceData(classData);
     });

@@ -3,6 +3,11 @@ import AddForm from "./DepartmentForm";
 import GoBack from "../../shared/GoBack";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectDepartments,
+  setDepartments,
+} from "../../../store/slices/schoolSlice";
 
 function AddCourses() {
   const [name, setname] = useState("");
@@ -10,18 +15,25 @@ function AddCourses() {
   const [loading, setloading] = useState("");
   const [type, settype] = useState("");
   const [teacher, setteacher] = useState("");
+  const departments = useSelector(selectDepartments);
+  const dispatch = useDispatch();
 
   const handleAddCourse = () => {
     setloading(true);
     axios
       .post("/courses/create", { name, code, type, teacher })
-      .then((res) => {
+      .then(async (res) => {
+        setloading(false);
         if (res.data.error) {
           setloading(false);
           errorAlert(res.data.error);
           return 0;
         }
-        setloading(false);
+        dispatch(setDepartments([res.data.doc, ...departments]));
+        await axios.post("/activitylog/create", {
+          activity: `new department ${name}  was added`,
+          user: "admin",
+        });
         successAlert("successfull added");
         setname("");
         setcode("");

@@ -29,6 +29,12 @@ function ActivityTabs() {
     setloading(false);
   };
 
+  const handleDelete = (id) => {
+    axios.delete(`/activitylog/delete/${id}`).then((res) => {
+      setdata(data.filter((i) => i._id !== id));
+    });
+  };
+
   return (
     <div>
       <h3>Activity Logs</h3>
@@ -81,7 +87,12 @@ function ActivityTabs() {
       </form>
 
       <div>
-        <ListTable data={data} tableHeader={tableHeader} noActions={true} />
+        <ListTable
+          handleDelete={handleDelete}
+          data={data}
+          tableHeader={tableHeader}
+          isEdit={true}
+        />
       </div>
     </div>
   );

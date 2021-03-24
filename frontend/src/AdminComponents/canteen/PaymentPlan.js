@@ -38,12 +38,25 @@ function PaymentPlan() {
     plan3: "",
   });
 
+  const removeDuplicates = (data) => {
+    let unique = [];
+    data?.forEach((element) => {
+      let isExist = unique.find((i) => i._id === element._id);
+
+      if (!isExist) {
+        unique.push(element);
+      }
+    });
+    return unique;
+  };
+
   useEffect(() => {
     axios.get("/paymentplan").then((res) => {
-      setplanData(res.data);
-      setservices(res.data.services);
-      setplansData(res.data.plans);
-      console.log(res.data);
+      console.log(res?.data);
+      setplanData(res?.data);
+      setplansData(res.data?.plans);
+      let newServices = removeDuplicates(res.data?.services);
+      setservices(newServices);
     });
   }, []);
 
@@ -65,7 +78,7 @@ function PaymentPlan() {
         settitle("");
         successAlert("Changes Saved");
         console.log(res.data.doc);
-        setservices(res.data.doc.services);
+        setservices([{ name: title, ...descriptions }, ...services]);
       })
       .catch(() => {
         setloading(false);
@@ -100,6 +113,7 @@ function PaymentPlan() {
     setopenEditService(true);
     let service = planData?.services.find((e) => e._id === id);
     setdescriptions(service);
+    console.log(service);
     seteditID(id);
   };
 
@@ -116,8 +130,9 @@ function PaymentPlan() {
         setopenEditService(false);
         setdescriptions({});
         successAlert("Changes Saved");
-        console.log(res.data.doc);
-        setservices(res.data.doc.services);
+        //  setservices(res.data.doc.services);
+        let newServices = removeDuplicates(res.data.doc?.services);
+        setservices(newServices);
       })
       .catch((err) => {
         setloading(false);
@@ -178,7 +193,7 @@ function PaymentPlan() {
         setname({});
         successAlert("Changes Saved");
         console.log(res.data.doc);
-        setplansData(res.data.doc.plans);
+        setplansData(res.data.doc?.plans);
       })
       .catch((err) => {
         setloading(false);

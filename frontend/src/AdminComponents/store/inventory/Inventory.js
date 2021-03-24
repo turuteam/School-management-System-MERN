@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Table from "../../shared/ListTable";
+import Table from "./Table";
 import AddIcon from "@material-ui/icons/Add";
 import AddItem from "./AddItem";
 import EditItem from "./EditItem";
 import EditInventory from "./EditInventory";
 import axios from "../../../store/axios";
 import { successAlert, errorAlert } from "../../../utils";
-import {useHistory} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 const tableHeader = [
   { id: "name", name: "Name" },
@@ -93,15 +93,24 @@ function Inventory() {
   };
 
   const handleInventory = (id) => {
-       setopenInventory(true);
-       seteditID(id)
-       let doc = inventory.find((e) => e._id === id);
-       setname(doc?.name);
-       setqty(doc?.quantity);  
+    setopenInventory(true);
+    seteditID(id);
+    let doc = inventory.find((e) => e._id === id);
+    setname(doc?.name);
+    setqty(doc?.quantity);
+  };
+
+  const handleDelete = (id) => {
+    axios.delete(`/store/items/delete/${id}`).then((res) => {
+      if (res.data.error) {
+        return errorAlert(res.data.error);
+      }
+      setinventory(inventory.filter((i) => i._id !== id));
+    });
   };
 
   const handleChangeInventory = () => {
-        setloading(true);
+    setloading(true);
     axios
       .put(`/store/items/update/inventory/${editID}`, {
         quantity: newQty,
@@ -114,9 +123,9 @@ function Inventory() {
         }
         setname("");
         setqty("");
-        setnewQty("")
+        setnewQty("");
         successAlert("Item Successfully Edited");
-       setopenInventory(false);
+        setopenInventory(false);
         let newData = inventory.map((obj) =>
           obj._id === editID ? { ...res.data.doc } : obj
         );
@@ -127,7 +136,7 @@ function Inventory() {
         errorAlert("Failed");
         setloading(false);
       });
-  }
+  };
 
   return (
     <div>
@@ -144,7 +153,8 @@ function Inventory() {
         data={inventory}
         isItems={true}
         handleEdit={handleEdit}
-        handleDelete={handleInventory}
+        handleDelete={handleDelete}
+        handleManage={handleInventory}
         tableHeader={tableHeader}
       ></Table>
 
@@ -171,8 +181,9 @@ function Inventory() {
         name={name}
         onSubmit={handleChangeInventory}
         setnewQty={setnewQty}
-        open={openInventory} 
-        setOpen={setopenInventory} />
+        open={openInventory}
+        setOpen={setopenInventory}
+      />
     </div>
   );
 }

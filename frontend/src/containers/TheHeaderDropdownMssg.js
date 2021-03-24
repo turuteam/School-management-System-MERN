@@ -63,7 +63,7 @@ const TheHeaderDropdownMssg = () => {
                   </div>
                   <div>
                     <div className="font-weight-bold text-truncate">
-                      {getCapitalize(e?.senderID)}
+                      {getCapitalize(e?.sender)}
                     </div>
                     <div className="small text-muted text-truncate">
                       {" "}

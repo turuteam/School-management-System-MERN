@@ -71,6 +71,8 @@ export default function CustomizedDialogs({
 
   //const yearOptions = getYearsList(10);
 
+  console.log(years);
+
   return (
     <Dialog
       maxWidth="lg"
@@ -100,7 +102,7 @@ export default function CustomizedDialogs({
                 </option>
                 {years?.length > 0 ? (
                   years.map((e) => (
-                    <option value={e.code} key={e.year}>
+                    <option value={e.year} key={e.year}>
                       {e.year}
                     </option>
                   ))

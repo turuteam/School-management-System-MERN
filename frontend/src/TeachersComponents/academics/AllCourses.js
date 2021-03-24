@@ -9,10 +9,11 @@ function AllCourses() {
   const user = useSelector(selectUser);
 
   useEffect(() => {
-    axios.get(`/teachers/courses/${user?.userID}`).then((res) => {
+    axios.get(`/courses/teacher/${user?.id}`).then((res) => {
+      console.log(res);
       if (res.data.success) {
-        console.log(res);
         setcourses(res.data?.docs);
+        ///teacher/${user?.userID}
       }
     });
   }, [user]);
@@ -22,7 +23,7 @@ function AllCourses() {
       <h3>My Tutorial Courses</h3>
       <div className="row mt-5">
         {courses?.length > 0 ? (
-          courses?.map((e) => <ClassCard key={e} id={e} />)
+          courses?.map((e) => <ClassCard key={e._id} id={e.code} />)
         ) : (
           <ClassCard />
         )}

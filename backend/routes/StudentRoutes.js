@@ -88,7 +88,6 @@ route.get("/unpaidfees", async (req, res) => {
       fees: e?.fees,
     };
   });
-
   res.json(results);
 });
 
@@ -304,6 +303,25 @@ route.get("/class/:id", async (req, res) => {
     });
 });
 
+//student class
+route.get("/student/class/:id/:userID", async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).send("Missing URL parameter: username");
+  }
+  await StudentModel.find({ userID: req.params.userID, classID: req.params.id })
+    .then((user) => {
+      if (user.length > 0) {
+        return res.json({ success: true, users: user });
+      } else {
+        return res.json({ success: false, error: "No Students in this class" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.json({ success: false, error: "Server error" });
+    });
+});
+
 //get students by gender, section , dormitory
 
 //create student
@@ -460,22 +478,21 @@ route.put("/update/:id", (req, res) => {
 
 //change students class
 route.post("/upgrade/class", (req, res) => {
-  const { currentlass, nextclass } = req.body;
+  const { currentclass, nextclass } = req.body;
+  console.log(currentclass, nextclass);
 
   StudentModel.updateMany(
     {
       role: role.Student,
-      classID: currentlass,
+      classID: currentclass,
     },
-    { classID: nextclass },
-    {
-      new: true,
-    }
+    { classID: nextclass }
   )
     .then((doc) => {
       if (!doc) {
         return res.json({ success: false, error: "doex not exists" });
       }
+      console.log(doc);
       return res.json({ success: true, student: doc });
     })
     .catch((err) => {

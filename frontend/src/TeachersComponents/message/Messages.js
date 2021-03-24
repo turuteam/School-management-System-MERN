@@ -11,6 +11,7 @@ import ForumIcon from "@material-ui/icons/Forum";
 import Box from "@material-ui/core/Box";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
+import { timeStamp } from "../../utils";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,13 +83,27 @@ function Messaging() {
 
   useEffect(() => {
     axios.get(`/chats/send/${user?.id}`).then(async (res) => {
-      setmessages(res.data);
+      setmessages(
+        res.data.map((e) => {
+          return {
+            ...e,
+            createdAt: timeStamp(e.createdAt),
+          };
+        })
+      );
     });
   }, [user]);
 
   useEffect(() => {
     axios.get(`/chats/user/${user?.id}`).then(async (res) => {
-      setsendMessages(res.data);
+      setsendMessages(
+        res.data.map((e) => {
+          return {
+            ...e,
+            createdAt: timeStamp(e.createdAt),
+          };
+        })
+      );
     });
   }, [user]);
 
@@ -100,6 +115,7 @@ function Messaging() {
           return errorAlert(res.data.error);
         }
         setmessages([]);
+        setsendMessages([]);
       })
       .catch((err) => {
         console.log(err);
@@ -116,6 +132,22 @@ function Messaging() {
           return errorAlert(res.data.error);
         }
         setmessages(messages.filter((i) => i._id !== id));
+      })
+      .catch((err) => {
+        console.log(err);
+        errorAlert("Failed");
+      });
+  };
+
+  const handleDeleteSend = (id) => {
+    console.log(id);
+    axios
+      .delete(`/chats/delete/${id}`)
+      .then((res) => {
+        if (res.data.error) {
+          return errorAlert(res.data.error);
+        }
+        setmessages(sendMessages.filter((i) => i._id !== id));
       })
       .catch((err) => {
         console.log(err);
@@ -165,15 +197,15 @@ function Messaging() {
         <TabPanel value={value} index={0}>
           <Table
             handleDelete={handleDelete}
-            data={sendMessages}
+            data={messages}
             isEdit={true}
             tableHeader={tableHeader}
           ></Table>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Table
-            handleDelete={handleDelete}
-            data={messages}
+            handleDelete={handleDeleteSend}
+            data={sendMessages}
             isEdit={true}
             tableHeader={tableHeaderReceived}
           ></Table>

@@ -108,6 +108,7 @@ function PayrowAll() {
         data={data}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
+        noData="No salary payments yet"
         tableHeader={tableHeader}
       />
     </div>

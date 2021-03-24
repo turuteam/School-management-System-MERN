@@ -4,6 +4,8 @@ import Search from "../../shared/Search";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
 import DivisionForm from "./DivisionForm";
+import { useDispatch } from "react-redux";
+import { setDivisions } from "../../../store/slices/schoolSlice";
 
 const tableHeadings = [
   { id: "createdAt", name: "Created At" },
@@ -22,6 +24,7 @@ function Division() {
   const [divisions, setdivisions] = useState([]);
   const [storedata, setstoredata] = useState([]);
   const [openEdit, setopenEdit] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setloading(true);
@@ -45,12 +48,18 @@ function Division() {
   const handleDelete = (id) => {
     const ans = window.confirm("are you sure you want to delete");
     if (ans) {
-      axios.delete(`/divisions/delete/${id}`).then((res) => {
+      axios.delete(`/divisions/delete/${id}`).then(async (res) => {
         if (res.data.error) {
           errorAlert(res.data.error);
           return 0;
         }
+        let deleted = divisions.find((e) => e._id === id);
         setdivisions(divisions.filter((e) => e._id !== id));
+        dispatch(setDivisions(divisions.filter((e) => e._id !== id)));
+        await axios.post("/activitylog/create", {
+          activity: `division ${deleted?.name} was deleted`,
+          user: "admin",
+        });
       });
     }
   };
@@ -73,7 +82,7 @@ function Division() {
         name,
         description,
       })
-      .then((res) => {
+      .then(async (res) => {
         setaddLoading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -84,6 +93,10 @@ function Division() {
         setname("");
         setdescription("");
         setdivisions([res.data.doc, ...divisions]);
+        await axios.post("/activitylog/create", {
+          activity: `division ${res.data.doc} created`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -99,7 +112,7 @@ function Division() {
         name,
         description,
       })
-      .then((res) => {
+      .then(async (res) => {
         setaddLoading(false);
         if (res.data.error) {
           errorAlert(res.data.error);
@@ -109,10 +122,13 @@ function Division() {
         setopenEdit(false);
         setname("");
         setdescription("");
-        let index = divisions.findIndex((e) => e._id === editID);
-        var data = divisions;
-        data[index] = res.data.doc;
-        setdivisions(data);
+        setdivisions(
+          divisions.map((i) => (i._id === editID ? res.data.doc : i))
+        );
+        await axios.post("/activitylog/create", {
+          activity: `division ${res.data.doc?.name} is updated`,
+          user: "admin",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -142,16 +158,16 @@ function Division() {
 
   return (
     <div>
-      <div className="row">
-        <div className="col-xs-12 col-sm-8 col-md-10">
-          <Search
-            handleReset={handleReset}
-            handleSearch={handleSearch}
-            title="Divisions"
-            inputFields={inputFields}
-          />
-        </div>
-        <div className="col-xs-12 col-sm-4 col-md-2">
+      <Search
+        handleReset={handleReset}
+        handleSearch={handleSearch}
+        title="Search for a division"
+        inputFields={inputFields}
+      />
+
+      <div className="content__container">
+        <div className="d-flex justify-content-between">
+          <h3>Added Divisions</h3>
           <button onClick={handleOpenAdd} className="btn orange__btn btn__lg">
             Add New Division
           </button>

@@ -10,10 +10,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import TablePaginationActions from "../../shared/TablePagination";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import LocalAtmIcon from "@material-ui/icons/LocalAtm";
 import CloseIcon from "@material-ui/icons/Close";
 import moment from "moment";
@@ -30,6 +27,7 @@ export default function CustomPaginationActionsTable({
   handleEdit,
   handleDelete,
   loading,
+  noData,
   isEdit,
 }) {
   const classes = useStyles2();
@@ -99,7 +97,14 @@ export default function CustomPaginationActionsTable({
         ) : (
           <TableBody>
             {data?.length <= 0 ? (
-              <TableRow className="text-center my-5"> No data </TableRow>
+              <TableRow className="text-center my-5">
+                <TableCell
+                  className="text-center text-danger"
+                  colSpan={tableHeader.length + 1}
+                >
+                  {noData || "No Data"}
+                </TableCell>{" "}
+              </TableRow>
             ) : (
               <>
                 {(rowsPerPage > 0

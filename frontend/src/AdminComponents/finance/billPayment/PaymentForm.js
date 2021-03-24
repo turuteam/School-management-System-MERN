@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { bankOptions } from "../../../data";
 import NumberFormat from "react-number-format";
+import { useSelector } from "react-redux";
+import { selectYearGroup } from "../../../store/slices/schoolSlice";
 
 function PaymentForm({
   applyTo,
@@ -27,6 +29,7 @@ function PaymentForm({
   setpaymentType,
 }) {
   const { register, handleSubmit, errors } = useForm();
+  const years = useSelector(selectYearGroup);
 
   const handleSelectall = (e) => {
     setapplyTo({
@@ -45,18 +48,28 @@ function PaymentForm({
         <div className="row mb-3">
           <label className="col-sm-3 col-form-label">Amount</label>
           <div className="col-sm-9">
-            <strong className="text-info ">
-              Fees Due &nbsp;
-              <NumberFormat
-                value={balance}
-                displayType={"text"}
-                thousandSeparator={true}
-                prefix={"$"}
-              />
-            </strong>
+            <div className="d-flex justify-content-between mb-2">
+              <strong className="text-info ">
+                Fees Due &nbsp;
+                <NumberFormat
+                  value={balance}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"$"}
+                />
+              </strong>
+              <button
+                type="button"
+                onClick={() => setamount(balance)}
+                className="btn blue__btn"
+              >
+                Pay All
+              </button>
+            </div>
+
             <input
               type="number"
-              ref={register({ required: true, max: balance })}
+              ref={register({ required: true, max: balance + 1 })}
               value={amount}
               onChange={(e) => setamount(e.target.value)}
               className="form-control"
@@ -89,14 +102,25 @@ function PaymentForm({
         <div className="row mb-3">
           <label className="col-sm-3 col-form-label">Academic Year</label>
           <div className="col-sm-9">
-            <input
-              type="text"
+            <select
               value={year}
               ref={register({ required: true })}
               onChange={(e) => setyear(e.target.value)}
-              className="form-control"
+              className="form-select"
               name="year"
-            />
+              required
+            >
+              {years.length > 0 ? (
+                years.map((y) => (
+                  <option key={y.year} value={y.year}>
+                    {y.year}
+                  </option>
+                ))
+              ) : (
+                <option disabled>No academic set</option>
+              )}
+            </select>
+
             {errors.year && (
               <div className="text-danger">This field is required</div>
             )}
@@ -105,14 +129,19 @@ function PaymentForm({
         <div className="row mb-3">
           <label className="col-sm-3 col-form-label">Term</label>
           <div className="col-sm-9">
-            <input
-              type="text"
+            <select
               value={term}
               ref={register({ required: true })}
               onChange={(e) => setterm(e.target.value)}
-              className="form-control"
+              className="form-select"
               name="term"
-            />
+              required
+            >
+              <option value="1">1st</option>
+              <option value="2">2rd</option>
+              <option value="3">3rd</option>
+            </select>
+
             {errors.term && (
               <div className="text-danger">This field is required</div>
             )}

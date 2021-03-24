@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Notice from "./Notices";
 import CreateNotice from "./CreatNotice";
 import axios from "../../store/axios";
+import {} from "../../store/slices/schoolSlice";
 import { errorAlert, successAlert } from "../../utils";
 
 function NotificationsPage() {
@@ -27,6 +28,7 @@ function NotificationsPage() {
   useEffect(() => {
     axios.get("/notification").then((res) => {
       setnotices(res.data);
+      console.log(res.data);
       setstoreData(res.data);
     });
   }, []);

@@ -101,28 +101,27 @@ function Notes() {
 
   return (
     <div>
-      <div className="d-flex flex-xs-column justify-content-between flex-sm-row align-items-center mb-3">
-        <div className="mb-3">
-          <Search
-            title="Academics Notes"
-            handleReset={handleReset}
-            handleSearch={handleSearch}
-            inputFields={searchInputForm}
-          />
-        </div>
-        <div className="ml-sm-5">
+      <Search
+        title="Academics Notes"
+        handleReset={handleReset}
+        handleSearch={handleSearch}
+        inputFields={searchInputForm}
+      />
+      <div className="content__container">
+        <div className="d-flex justify-content-between">
+          <h3>Notes List</h3>
           <Link to="/academics/notes/add" className="btn blue__btn ">
-            Add Form
+            Add Notes
           </Link>
         </div>
+        <FileTable
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+          data={notes}
+          user={user?.id}
+          tableHeader={tableHead}
+        />
       </div>
-      <FileTable
-        handleDelete={handleDelete}
-        handleEdit={handleEdit}
-        data={notes}
-        user={user?.id}
-        tableHeader={tableHead}
-      />
     </div>
   );
 }

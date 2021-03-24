@@ -41,11 +41,18 @@ const TeacherSchema = new Schema(
       type: String,
       required: true,
     },
-    dateofBirth: {
+    dateOfBirth: {
       type: String,
     },
-    placeofBirth: {
+    placeOfBirth: {
       type: String,
+    },
+    campusID: {
+      type: String,
+    },
+    employmentDate: {
+      type: Date,
+      default: Date.now,
     },
     department: {
       type: String,
@@ -54,7 +61,10 @@ const TeacherSchema = new Schema(
       type: String,
       default: "teacher",
     },
-    qualifiations: {
+    qualifications: {
+      type: String,
+    },
+    years: {
       type: String,
     },
     bank: {
@@ -69,7 +79,7 @@ const TeacherSchema = new Schema(
     telephone: {
       type: String,
     },
-    mobile: {
+    mobilenumber: {
       type: String,
     },
     password: {

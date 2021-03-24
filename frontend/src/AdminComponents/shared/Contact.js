@@ -1,4 +1,6 @@
 import React from "react";
+//import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
 
 function Contact(props) {
   let {
@@ -17,7 +19,8 @@ function Contact(props) {
   return (
     <div>
       <h3>Contact Details</h3>
-      <div class="row mb-3">
+
+      <div className="row mb-3">
         <div className="col-xs-12 col-sm-6 ">
           <label className="form-label">Mobile Number</label>
           <input
@@ -47,7 +50,7 @@ function Contact(props) {
           />
         </div>
       </div>
-      <div class="row mb-3">
+      <div className="row mb-3">
         <div className="col-xs-12 col-sm-6">
           <label className="form-label">Area of Residence</label>
           <textarea
