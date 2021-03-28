@@ -5,6 +5,7 @@ import axios from "../../store/axios";
 import { errorAlert } from "../../utils";
 import Loading from "../../Loading";
 import { pdf } from "../../components/tables/pdf";
+import { Link } from "react-router-dom";
 
 const headCells = [
   { id: "userID", numeric: false, disablePadding: false, label: "Teacher ID" },
@@ -133,15 +134,23 @@ function AllStaff() {
         />
       </div>
 
-      <StaffTable
-        route="staff"
-        loading={loading}
-        noData="No staff members yet"
-        students={staff}
-        handleWithdraw={handleWithdraw}
-        handleDelete={handleDelete}
-        headCells={headCells}
-      />
+      <div className="content__container">
+        <div className="d-flex justify-content-between">
+          <h3>Staff Members List</h3>
+          <Link className="btn btn-outline-info" to="/staff/new">
+            Add New Staff{" "}
+          </Link>
+        </div>
+        <StaffTable
+          route="staff"
+          loading={loading}
+          noData="No staff members yet"
+          students={staff}
+          handleWithdraw={handleWithdraw}
+          handleDelete={handleDelete}
+          headCells={headCells}
+        />
+      </div>
 
       <div className="d-flex justify-content-end">
         <button onClick={generatePDF} className="btn orange__btn ">

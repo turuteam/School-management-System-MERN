@@ -11,12 +11,9 @@ function Profile() {
 
   useEffect(() => {
     axios.get(`/school`).then((res) => {
-      console.log(res);
       setadmin(res.data);
     });
   }, [user]);
-
-  console.log(admin);
 
   return (
     <div className="profile__page">

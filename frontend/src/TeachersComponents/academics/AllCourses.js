@@ -12,8 +12,22 @@ function AllCourses() {
     axios.get(`/courses/teacher/${user?.id}`).then((res) => {
       console.log(res);
       if (res.data.success) {
-        setcourses(res.data?.docs);
-        ///teacher/${user?.userID}
+        //let classesArr = []
+        let classes = res.data?.docs.map((e) => {
+          let classesArr = [];
+          e.classes.map((i) => {
+            if (i.teacher === user?.id) {
+              classesArr.push({
+                class: i.class,
+                teacher: i.teacher,
+                course: e.code,
+              });
+            }
+          });
+          return classesArr;
+        });
+        console.log(classes.flat());
+        setcourses(classes.flat());
       }
     });
   }, [user]);
@@ -23,7 +37,9 @@ function AllCourses() {
       <h3>My Tutorial Courses</h3>
       <div className="row mt-5">
         {courses?.length > 0 ? (
-          courses?.map((e) => <ClassCard key={e._id} id={e.code} />)
+          courses?.map((e, i) => (
+            <ClassCard key={i} id={e.course} classID={e.class} />
+          ))
         ) : (
           <ClassCard />
         )}

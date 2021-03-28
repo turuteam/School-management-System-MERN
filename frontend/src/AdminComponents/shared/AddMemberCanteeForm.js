@@ -28,6 +28,8 @@ function AddMemberCanteeForm(props) {
     });
   }, []);
 
+  console.log(role);
+
   return (
     <form action="" className=" g-3">
       <div className="col-md-8 mb-3">
@@ -74,7 +76,7 @@ function AddMemberCanteeForm(props) {
               ref={register({ required: true })}
               onChange={(e) => setclass(e.target.value)}
               name="class"
-              class="form-select"
+              className="form-select"
             >
               <option defaultValue hidden>
                 Choose...

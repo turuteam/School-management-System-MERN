@@ -121,7 +121,7 @@ function NoteForm(props) {
           type="file"
           accept=".jpg,.jpeg,.png,.doc,.docx,.pdf, .zip"
           ref={register({ required: true })}
-          onChange={(e) => setfile(e.target.files[0])}
+          onChange={(e) => setfile(e)}
           className="form-control"
           name="file"
         />

@@ -10,13 +10,17 @@ const route = express.Router();
 
 //all teachers
 route.get("/", async (req, res) => {
-  const data = await TeacherModel.find({ role: role.Teacher });
+  const data = await TeacherModel.find({ isStaff: true }).sort({
+    createdAt: "desc",
+  });
+
   res.json(data);
 });
+23;
 
 //get one teacher by id
 route.get("/:id", async (req, res) => {
-  await TeacherModel.findOne({ userID: req.params.id, role: role.Teacher })
+  await TeacherModel.findOne({ userID: req.params.id })
     .then((user) => {
       if (user) {
         return res.json({ success: true, teacher: user });
@@ -48,7 +52,7 @@ route.get("/bank/:id", async (req, res) => {
     return 0;
   };
 
-  await TeacherModel.find({ role: role.Teacher, bank: req.params.id })
+  await TeacherModel.find({ isStaff: true, bank: req.params.id })
     .then((users) => {
       let data = users?.map((e) => {
         return {
@@ -89,30 +93,42 @@ route.get("/courses/:id", async (req, res) => {
 //create
 route.post("/create", async (req, res) => {
   let body = req.body;
-
   body = {
     ...body,
     name: body?.name,
     surname: body?.surname,
     email: body?.email,
-    role: role.Teacher,
+    role: body.position,
     gender: stringtoLowerCaseSpace(body?.gender),
     telephone: stringSpace(body?.telephone),
   };
   const teacherExist = await TeacherModel.findOne({
     email: body.email,
-    name: body.name,
-    surname: body.surname,
   });
   if (teacherExist) {
-    return res.json({ success: false, error: "Teacher Already exists" });
+    return res.json({ success: false, error: "Email already exists" });
+  }
+
+  const teachertelephoneExist = await TeacherModel.findOne({
+    telephone: body.telephone,
+  });
+  if (teachertelephoneExist) {
+    return res.json({ success: false, error: "Telephone  already exists" });
   }
 
   //calculate teacher
   const currentYear = new Date().getFullYear();
   const number = await TeacherModel.countDocuments({ role: role.Teacher });
   let userID = "TK" + currentYear + (number + 1);
-  console.log(number);
+
+  const usersIDExist = await TeacherModel.findOne({
+    userID: userID,
+  });
+
+  if (usersIDExist) {
+    userID = userID + 1;
+    // return res.json({ success: false, error: "UserID  already exists" });
+  }
 
   bcrypt.hash(userID, 10, (err, hash) => {
     if (err) {
@@ -203,9 +219,29 @@ route.post("/changePassword/:id", async (req, res) => {
 });
 
 //edit
-route.put("/update/:id", (req, res) => {
+route.put("/update/:id", async (req, res) => {
   if (!req.params.id) {
     return res.status(400).send("Missing URL parameter: username");
+  }
+  let body = req.body;
+  const teacherExist = await TeacherModel.findOne({
+    email: body.email,
+  });
+  if (teacherExist && teacherExist.userID !== req.params.id) {
+    return res.json({
+      success: false,
+      error: "Email already used by another account",
+    });
+  }
+
+  const teachertelephoneExist = await TeacherModel.findOne({
+    telephone: body.telephone,
+  });
+  if (teachertelephoneExist && teachertelephoneExist.userID !== req.params.id) {
+    return res.json({
+      success: false,
+      error: "Telephone number is already used by another account",
+    });
   }
   TeacherModel.findOneAndUpdate(
     {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Table from "./Table";
 import axios from "../../../store/axios";
-//import Loading from "../../../Loading";
 import { monthYear } from "../../../data";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../store/slices/userSlice";
 import { getYearsPast, errorAlert } from "../../../utils";
 import Export from "../../../components/tables/ExcelExport";
 
@@ -18,21 +19,24 @@ const tableHeader = [
 
 function Contributions() {
   const [data, setdata] = useState([]);
+  const [staff, setstaff] = useState([]);
   const years = getYearsPast(20);
   const [year, setyear] = useState("");
   const [month, setmonth] = useState("");
   const [loading, setloading] = useState(false);
   const [show, setshow] = useState(false);
-  const [teachers, setteachers] = useState([]);
-  const [selectedMonth, setselectedMonth] = useState("");
-  const [selectedYear, setselectedYear] = useState("");
-  const [isData, setisData] = useState(false);
+  const user = useSelector(selectUser);
+  const [selectedyear, setselectedyear] = useState("");
+  const [selectedmonth, setselectedmonth] = useState("");
 
   useEffect(() => {
-    axios.get("/teachers").then((res) => setteachers(res.data));
-  }, []);
+    axios.get(`/teachers`).then((res) => {
+      setstaff(res.data);
+    });
+  });
 
-  const handleSearch = () => {
+  const handleSearch = (n) => {
+    n.preventDefault();
     if (!year) {
       return errorAlert("Please select year");
     }
@@ -40,53 +44,37 @@ function Contributions() {
       return errorAlert("Please select month");
     }
     setloading(true);
-    axios
-      .get(`/transactions/pay/${year}/${month}`)
-      .then((res) => {
-        setloading(false);
-        if (res.data.error) {
-          return setdata([]);
-        }
-        var uniq = res.data.docs
-          .map((name) => {
-            return {
-              count: 1,
-              userID: name.userID,
-            };
-          })
-          .reduce((a, b) => {
-            a[b.userID] = (a[b.userID] || 0) + b.count;
-            return a;
-          }, {});
-
-        //var duplicates = Object.keys(uniq).filter((a) => uniq[a] > 1);
-
-        setdata(
-          res.data.docs?.map((e) => {
-            let result = teachers.find((i) => i.userID === e.userID);
-            return {
-              userID: result?.userID,
-              position: result?.position,
-              name: result?.name,
-              surname: result?.surname,
-              taxNumber: result?.taxNumber,
-              salary: result?.salary,
-              ssnit: result?.ssnit,
-              allowance: result?.salary,
-            };
-          })
-        );
-        setloading(false);
-        setshow(true);
-        isData(true);
-        setselectedMonth(month);
-        setselectedYear(year);
-        //
-      })
-      .catch((err) => {
-        setloading(false);
-        console.log(err, "Errpr");
-      });
+    if (year && month) {
+      axios
+        .get(`/transactions/pay/${year}/${month}`)
+        .then((res) => {
+          setloading(false);
+          setdata(
+            res.data.docs &&
+              res.data.docs?.map((e) => {
+                let result = staff.find((i) => i.userID === e.pay.userID);
+                return {
+                  userID: result?.userID,
+                  position: result?.position,
+                  name: result?.name,
+                  surname: result?.surname,
+                  tax: (e.salary || 0) * 0.05,
+                  salary: e?.salary,
+                  taxNumber: result?.ssnit ? result?.taxNumber : "not set",
+                  allowance: result?.salary,
+                };
+              })
+          );
+          setloading(false);
+          setshow(true);
+          setselectedmonth(month);
+          setselectedyear(year);
+        })
+        .catch((err) => {
+          console.log(err, "ERROR");
+          setloading(false);
+        });
+    }
   };
 
   const handlePrint = () => {
@@ -158,28 +146,37 @@ function Contributions() {
         </div>
       </form>
       {show && (
-        <>
-          <div className="content__container" id="section-to-print">
-            <h3>
-              SSNIT Contributions for month of{" "}
-              {selectedMonth && monthYear[selectedMonth].name} {selectedYear}
-            </h3>
+        <div className="content__container">
+          {" "}
+          <div id="section-to-print">
+            <div className="text-center">
+              <h3>
+                <strong>{user?.name}</strong>
+              </h3>
+              <h5>
+                5% January SSNIT Contribution List for{" "}
+                {selectedmonth && monthYear[selectedmonth].name} {selectedyear}
+              </h5>
+            </div>
+
             <Table data={data} tableHeader={tableHeader} />
           </div>
-          <div className="d-flex justify-content-center mt-5">
-            <button onClick={handlePrint} className="btn blue__btn mr-2">
-              {" "}
-              View / Print
-            </button>
-            <Export data={data} columns={tableHeader} />
-            {/* <button onClick={handleExport} className="btn blue__btn ml-2">
-              {" "}
-              Export to Excel
-            </button> */}
-          </div>
-        </>
+          {data.length > 0 && (
+            <div className="d-flex justify-content-center mt-5">
+              <button onClick={handlePrint} className="btn blue__btn mr-2">
+                {" "}
+                View / Print
+              </button>
+
+              <Export
+                className="btn blue__btn ml-2"
+                data={data}
+                columns={tableHeader}
+              ></Export>
+            </div>
+          )}
+        </div>
       )}
-      {isData && <div>No data yet</div>}
     </div>
   );
 }

@@ -20,7 +20,12 @@ const CourserSchema = new Schema(
       type: String,
     },
     classes: {
-      type: Array,
+      type: [
+        {
+          teacher: String,
+          class: String,
+        },
+      ],
     },
     department: {
       type: String,

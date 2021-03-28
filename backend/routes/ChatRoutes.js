@@ -10,7 +10,9 @@ const client = twilio(
 );
 
 route.get("/", async (req, res) => {
-  const docs = await ChatModel.find();
+  const docs = await ChatModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(docs);
 });
 
@@ -30,8 +32,6 @@ route.post("/user", async (req, res) => {
 });
 
 route.post("/", (req, res) => {
-  res.header("Content-Type", "application/json");
-  console.log(req.body);
   client.messages
     .create({
       from: process.env.TWILIO_PHONE_NUMBER,
@@ -39,15 +39,15 @@ route.post("/", (req, res) => {
       body: req.body.message,
     })
     .then(async () => {
-      console.log("message send");
+      //console.log("message send");
       await ChatModel.create(body);
       res.send(JSON.stringify({ success: true }));
     })
     .catch((err) => {
-      console.log(err, "error");
+      //console.log(err, "error");
       res.send(
         JSON.stringify({
-          error: `Phone number ${req.body.telephone} is not valid for ${req.body.userID}`,
+          error: `Number ${req.body.telephone} is not a valid phone number`,
         })
       );
     });

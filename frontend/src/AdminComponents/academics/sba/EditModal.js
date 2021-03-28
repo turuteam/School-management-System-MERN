@@ -38,12 +38,16 @@ export default function FullScreenDialog({
   loading,
   position,
   setposition,
+  classworkMark,
+  examMark,
 }) {
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm();
   const handleClose = () => {
     setOpen(false);
   };
+
+  console.log(examMark, classworkMark);
 
   return (
     <Dialog
@@ -69,94 +73,41 @@ export default function FullScreenDialog({
       </AppBar>
       <form action="" className="m-5">
         <h3 className="mb-5">Set Grades for Class {classID} </h3>
-        <div className="row mb-5">
-          <label className="form-label">Set ClassWork</label>
-          <div className="col-sm-3">
-            <label className="form-label">A1</label>
-            <input
-              value={classWork?.a1}
-              ref={register({ max: 26 })}
-              onChange={(e) =>
-                setclassWork({ ...classWork, a1: Number(e.target.value) })
-              }
-              type="number"
-              className="form-control"
-              name="a1"
-            />
-            {errors.topic && (
-              <span className=" form-error text-danger mb-2">
-                This field is required
-              </span>
-            )}
-          </div>
-          <div className="col-sm-3">
-            <label className="form-label">A2</label>
-            <input
-              value={classWork?.a2}
-              ref={register({ max: 26 })}
-              onChange={(e) =>
-                setclassWork({ ...classWork, a2: Number(e.target.value) })
-              }
-              type="number"
-              className="form-control"
-              name="a2"
-            />
-            {errors.a2 && (
-              <span className=" form-error text-danger mb-2">
-                This field is required and Max = 20
-              </span>
-            )}
-          </div>
-          <div className="col-sm-3">
-            <label className="form-label">A3</label>
-            <input
-              value={classWork?.a3}
-              ref={register({ max: 25 })}
-              onChange={(e) =>
-                setclassWork({ ...classWork, a3: Number(e.target.value) })
-              }
-              type="number"
-              className="form-control"
-              name="a3"
-            />
-            {errors.a3 && (
-              <span className=" form-error text-danger mb-2">
-                This field is required and Max = 20
-              </span>
-            )}
-          </div>
-          <div className="col-sm-3">
-            <label className="form-label">A4</label>
-            <input
-              value={classWork?.a4}
-              ref={register({ max: 25 })}
-              onChange={(e) =>
-                setclassWork({ ...classWork, a4: Number(e.target.value) })
-              }
-              type="number"
-              className="form-control"
-              name="a4"
-            />
-            {errors.a4 && (
-              <span className=" form-error text-danger mb-2">
-                This field is required and Max = 20
-              </span>
-            )}
-          </div>
+
+        <div className="mb-3">
+          <label className="form-label">
+            Set ClassWork ({Number(classworkMark || 0)}%)
+          </label>
+          <input
+            value={classWork}
+            ref={register({ max: Number(classworkMark || 0) + 1 })}
+            onChange={(e) => setclassWork(e.target.value)}
+            type="number"
+            className="form-control col-sm-6"
+            name="a1"
+          />
+          {errors.a1 && (
+            <span className=" form-error text-danger mb-2">
+              contributes ({Number(classworkMark || 0)}%
+            </span>
+          )}
         </div>
+
         <div className="mb-5">
-          <label className="form-label">Exam Mark</label>
+          <label className="form-label">
+            Exam Mark ({Number(examMark || 0)})%
+          </label>
           <input
             value={exam}
-            ref={register({ max: 100 + 1 })}
-            onChange={(e) => setexam(Number(e.target.value))}
+            ref={register({ max: Number(examMark || 0) + 1 })}
+            onChange={(e) => setexam(e.target.value)}
             type="number"
             className="form-control col-6"
             name="exams"
           />
           {errors.exams && (
             <span className=" form-error text-danger mb-2">
-              This field is required and Max = 100
+              contributes ({Number(examMark || 0)})%
             </span>
           )}
         </div>

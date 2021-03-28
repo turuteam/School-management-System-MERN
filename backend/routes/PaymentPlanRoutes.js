@@ -6,7 +6,9 @@ const route = express.Router();
 
 //get all
 route.get("/", async (req, res) => {
-  const data = await PaymentPlanModel.findOne({ dataID: "paymentPlan" });
+  const data = await PaymentPlanModel.findOne({ dataID: "paymentPlan" }).sort({
+    createdAt: "desc",
+  });
   res.json(data);
 });
 

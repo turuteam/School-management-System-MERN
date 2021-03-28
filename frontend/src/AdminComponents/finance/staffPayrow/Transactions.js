@@ -10,6 +10,7 @@ import Slide from "@material-ui/core/Slide";
 import ListTable from "../../shared/ListTable";
 import NumberFormat from "react-number-format";
 import { Link } from "react-router-dom";
+import { monthYear } from "../../../data";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -50,6 +51,13 @@ export default function ViewStudentPayment({
   const handleClose = () => {
     setOpen(false);
   };
+
+  const data = transactions.map((e) => {
+    return {
+      ...e,
+      month: monthYear[e.month].name,
+    };
+  });
 
   return (
     <Dialog
@@ -106,11 +114,7 @@ export default function ViewStudentPayment({
         </Toolbar>
       </AppBar>
       <div className="mt-5">
-        <ListTable
-          noActions={true}
-          data={transactions}
-          tableHeader={tableHeader}
-        />
+        <ListTable noActions={true} data={data} tableHeader={tableHeader} />
       </div>
     </Dialog>
   );

@@ -73,6 +73,9 @@ function EditClass() {
           activity: ` ${name} class was edited`,
           user: "admin",
         });
+        // await axios.post(`/fees/update/name`, {
+        //   name,
+        // });
       })
       .catch(() => {
         errorAlert("something went wrong");

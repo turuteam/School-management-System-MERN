@@ -10,8 +10,7 @@ var year = date.getFullYear();
 var day = date.getDate();
 var weekday = date.getDay();
 var start = new Date(year, month, day - weekday);
-
-console.log(day, moment(start).format("dddd D MMMM YYYY"));
+var end = moment(start).add(7, "day").format("dddd D MMMM YYYY");
 
 function AttendanceTabs() {
   const [dates, setdates] = useState([]);
@@ -29,7 +28,9 @@ function AttendanceTabs() {
   }, []);
 
   useEffect(() => {
-    axios.get(`/count/attendance/week/${start}`).then((res) => {
+    let d = moment(start).format("DD-MM-YYYY");
+    console.log(d);
+    axios.get(`/count/attendance/week/${d}`).then((res) => {
       setdatas(res.data.map((e) => e.value));
     });
   }, []);
@@ -62,7 +63,8 @@ function AttendanceTabs() {
   return (
     <div className="dashboard__attendance content__container">
       <h6 className="mb-5">
-        Attendance Report from {moment(start).format("dddd D MMMM YYYY")}{" "}
+        Attendance Report from {moment(start).format(" D MMMM YYYY")} to{" "}
+        {moment(end).format(" D MMMM YYYY")}
       </h6>
       <Bar data={data} options={options} />
     </div>

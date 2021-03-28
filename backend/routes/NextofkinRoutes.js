@@ -5,7 +5,9 @@ import { createnextKin } from "../middlewares/validate.js";
 const route = express.Router();
 
 route.get("/", async (req, res) => {
-  const data = await NextkinModel.find();
+  const data = await NextkinModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(data);
 });
 

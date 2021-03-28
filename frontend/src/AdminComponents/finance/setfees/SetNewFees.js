@@ -27,7 +27,7 @@ function SetNewFees() {
         };
       } else if (type === "freshDay") {
         obj = {
-          freshday: results,
+          freshDay: results,
         };
       } else if (type === "freshBorder") {
         obj = {
@@ -61,7 +61,6 @@ function SetNewFees() {
           });
         })
         .catch((err) => {
-          console.log(err);
           errorAlert("Error");
         });
     } else {

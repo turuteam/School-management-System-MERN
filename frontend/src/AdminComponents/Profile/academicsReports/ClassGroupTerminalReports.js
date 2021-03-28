@@ -15,24 +15,21 @@ const tableHeader = [
 ];
 
 function ClassGroupTerminalReports() {
-  const [group, setgroup] = useState("");
   const [year, setyear] = useState("");
   const [term, setterm] = useState("");
   const years = useSelector(selectYearGroup);
   const groups = useSelector(selectFees);
   const [loading, setloading] = useState("");
   const [data, setdata] = useState([]);
-  const [classname, setclassname] = useState("");
+
   const [termname, settermname] = useState("");
   const [yearname, setyearname] = useState("");
+  const [show, setshow] = useState(false);
 
   console.log(groups);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (!group) {
-      return errorAlert("Select Class");
-    }
     if (!year) {
       return errorAlert("Select academic year");
     }
@@ -53,8 +50,8 @@ function ClassGroupTerminalReports() {
           fees: user.fees,
         };
       });
-      setdata(students.filter((i) => i.fees === group));
-      setclassname(group);
+      setdata(students);
+      setshow(true);
       settermname(term);
       setyearname(year);
     });
@@ -66,32 +63,9 @@ function ClassGroupTerminalReports() {
 
   return (
     <div>
-      <h3>Class Group Terminal Reports</h3>
+      <h3>Class Reports</h3>
       <div className="content__container mb-5">
         <form className="row">
-          <div className="mb-3 col-sm-4">
-            <label className="form-label">Group</label>
-            <select
-              name="type"
-              value={group}
-              onChange={(e) => setgroup(e.target.value)}
-              id="inputState"
-              className="form-select"
-            >
-              <option defaultValue hidden>
-                Choose...
-              </option>
-              {groups.length > 0 ? (
-                groups.map((e) => (
-                  <option key={e._id} value={e.code}>
-                    {e.name}
-                  </option>
-                ))
-              ) : (
-                <option disabled>No class yet</option>
-              )}
-            </select>
-          </div>
           <div className="mb-3 col-sm-4">
             <label className="form-label">Academic Year</label>
             <select
@@ -151,12 +125,11 @@ function ClassGroupTerminalReports() {
           </div>
         </form>
       </div>
-      {classname && (
+      {show && (
         <div className="content__container" id="section-to-print">
           <div className="text-center mb-3">
             <h3>CLASS TERMINAL REPORT</h3>
             <div className="d-flex justify-content-around mt-2">
-              <h6>Group: {classname}</h6>
               <h6>Academic Year: {yearname}</h6>
               <h6>Term: {termname}</h6>
             </div>

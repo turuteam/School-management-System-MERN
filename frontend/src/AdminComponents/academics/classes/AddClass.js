@@ -51,6 +51,7 @@ function AddClass() {
           activity: ` ${name} class was created`,
           user: "admin",
         });
+        await axios.post("/fees/create", { name, code: name.toLowerCase() });
         setcampus("");
         setcode("");
         setname("");

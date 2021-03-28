@@ -17,7 +17,9 @@ const headCells = [
     label: "Middle Name",
   },
   { id: "surname", numeric: true, disablePadding: true, label: "Last Name" },
-  { id: "class", numeric: true, disablePadding: false, label: "Class" },
+  { id: "status", numeric: true, disablePadding: true, label: "Status" },
+  { id: "classID", numeric: true, disablePadding: false, label: "Class" },
+
   { id: "Gender", numeric: true, disablePadding: false, label: "Gender" },
 ];
 
@@ -113,6 +115,7 @@ function AllClasses({ id }) {
       <StudentsTable
         route="students"
         students={students}
+        noActions={true}
         headCells={headCells}
       />
     </div>

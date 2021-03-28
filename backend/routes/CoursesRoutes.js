@@ -5,7 +5,9 @@ import { stringtoLowerCase } from "../middlewares/utils.js";
 const route = express.Router();
 
 route.get("/", async (req, res) => {
-  const doc = await CoursesModel.find();
+  const doc = await CoursesModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(doc);
 });
 
@@ -21,6 +23,34 @@ route.get("/:id", async (req, res) => {
       } else {
         return res.json({ success: false, error: "Does not exists" });
       }
+    })
+    .catch((err) => {
+      return res.json({ success: false, error: "Server error" });
+    });
+});
+
+//get class courses
+route.get("/class/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).send("Missing URL parameter: username");
+  }
+  await CoursesModel.find({ "classes.class": req.params.id })
+    .then((docs) => {
+      return res.json({ success: true, docs });
+    })
+    .catch((err) => {
+      return res.json({ success: false, error: "Server error" });
+    });
+});
+
+//get teacher courses
+route.get("/teacher/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).send("Missing URL parameter: username");
+  }
+  await CoursesModel.find({ "classes.teacher": req.params.id })
+    .then((docs) => {
+      return res.json({ success: true, docs });
     })
     .catch((err) => {
       return res.json({ success: false, error: "Server error" });
@@ -46,7 +76,7 @@ route.get("/courseCode/:id", async (req, res) => {
 });
 
 //get by coursecode
-route.get("/teacher/:id", async (req, res) => {
+route.get("/headteacher/:id", async (req, res) => {
   if (!req.params.id) {
     return res.status(400).send("Missing URL parameter: username");
   }

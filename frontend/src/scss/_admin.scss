@@ -27,6 +27,14 @@
   }
 }
 
+.activities__container {
+  height: 500px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: hidden;
+  }
+}
 .dashboard__attendance {
   height: 50vh;
 }

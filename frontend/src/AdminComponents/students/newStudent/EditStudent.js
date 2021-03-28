@@ -137,15 +137,12 @@ function EditStudent() {
     var path = {};
     if (profileUrl) {
       path = await axios.post("/upload", fileData, {});
-      dispatch(
-        update({
-          photoUrl: path?.data?.path,
-        })
-      );
+      // dispatch(
+      //   update({
+      //     photoUrl: path?.data?.path,
+      //   })
+      // );
     }
-    // axios.post('/upload', fileData, {}).then((res) => {
-    //     const path= res.data.path;
-    console.log(path);
     axios
       .put(`/students/update/${id}`, {
         profileUrl: path?.data?.path || "",

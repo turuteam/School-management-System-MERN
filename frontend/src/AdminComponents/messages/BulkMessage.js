@@ -48,7 +48,7 @@ function BulkMessage() {
                   .then((response) => {
                     setloading(false);
                     if (response.data.error) {
-                      errorAlert(response.data.error + " for " + i?.userID);
+                      errorAlert(response.data.error);
                       return 0;
                     }
                     successAlert("message send to all staff members");
@@ -75,7 +75,7 @@ function BulkMessage() {
                   .then((response) => {
                     setloading(false);
                     if (response.data.error) {
-                      errorAlert(response.data.error + "for" + re?.userID);
+                      errorAlert(response.data.error);
                       return 0;
                     }
                     successAlert("message send to all students");
@@ -90,30 +90,37 @@ function BulkMessage() {
         case "parents":
           return await axios.get("/students/parents").then((res) => {
             let parents = res.data.docs;
-            parents.map(
-              async (i) =>
-                await axios
-                  .post(`/chats`, {
-                    message,
-                    parent: i._id,
-                    userID: "parent",
-                    telephone: i?.mobile,
-                    sender: sender?.id,
-                  })
-                  .then((response) => {
-                    setloading(false);
-                    if (response.data.error) {
-                      errorAlert(response.data.error);
-                      return 0;
-                    }
-                    successAlert("message send to all parents");
-                    setmessage("");
-                  })
-                  .catch((err) => {
-                    setloading(false);
-                    console.log(err);
-                  })
-            );
+            console.log(parents);
+            // eslint-disable-next-line no-lone-blocks
+            {
+              parents.length > 0
+                ? parents.map(
+                    async (i) =>
+                      await axios
+                        .post(`/chats`, {
+                          message,
+                          parent: i._id,
+                          userID: "parent",
+                          telephone: i?.mobile,
+                          sender: sender?.id,
+                        })
+                        .then((response) => {
+                          setloading(false);
+                          if (response.data.error) {
+                            errorAlert(response.data.error);
+                            return 0;
+                          }
+                          successAlert("message send to all parents");
+                          setmessage("");
+                        })
+                        .catch((err) => {
+                          setloading(false);
+                          console.log(err);
+                        })
+                  )
+                : errorAlert("There are parents data");
+              setloading(false);
+            }
           });
         default:
           break;

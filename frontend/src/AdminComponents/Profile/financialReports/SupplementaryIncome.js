@@ -21,6 +21,7 @@ const tableHeader = [
 
 function ViewPayment() {
   const [expenditures, setexpenditures] = useState([]);
+  const [storeData, setstoreData] = useState([]);
   const [from, setfrom] = useState(firstday);
   const [to, setto] = useState(moment().format("YYYY-MM-DD"));
   const [loading, setloading] = useState(false);
@@ -34,17 +35,36 @@ function ViewPayment() {
           description: getTrimString(e.description, 50),
         };
       });
-      setexpenditures(data);
+      setexpenditures(data.filter((i) => i.type === "income"));
+      setstoreData(data.filter((i) => i.type === "income"));
     });
   }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("searching");
+    let newData = [];
+    if (to) {
+      newData = storeData.filter(
+        (i) =>
+          moment(i.date, "YYYY-MM-DD").isBefore(moment(to, "YYYY-MM-DD")) ===
+          true
+      );
+    }
+    if (from) {
+      newData = storeData.filter(
+        (i) => moment(i.date).isAfter(moment(from, "YYYY-MM-DD")) === true
+      );
+    }
+    console.log(newData);
+    setexpenditures(newData);
   };
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleReset = () => {
+    setexpenditures(storeData);
   };
 
   return (
@@ -86,34 +106,37 @@ function ViewPayment() {
             type="submit"
             className="btn blue__btn"
           >
-            {loading && (
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-            )}
             Search
+          </button>
+          <button
+            onClick={handleReset}
+            type="submit"
+            className="btn btn-danger mx-2"
+          >
+            Reset
           </button>
         </div>
       </form>
 
       <div className="mt-5 content__container">
-        <div className="text-center">
-          <h5>
-            <strong>{user?.name}</strong>
-          </h5>
-          <h5>SUPPLEMENTARY INCOME REPORT</h5>
-          <div>
-            From {moment(from).format("DD MMMM YYYY")} - To{" "}
-            {moment(to).format("DD MMMM YYYY")}
+        <div id="section-to-print">
+          <div className="text-center">
+            <h5>
+              <strong>{user?.name}</strong>
+            </h5>
+            <h5>SUPPLEMENTARY INCOME REPORT</h5>
+            <div>
+              From {moment(from).format("DD MMMM YYYY")} - To{" "}
+              {moment(to).format("DD MMMM YYYY")}
+            </div>
           </div>
+          <ListTable
+            data={expenditures}
+            noActions={true}
+            tableHeader={tableHeader}
+          />
         </div>
-        <ListTable
-          data={expenditures}
-          noActions={true}
-          tableHeader={tableHeader}
-        />
+
         {expenditures.length > 0 && (
           <div className="text-center my-5">
             <button className="btn blue__btn mr-3 " onClick={handlePrint}>

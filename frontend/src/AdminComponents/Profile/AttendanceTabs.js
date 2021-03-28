@@ -175,16 +175,15 @@ function AttendanceTabs() {
         </form>
       </div>
       {show && (
-        <div className="mb-3">
+        <div className="mb-5" id="section-to-print">
           <div id="section-to-print">
             <Table attendanceData={attendanceData} />
           </div>
-          <div className="d-flex justify-content-center my-3">
-            <button className="btn blue__btn mr-2">Save</button>
+          {/* <div className="d-flex justify-content-center my-3">
             <button onClick={handlePrint} className="btn blue__btn">
               Print
             </button>
-          </div>
+          </div> */}
         </div>
       )}
       <h3 className="mb-5">

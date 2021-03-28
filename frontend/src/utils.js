@@ -41,6 +41,10 @@ export const getYearsList = (length) => {
   return yearArray();
 };
 
+export const currentCurrency = () => {
+  return "GH¢";
+};
+
 export const getYearsPast = (length) => {
   const max = new Date().getFullYear();
   const min = max - length;

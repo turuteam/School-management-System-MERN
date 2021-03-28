@@ -12,7 +12,9 @@ function Letter({
   author,
   setauthor,
   bank,
+  salary,
   staff,
+  currentCurrency,
 }) {
   return (
     <div className="content__container mb-3">
@@ -73,26 +75,15 @@ function Letter({
           <tr>
             <th scope="col">Staff Name</th>
             <th scope="col">Account Number</th>
-            <th scope="col">Net Salary</th>
+            <th scope="col">Net Salary {currentCurrency()}</th>
           </tr>
         </thead>
         <tbody>
-          {staff.length > 0 ? (
-            staff.map((res) => (
-              <tr key={res._id}>
-                <td>{res?.name}</td>
-                <td>{res?.accountNumber}</td>
-                <td>{}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="text-center text-bold" colSpan={3}>
-                {" "}
-                No Staff Registered
-              </td>
-            </tr>
-          )}
+          <tr>
+            <td>{staff?.name}</td>
+            <td>{staff?.accountNumber}</td>
+            <td>{salary}</td>
+          </tr>
         </tbody>
       </table>
 

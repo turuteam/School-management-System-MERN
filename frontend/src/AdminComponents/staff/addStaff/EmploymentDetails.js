@@ -7,6 +7,7 @@ import {
   selectCampuses,
   selectDepartments,
 } from "../../../store/slices/schoolSlice";
+import { Link } from "react-router-dom";
 
 function EmploymentDetails(props) {
   const campuses = useSelector(selectCampuses);
@@ -54,7 +55,11 @@ function EmploymentDetails(props) {
       <h3>Employment Details</h3>
       <div className="row mb-3">
         <div className="col-xs-12 col-sm-6  mb-3">
-          <label className="form-label">Staff Role</label>
+          <div className="d-flex justify-content-between">
+            <label className="form-label">Staff Role</label>
+            <Link to="/finance/payrow">Add New Roles</Link>
+          </div>
+
           <select
             ref={register({ required: true })}
             value={role}
@@ -66,13 +71,19 @@ function EmploymentDetails(props) {
             <option defaultValue hidden>
               select
             </option>
-            {positions &&
+            {positions.length > 0 ? (
               positions.map((e) => (
                 <option value={e?.code} key={e?._id}>
                   {e?.name}
                 </option>
-              ))}
+              ))
+            ) : (
+              <option>No position set yet</option>
+            )}
           </select>
+          {positions.length <= 0 && (
+            <Link to="/finance/payrow">Add Positions</Link>
+          )}
           {errors.role && (
             <span className=" form-error text-danger mb-2">
               Name is required

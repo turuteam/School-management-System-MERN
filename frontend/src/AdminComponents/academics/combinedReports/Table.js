@@ -19,34 +19,12 @@ const useStyles = makeStyles({
 function SbaTable({ rows, classID }) {
   const classes = useStyles();
 
-  const calculateClassWork = (obj) => {
-    if (obj) {
-      let total = 40;
-      let sum = Object.values(obj).reduce((t, { value }) => t + value, 0);
-      return (sum / total) * (100 / 2) || "-";
-    }
-    return 0;
-  };
-
   const getTotal = (exams, work) => {
-    if (exams && work) {
-      let classwork = calculateClassWork(work);
-      return exams / 2 + (classwork === "-" ? 0 : classwork);
-    }
-    return 0;
+    return Number(exams || 0) + Number(work || 0);
   };
 
   const handlePrint = () => {
     window.print();
-    // const headers = [
-    //   { key: "course", label: "UserID" },
-    //   { key: "students.name", label: "Name" },
-    //   { key: "middleName", label: "Middle Name" },
-    //   { key: "surname", label: " SurName" },
-    //   { key: "gender", label: "Gender" },
-    //   { key: "classID", label: "Class" },
-    // ];
-    // pdf({ data: rows, headers, filename: "AllStaff" });
   };
 
   return (
@@ -54,69 +32,68 @@ function SbaTable({ rows, classID }) {
       <button onClick={handlePrint} className="btn blue__btn float-right">
         Print <PrintIcon />
       </button>
-      <div
-        className="d-flex justify-content-between mb-3"
-        id="section-to-print"
-      >
+      <div className=" mb-3" id="section-to-print">
         <h3>Results for Class {classID}</h3>
+        <TableContainer className="mb-5" component={Paper}>
+          <Table className={classes.table} aria-label="spanning table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Course</TableCell>
+                <TableRow>
+                  <TableCell style={{ width: 160 }} align="left">
+                    Name of Student
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="left">
+                    ClassWork
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="left">
+                    Exam
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="left">
+                    Final Course
+                  </TableCell>
+                </TableRow>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows?.map((row) => (
+                <TableRow key={row?._id}>
+                  <TableCell>{row?.course}</TableCell>
+                  <TableCell align="left">
+                    {row?.students.map((user) => (
+                      <TableRow
+                        align="left"
+                        key={user?._id}
+                        className="table-borderless"
+                      >
+                        <TableCell style={{ width: 160 }}>
+                          {user?.name}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }}>
+                          {user?.classWork}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }}>
+                          {user?.exam || "-"}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }}>
+                          {getTotal(user?.exam, user?.classWork)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableCell>
+                </TableRow>
+              ))}
+              {rows.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center text-danger">
+                    No data yet
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
-      <TableContainer className="mb-5" component={Paper}>
-        <Table className={classes.table} aria-label="spanning table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">Course</TableCell>
-              <TableRow>
-                <TableCell style={{ width: 160 }} align="left">
-                  Name of Student
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="left">
-                  ClassWork
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="left">
-                  Exam
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="left">
-                  Final Course
-                </TableCell>
-              </TableRow>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows?.map((row) => (
-              <TableRow key={row?._id}>
-                <TableCell>{row?.course}</TableCell>
-                <TableCell align="left">
-                  {row?.students.map((user) => (
-                    <TableRow
-                      align="left"
-                      key={user?._id}
-                      className="table-borderless"
-                    >
-                      <TableCell style={{ width: 160 }}>{user?.name}</TableCell>
-                      <TableCell style={{ width: 160 }}>
-                        {calculateClassWork(user?.classWork)}
-                      </TableCell>
-                      <TableCell style={{ width: 160 }}>
-                        {user?.exam || "-"}
-                      </TableCell>
-                      <TableCell style={{ width: 160 }}>
-                        {getTotal(user?.exam, user?.classWork)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableCell>
-              </TableRow>
-            ))}
-            {rows.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center text-danger">
-                  No data yet
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
     </div>
   );
 }

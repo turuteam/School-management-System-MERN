@@ -111,73 +111,76 @@ function NewStaff() {
     console.log(e, "ckecked");
   };
 
-  const handleCreateSubmit = () => {
+  const handleCreateSubmit = async () => {
     const fileData = new FormData();
-    fileData.append("photo", profileUrl);
-    axios.post("/upload", fileData, {}).then((res) => {
-      const path = res.data.path;
-      axios
-        .post("/teachers/create", {
-          profileUrl: path,
-          name,
-          middleName: secondName,
-          surname: lastname,
-          gender,
-          title,
-          dateofBirth,
-          email,
-          nationality,
-          religion,
-          placeofBirth,
-          bank,
-          accountNumber,
-          qualifications: qualification,
-          campusID: campus,
-          employmentDate,
-          health,
-          disease,
-          allege,
-          allowance,
-          department,
-          years,
-          salary,
-          ssnit,
-          taxNumber,
-          position: role,
-          mobilenumber,
-          telephone,
-          postalAddress,
-          physicalAddress: residence,
-          nextofKin: {
-            name: nextname,
-            relationship: relationship,
-            occupation: occupation,
-            email: nextemail,
-            mobile: nexttelephone,
-            address: address,
-            lastname: nextlastname,
-          },
-        })
-        .then(async (response) => {
-          setloading(false);
-          if (response.data.error) {
-            errorAlert(response.data.error);
-            return 0;
-          }
-          dispatch(setStaff([res.data.teacher, ...staff]));
-          await axios.post("/activitylog/create", {
-            activity: `staff member ${name} ${lastname} was created`,
-            user: "admin",
-          });
-          handleReset();
-          successAlert("successfully added");
-        })
-        .catch((err) => {
-          setloading(false);
-          console.log(err);
-          errorAlert("something went wrong");
+    let path = "";
+    if (profileUrl) {
+      fileData.append("photo", profileUrl);
+      const fileResponse = await axios.post("/upload", fileData, {});
+      // axios.post("/upload", fileData, {}).then((res) => {
+      path = fileResponse.data.path;
+    }
+    axios
+      .post("/teachers/create", {
+        profileUrl: path,
+        name,
+        middleName: secondName,
+        surname: lastname,
+        gender,
+        title,
+        dateofBirth,
+        email,
+        nationality,
+        religion,
+        placeofBirth,
+        bank,
+        accountNumber,
+        qualifications: qualification,
+        campusID: campus,
+        employmentDate,
+        health,
+        disease,
+        allege,
+        allowance,
+        department,
+        years,
+        salary,
+        ssnit,
+        taxNumber,
+        position: role,
+        mobilenumber,
+        telephone,
+        postalAddress,
+        physicalAddress: residence,
+        nextofKin: {
+          name: nextname,
+          relationship: relationship,
+          occupation: occupation,
+          email: nextemail,
+          mobile: nexttelephone,
+          address: address,
+          lastname: nextlastname,
+        },
+      })
+      .then(async (response) => {
+        setloading(false);
+        if (response.data.error) {
+          errorAlert(response.data.error);
+          return 0;
+        }
+        dispatch(setStaff([response.data.teacher, ...staff]));
+        await axios.post("/activitylog/create", {
+          activity: `staff member ${name} ${lastname} was created`,
+          user: "admin",
         });
-    });
+        handleReset();
+        successAlert("successfully added");
+      })
+      .catch((err) => {
+        setloading(false);
+        console.log(err);
+        errorAlert("something went wrong");
+      });
   };
 
   const handleChangeFile = (e) => {

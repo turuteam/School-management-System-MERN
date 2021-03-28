@@ -6,7 +6,9 @@ import {createTask} from '../middlewares/validate.js'
 const route = express.Router();
 
 route.get('/', async(req, res) => {
-    const data = await TaskModel.find();
+    const data = await TaskModel.find().sort({
+      createdAt: "desc",
+    });
     res.json(data);
 })
 

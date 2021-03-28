@@ -13,7 +13,7 @@ const tableHeader = [
   { id: "userID", name: "Staff ID" },
   { id: "name", name: "Name" },
   { id: "bank", name: "Bank" },
-  { id: "acount", name: "Account Number" },
+  { id: "accountNumber", name: "Account Number" },
   { id: "amount", name: "Total Salary ($)" },
 ];
 

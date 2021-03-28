@@ -117,13 +117,13 @@ function NewStudent() {
     var path;
     if (profileUrl) {
       path = await axios.post("/upload", fileData, {});
-      dispatch(
-        update({
-          photoUrl: path?.data?.path,
-        })
-      );
+      // dispatch(
+      //   update({
+      //     photoUrl: path?.data?.path,
+      //   })
+      // );
     }
-    axios
+    await axios
       .post("/students/create", {
         profileUrl: path?.data?.path,
         name,

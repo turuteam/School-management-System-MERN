@@ -147,11 +147,19 @@ function EditStaff() {
     setrelationship(data.nextofKin?.relationship);
   };
 
-  const handleCreateSubmit = () => {
+  const handleCreateSubmit = async () => {
     setloading(true);
+    const fileData = new FormData();
+    let path = "";
+    if (profileUrl) {
+      fileData.append("photo", profileUrl);
+      const fileResponse = await axios.post("/upload", fileData, {});
+      // axios.post("/upload", fileData, {}).then((res) => {
+      path = fileResponse.data.path;
+    }
     axios
       .put(`/teachers/update/${id}`, {
-        profileUrl,
+        profileUrl: path,
         name,
         middleName: secondName,
         surname: lastname,
@@ -200,7 +208,7 @@ function EditStaff() {
         setdetails(res.data.teacher);
         successAlert("Successfully Edited");
         dispatch(
-          setStaff(staff.map((i) => (i.userID === id ? res.data.teacher : i)))
+          setStaff(staff.map((i) => (i.userID === id ? res.data.doc : i)))
         );
         await axios.post("/activitylog/create", {
           activity: `staff member  ${name} ${lastname} was edited`,

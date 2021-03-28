@@ -40,6 +40,10 @@ const ClassesSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    past: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

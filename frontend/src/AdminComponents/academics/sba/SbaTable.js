@@ -15,24 +15,19 @@ const useStyles = makeStyles({
   },
 });
 
-function SbaTable({ rows, handleEdit, setclassWork }) {
+function SbaTable({
+  rows,
+  handleEdit,
+  setclassWork,
+  examMark,
+  setexamMark,
+  classworkMark,
+  setclassworkMark,
+}) {
   const classes = useStyles();
 
-  const calculateClassWork = (obj) => {
-    if (obj) {
-      let total = 40;
-      let sum = Object.values(obj).reduce((t, { value }) => t + value, 0);
-      return (sum / total) * (100 / 2) || 0;
-    }
-    return 0;
-  };
-
   const getTotal = (exams, work) => {
-    if (exams && work) {
-      let classwork = calculateClassWork(work);
-      return exams / 2 + classwork;
-    }
-    return 0;
+    return Number(exams || 0) + Number(work || 0);
   };
 
   return (
@@ -46,35 +41,25 @@ function SbaTable({ rows, handleEdit, setclassWork }) {
               <TableCell align="left" colSpan={3}>
                 Name of Student
               </TableCell>
-              <TableCell align="left" colSpan={4}>
-                Class Work
+              <TableCell align="left">
+                Class Work (%)
+                <input
+                  className="form-control"
+                  onChange={(e) => setclassworkMark(e.target.value)}
+                  value={classworkMark}
+                ></input>
               </TableCell>
-              <TableCell align="left">Class Work Scaled to 50%</TableCell>
-              <TableCell align="left">Exam score 100%</TableCell>
-              <TableCell align="left">Exam Score scaled to 50%</TableCell>
-              <TableCell align="left">Total</TableCell>
+              <TableCell align="left">
+                Exam Score (%)
+                <input
+                  className="form-control"
+                  onChange={(e) => setexamMark(e.target.value)}
+                  value={examMark}
+                ></input>{" "}
+              </TableCell>
+              <TableCell align="left">Total (100%)</TableCell>
               <TableCell align="left">Position</TableCell>
               <TableCell align="left">Action</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={4}></TableCell>
-              <TableCell align="center">
-                <div className="border-bottom">A1</div>
-                <div className="">25</div>
-              </TableCell>
-              <TableCell align="center">
-                <div className="border-bottom">A2</div>
-                <div className="">25</div>
-              </TableCell>
-              <TableCell align="center">
-                <div className="border-bottom">A3</div>
-                <div className="">25</div>
-              </TableCell>
-              <TableCell align="center">
-                <div className="border-bottom">A4</div>
-                <div className="">25</div>
-              </TableCell>
-              <TableCell colSpan={6}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -89,39 +74,7 @@ function SbaTable({ rows, handleEdit, setclassWork }) {
                     <TableCell align="left">
                       <input
                         readOnly
-                        value={row?.classWork?.a1 || "-"}
-                        type="text"
-                        className="form-control"
-                      />
-                    </TableCell>
-                    <TableCell align="left">
-                      <input
-                        readOnly
-                        value={row.classWork?.a2 || "-"}
-                        type="text"
-                        className="form-control"
-                      />
-                    </TableCell>
-                    <TableCell align="left">
-                      <input
-                        readOnly
-                        value={row?.classWork?.a3 || "-"}
-                        type="text"
-                        className="form-control"
-                      />
-                    </TableCell>
-                    <TableCell align="left">
-                      <input
-                        readOnly
-                        value={row?.classWork?.a4 || "-"}
-                        type="text"
-                        className="form-control"
-                      />
-                    </TableCell>
-                    <TableCell align="left">
-                      <input
-                        readOnly
-                        value={calculateClassWork(row?.classWork)}
+                        value={row?.classWork || "-"}
                         type="text"
                         className="form-control"
                       />
@@ -134,14 +87,7 @@ function SbaTable({ rows, handleEdit, setclassWork }) {
                         className="form-control"
                       />
                     </TableCell>
-                    <TableCell align="left">
-                      <input
-                        readOnly
-                        value={row?.exam / 2 || 0}
-                        type="text"
-                        className="form-control"
-                      />
-                    </TableCell>
+
                     <TableCell align="left">
                       <input
                         readOnly

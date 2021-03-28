@@ -17,6 +17,12 @@ const SBASchema = new Schema(
     term: {
       type: String,
     },
+    exam: {
+      type: Number,
+    },
+    classWork: {
+      type: Number,
+    },
     students: {
       type: [
         {
@@ -24,7 +30,7 @@ const SBASchema = new Schema(
           name: String,
           position: String,
           exam: Number,
-          classWork: Object,
+          classWork: Number,
         },
       ],
     },

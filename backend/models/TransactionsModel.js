@@ -32,6 +32,7 @@ const TransactionSchema = new Schema(
         position: String,
         month: String,
         year: String,
+        salary: String,
       },
     },
     fees: {

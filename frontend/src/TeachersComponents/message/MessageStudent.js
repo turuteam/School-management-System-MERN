@@ -22,6 +22,9 @@ function MessageStudent() {
         errorAlert(res.data.error);
         return 0;
       }
+      if (res.data.users.length <= 0) {
+        return errorAlert("No students Find");
+      }
       setsearch("");
       setrecipientsOptions(
         res.data.users.map((user) => {

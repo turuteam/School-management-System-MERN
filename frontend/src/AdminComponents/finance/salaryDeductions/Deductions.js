@@ -31,7 +31,6 @@ function Deductions() {
 
   useEffect(() => {
     axios.get("/deductions").then((res) => {
-      console.log(res.data);
       setdata(
         res.data.map((e) => {
           return {
@@ -42,14 +41,22 @@ function Deductions() {
       );
     });
   }, []);
-  console.log(data);
 
   const handleSetStaff = (e) => {
-    staff.includes(e.target.value);
+    console.log("clicked", e);
     if (staff.includes(e.target.value)) {
       setstaff(staff.filter((i) => i !== e.target.value));
     } else {
       setstaff([...staff, e.target.value]);
+    }
+  };
+
+  const handleEditSetStaff = (e) => {
+    console.log("clicked", e);
+    if (staff.includes(e.target.value)) {
+      seteditstaff(editstaff.filter((i) => i !== e.target.value));
+    } else {
+      seteditstaff([...editstaff, e.target.value]);
     }
   };
 
@@ -96,7 +103,6 @@ function Deductions() {
           ...res.data.doc,
           number: res.data.doc.staff?.length,
         };
-        console.log(newDoc);
         setdata(data.map((doc) => (doc._id === editID ? newDoc : doc)));
         seteditname("");
         seteditamount("");
@@ -170,6 +176,7 @@ function Deductions() {
         handleSelectAll={handleSelectAll}
         Allstaff={Allstaff}
         loading={editLoading}
+        handleSetStaff={handleEditSetStaff}
         staff={editstaff}
         setamount={seteditamount}
         name={editname}

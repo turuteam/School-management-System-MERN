@@ -70,12 +70,12 @@ function EditProfile() {
       settelephone(data?.mobile);
       setpostalAddress(data?.postalAddress);
       setnexttelephone(data?.nextofKin?.mobile);
-      setnextemail(data.nextofKin?.email);
-      setnextlastname(data.nextofKin?.name);
-      setnextname(data.nextofKin?.name);
-      setaddress(data.nextofKin?.address);
-      setoccupation(data.nextofKin?.occupation);
-      setrelationship(data.nextofKin?.relationship);
+      setnextemail(data?.nextofKin?.email);
+      setnextlastname(data?.nextofKin?.lastname);
+      setnextname(data?.nextofKin?.name);
+      setaddress(data?.nextofKin?.address);
+      setoccupation(data?.nextofKin?.occupation);
+      setrelationship(data?.nextofKin?.relationship);
     });
   }, [user]);
 
@@ -177,6 +177,12 @@ function EditProfile() {
           setplaceofBirth={setplaceofBirth}
           religion={religion}
           setreligion={setreligion}
+          healthCon={health}
+          setHealthCon={sethealth}
+          disease={disease}
+          setDisease={setdisease}
+          allerge={allege}
+          setallerge={setallege}
         />
         <br className="my-4" />
         <ContactDetails

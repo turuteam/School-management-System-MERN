@@ -4,8 +4,6 @@ import { bankOptions } from "../../../data";
 //import NumberFormat from "react-number-format";
 
 function PaymentForm({
-  applyTo,
-  setapplyTo,
   bank,
   setbank,
   setchequeNo,
@@ -28,17 +26,6 @@ function PaymentForm({
 }) {
   const { register, handleSubmit, errors } = useForm();
 
-  const handleSelectall = (e) => {
-    setapplyTo({
-      all: !applyTo?.all,
-      tuition: !applyTo?.all,
-      examination: !applyTo?.all,
-      facility: !applyTo?.all,
-      maintanance: !applyTo?.all,
-    });
-  };
-
-  const [showCheck, setshowCheck] = useState(false);
   return (
     <div className="content__container">
       <form action="">
@@ -84,7 +71,7 @@ function PaymentForm({
               type="text"
               value={year}
               ref={register({ required: true })}
-              onChange={(e) => setyear(e.target.value)}
+              readOnly
               className="form-control"
               name="year"
             />
@@ -100,7 +87,7 @@ function PaymentForm({
               type="text"
               value={term}
               ref={register({ required: true })}
-              onChange={(e) => setterm(e.target.value)}
+              readOnly
               className="form-control"
               name="term"
             />

@@ -154,7 +154,7 @@ function Personalnfo(props) {
           <label className="form-label">Email</label>
           <input
             value={email}
-            ref={register({ pattern: getEmailPattern() })}
+            ref={register({ required: true, pattern: getEmailPattern() })}
             onChange={(e) => setemail(e.target.value)}
             type="email"
             name="email"

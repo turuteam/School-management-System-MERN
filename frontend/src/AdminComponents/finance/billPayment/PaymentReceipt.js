@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "../../../store/axios";
 import { useParams, useHistory } from "react-router-dom";
 import moment from "moment";
-import { errorAlert } from "../../../utils";
+import { errorAlert, currentCurrency } from "../../../utils";
 
 function PaymentReceipt() {
   const [state, setstate] = useState({});
@@ -118,7 +118,9 @@ function PaymentReceipt() {
                 <strong>Amount Paid</strong>
               </h6>
               <h6>
-                <strong>{transaction?.amount || "-"} </strong>
+                <strong>
+                  {currentCurrency()} {transaction?.amount || "-"}{" "}
+                </strong>
               </h6>
             </div>
           </div>

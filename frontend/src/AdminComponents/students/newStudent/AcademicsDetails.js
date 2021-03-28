@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { studentStatus } from "../../../data";
 import {
   selectClasses,
@@ -237,6 +238,7 @@ function AcademicsDetails(props) {
             )}
           </select>
         </div>
+
         <div className="col-xs-12 col-sm-6  col-md-4">
           <label className="form-label">Fees Category</label>
           <select
@@ -259,6 +261,9 @@ function AcademicsDetails(props) {
               <option disabled>No data yet</option>
             )}
           </select>
+          {feesType.length <= 0 && (
+            <Link to="/academics/classgroups">Set fees</Link>
+          )}
         </div>
         <div className="col-xs-12 col-sm-6  col-md-4">
           <label className="form-label">Campus</label>

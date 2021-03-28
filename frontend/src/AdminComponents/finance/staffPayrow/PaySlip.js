@@ -3,6 +3,7 @@ import axios from "../../../store/axios";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { monthYear } from "../../../data";
+import { currentCurrency } from "../../../utils";
 
 const today = new Date();
 
@@ -10,21 +11,39 @@ function PaySlip() {
   const [state, setstate] = useState({});
   const [payrow, setpayrow] = useState({});
   const [user, setuser] = useState({});
+  const [salaryDeducation, setsalaryDeducation] = useState("");
+  const [istax, setistax] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     axios.get("/school").then((res) => {
-      console.log(res.data);
       setstate(res.data);
     });
   }, []);
 
   useEffect(() => {
+    axios.get("/deductions").then((res) => {
+      let total = [];
+      res.data.map((e) => {
+        let isExist = e.staff.find((i) => i === id);
+        if (isExist) {
+          return total.push({
+            amount: e.amount,
+            name: e.name,
+          });
+        }
+      });
+      let bal = total.reduce((val, e) => val + e.amount, 0);
+      setsalaryDeducation(bal);
+    });
+  }, [id]);
+
+  useEffect(() => {
     axios.get(`/teachers/${id}`).then(async (res) => {
       setuser(res.data.teacher);
+      setistax(res.data.teacher?.ssnit ? true : false);
       let payData = await axios.get(`/payrow/${res.data.teacher?.position}`);
       let pay = payData?.data.docs;
-      console.log(pay);
       const bill =
         Number(pay?.allowance) + Number(pay?.salary) + Number(pay?.bonus);
       setpayrow({ ...pay, total: bill });
@@ -35,10 +54,16 @@ function PaySlip() {
     window.print();
   };
 
+  let totalDeductions =
+    Number(payrow?.salary * 0.1) +
+    Number(payrow?.total * 0.05) +
+    Number(salaryDeducation);
+
   return (
     <>
       <div className="border content__container mb-4" id="section-to-print">
         <div className="text-center border-bottom p-3">
+          {/* <img height="100px" src={getImgSrc(state?.profileUrl)} alt="" /> */}
           <h2>{state?.fullName}</h2>
           <p>{state?.motto}</p>
           <h6>
@@ -78,7 +103,7 @@ function PaySlip() {
                 <strong>Account Number</strong>
               </h6>
               <h6>
-                <strong>{user?.accNumber || "-"} </strong>
+                <strong>{user?.accountNumber || "-"} </strong>
               </h6>
             </div>
             <div className="d-flex ">
@@ -96,10 +121,10 @@ function PaySlip() {
           <thead>
             <tr>
               <th colSpan="2" scope="col">
-                Income
+                Income ({currentCurrency()})
               </th>
               <th colSpan="2" scope="col">
-                Deductions
+                Deductions ({currentCurrency()})
               </th>
             </tr>
           </thead>
@@ -108,31 +133,34 @@ function PaySlip() {
               <td>Basic Salary</td>
               <td>{payrow?.salary}</td>
               <td>Income Tax</td>
-              <td>250</td>
+              <td>{payrow?.salary * 0.1}</td>
             </tr>
             <tr>
               <td>Allowance</td>
               <td>{payrow?.allowance}</td>
-              <td>Employee SSF</td>
-              <td>50</td>
+              <td>Employee SSNIT</td>
+
+              <td>{istax ? payrow?.total * 0.05 : "-"}</td>
             </tr>
             <tr>
               <td>Bonus</td>
               <td>{payrow.bonus}</td>
-              <td>Other Deductions</td>
-              <td>20</td>
+              <td>Salary Deductions</td>
+              <td>{salaryDeducation}</td>
             </tr>
             <tr>
               <td>Gross Income</td>
               <td>{payrow?.total}</td>
               <td>Total Deductions</td>
-              <td>330</td>
+              <td>{totalDeductions}</td>
             </tr>
             <tr>
               <td></td>
               <td></td>
               <td>Net Salary</td>
-              <td>{payrow?.total - 330}</td>
+              <td>
+                {currentCurrency()} {payrow?.total - totalDeductions}
+              </td>
             </tr>
           </tbody>
         </table>

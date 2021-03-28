@@ -5,7 +5,9 @@ const route = express.Router();
 
 //get all events
 route.get("/", async (req, res) => {
-  const docs = await CurrentModel.find();
+  const docs = await CurrentModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(docs);
 });
 
@@ -43,19 +45,6 @@ route.post("/create", async (req, res) => {
 
 //set
 route.post("/set/:id", async (req, res) => {
-  //check if exist
-  let isAdded = await CurrentModel.findOne({
-    code: req.params.id,
-    years: { $in: [req.body.currentYear] },
-  });
-  //create id
-
-  if (!isAdded) {
-    await CurrentModel.findOneAndUpdate(
-      { code: req.params.id },
-      { $push: { years: req.body.currentYear } }
-    );
-  }
   CurrentModel.findOneAndUpdate(
     {
       code: req.params.id,
@@ -66,9 +55,10 @@ route.post("/set/:id", async (req, res) => {
     }
   )
     .then(async (doc) => {
+      console.log(doc);
       if (!doc) {
         let docs = await CurrentModel.create(req.body);
-        res.json({ success: true, docs: docs });
+        return res.json({ success: true, docs: docs });
       }
       return res.json({ success: true, docs: doc });
     })

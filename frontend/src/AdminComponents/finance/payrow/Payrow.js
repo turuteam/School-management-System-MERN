@@ -124,7 +124,7 @@ function PaymentPlan() {
 
   return (
     <div>
-      <h3 className="my-5">Staff Payrow Details</h3>
+      <h3 className="my-5">Staff Roles and Payrow Details</h3>
       <table className="table content__container">
         <thead>
           <tr>

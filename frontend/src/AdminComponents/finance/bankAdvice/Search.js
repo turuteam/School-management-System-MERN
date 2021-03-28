@@ -12,6 +12,7 @@ function Search({
   setbank,
   loading,
   onSearch,
+  teachers,
 }) {
   const { register, handleSubmit, errors } = useForm();
 
@@ -74,7 +75,7 @@ function Search({
         )}
       </div>
       <div className="col-sm-3">
-        <label className="form-label">Select Bank</label>
+        <label className="form-label">Select Teacher</label>
         <select
           ref={register({ required: true })}
           value={bank}
@@ -85,10 +86,10 @@ function Search({
           <option defaultValue hidden>
             Choose...
           </option>
-          {bankOptions?.length > 0 ? (
-            bankOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
+          {teachers?.length > 0 ? (
+            teachers.map((option) => (
+              <option key={option.userID} value={option.userID}>
+                {option.userID}
               </option>
             ))
           ) : (
@@ -105,7 +106,7 @@ function Search({
         <button
           disabled={loading}
           onClick={handleSubmit(onSearch)}
-          className="btn blue__btn"
+          className="btn blue__btn mt-4"
         >
           {loading && (
             <span

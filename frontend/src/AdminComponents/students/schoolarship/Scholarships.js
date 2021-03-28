@@ -106,7 +106,7 @@ function Scholarships() {
           )
         );
         await axios.post("/activitylog/create", {
-          activity: `new scholarship ${name} was added`,
+          activity: ` scholarship ${editname} was edited`,
           user: "admin",
         });
         seteditID("");

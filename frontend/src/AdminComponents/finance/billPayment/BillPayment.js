@@ -17,6 +17,7 @@ function BillPayment() {
   const [bank, setbank] = useState("");
   const [chequeNo, setchequeNo] = useState("");
   const [paymentType, setpaymentType] = useState("");
+
   const [applyTo, setapplyTo] = useState({
     all: false,
     tuition: false,
@@ -33,24 +34,36 @@ function BillPayment() {
   const [balance, setbalance] = useState(0);
   const [totalBill, settotalBill] = useState(0);
   const [totalPaid, settotalPaid] = useState(0);
-  const [message, setmessage] = useState("");
+  const [show, setshow] = useState(false);
 
-  const handleSelectStudent = async (id) => {
+  const handleSelectStudent = async (e) => {
+    e.preventDefault();
+    if (!term) {
+      return errorAlert("Please select term");
+    }
+    if (!year) {
+      return errorAlert("Please select year");
+    }
+
+    if (!studentID) {
+      return errorAlert("Please select student");
+    }
+    setshow(false);
     setloading(true);
-    setstudentID(id);
-    let transactionData = await axios.get(`/transactions/student/${id}`);
-    settransactions(transactionData.data);
-
-    let studentData = await axios.get(`/students/student/${id}`);
-    let student = studentData.data?.student;
-
-    setuser(student);
-    //let allFees = await axios.get(`/fees`);
-
-    let feesData = await axios.get(
-      `/fees/type/${student?.fees}/${student?.status}`
+    let transactionData = await axios.get(`/transactions/student/${studentID}`);
+    console.log(transactionData);
+    let thisMonthTrans = transactionData.data.filter(
+      (e) => e.fees.term === term && e.fees.academicYear === year
     );
-    console.log(feesData);
+    settransactions(thisMonthTrans);
+
+    let studentData = await axios.get(`/students/student/${studentID}`);
+    let student = studentData.data?.student;
+    setuser(student);
+    let feesData = await axios.get(
+      `/fees/type/${student?.classID}/${student?.status}`
+    );
+
     setfeetype(feesData?.data);
 
     const bill = Object.values(feesData?.data).reduce(
@@ -58,7 +71,7 @@ function BillPayment() {
       0
     );
 
-    const paid = transactionData.data?.reduce((accumulator, element) => {
+    const paid = thisMonthTrans?.reduce((accumulator, element) => {
       return Number(accumulator) + Number(element?.amount);
     }, 0);
 
@@ -66,6 +79,7 @@ function BillPayment() {
     settotalPaid(paid);
     setbalance(bill - paid);
     setloading(false);
+    setshow(true);
   };
 
   const handleSelectClass = (id) => {
@@ -143,13 +157,18 @@ function BillPayment() {
           <SearchStudent
             loading={loadingStudents}
             studentID={studentID}
-            setstudentID={handleSelectStudent}
+            setstudentID={setstudentID}
             setclassID={handleSelectClass}
+            handleSearch={handleSelectStudent}
             classID={classID}
+            year={year}
+            term={term}
+            setterm={setterm}
+            setyear={setyear}
             studentOptions={studentOptions}
           />
 
-          {studentID && (
+          {show && (
             <>
               {" "}
               {balance > 0 ? (
@@ -189,7 +208,7 @@ function BillPayment() {
           )}
         </div>
         <div className="col-sm-6">
-          {studentID && (
+          {show && (
             <ViewStudent
               transactions={transactions}
               user={user}

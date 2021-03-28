@@ -23,6 +23,7 @@ function AddCanteenPayment() {
 
   useEffect(() => {
     axios.get("/paymentplan").then((res) => {
+      ///console.log(res.data);
       setpaymentPlan(res.data?.plans);
     });
   }, []);

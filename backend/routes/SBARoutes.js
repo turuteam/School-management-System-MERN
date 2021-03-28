@@ -6,7 +6,9 @@ import { role } from "../middlewares/variables.js";
 const route = express.Router();
 
 route.get("/", async (req, res) => {
-  const data = await SBAModel.find();
+  const data = await SBAModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(data);
 });
 

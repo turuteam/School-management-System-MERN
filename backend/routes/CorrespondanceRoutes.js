@@ -3,7 +3,9 @@ import CorrespondanceModel from "../models/CorrespondanceModel.js";
 const route = express.Router();
 
 route.get("/", async (req, res) => {
-  const docs = await CorrespondanceModel.find();
+  const docs = await CorrespondanceModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(docs);
 });
 

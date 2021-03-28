@@ -15,12 +15,7 @@ function FinancialTabs() {
             route="/reports/nonbillpayment"
           />
         </div>
-        <div className="col-sm-6 col-md-4">
-          <Card
-            name="Itemized Bill Payment Summary"
-            route="/reports/itemizedbillpayment"
-          />
-        </div>
+
         <div className="col-sm-6 col-md-4">
           <Card name="Expenditure Report" route="/reports/expenditure" />
         </div>
@@ -30,15 +25,7 @@ function FinancialTabs() {
             route="/reports/supplementaryincome"
           />
         </div>
-        <div className="col-sm-6 col-md-4">
-          <Card name="Income Statement" route="/reports/incomestatement" />
-        </div>
-        <div className="col-sm-6 col-md-4">
-          <Card
-            name="Expected Revenue Report"
-            route="/reports/expectedrevenue"
-          />
-        </div>
+
         <div className="col-sm-6 col-md-4">
           <Card
             name="Student Payments History "
@@ -48,14 +35,9 @@ function FinancialTabs() {
         <div className="col-sm-6 col-md-4">
           <Card name="Class Ledger Report" route="/reports/classledger" />
         </div>
+
         <div className="col-sm-6 col-md-4">
-          <Card name="Cancel Payments" route="/reports/canceledpayments" />
-        </div>
-        <div className="col-sm-6 col-md-4">
-          <Card name="Teller Reports" route="/reports/teller" />
-        </div>
-        <div className="col-sm-6 col-md-4">
-          <Card name="Non Debtors Report" route="/reports/nondebtors" />
+          <Card name=" Debtors Report" route="/reports/nondebtors" />
         </div>
       </div>
     </div>

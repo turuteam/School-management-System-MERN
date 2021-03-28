@@ -39,24 +39,28 @@ function Cards({ counts }) {
         icon={<ClassIcon />}
         value={classes}
         title="Classes"
+        message="Registered Classes"
         link="/academics/classes"
       />
       <Card
         icon={<BrandingWatermarkIcon />}
         value={classes}
         title="Divisions"
+        message="Registered "
         link="/academics/divisions"
       />
       <Card
         icon={<HomeWorkIcon />}
         value={campuses}
         title="Campuses"
+        message="Registered Campuses"
         link="/students/campus"
       />
       <Card
         icon={<ImportContactsIcon />}
         value={course}
         title="Courses"
+        message="Registered"
         link="/academics/courses"
       />
     </div>

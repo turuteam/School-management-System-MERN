@@ -4,6 +4,7 @@ import ListTable from "../../../AdminComponents/shared/ListTable";
 import { useSelector } from "react-redux";
 import { selectYearGroup } from "../../../store/slices/schoolSlice";
 import moment from "moment";
+import { errorAlert } from "src/utils";
 
 let thismonth = moment().month();
 let thisyear = moment().year();
@@ -28,6 +29,7 @@ function NonBillPayment() {
   const [to, setto] = useState(moment().format("YYYY-MM-DD"));
   const [loading, setloading] = useState(false);
   const years = useSelector(selectYearGroup);
+  const [show, setshow] = useState(false);
 
   useEffect(() => {
     setloading(true);
@@ -37,15 +39,24 @@ function NonBillPayment() {
     });
   }, []);
 
-  console.log(data);
-
   const handleSearch = (e) => {
     e.preventDefault();
+    if (!year) {
+      return errorAlert("Please selected  year");
+    }
+    if (!term) {
+      return errorAlert("Please selected  term");
+    }
+    axios.get(`/nonbillpayment`).then((res) => {
+      setdata([]);
+      setloading(false);
+      setshow(true);
+    });
   };
 
   return (
     <div>
-      <h3>Non Debtors Report</h3>
+      <h3>Debtors Report</h3>
       <form className="content__container row">
         <div className="col-sm-6 col-md-4 mb-3">
           <label htmlFor="name" className=" col-form-label">
@@ -138,22 +149,23 @@ function NonBillPayment() {
           </button>
         </div>
       </form>
-
-      <div className="content__container mt-5">
-        <div className="text-center">
-          <h5>
-            NON DEBTORS LIST FOR term {term || "-"} / year {year || "-"}
-          </h5>
-          <div>Including past students</div>
-        </div>
-        <ListTable data={data} noActions={true} tableHeader={tableHeader} />
-        {data.length > 0 && (
-          <div className="d-flex justify-content-center mt-3">
-            <button className="btn blue__btn">Print</button>
-            <button className="btn blue__btn">Save</button>
+      {show && (
+        <div className="content__container mt-5">
+          <div className="text-center">
+            <h5>
+              DEBTORS LIST FOR TERM {term || "-"} / YEAR {year || "-"}
+            </h5>
+            <div>Including past students</div>
           </div>
-        )}
-      </div>
+          <ListTable data={data} noActions={true} tableHeader={tableHeader} />
+          {data.length > 0 && (
+            <div className="d-flex justify-content-center mt-3">
+              <button className="btn blue__btn">Print</button>
+              <button className="btn blue__btn">Save</button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

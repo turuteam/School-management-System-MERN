@@ -61,7 +61,7 @@ function EnrollmentStatics() {
     <>
       <div className="content__container" id="section-to-print">
         <div className="text-center">
-          <img width="100px" src={getImgSrc(school?.profileUrl)} alt="" />
+          {/* <img width="100px" src={getImgSrc(school?.profileUrl)} alt="" /> */}
           <h5>
             <strong>{school?.fullName}</strong>
           </h5>

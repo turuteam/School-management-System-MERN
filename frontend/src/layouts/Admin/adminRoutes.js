@@ -47,6 +47,9 @@ const EditCalenderEvent = React.lazy(() =>
 const Classes = React.lazy(() =>
   import("../../AdminComponents/academics/classes/Classes")
 );
+const ClassesPast = React.lazy(() =>
+  import("../../AdminComponents/academics/classes/PastClasses")
+);
 const AddClass = React.lazy(() =>
   import("../../AdminComponents/academics/classes/AddClass")
 );
@@ -122,7 +125,7 @@ const AllStudents = React.lazy(() =>
   import("../../AdminComponents/students/allStudents/AllStudents")
 );
 const Upgrade = React.lazy(() =>
-  import("../../AdminComponents/students/Upgrade")
+  import("../../AdminComponents/students/upGrade/Upgrade")
 );
 
 const Campuses = React.lazy(() =>
@@ -658,6 +661,11 @@ const routes = [
     path: "/academics/classes/add",
     name: "Classes",
     component: AddClass,
+  },
+  {
+    path: "/academics/classes/past",
+    name: "Past Classes",
+    component: ClassesPast,
   },
   {
     path: "/academics/classes/edit/:id",

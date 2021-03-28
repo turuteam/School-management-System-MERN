@@ -13,7 +13,6 @@ function ProgressReports() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(classID);
     setloading(true);
     if (classID === "" || term === "" || academicYear === "") {
       setloading(false);

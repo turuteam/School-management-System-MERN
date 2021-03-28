@@ -70,8 +70,6 @@ export default function FullWidthTabs({ user }) {
     });
   }, []);
 
-  console.log(count);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

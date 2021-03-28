@@ -53,20 +53,6 @@ function ViewPayment() {
     window.print();
   };
 
-  // const handleSave = () => {
-  //   const headers = [
-  //     { key: "date", label: "Date" },
-  //     { key: "paymentMethod", label: "Type" },
-  //     { key: "userID", label: "Student" },
-  //     { key: "amount", label: "Amount" },
-  //     { key: "_id", label: "Receipt Number" },
-  //     { key: "academicYear", label: "Year" },
-  //     { key: "term", label: "Term Semester" },
-  //   ];
-
-  //   pdf({ data: expenditures, headers, filename: "Bill Payment Reports" });
-  // };
-
   const handleSearch = (e) => {
     e.preventDefault();
     console.log("searching");
@@ -136,34 +122,6 @@ function ViewPayment() {
           </div>
         </div>
 
-        <div className="col-sm-6 mb-3">
-          <label htmlFor="name" className=" col-form-label">
-            From
-          </label>
-          <div className="å">
-            <input
-              value={from}
-              onChange={(e) => setfrom(e.target.value)}
-              type="date"
-              className="form-control"
-              name="from"
-            />
-          </div>
-        </div>
-        <div className="col-sm-6 mb-3">
-          <label htmlFor="name" className=" col-form-label">
-            To
-          </label>
-          <div className="">
-            <input
-              value={to}
-              onChange={(e) => setto(e.target.value)}
-              type="date"
-              className="form-control"
-              name="to"
-            />
-          </div>
-        </div>
         <div className="mb-3">
           <button
             onClick={handleSearch}
@@ -183,8 +141,8 @@ function ViewPayment() {
         </div>
       </form>
 
-      <div className="mt-5">
-        <div className="text-center">
+      <div className="mt-5" id="section-to-print">
+        <div className="text-center mb-3">
           <h5>
             <strong>{user?.name}</strong>
           </h5>
@@ -206,9 +164,7 @@ function ViewPayment() {
           <button className="btn blue__btn mr-3 " onClick={handlePrint}>
             Print <PrintIcon />
           </button>
-          {/* <button className="btn blue__btn" onClick={handleSave}>
-            Save <InsertDriveFileIcon />{" "}
-          </button> */}
+
           <ExcelExport
             data={expenditures}
             columns={tableHeader}

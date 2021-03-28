@@ -50,18 +50,11 @@ function CanteenPayment() {
   const inputFields = [
     {
       type: "select",
-      label: "Search by Canteen Member ID",
+      label: "Search by  Member ID",
       name: "class",
       value: classID,
       onChange: setclass,
       options: members,
-    },
-    {
-      type: "date",
-      label: "Search by Date",
-      name: "period",
-      value: term,
-      onChange: setterm,
     },
   ];
 
@@ -88,9 +81,7 @@ function CanteenPayment() {
         title="Canteen Payments"
         inputFields={inputFields}
         handleReset={handleReset}
-        handleSearch={handleSearch}
       />
-
       <div className="content__container">
         <div className="d-flex justify-content-end">
           <Link

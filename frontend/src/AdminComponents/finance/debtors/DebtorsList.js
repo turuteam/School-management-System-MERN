@@ -3,31 +3,24 @@ import Search from "./Search";
 import Table from "./Table";
 import axios from "../../../store/axios";
 import Excel from "../../../components/tables/ExcelExport";
-import { errorAlert } from "src/utils";
+import { errorAlert, currentCurrency } from "../../../utils";
 
 const tableHeader = [
   { id: "userID", name: "Student ID" },
   { id: "name", name: "Name" },
   { id: "classID", name: "Class" },
-  { id: "bill", name: "Bill" },
-  { id: "arrears", name: "Arrears" },
-  { id: "total", name: "Total Bill" },
-  { id: "amount", name: "Amount Paid" },
-  { id: "percentage", name: "Percentage Paid" },
-  { id: "owe", name: "Amount Owed" },
+  { id: "total", name: `Total Fees ${currentCurrency()}` },
+  { id: "amount", name: `Amount Paid ${currentCurrency()}` },
+  { id: "owe", name: `Amount Owed ${currentCurrency()}` },
 ];
 
 function DebtorsList() {
   const [data, setdata] = useState([]);
   const [year, setyear] = useState("");
   const [term, setterm] = useState("");
-  const [listby, setlistby] = useState("");
-  const [listValue, setlistValue] = useState("");
-  const [filterValue, setfilterValue] = useState("");
-  const [filterBy, setfilterBy] = useState("");
+  const [classID, setclassID] = useState("");
+  const [campus, setcampus] = useState("");
   const [amount, setamount] = useState("");
-  const [pastStudents, setpastStudents] = useState("");
-  const [withdrawStudent, setwithdrawStudent] = useState("");
   const [show, setshow] = useState(false);
   const [loading, setloading] = useState(false);
   const [fees, setfees] = useState([]);
@@ -49,27 +42,39 @@ function DebtorsList() {
     }
     setloading(true);
     let bal = (u) => {
-      let fee = fees.find((z) => z?.code === u?.fees);
-      return fee
-        ? Object.values(fee[u.status]).reduce(
-            (t, v) => Number(t) + Number(v),
-            0
-          )
-        : 0;
+      let fee = fees.find((z) => z?.code === u?.classID);
+      if (fee) {
+        return fee
+          ? Object.values(fee[u?.status] || {}).reduce(
+              (t, v) => Number(t) + Number(v),
+              0
+            )
+          : 0;
+      }
+      return 0;
     };
     axios.get(`/students/unpaidfees`).then((res) => {
-      let students = res.data.map((e) => {
+      let thisyear = res.data.filter((i) => i.academicYear === year);
+      let thisData = thisyear.filter((i) => i.term === term);
+
+      let students = thisData.map((e) => {
         let total = bal(e);
         return {
           ...e,
-          arrears: 0,
           bill: total,
           owe: total - e.amount,
           total,
-          percentage: ((e.amount / total) * 100).toFixed(0),
         };
       });
-      setdata(students.filter((e) => Number(e.percentage) !== 100));
+      let dataAll = students.filter((e) => e.owe > 0);
+
+      if (classID) {
+        setdata(dataAll.filter((e) => e.classID === classID));
+      }
+      if (campus) {
+        setdata(dataAll.filter((e) => e.campus === campus));
+      }
+      setdata(dataAll);
       setshow(true);
       setloading(false);
       setselectedyear(year);
@@ -89,21 +94,12 @@ function DebtorsList() {
           year={year}
           setyear={setyear}
           term={term}
-          listby={listby}
-          setlistby={setlistby}
+          campus={campus}
+          setcampus={setcampus}
+          classID={classID}
+          setclassID={setclassID}
           amount={amount}
-          listValue={listValue}
-          setlistValue={setlistValue}
-          filterValue={filterValue}
-          setfilterValue={setfilterValue}
-          setamount={setamount}
-          filterBy={filterBy}
           handleSearch={handleSearch}
-          setfilterBy={setfilterBy}
-          pastStudents={pastStudents}
-          setpastStudents={setpastStudents}
-          withdrawStudent={withdrawStudent}
-          setwithdrawStudent={setwithdrawStudent}
           setterm={setterm}
           loading={loading}
         />
@@ -126,7 +122,6 @@ function DebtorsList() {
             <button onClick={handlePrint} className="btn blue__btn mr-2">
               Print
             </button>
-            {/* <button className="btn blue__btn ml-3">Save</button> */}
             <Excel data={data} columns={tableHeader} btn="Save" />
           </div>
         </>

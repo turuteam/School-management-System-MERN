@@ -3,15 +3,19 @@ import StaffSearch from "./StaffSearch";
 import PaymentForm from "./PaymentForm";
 import ViewStaff from "./ViewStaff";
 import axios from "../../../store/axios";
+import { selectacademicYear } from "../../../store/slices/schoolSlice";
+import { useSelector } from "react-redux";
 import { errorAlert, successAlert } from "../../../utils";
 
 const today = new Date();
 const currentMonth = today.getMonth();
 
 function BillPayment() {
+  const current = useSelector(selectacademicYear);
   const [userID, setuserID] = useState("");
   const [month, setmonth] = useState(currentMonth);
   const [amount, setamount] = useState("");
+  const [year, setyear] = useState(current?.currentYear);
   const [date, setdate] = useState("");
   const [bank, setbank] = useState("");
   const [remarks, setremarks] = useState("");
@@ -24,25 +28,32 @@ function BillPayment() {
   const [totalBill, settotalBill] = useState(0);
   const [totalPaid, settotalPaid] = useState(0);
 
-  console.log(totalBill, balance);
+  const [show, setshow] = useState(false);
 
-  const handleSelectStaff = async (id) => {
+  const handleSelectStaff = async (e) => {
+    e.preventDefault();
+    if (userID === "") {
+      return errorAlert("Select staff member");
+    }
     setloadingStaff(true);
-    setuserID(id);
-    let transactionData = await axios.get(`/transactions/staff/pay/${id}`);
-    let alltransactions = transactionData.data;
+    let transactionData = await axios.get(`/transactions/staff/pay/${userID}`);
+    let thisMonthTrans = transactionData.data.filter(
+      (e) => e.month === Number(month) && e.year === year
+    );
+    let alltransactions = thisMonthTrans;
+
     settransactions(alltransactions);
 
-    let staffData = await axios.get(`/teachers/${id}`);
+    let staffData = await axios.get(`/teachers/${userID}`);
     let staff = staffData.data?.teacher;
-    console.log(staff);
+    //console.log(staff);
     setuser(staff);
 
     let payData = await axios.get(`/payrow/${staff?.position}`);
     let pay = payData?.data.docs;
-    console.log(pay);
+    //console.log(pay);
     setpayrowType(pay);
-    console.log(alltransactions);
+    //console.log(alltransactions);
 
     const bill =
       Number(pay?.allowance) + Number(pay?.salary) + Number(pay?.bonus);
@@ -58,6 +69,7 @@ function BillPayment() {
     settotalPaid(paid);
     setbalance(bill - paid);
     setloadingStaff(false);
+    setshow(true);
   };
 
   const handlePayement = () => {
@@ -72,11 +84,12 @@ function BillPayment() {
         category: "pay",
         pay: {
           accountNumber: user?.accountNumber,
-          bank: user?.Bank,
+          bank: user?.bank,
           userID,
           position: user?.position,
           month,
-          year: today.getFullYear(),
+          year,
+          salary: totalBill,
         },
       })
       .then(async (res) => {
@@ -116,10 +129,13 @@ function BillPayment() {
             month={month}
             setmonth={setmonth}
             userID={userID}
-            setuserID={handleSelectStaff}
+            year={year}
+            setyear={setyear}
+            setuserID={setuserID}
             loading={loadingStaff}
+            handleSearch={handleSelectStaff}
           />
-          {userID && !loadingStaff && (
+          {show && !loadingStaff && (
             <>
               {" "}
               {balance > 0 ? (
@@ -130,7 +146,6 @@ function BillPayment() {
                   setbank={setbank}
                   setamount={setamount}
                   month={month}
-                  setmonth={setmonth}
                   date={date}
                   setdate={setdate}
                   remarks={remarks}
@@ -147,7 +162,7 @@ function BillPayment() {
           )}
         </div>
         <div className="col-sm-6">
-          {userID && !loadingStaff && (
+          {show && !loadingStaff && (
             <ViewStaff
               transactions={transactions}
               user={user}

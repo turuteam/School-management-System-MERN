@@ -32,6 +32,8 @@ export default function FullScreenDialog({
   staff,
   body,
   author,
+  salary,
+  currentCurrency,
 }) {
   const classes = useStyles();
 
@@ -78,26 +80,15 @@ export default function FullScreenDialog({
             <tr>
               <th scope="col">Staff Name</th>
               <th scope="col">Account Number</th>
-              <th scope="col">Net Salary</th>
+              <th scope="col">Net Salary ({currentCurrency()})</th>
             </tr>
           </thead>
           <tbody>
-            {staff.length > 0 ? (
-              staff.map((res) => (
-                <tr key={res._id}>
-                  <td>{res.name}</td>
-                  <td>{res.accountNumber}</td>
-                  <td>{res.salary}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td className="text-center text-bold" colSpan={3}>
-                  {" "}
-                  No Staff Registered
-                </td>
-              </tr>
-            )}
+            <tr>
+              <td>{staff.name}</td>
+              <td>{staff.accountNumber}</td>
+              <td>{salary}</td>
+            </tr>
           </tbody>
         </table>
         <div>
@@ -105,8 +96,8 @@ export default function FullScreenDialog({
         </div>
         <div>{author}</div>
       </div>
-      {staff.length > 0 && (
-        <div className="mt-5">
+      {staff && (
+        <div className="m-5">
           <button onClick={handlePrint} className="btn blue__btn">
             Print Report
           </button>

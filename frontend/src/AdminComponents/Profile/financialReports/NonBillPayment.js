@@ -16,10 +16,9 @@ const tableHeader = [
 
 function NonBillPayment() {
   const [data, setdata] = useState([]);
+  const [storeData, setstoreData] = useState([]);
   const [year, setyear] = useState("");
   const [term, setterm] = useState("");
-  const [from, setfrom] = useState("");
-  const [to, setto] = useState("");
   const [loading, setloading] = useState(false);
   const user = useSelector(selectUser);
   const years = useSelector(selectYearGroup);
@@ -27,16 +26,33 @@ function NonBillPayment() {
   useEffect(() => {
     axios.get(`/nonbillpayment`).then((res) => {
       setdata(res.data);
+      setstoreData(res.data);
     });
   }, []);
 
-  console.log(data);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    let newData = [];
+    if (term) {
+      newData = storeData.filter((i) => i.term === term);
+    }
+    if (year) {
+      newData = newData.filter((i) => i.year === year);
+    }
+    setdata(newData);
+  };
 
-  const handleSearch = () => {};
+  const handleReset = (e) => {
+    e.preventDefault();
+    setdata(storeData);
+    setterm("");
+    setyear("");
+  };
 
   return (
     <div>
       <form className="content__container row">
+        <h3>Search</h3>
         <div className="col-sm-6 col-md-4 mb-3">
           <label htmlFor="name" className=" col-form-label">
             Year
@@ -81,41 +97,12 @@ function NonBillPayment() {
             </select>
           </div>
         </div>
-
-        <div className="col-sm-6 col-md-4 mb-3">
-          <label htmlFor="name" className=" col-form-label">
-            From
-          </label>
-          <div className="å">
-            <input
-              value={from}
-              onChange={(e) => setfrom(e.target.value)}
-              type="date"
-              className="form-control"
-              name="from"
-            />
-          </div>
-        </div>
-        <div className="col-sm-6 col-md-4 mb-3">
-          <label htmlFor="name" className=" col-form-label">
-            To
-          </label>
-          <div className="">
-            <input
-              value={to}
-              onChange={(e) => setto(e.target.value)}
-              type="date"
-              className="form-control"
-              name="to"
-            />
-          </div>
-        </div>
         <div className="mb-3">
           <button
             onClick={handleSearch}
             disabled={loading}
             type="submit"
-            className="btn blue__btn"
+            className="btn blue__btn mx-2"
           >
             {loading && (
               <span
@@ -125,6 +112,21 @@ function NonBillPayment() {
               ></span>
             )}
             Search
+          </button>
+          <button
+            onClick={handleReset}
+            disabled={loading}
+            type="submit"
+            className="btn btn-danger mx-2"
+          >
+            {loading && (
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            )}
+            Reset
           </button>
         </div>
       </form>

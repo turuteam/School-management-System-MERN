@@ -6,7 +6,9 @@ import ScholarshipModel from "../models/ScholarshipsModel.js";
 const route = express.Router();
 
 route.get('/', async(req, res) => {
-    const data = await ScholarshipModel.find();
+    const data = await ScholarshipModel.find().sort({
+      createdAt: "desc",
+    });
     res.json(data);
 })
 

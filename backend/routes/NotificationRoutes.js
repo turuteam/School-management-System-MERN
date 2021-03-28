@@ -4,7 +4,11 @@ import NotificationsModal from "../models/NoticeModel.js";
 const route = express.Router();
 //get all
 route.get("/", async (req, res) => {
-  const data = await NotificationsModal.find({ date: { $gte: new Date() } });
+  const data = await NotificationsModal.find({
+    date: { $gte: new Date() },
+  }).sort({
+    createdAt: "desc",
+  });
   res.json(data);
 });
 

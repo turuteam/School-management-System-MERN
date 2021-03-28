@@ -5,7 +5,9 @@ const route = express.Router();
 
 //get all events
 route.get("/", async (req, res) => {
-  const docs = await StoreSale.find();
+  const docs = await StoreSale.find().sort({
+    createdAt: "desc",
+  });
   res.json(docs);
 });
 

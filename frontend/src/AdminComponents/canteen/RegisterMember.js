@@ -91,9 +91,8 @@ function RegisterMember() {
         </div>
 
         <form action="" className="my-4">
-          <h5>Search {role}</h5>
           <label className="form-label">
-            Search Student by Name or Student ID
+            Search {role} by Name or Student ID
           </label>
           <select
             className="form-select col-8"

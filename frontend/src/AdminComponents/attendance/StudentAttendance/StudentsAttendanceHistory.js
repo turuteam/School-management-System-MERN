@@ -59,33 +59,23 @@ function Attendance() {
       name: "studentID",
       onChange: setclassID,
     },
-    {
-      type: "date",
-      label: "Search by Date",
-      value: date,
-      name: "date",
-      onChange: setDate,
-    },
+    // {
+    //   type: "date",
+    //   label: "Search by Date",
+    //   value: date,
+    //   name: "date",
+    //   onChange: setDate,
+    // },
   ];
 
   return (
     <div>
-      <div className="row">
-        <div className="col-xs-12 col-sm-6 col-md-8">
-          <Search
-            handleSearch={handleSearch}
-            handleReset={handleReset}
-            title="Student's Attendance"
-            inputFields={inputFields}
-          />
-        </div>
-        <div className="col-xs-12 col-sm-6 col-md-4">
-          <Link to="/attendance/students/register" className="btn blue__btn">
-            Register Attendance
-          </Link>
-        </div>
-      </div>
-
+      <Search
+        handleSearch={handleSearch}
+        handleReset={handleReset}
+        title="Student's Attendance"
+        inputFields={inputFields}
+      />
       <div className="content__container">
         <div className="d-flex justify-content-between mb-3">
           <h3>Attendance Record</h3>

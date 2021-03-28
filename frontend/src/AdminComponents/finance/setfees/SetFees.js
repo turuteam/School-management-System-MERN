@@ -97,13 +97,13 @@ function SetFees() {
             {" "}
             Set Fees
           </Link>
-          <button
+          {/* <button
             onClick={() => setOpen(true)}
             className="btn blue__btn ml-3"
             to="/finance/fees/set"
           >
             Add Fees Type
-          </button>
+          </button> */}
         </div>
       </div>
       <FeesTable

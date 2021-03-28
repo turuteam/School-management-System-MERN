@@ -58,7 +58,6 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/consumerPhotos"));
 app.use(express.static("./public"));
-//app.use(pino);
 
 //routes
 app.get("/", (req, res) => {

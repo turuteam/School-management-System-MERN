@@ -3,21 +3,24 @@ import { useSelector } from "react-redux";
 import axios from "../../../store/axios";
 import { getImgSrc, errorAlert } from "../../../utils";
 import Excel from "../../../components/tables/ExcelExport";
-import { selectYearGroup } from "../../../store/slices/schoolSlice";
+import {
+  selectYearGroup,
+  selectacademicYear,
+} from "../../../store/slices/schoolSlice";
 
 function AcademicTranscripts() {
-  const [options, setoptions] = useState("");
-  const [from, setfrom] = useState("");
-  const [to, setto] = useState("");
+  const years = useSelector(selectYearGroup);
+  const current = useSelector(selectacademicYear);
+  const [from, setfrom] = useState(current.currentTerm);
+  const [to, setto] = useState(current.currentYear);
   const [studentID, setstudentID] = useState("");
   const [loading, setloading] = useState("");
   const [show, setshow] = useState(false);
   const [school, setschool] = useState({});
-  // const [data, setdata] = useState([]);
-  const data = [];
-  const [studentDetails, setstudentDetails] = useState({});
+  const [data, setdata] = useState([]);
+  const [error, seterror] = useState(false);
 
-  const years = useSelector(selectYearGroup);
+  const [studentDetails, setstudentDetails] = useState({});
 
   useEffect(() => {
     axios.get("/school").then((res) => {
@@ -26,18 +29,27 @@ function AcademicTranscripts() {
   }, []);
 
   const handleSearch = (e) => {
+    seterror(false);
     e.preventDefault();
     if (!studentID) {
       return errorAlert("select student");
     }
     setloading(true);
-    axios.get(`/students/student/${studentID}`).then((res) => {
+    axios.get(`sba/student/${studentID}/${to}/${from}`).then(async (res) => {
+      let student = await axios.get(`/students/student/${studentID}`);
+      console.log(student);
       setloading(false);
+      setshow(true);
+      if (student.data.error) {
+        return seterror(true);
+      }
+      setstudentDetails(student.data.student);
+      setloading(false);
+
       if (res.data.error) {
         return errorAlert("Student does not exist");
       }
-      setstudentDetails(res.data.student);
-      setshow(true);
+      setdata(res.data.docs);
     });
   };
 
@@ -52,11 +64,11 @@ function AcademicTranscripts() {
   ];
 
   return (
-    <div className="content__container">
+    <div>
       <h3>Academic Transcript</h3>
-      <form action="" className="row">
+      <form action="" className="row content__container">
         <div className="mb-3 col-sm-4">
-          <label className="form-label">From</label>
+          <label className="form-label">Term</label>
           <select
             name="type"
             value={from}
@@ -67,19 +79,13 @@ function AcademicTranscripts() {
             <option defaultValue hidden>
               Choose...
             </option>
-            {years.length > 0 ? (
-              years.map((e) => (
-                <option key={e._id} value={e.year}>
-                  {e.name}
-                </option>
-              ))
-            ) : (
-              <option disabled>No data yet</option>
-            )}
+            <option value="1">1st</option>
+            <option value="2">2rd</option>
+            <option value="3">3rd</option>
           </select>
         </div>
         <div className="mb-3 col-sm-4">
-          <label className="form-label">To</label>
+          <label className="form-label">Year</label>
           <select
             name="type"
             value={to}
@@ -93,7 +99,7 @@ function AcademicTranscripts() {
             {years.length > 0 ? (
               years.map((e) => (
                 <option key={e._id} value={e.year}>
-                  {e.name}
+                  {e.year}
                 </option>
               ))
             ) : (
@@ -108,23 +114,6 @@ function AcademicTranscripts() {
             onChange={(e) => setstudentID(e.target.value)}
             className="form-control"
           ></input>
-        </div>
-        <div className="mb-3 col-sm-4">
-          <label className="form-label">Options</label>
-          <select
-            name="type"
-            value={options}
-            onChange={(e) => setoptions(e.target.value)}
-            id="inputState"
-            className="form-select"
-          >
-            <option defaultValue hidden>
-              Choose...
-            </option>
-            <option value="mark">Mark only</option>
-            <option value="mark">Grades only</option>
-            <option value="mark">Both</option>
-          </select>
         </div>
         <div className="mb-3">
           <button
@@ -146,65 +135,67 @@ function AcademicTranscripts() {
       </form>
 
       {show && (
-        <div id="section-to-print">
+        <div className="content__container mt-4" id="section-to-print">
           <div className="text-center">
-            <img width="100px" src={getImgSrc(school?.profileUrl)} alt="" />
             <h5>
               <strong>{school?.fullName}</strong>
             </h5>
             <h6>{school?.motto}</h6>
-            <h5 className="my-4">STUDENT TRANSCRIPT</h5>
+            <h5 className="my-4">
+              STUDENT TRANSCRIPT FOR {studentDetails?.userID}
+            </h5>
           </div>
-          <div className="text-center">
-            <h6>
-              {studentDetails?.name} {studentDetails?.surname}
-            </h6>
+          {error ? (
             <div>
-              {from} - {to}
+              {" "}
+              <h3 className="text-center text-danger">Student Not found</h3>
             </div>
-          </div>
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">First</th>
-                <th colSpan={3}>
-                  {from}- {to}
-                </th>
-              </tr>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">Term 1</th>
-                <th scope="col">Term 2</th>
-                <th scope="col">Term 3</th>
-              </tr>
-              <tr>
-                <th scope="col">Subject</th>
-                <th scope="col">Mark</th>
-                <th scope="col">Mark</th>
-                <th scope="col">Mark</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data &&
-                data.map((e) => (
+          ) : (
+            <>
+              <div className="text-center">
+                <h6>
+                  {studentDetails?.name} {studentDetails?.surname}
+                </h6>
+                <div>
+                  Term {from} - Year {to}
+                </div>
+              </div>
+              <table className="table table-bordered">
+                <thead>
                   <tr>
-                    <th scope="row">{e?.subject}</th>
-                    <td>{e?.term1}</td>
-                    <td>{e?.term2}</td>
-                    <td>{e?.term3}</td>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Final Score</th>
+                    <th scope="col">Position</th>
                   </tr>
-                ))}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {data.length > 0 ? (
+                    data.map((e) => (
+                      <tr>
+                        <th scope="row">{e?.course}</th>
+                        <td>{e?.exam + e.classWork}</td>
+                        <td>{e?.position}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3} className="text-center">
+                        No Data
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+              <div className="my-3 text-center">
+                <button onClick={handlePrint} className="btn blue__btn mr-2">
+                  Print
+                </button>
+                <Excel data={data} columns={columns} btn="save" />
+              </div>
+            </>
+          )}
         </div>
       )}
-
-      <div className="my-3 text-center">
-        <button onClick={handlePrint} className="btn blue__btn mr-2">
-          Print
-        </button>
-        <Excel data={data} columns={columns} btn="save" />
-      </div>
     </div>
   );
 }

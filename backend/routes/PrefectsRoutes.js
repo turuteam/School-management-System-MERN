@@ -7,7 +7,9 @@ const route = express.Router();
 //get all
 route.get("/", async (req, res) => {
   //const currentyear = new Date().getFullYear();
-  const data = await PrefectsModel.find({});
+  const data = await PrefectsModel.find({}).sort({
+    createdAt: "desc",
+  });
   //.where("endYear").gt(currentyear);
   res.json(data);
 });

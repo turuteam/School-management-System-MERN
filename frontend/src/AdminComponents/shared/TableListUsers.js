@@ -71,6 +71,7 @@ export default function EnhancedTable({
   handleWithdraw,
   handleDelete,
   noData,
+  noActions,
 }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -146,6 +147,7 @@ export default function EnhancedTable({
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
+              noActions={noActions}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={students?.length}
@@ -199,16 +201,18 @@ export default function EnhancedTable({
                           </TableCell>
                         )}
                         <TableCell align="left">{row?.gender || "-"}</TableCell>
-                        <TableCell align="left">
-                          <ViewActions
-                            id={row?.userID}
-                            route={route}
-                            isWithdraw={row?.withdraw}
-                            history={history}
-                            handleWithdraw={handleWithdraw}
-                            handleDelete={handleDelete}
-                          />
-                        </TableCell>
+                        {!noActions && (
+                          <TableCell align="left">
+                            <ViewActions
+                              id={row?.userID}
+                              route={route}
+                              isWithdraw={row?.withdraw}
+                              history={history}
+                              handleWithdraw={handleWithdraw}
+                              handleDelete={handleDelete}
+                            />
+                          </TableCell>
+                        )}
                       </TableRow>
                     );
                   })}

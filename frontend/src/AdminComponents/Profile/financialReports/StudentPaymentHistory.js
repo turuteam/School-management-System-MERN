@@ -143,12 +143,14 @@ function ViewPayment() {
 
       {studentData && (
         <>
-          <div className="mt-5 content__container">
+          <div className="mt-5 content__container" id="section-to-print">
             <div className="blue_bg p-5">
-              <div className="d-flex justify-content-around ">
+              <div className="d-flex justify-content-around align-items-stretch">
                 <Avatar
                   src={getImgSrc(studentData?.profileUrl)}
-                  alt={studentData?.name}
+                  alt=""
+                  width="100px"
+                  height="100px"
                 />
                 <div>
                   <h5>

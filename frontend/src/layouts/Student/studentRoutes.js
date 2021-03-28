@@ -12,6 +12,9 @@ const EditProfile = React.lazy(() =>
 const Class = React.lazy(() =>
   import("../../StudentComponents/classes/Classes")
 );
+const ReportCard = React.lazy(() =>
+  import("../../StudentComponents/classes/Results")
+);
 const Courses = React.lazy(() =>
   import("../../StudentComponents/classes/CoursesPage")
 );
@@ -37,7 +40,6 @@ const MessageAdmin = React.lazy(() =>
 const MessageTeacher = React.lazy(() =>
   import("../../StudentComponents/messages/MessageTeacher")
 );
-//const MessageChat = React.lazy(() => import('../../StudentComponents/messages/Messages'));
 
 const Notifications = React.lazy(() =>
   import("../../StudentComponents/notifications/NotificationsPage")
@@ -80,6 +82,11 @@ const routes = [
     path: "/academics/class",
     name: "Class",
     component: Class,
+  },
+  {
+    path: "/academics/report",
+    name: "Report Card",
+    component: ReportCard,
   },
   {
     path: "/academics/courses",

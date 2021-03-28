@@ -16,12 +16,11 @@ function CourseDetails() {
   const [course, setcourse] = useState([]);
   const [loading, setloading] = useState(false);
   const [notes, setnotes] = useState([]);
-  const { id } = useParams();
+  const { id, classID } = useParams();
   const user = useSelector(selectUser);
 
   useEffect(() => {
     axios.get(`/courses/courseCode/${id}`).then((res) => {
-      console.log(id);
       setcourse(res.data.docs);
     });
   }, [id]);
@@ -43,38 +42,55 @@ function CourseDetails() {
 
   return (
     <div>
-      <div className="d-flex justify-content-between align--items-center mb-5">
-        <div
-          style={{ background: "#051f3e" }}
-          className="content__container text-center"
-        >
-          <h3>Course Details</h3>
-          <h4> {getCapitalize(course?.name)}</h4>
-          <h6>{course?.code}</h6>
-        </div>
-        <div>
-          {user?.role !== "student" && (
-            <Link
-              to={`/academics/courses/add/${course?.code}`}
-              className="btn blue__btn"
-            >
-              Add New Note
-            </Link>
-          )}
-        </div>
+      <div
+        style={{ background: "#051f3e" }}
+        className="content__container text-center"
+      >
+        <h3>Course Details</h3>
+        <h4> {getCapitalize(course?.name)}</h4>
+        <h6>{course?.code}</h6>
       </div>
 
-      <h3>Course Notes</h3>
-      <ListTable
-        tableHeader={tableHeader}
-        data={notes}
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        loading={loading}
-        noActions={user?.role === "student" ? true : false}
-        isEdit={true}
-        user={user?.id}
-      />
+      <div className="content__container">
+        <div className="d-flex justify-content-between">
+          <h3>Course Notes</h3>
+          <div>
+            {user?.role !== "student" && (
+              <>
+                <Link
+                  to={`/academics/courses/add/${course?.code}`}
+                  className="btn blue__btn mx-2"
+                >
+                  Add New Note
+                </Link>
+                <Link
+                  to={`/academics/courses/sba/${course?.code}/${classID}`}
+                  className="btn blue__btn mx-2"
+                >
+                  Course S.B.A
+                </Link>
+                <Link
+                  to={`/academics/courses/report/${course?.code}/${classID}`}
+                  className="btn blue__btn mx-2"
+                >
+                  Course Report
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+
+        <ListTable
+          tableHeader={tableHeader}
+          data={notes}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          loading={loading}
+          noActions={user?.role === "student" ? true : false}
+          isEdit={true}
+          user={user?.id}
+        />
+      </div>
     </div>
   );
 }

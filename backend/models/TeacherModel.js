@@ -18,6 +18,10 @@ const TeacherSchema = new Schema(
     middleName: {
       type: String,
     },
+    isStaff: {
+      type: Boolean,
+      default: true,
+    },
     lastLogin: {
       type: Date,
     },

@@ -4,11 +4,14 @@ import Search from "../../shared/Search";
 import { Link, useParams } from "react-router-dom";
 import OpenModal from "./ModalForm";
 import axios from "../../../store/axios";
-import { successAlert, errorAlert } from "../../../utils";
+import { bankOptions } from "../../../data";
+import { successAlert, errorAlert, currentCurrency } from "../../../utils";
+import moment from "moment";
 
 const tableHeader = [
-  { id: "date", name: "Date" },
+  { id: "issuedDate", name: "Date" },
   { id: "description", name: "Description" },
+  { id: "type", name: "Type" },
   { id: "credit", name: "Credit" },
   { id: "debit", name: "Debit" },
 ];
@@ -21,8 +24,6 @@ function TrankingTransaction() {
   const [bankTransactions, setbankTransactions] = useState([]);
   const { id } = useParams();
 
-  //
-
   //inputs modal
   const [date, setdate] = useState("");
   const [payee, setpayee] = useState("");
@@ -30,21 +31,22 @@ function TrankingTransaction() {
   const [amount, setamount] = useState("");
   const [description, setdescription] = useState("");
   const [transferBank, settransferBank] = useState("");
+  const [storedData, setstoredData] = useState([]);
 
   //modals
   const [openCheck, setopenCheck] = useState(false);
   const [opendeposit, setOpendeposit] = useState(false);
   const [opentransfer, setOpentransfer] = useState(false);
   const [openwithdraw, setOpenwithdraw] = useState(false);
-
+  const _id = Math.random().toString(16).slice(2);
   useEffect(() => {
     axios.get(`/banking/${id}`).then((res) => {
       if (res.data.error) {
         return 0;
       }
-      console.log(res.data);
       setbank(res.data);
       setbankTransactions(res.data.transactions);
+      setstoredData(res.data.transactions);
     });
   }, [id]);
 
@@ -65,7 +67,24 @@ function TrankingTransaction() {
     },
   ];
 
-  const handleSearch = () => {};
+  const handleSearch = (e) => {
+    e.preventDefault();
+    let newArr = [];
+    if (startDate) {
+      newArr = storedData.filter(
+        (i) => moment(i.date).isAfter(moment(startDate)) === true
+      );
+    }
+    if (endDate) {
+      newArr = storedData.filter(
+        (i) =>
+          moment(i.date, "DD/MM/YYYY").isBefore(
+            moment(endDate, "DD/MM/YYYY")
+          ) === true
+      );
+    }
+    setbankTransactions(newArr);
+  };
 
   const handleDelete = (k) => {
     let trans = bankTransactions.filter((e) => e._id !== k);
@@ -76,7 +95,7 @@ function TrankingTransaction() {
       .then((res) => {
         setloading(false);
         if (res.data.error) {
-          errorAlert(res.data.error);
+          return errorAlert(res.data.error);
         }
         setbankTransactions(trans);
       })
@@ -91,19 +110,28 @@ function TrankingTransaction() {
     setloading(true);
     axios
       .post(`/banking/add/transactions/${id}`, {
-        issuedDate: date,
+        issuedDate: new Date(date),
+        date: new Date(),
         description,
         payee,
+        _id,
+        type: "cheque",
         transactionNumber: checkNo,
         credit: amount,
       })
       .then((res) => {
         setloading(false);
         if (res.data.error) {
-          errorAlert(res.data.error);
+          return errorAlert(res.data.error);
         }
         successAlert("Transaction added");
-        setbankTransactions(res.data);
+        console.log(res.data);
+        let trans = res.data.sort(function (a, b) {
+          var dateA = new Date(a.date),
+            dateB = new Date(b.date);
+          return dateA - dateB;
+        });
+        setbankTransactions(trans);
         setdate("");
         setdescription("");
         setpayee("");
@@ -124,14 +152,17 @@ function TrankingTransaction() {
       .post(`/banking/add/transactions/${id}`, {
         issuedDate: date,
         description,
+        date: new Date(),
         payee,
+        _id,
+        type: "deposit",
         transactionNumber: checkNo,
         debit: amount,
       })
       .then((res) => {
         setloading(false);
         if (res.data.error) {
-          errorAlert(res.data.error);
+          return errorAlert(res.data.error);
         }
         successAlert("Transaction added");
         setbankTransactions(res.data);
@@ -155,7 +186,10 @@ function TrankingTransaction() {
       .post(`/banking/add/transactions/${id}`, {
         issuedDate: date,
         description,
+        date: new Date(),
         payee,
+        _id,
+        type: "transfer",
         transactionNumber: checkNo,
         backAcc: transferBank,
         credit: amount,
@@ -163,7 +197,7 @@ function TrankingTransaction() {
       .then((res) => {
         setloading(false);
         if (res.data.error) {
-          errorAlert(res.data.error);
+          return errorAlert(res.data.error);
         }
         successAlert("Transaction added");
         setOpentransfer(false);
@@ -187,14 +221,17 @@ function TrankingTransaction() {
       .post(`/banking/add/transactions/${id}`, {
         issuedDate: date,
         description,
+        date: new Date(),
         payee,
+        _id,
+        type: "withdraw",
         transactionNumber: checkNo,
         credit: amount,
       })
       .then((res) => {
         setloading(false);
         if (res.data.error) {
-          errorAlert(res.data.error);
+          return errorAlert(res.data.error);
         }
         successAlert("Transaction added");
         setOpenwithdraw(false);
@@ -211,6 +248,24 @@ function TrankingTransaction() {
         console.log(err);
         errorAlert("Error");
       });
+  };
+
+  const total = () => {
+    let arr = bankTransactions
+      ? bankTransactions?.map((i) => {
+          let num = i.credit ? -Number(i.credit) : Number(i.debit);
+          return {
+            num,
+          };
+        })
+      : [];
+    let value = arr.reduce((val, i) => val + i.num, 0);
+    return value;
+  };
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    setbankTransactions(storedData);
   };
 
   return (
@@ -249,15 +304,18 @@ function TrankingTransaction() {
         </Link>
       </div>
       <h3>Banking Transcations</h3>
-      <div>
+      <div className="mb-2">
         <h6>Bank Name : {bank?.accountName}</h6>
         <h6>Bank Number : {bank?.accountNumber}</h6>
         <h6>Bank Banch : {bank?.bankName}</h6>
-        <h6>Bank Balance : $0</h6>
+        <h6>
+          Bank Balance : {currentCurrency()} {total()}
+        </h6>
       </div>
       <Search
         inputFields={inputFields}
         title="Search Bank Transations"
+        handleReset={handleReset}
         handleSearch={handleSearch}
       />
       <BankTable
@@ -312,9 +370,9 @@ function TrankingTransaction() {
           payee: "Paid By",
         }}
         isTransfer={true}
-        trnasfer={{
-          currentBank: bank?.accountName,
-          bankOptions: [],
+        transfer={{
+          currentBank: bank?.bankName,
+          bankOptions: bankOptions,
           transferBank: transferBank,
           settransferBank: settransferBank,
         }}

@@ -8,14 +8,10 @@ import Edit from "./EditModal";
 function SBA() {
   const [data, setdata] = useState([]);
   const [students, setstudents] = useState([]);
-
+  const [examMark, setexamMark] = useState("");
+  const [classWorkMark, setclassWorkMark] = useState("");
   const [exam, setexam] = useState("");
-  const [classWork, setclassWork] = useState({
-    a1: "",
-    a2: "",
-    a3: "",
-    a4: "",
-  });
+  const [classWork, setclassWork] = useState("");
   const [position, setposition] = useState("");
   const [openEdit, setopenEdit] = useState(false);
   const [term, setterm] = useState("");
@@ -42,8 +38,12 @@ function SBA() {
       setisSet(true);
       axios.get(`/sba/${classID}/${course}/${year}/${term}`).then((result) => {
         setloadingClass(false);
-        setdata(result.data.docs);
-        setstudents(result.data.docs?.students);
+        let data = result.data.docs;
+        setdata(data);
+        setclassWorkMark(data?.classWork);
+        setexamMark(data?.exam);
+        console.log(result.data);
+        setstudents(data?.students);
       });
     });
   };
@@ -56,8 +56,12 @@ function SBA() {
     setclassWork(selectedStudent?.classWork);
   };
 
-  const handleonSubmit = () => {
+  const handleonSubmit = async () => {
     setloadingSubmit(true);
+    await axios.put(`/sba/update/${data?._id}`, {
+      exam: examMark,
+      classWork: classWorkMark,
+    });
     axios
       .put(`/sba/update/student/${data?._id}/${selectedUser?._id}`, {
         classWork,
@@ -95,6 +99,10 @@ function SBA() {
         <SBATable
           setclassWork={setclassWork}
           rows={students}
+          examMark={examMark}
+          setexamMark={setexamMark}
+          classworkMark={classWorkMark}
+          setclassworkMark={setclassWorkMark}
           handleEdit={handleEdit}
         />
       )}
@@ -103,6 +111,8 @@ function SBA() {
         name={selectedUser?.name}
         userID={selectedUser?.userID}
         exam={exam}
+        examMark={examMark}
+        classworkMark={classWorkMark}
         classID={classID}
         loading={loadingSubmit}
         setposition={setposition}

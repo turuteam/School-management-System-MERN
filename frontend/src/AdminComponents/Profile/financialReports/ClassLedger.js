@@ -40,11 +40,10 @@ function ViewPayment() {
     });
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if (classID) {
       setloading(true);
-
       let bal = (u) => {
         let fee = fees.find((z) => z?.code === u?.fees);
         return fee
@@ -59,18 +58,19 @@ function ViewPayment() {
           .get(`/transactions/student/${id}`)
           .then((res) => res.data.reduce((v, i) => v + Number(i.amount), 0));
       };
-      axios
+
+      await axios
         .get(`/students/class/${classID}`)
         .then((res) => {
           setloading(false);
           setshow(true);
-          console.log(res);
           if (res.data.error) {
             setexpenditures([]);
             return 0;
           }
           let data = res.data?.users?.map((i) => {
             console.log(paidFee(i?.userID));
+            console.log(bal(i));
             return {
               userID: i.userID,
               date: i.createdAt,
@@ -85,7 +85,6 @@ function ViewPayment() {
         })
         .catch((err) => {
           setloading(false);
-          console.log(err);
         });
     }
   };
@@ -193,9 +192,7 @@ function ViewPayment() {
               <button onClick={handlePrint} className="btn blue__btn mr-3">
                 Print <PrintIcon />
               </button>
-              {/* <button onClick={handleSave} className="btn blue__btn ml-3">
-              Save <InsertDriveFileIcon />
-            </button> */}
+
               <ExcelButton
                 data={expenditures}
                 columns={tableHeader}

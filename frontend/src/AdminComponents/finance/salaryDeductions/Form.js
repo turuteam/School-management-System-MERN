@@ -16,6 +16,7 @@ function Form({
   isEdit,
 }) {
   const { register, handleSubmit, errors } = useForm();
+  //console.log(handleSetStaff, isEdit);
 
   return (
     <form>
@@ -71,10 +72,10 @@ function Form({
         </div>
         <hr />
         {Allstaff &&
-          Allstaff.map((e) => (
-            <div className="row">
+          Allstaff.map((e, i) => (
+            <div key={i} className="row">
               <div className="col-9">
-                {e.name} {e?.surname}
+                {e?.name} {e?.surname}
               </div>
               <div className="col-3">
                 <Checkbox

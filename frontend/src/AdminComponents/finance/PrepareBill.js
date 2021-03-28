@@ -26,7 +26,6 @@ function PrepareBill() {
 
   useEffect(() => {
     axios.get("/transactions/students/fees").then((res) => {
-      console.log(res.data);
       setdata(res.data);
       setstoreData(res.data);
     });

@@ -5,7 +5,7 @@ import axios from "../../../store/axios";
 import Table from "./Table";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/slices/userSlice";
-import moment from "moment";
+//import moment from "moment";
 
 //Employee's SSF
 const tableHeader = [
@@ -29,6 +29,9 @@ function Deductions() {
   const [isGenerate, setisGenerate] = useState(false);
   const user = useSelector(selectUser);
 
+  const [selectedMonth, setselectedMonth] = useState(0);
+  const [selectedYear, setselectedYear] = useState("");
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (year === "" || month === "") {
@@ -41,6 +44,8 @@ function Deductions() {
     };
     axios.get(`/transactions/staff/pay`).then((res) => {
       setisGenerate(true);
+      setselectedMonth(month);
+      setselectedYear(year);
       let arrData = [];
       res.data.map(async (doc) => {
         let u = await getUser(doc?.userID);
@@ -67,7 +72,7 @@ function Deductions() {
   // const handlePrint = () => {
   //   window.print();
   // };
-
+  console.log(data);
   return (
     <div>
       <h3>Paye Deductions</h3>
@@ -150,7 +155,7 @@ function Deductions() {
               <div className="row">
                 <div className="col-2">Month</div>
                 <div className="col-2">
-                  {monthYear[month].name} {year}
+                  {monthYear[selectedMonth].name} {selectedYear}
                 </div>
               </div>
             </div>

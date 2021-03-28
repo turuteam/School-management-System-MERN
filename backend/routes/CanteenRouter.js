@@ -6,7 +6,9 @@ const route = express.Router();
 
 //get all members
 route.get("/", async (req, res) => {
-  const docs = await CanteenModel.find();
+  const docs = await CanteenModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(docs);
 });
 
@@ -82,6 +84,13 @@ route.post("/create", async (req, res) => {
   console.log(number);
 
   let memberID = "CA" + currentYear + (number + 1);
+
+  let checkMemberIDExist = await CanteenModel.findOne({ memberID: memberID });
+
+  if (checkMemberIDExist) {
+    memberID = memberID + 1;
+  }
+
   CanteenModel.create({ ...body, memberID })
     .then((doc) => {
       console.log(doc);

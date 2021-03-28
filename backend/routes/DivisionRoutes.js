@@ -4,7 +4,9 @@ import { stringtoLowerCase } from "../middlewares/utils.js";
 const route = express.Router();
 
 route.get("/", async (req, res) => {
-  const data = await DivisionModel.find();
+  const data = await DivisionModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(data);
 });
 

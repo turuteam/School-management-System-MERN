@@ -14,6 +14,7 @@ function EnhancedTableHead(props) {
     orderBy,
     numSelected,
     headCells,
+    noActions,
     rowCount,
     onRequestSort,
   } = props;
@@ -57,7 +58,7 @@ function EnhancedTableHead(props) {
               </TableSortLabel>
             </TableCell>
           ))}
-          <TableCell padding="checkbox">Actions</TableCell>
+          {!noActions && <TableCell padding="checkbox">Actions</TableCell>}
         </TableRow>
       </TableHead>
     </>

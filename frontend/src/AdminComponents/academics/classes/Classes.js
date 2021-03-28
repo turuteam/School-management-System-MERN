@@ -97,6 +97,7 @@ function Classes() {
           activity: ` ${deleted?.name} class was deleted`,
           user: "admin",
         });
+        await await axios.post(`/fees/delete/name`, { name });
       });
     }
   };

@@ -46,8 +46,6 @@ function ClassForm(props) {
 
   const [prefects, setprefects] = useState([]);
 
-  console.log(years);
-
   useEffect(() => {
     axios.get("/prefects").then((res) => {
       setprefects(res.data);
@@ -102,26 +100,28 @@ function ClassForm(props) {
           )}
         </div>
       </div>
-      <div className="row mb-3">
-        <label htmlFor="name" className="col-sm-2 col-form-label">
-          Class Code
-        </label>
-        <div className="col-sm-10">
-          <input
-            ref={register({ required: true })}
-            value={code}
-            onChange={(e) => setcode(e.target.value)}
-            type="text"
-            className="form-control"
-            name="code"
-          />
-          {errors.code && (
-            <span className=" form-error text-danger mb-2">
-              This field is required
-            </span>
-          )}
+      {!isEdit && (
+        <div className="row mb-3">
+          <label htmlFor="name" className="col-sm-2 col-form-label">
+            Class Code
+          </label>
+          <div className="col-sm-10">
+            <input
+              ref={register({ required: true })}
+              value={code}
+              onChange={(e) => setcode(e.target.value)}
+              type="text"
+              className="form-control"
+              name="code"
+            />
+            {errors.code && (
+              <span className=" form-error text-danger mb-2">
+                This field is required
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div className="row mb-3">
         <label htmlFor="name" className="col-sm-2 col-form-label">
           Campus

@@ -6,7 +6,9 @@ const route = express.Router();
 
 //get banking details
 route.get("/", async (req, res) => {
-  const docs = await TransactionsModel.find();
+  const docs = await TransactionsModel.find().sort({
+    createdAt: "desc",
+  });
   res.json(docs);
 });
 
@@ -22,9 +24,7 @@ route.get("/:id", async (req, res) => {
 
 //expenditure
 route.get("/expenditure", async (req, res) => {
-  const docs = await TransactionsModel.find({
-    type: { $regex: "expenditure" },
-  });
+  const docs = await TransactionsModel.find();
   console.log(docs);
   res.json(docs);
 });
@@ -43,7 +43,10 @@ route.get("/staff/pay", async (req, res) => {
         paymentMethod: e.paymentMethod,
         chequeNumber: e.chequeNumber,
         userID: e.pay.userID,
-        bank: e.bank,
+        bank: e.pay.bank,
+        month: e.pay.month,
+        year: e.pay.year,
+        accountNumber: e.pay.accountNumber,
         _id: e._id,
       };
     });
@@ -57,7 +60,7 @@ route.get("/pay/:year/:month", async (req, res) => {
   const docs = await TransactionsModel.find({
     category: { $regex: "pay" },
     type: "expenditure",
-    "pay.month": req.params.month,
+    "pay.month": Number(req.params.month),
     "pay.year": req.params.year,
   });
   if (docs) {
@@ -80,6 +83,7 @@ route.get("/staff/pay/:id", async (req, res) => {
         amount: e.amount,
         date: e.date,
         month: e.pay.month,
+        year: e.pay.year,
         accountNumber: e.pay.accountNumber,
         userID: e.pay.userID,
         bank: e.pay.bank,

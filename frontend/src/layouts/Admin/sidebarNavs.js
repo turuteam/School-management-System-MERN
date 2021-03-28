@@ -112,16 +112,16 @@ const _nav = [
         name: "Staff Payrow",
         to: "/finance/staff/payrow",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Paye Deductions",
-        to: "/finance/staff/paydeductions",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Trustee Contribution",
-        to: "/finance/trustee",
-      },
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Paye Deductions",
+      //   to: "/finance/staff/paydeductions",
+      // },
+      // {
+      //   _tag: "CSidebarNavItem",
+      //   name: "Trustee Contribution",
+      //   to: "/finance/trustee",
+      // },
       {
         _tag: "CSidebarNavItem",
         name: "SSNIT Contributions",
@@ -185,6 +185,11 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Notes",
         to: "/academics/notes",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Past Classes",
+        to: "/academics/classes/past",
       },
       {
         _tag: "CSidebarNavItem",
@@ -338,11 +343,6 @@ const _nav = [
       <CIcon name="cil-notes" customClasses="c-sidebar-nav-icon  sidebarIcon" />
     ),
     _children: [
-      // {
-      //   _tag: "CSidebarNavItem",
-      //   name: "Store",
-      //   to: "/store",
-      // },
       {
         _tag: "CSidebarNavItem",
         name: "Inventory",
@@ -353,11 +353,6 @@ const _nav = [
         name: "Sales",
         to: "/store/sales",
       },
-      // {
-      //   _tag: "CSidebarNavItem",
-      //   name: "Reports",
-      //   to: "/store/reports",
-      // },
     ],
   },
   {

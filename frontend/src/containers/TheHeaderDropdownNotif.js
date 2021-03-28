@@ -14,11 +14,13 @@ const TheHeaderDropdownNotif = () => {
   const [items, setitems] = useState([]);
 
   useEffect(() => {
-    axios.get("/notification/upcoming").then((res) => {
+    axios.get("/notification").then((res) => {
       setitems(res.data);
       console.log(res.data);
     });
   }, []);
+
+  console.log(items);
 
   let itemsCount = items?.length;
   return (

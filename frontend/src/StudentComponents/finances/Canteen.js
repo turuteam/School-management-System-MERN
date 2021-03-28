@@ -80,11 +80,12 @@ function Canteen() {
   };
 
   const handleSignout = () => {
-    axios.delete(`/canteen/delete/${user?.id}`).then((res) => {
+    axios.delete(`/canteen/delete/${member?.memberID}`).then((res) => {
       if (res.data?.error) {
         errorAlert(res.data?.error);
         return 0;
       }
+
       setmember(null);
     });
   };

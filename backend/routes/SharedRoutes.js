@@ -84,7 +84,7 @@ route.get("/student/count/:id", async (req, res) => {
   date.setDate(date.getDate() - daysInMonth);
   const attendance = await AttendanceModel.find({
     "users.userID": req.params.id,
-    createdAt: { $gte: date },
+    createdAt: { $gte: moment(date, "D-MM-YYYY") },
   });
 
   const docs = await CalendarModel.find({ date: { $gte: date } });
@@ -101,17 +101,13 @@ route.get("/student/count/:id", async (req, res) => {
 });
 
 route.get("/count", async (req, res) => {
-  const today = moment().startOf("day");
-  const day = moment().get("date");
-  //const month = moment().get("month");
-
-  const getBirthday = (arr, m, d) => {
-    return arr.filter(
-      (e) =>
-        moment(e.dateofBirth || 0).get("month") === m &&
-        moment(e.dateofBirth || 0).get("date") === d
-    );
-  };
+  // const getBirthday = (arr, m, d) => {
+  //   return arr.filter(
+  //     (e) =>
+  //       moment(e.dateofBirth || 0, "DD-MM-YYYY").get("month") === m &&
+  //       moment(e.dateofBirth || 0, "DD-MM-YYYY").get("date") === d
+  //   );
+  // };
 
   const students = await StudentModel.countDocuments({ role: role.Student });
 
@@ -128,28 +124,28 @@ route.get("/count", async (req, res) => {
     role: role.Student,
   }).exec();
 
-  const yesterdayBirthdayStudents = getBirthday(studentsData, month, day - 1)
-    .length;
+  // const yesterdayBirthdayStudents = getBirthday(studentsData, month, day - 1)
+  //   .length;
 
-  const todayBirthdayStudents = getBirthday(studentsData, month, day).length;
+  //const todayBirthdayStudents = getBirthday(studentsData, month, day).length;
 
-  const tomorrowBirthdayStudents = getBirthday(studentsData, month, day + 1)
-    .length;
+  // const tomorrowBirthdayStudents = getBirthday(studentsData, month, day + 1)
+  //   .length;
 
-  const todayRegisteredStudents = await StudentModel.countDocuments({
-    role: role.Student,
-    createdAt: {
-      $gte: today.toDate(),
-      $lte: moment(today).endOf("day").toDate(),
-    },
-  });
-  const yesterdayRegisteredStudents = await StudentModel.countDocuments({
-    role: role.Student,
-    createdAt: {
-      $gte: today.subtract(1, "days").toDate(),
-      $lte: moment(today).subtract(1, "days").endOf("day").toDate(),
-    },
-  });
+  // const todayRegisteredStudents = await StudentModel.countDocuments({
+  //   role: role.Student,
+  //   createdAt: {
+  //     $gte: moment(today, "DD-MM-YYYY").startOf("day"),
+  //     $lte: moment(today, "DD-MM-YYYY").endOf("day"),
+  //   },
+  // });
+  // const yesterdayRegisteredStudents = await StudentModel.countDocuments({
+  //   role: role.Student,
+  //   createdAt: {
+  //     $gte: moment(today, "DD-MM-YYYY").subtract(1, "days").startOf("day"),
+  //     $lte: moment(today, "DD-MM-YYYY").subtract(1, "days").endOf("day"),
+  //   },
+  // });
 
   const staff = await TeacherModels.countDocuments({ role: role.Teacher });
   const femaleStaff = await TeacherModels.countDocuments({
@@ -165,11 +161,11 @@ route.get("/count", async (req, res) => {
     role: role.Teacher,
   }).exec();
 
-  const todayBirthdayStaff = getBirthday(staffData, month, day).length;
+  //const todayBirthdayStaff = getBirthday(staffData, month, day).length;
 
-  const yesterdayBirthdayStaff = getBirthday(staffData, month, day - 1).length;
+  //const yesterdayBirthdayStaff = getBirthday(staffData, month, day - 1).length;
 
-  const tomorrowBirthdayStaff = getBirthday(staffData, month, day + 1).length;
+  //const tomorrowBirthdayStaff = getBirthday(staffData, month, day + 1).length;
   const campuses = await Campus.countDocuments();
   const classes = await ClassesModel.countDocuments();
   const prefects = await PrefectsModel.countDocuments();
@@ -179,14 +175,14 @@ route.get("/count", async (req, res) => {
   const scholarships = await ScholarshipsModels.countDocuments();
   const divisions = await DivisionsModels.countDocuments();
   res.json({
-    todayBirthdayStudents,
-    todayBirthdayStaff,
-    yesterdayBirthdayStaff,
-    tomorrowBirthdayStaff,
-    yesterdayBirthdayStudents,
-    todayRegisteredStudents,
-    yesterdayRegisteredStudents,
-    tomorrowBirthdayStudents,
+    todayBirthdayStudents: 0,
+    todayBirthdayStaf: 0,
+    yesterdayBirthdayStaff: 0,
+    tomorrowBirthdayStaff: 0,
+    yesterdayBirthdayStudents: 0,
+    todayRegisteredStudents: 0,
+    yesterdayRegisteredStudents: 0,
+    tomorrowBirthdayStudents: 0,
     students,
     staff,
     campuses,
@@ -207,21 +203,21 @@ route.get("/count", async (req, res) => {
 route.get("/count/attendance", async (req, res) => {
   var daysInMonth = new Date(year, month + 1, 0).getDate();
   var start = new Date(year, month, 1);
-  const today = moment(start).startOf("day").toDate();
+  const today = moment(start, "DD-MM-YYYY").startOf("day");
 
   let arr = [];
   for (let y = 0; y < daysInMonth; y++) {
     const todayData = await AttendanceModel.find({
       createdAt: {
-        $gte: moment(today).add(y, "days").toDate(),
-        $lte: moment(today).add(y, "days").endOf("day").toDate(),
+        $gte: moment(today, "DD-MM-YYYY").add(y, "days"),
+        $lte: moment(today, "DD-MM-YYYY").add(y, "days").endOf("day"),
       },
     });
     let num = todayData.reduce(function (accumulator, currentValue) {
       return accumulator + currentValue.users.length;
     }, 0); //
     arr.push({
-      date: moment(today).add(y, "days").toDate(),
+      date: moment(today, "DD-MM-YYYY").add(y, "days"),
       value: num || 0,
     });
   }
@@ -231,21 +227,20 @@ route.get("/count/attendance", async (req, res) => {
 
 route.get("/count/attendance/week/:start", async (req, res) => {
   var start = req.params.start;
-  const today = moment(start).startOf("day").toDate();
 
   let arr = [];
-  for (let y = 0; y < 7; y++) {
+  for (let y = 1; y <= 7; y++) {
     const todayData = await AttendanceModel.find({
       createdAt: {
-        $gte: moment(today).add(y, "days").toDate(),
-        $lte: moment(today).add(y, "days").endOf("day").toDate(),
+        $gte: moment(start, "DD-MM-YYYY").add(y, "days").toDate(),
+        $lte: moment(start, "DD-MM-YYYY").add(y, "days").endOf("day").toDate(),
       },
     });
     let num = todayData.reduce(function (accumulator, currentValue) {
       return accumulator + currentValue.users.length;
     }, 0); //
     arr.push({
-      date: moment(today).add(y, "days").toDate(),
+      date: moment(start, "D-MM-YYYY").add(y, "days").toDate(),
       value: num || 0,
     });
   }
@@ -314,7 +309,10 @@ route.post("/signin", async (req, res) => {
   })
     .then((user) => {
       if (user) {
+        console.log(bcrypt.compareSync(req.body.password, user.password));
         if (bcrypt.compareSync(req.body.password, user.password)) {
+          console.log(bcrypt.compareSync(req.body.password, user.password));
+
           return res.json({ success: true, user });
         } else {
           return res.json({ error: "Wrong Password or  ID", success: false });
@@ -459,7 +457,7 @@ route.post("/change/password/:id", async (req, res) => {
           }
           StudentModel.findOneAndUpdate(
             {
-              studentID: req.params.id,
+              userID: req.params.id,
             },
             { password: hash },
             {

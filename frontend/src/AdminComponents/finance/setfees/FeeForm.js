@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { selectFees } from "../../../store/slices/schoolSlice";
+import { selectClasses } from "../../../store/slices/schoolSlice";
+import { currentCurrency } from "../../../utils";
 
 function FeeForm({
   classID,
@@ -20,7 +21,8 @@ function FeeForm({
   isEdit,
   onSubmit,
 }) {
-  const feesType = useSelector(selectFees);
+  ///const feesType = useSelector(selectFees);
+  const classes = useSelector(selectClasses);
   const { register, handleSubmit, errors } = useForm();
 
   return (
@@ -29,7 +31,7 @@ function FeeForm({
         {!isEdit && (
           <>
             <div className="col-md-10 mb-3">
-              <label className="form-label">Select fees Category</label>
+              <label className="form-label">Select Class</label>
               <select
                 ref={register({ required: true })}
                 value={classID}
@@ -40,9 +42,9 @@ function FeeForm({
                 <option defaultValue hidden>
                   Choose...
                 </option>
-                {feesType?.length > 0 ? (
-                  feesType.map((option) => (
-                    <option key={option.code} value={option.code}>
+                {classes?.length > 0 ? (
+                  classes.map((option) => (
+                    <option key={option.classCode} value={option.classCode}>
                       {option.name}
                     </option>
                   ))
@@ -85,53 +87,65 @@ function FeeForm({
           <div className="row mb-2">
             <label className="col-2 form-label">Tution Fee</label>
             <div className="col-10">
-              <input
-                ref={register({ min: 0 })}
-                value={tution}
-                onChange={(e) => settution(e.target.value)}
-                type="number"
-                className="form-control"
-                name="tution"
-              />
+              <div className="input-group">
+                <div className="input-group-text">{currentCurrency()}</div>
+                <input
+                  ref={register({ min: 0 })}
+                  value={tution}
+                  onChange={(e) => settution(e.target.value)}
+                  type="number"
+                  className="form-control"
+                  name="tution"
+                />
+              </div>
             </div>
           </div>
           <div className="row mb-2">
             <label className="col-2 form-label">Facility User Fee</label>
             <div className="col-10">
-              <input
-                value={facility}
-                onChange={(e) => setfacility(e.target.value)}
-                type="number"
-                ref={register({ min: 0 })}
-                className="form-control"
-                name="facility"
-              />
+              <div className="input-group">
+                <div className="input-group-text">{currentCurrency()}</div>
+                <input
+                  value={facility}
+                  onChange={(e) => setfacility(e.target.value)}
+                  type="number"
+                  ref={register({ min: 0 })}
+                  className="form-control"
+                  name="facility"
+                />
+              </div>
             </div>
           </div>
           <div className="row mb-2">
             <label className="col-2 form-label">Maintenance Fee</label>
             <div className="col-10">
-              <input
-                value={maintenance}
-                onChange={(e) => setmaintenance(e.target.value)}
-                type="number"
-                ref={register({ min: 0 })}
-                className="form-control"
-                name="maintenance"
-              />
+              <div className="input-group">
+                <div className="input-group-text">{currentCurrency()}</div>
+                <input
+                  value={maintenance}
+                  onChange={(e) => setmaintenance(e.target.value)}
+                  type="number"
+                  ref={register({ min: 0 })}
+                  className="form-control"
+                  name="maintenance"
+                />
+              </div>
             </div>
           </div>
           <div className="row mb-2">
             <label className="col-2 form-label">Exam Fee</label>
             <div className="col-10">
-              <input
-                value={exam}
-                onChange={(e) => setexam(e.target.value)}
-                type="number"
-                ref={register({ min: 0 })}
-                className="form-control"
-                name="exam"
-              />
+              <div className="input-group">
+                <div className="input-group-text">{currentCurrency()}</div>
+                <input
+                  value={exam}
+                  onChange={(e) => setexam(e.target.value)}
+                  type="number"
+                  ref={register({ min: 0 })}
+                  className="form-control"
+                  name="exam"
+                />
+              </div>
             </div>
           </div>
         </div>

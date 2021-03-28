@@ -48,20 +48,19 @@ function Contributions() {
       axios
         .get(`/transactions/pay/${year}/${month}`)
         .then((res) => {
-          console.log(res);
           setloading(false);
           setdata(
             res.data.docs &&
               res.data.docs?.map((e) => {
-                let result = staff.find((i) => i.userID === e.userID);
+                let result = staff.find((i) => i.userID === e.pay.userID);
                 return {
                   userID: result?.userID,
                   position: result?.position,
                   name: result?.name,
                   surname: result?.surname,
-                  taxNumber: result?.taxNumber,
-                  salary: result?.salary,
-                  ssnit: result?.ssnit,
+                  tax: (e.salary || 0) * 0.05,
+                  salary: e?.salary,
+                  taxNumber: result?.ssnit ? result?.taxNumber : "not set",
                   allowance: result?.salary,
                 };
               })
@@ -132,7 +131,7 @@ function Contributions() {
           <div className="col-sm-4">
             <button
               disabled={loading}
-              className="btn blue__btn"
+              className="btn blue__btn mt-4"
               onClick={handleSearch}
             >
               {loading && (
@@ -151,28 +150,32 @@ function Contributions() {
         <div className="content__container">
           {" "}
           <div id="section-to-print">
-            <h3>
-              <strong>{user?.name}</strong>
-            </h3>
-            <h5>
-              5% January Petra Trust Contribution List for{" "}
-              {selectedmonth && monthYear[selectedmonth].name} {selectedyear}
-            </h5>
+            <div className="text-center">
+              <h3>
+                <strong>{user?.name}</strong>
+              </h3>
+              <h5>
+                5% January Petra Trust Contribution List for{" "}
+                {selectedmonth && monthYear[selectedmonth].name} {selectedyear}
+              </h5>
+            </div>
+
             <Table data={data} tableHeader={tableHeader} />
           </div>
-          <div className="d-flex justify-content-end mt-5">
-            <button onClick={handlePrint} className="btn blue__btn mr-2">
-              {" "}
-              View / Print
-            </button>
+          {data.length > 0 && (
+            <div className="d-flex justify-content-center mt-5">
+              <button onClick={handlePrint} className="btn blue__btn mr-2">
+                {" "}
+                View / Print
+              </button>
 
-            <Export
-              className="btn blue__btn ml-2"
-              data={data}
-              columns={tableHeader}
-            ></Export>
-            {/* <button className="btn blue__btn ml-2"> Export to Excel</button> */}
-          </div>
+              <Export
+                className="btn blue__btn ml-2"
+                data={data}
+                columns={tableHeader}
+              ></Export>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -48,6 +48,7 @@ const Notifications = React.lazy(() =>
 const Classes = React.lazy(() =>
   import("../../TeachersComponents/academics/AllClasses")
 );
+
 const ClassDetails = React.lazy(() =>
   import("../../TeachersComponents/academics/ClassDetails")
 );
@@ -71,6 +72,12 @@ const ViewCalendar = React.lazy(() =>
 );
 const Calendar = React.lazy(() =>
   import("../../AdminComponents/academics/calender/Calender")
+);
+
+const SBA = React.lazy(() => import("../../TeachersComponents/academics/SBA"));
+
+const CourseReports = React.lazy(() =>
+  import("../../TeachersComponents/academics/CourseReport")
 );
 
 //canteen
@@ -157,7 +164,7 @@ const routes = [
   },
   {
     path: "/academics/courses/add/:id",
-    name: "Courses",
+    name: "Courses Notes",
     component: AddCourseNotes,
   },
   {
@@ -172,9 +179,20 @@ const routes = [
     component: ViewCalendar,
   },
   {
-    path: "/academics/courses/:id",
+    path: "/academics/courses/:id/:classID",
     name: "Course Details",
+    exact: true,
     component: CourseDetails,
+  },
+  {
+    path: "/academics/courses/sba/:id/:classID",
+    name: "Course SBA",
+    component: SBA,
+  },
+  {
+    path: "/academics/courses/report/:id/:classID",
+    name: "Course Report",
+    component: CourseReports,
   },
   {
     path: "/profile",

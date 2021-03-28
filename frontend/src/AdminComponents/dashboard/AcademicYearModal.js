@@ -69,10 +69,6 @@ export default function CustomizedDialogs({
     setOpen(false);
   };
 
-  //const yearOptions = getYearsList(10);
-
-  console.log(years);
-
   return (
     <Dialog
       maxWidth="lg"
