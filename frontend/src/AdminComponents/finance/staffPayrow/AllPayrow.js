@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectStaff } from "../../../store/slices/schoolSlice";
 import axios from "../../../store/axios";
 import { Link } from "react-router-dom";
-import { errorAlert } from "../../../utils";
+import { errorAlert, currentCurrency } from "../../../utils";
 import { useHistory } from "react-router-dom";
 
 const tableHeader = [
@@ -14,7 +14,7 @@ const tableHeader = [
   { id: "name", name: "Name" },
   { id: "bank", name: "Bank" },
   { id: "accountNumber", name: "Account Number" },
-  { id: "amount", name: "Total Salary ($)" },
+  { id: "amount", name: `Total Salary (${currentCurrency()})` },
 ];
 
 function PayrowAll() {

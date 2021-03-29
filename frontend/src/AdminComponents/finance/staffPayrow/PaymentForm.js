@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import NumberFormat from "react-number-format";
 import { monthYear } from "../../../data";
+import { currentCurrency } from "../../../utils";
 
 function PaymentForm({
   month,
@@ -30,7 +31,7 @@ function PaymentForm({
                   value={balance}
                   displayType={"text"}
                   thousandSeparator={true}
-                  prefix={"$"}
+                  prefix={currentCurrency()}
                 />
               </strong>
               <button

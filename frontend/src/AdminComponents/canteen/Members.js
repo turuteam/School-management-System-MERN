@@ -3,7 +3,7 @@ import ListTable from "../shared/ListTable";
 import axios from "../../store/axios";
 import { useHistory } from "react-router-dom";
 import CanteenNav from "./CanteenNav";
-import { errorAlert, successAlert } from "../../utils";
+import { errorAlert } from "../../utils";
 
 function Members() {
   const [data, setdata] = useState([]);

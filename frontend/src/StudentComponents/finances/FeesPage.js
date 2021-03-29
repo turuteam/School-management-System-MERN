@@ -4,13 +4,14 @@ import axios from "../../store/axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
 import FeesTable from "./Fees";
+import { currentCurrency } from "../../utils";
 
 const tableHeader = [
   { id: "date", name: "Date" },
   { id: "paymentMethod", name: "Payment Method" },
   { id: "bank", name: "Bank" },
   { id: "description", name: "Description" },
-  { id: "amount", name: "Amount" },
+  { id: "amount", name: `Amount ${currentCurrency()}` },
 ];
 function FeesPage() {
   const [loading, setloading] = useState(false);
@@ -23,6 +24,7 @@ function FeesPage() {
 
   useEffect(() => {
     const getData = async () => {
+      setloading(true);
       let transactions = await axios.get(
         `/transactions/student/${user?.userID}`
       );
@@ -33,7 +35,7 @@ function FeesPage() {
       console.log(student);
 
       const feesData = await axios.get(
-        `/fees/type/${student.data.student?.fees}/${student.data.student?.status}`
+        `/fees/type/${student.data.student?.classID}/${student.data.student?.status}`
       );
       setfees(feesData.data);
       console.log(feesData.data);
@@ -48,6 +50,7 @@ function FeesPage() {
       settotalBill(bill);
       settotalPaid(paid);
       setbalance(bill - paid);
+      setloading(false);
     };
     getData();
   }, [user]);

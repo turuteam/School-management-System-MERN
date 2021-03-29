@@ -6,7 +6,7 @@ import axios from "../../../store/axios";
 import Edit from "./EditPayrow";
 import { selectUser } from "../../../store/slices/userSlice";
 import { useSelector } from "react-redux";
-import { errorAlert, successAlert } from "../../../utils";
+import { errorAlert, successAlert, currentCurrency } from "../../../utils";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 function PaymentPlan() {
@@ -26,6 +26,8 @@ function PaymentPlan() {
       setplanData(res.data);
     });
   }, []);
+
+  let sign = currentCurrency();
 
   const handleAddPlans = () => {
     setloading(true);
@@ -137,17 +139,17 @@ function PaymentPlan() {
             </th>
             <th>
               <h5>
-                <strong>Salary</strong>
+                <strong> Salary ({sign})</strong>
               </h5>
             </th>
             <th>
               <h5>
-                <strong>Allowance</strong>
+                <strong> Allowance ({sign})</strong>
               </h5>
             </th>
             <th>
               <h5>
-                <strong>Bonus</strong>
+                <strong> Bonus ({sign})</strong>
               </h5>
             </th>
             {user?.role === "admin" && (

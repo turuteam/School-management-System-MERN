@@ -18,6 +18,7 @@ const Notifications = React.lazy(() =>
 const Messages = React.lazy(() =>
   import("../../AdminComponents/messages/inbox/Messaging")
 );
+const Chat = React.lazy(() => import("../../AdminComponents/messages/Chat"));
 const GuadianMessages = React.lazy(() =>
   import("../../AdminComponents/messages/GuadianMessage")
 );
@@ -1027,6 +1028,18 @@ const routes = [
     exact: true,
     name: "Messages",
     component: Messages,
+  },
+  {
+    path: "/messages/chat",
+    exact: true,
+    name: "Messages",
+    component: Chat,
+  },
+  {
+    path: "/messages/chat/:id",
+    exact: true,
+    name: "Messages",
+    component: Chat,
   },
   {
     path: "/message/:id",

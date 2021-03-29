@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { bankOptions } from "../../../data";
-import NumberFormat from "react-number-format";
 import { useSelector } from "react-redux";
 import { selectYearGroup } from "../../../store/slices/schoolSlice";
 import { currentCurrency } from "../../../utils";
@@ -30,7 +29,7 @@ function PaymentForm({
   setpaymentType,
 }) {
   const { register, handleSubmit, errors } = useForm();
-  const years = useSelector(selectYearGroup);
+  //const years = useSelector(selectYearGroup);
 
   const handleSelectall = (e) => {
     setapplyTo({

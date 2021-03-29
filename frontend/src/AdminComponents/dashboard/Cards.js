@@ -12,6 +12,7 @@ function Cards({ counts }) {
   const [classes, setclasses] = useState(0);
   const [campuses, setcampuses] = useState(0);
   const [course, setcourse] = useState(0);
+  const [divisions, setdivisions] = useState(0);
 
   useEffect(() => {
     setstudents(counts?.students);
@@ -19,6 +20,7 @@ function Cards({ counts }) {
     setclasses(counts?.classes);
     setcourse(counts?.courses);
     setcampuses(counts?.campuses);
+    setdivisions(counts?.divisions);
   }, [counts]);
 
   return (
@@ -44,7 +46,7 @@ function Cards({ counts }) {
       />
       <Card
         icon={<BrandingWatermarkIcon />}
-        value={classes}
+        value={divisions}
         title="Divisions"
         message="Registered "
         link="/academics/divisions"

@@ -27,6 +27,7 @@ const Messages = React.lazy(() =>
 const MessageAdmin = React.lazy(() =>
   import("../../TeachersComponents/message/MessageAdmin")
 );
+const Chat = React.lazy(() => import("../../AdminComponents/messages/Chat"));
 
 //settings
 const Settings = React.lazy(() =>
@@ -189,6 +190,12 @@ const routes = [
     name: "Messages",
     exact: true,
     component: Messages,
+  },
+  {
+    path: "/messages/chat",
+    exact: true,
+    name: "Messages",
+    component: Chat,
   },
   {
     path: "/messages/admin",

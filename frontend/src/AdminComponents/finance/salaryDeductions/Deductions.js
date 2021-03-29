@@ -4,12 +4,12 @@ import Table from "../../shared/ListTable";
 import axios from "../../../store/axios";
 import { useSelector } from "react-redux";
 import { selectStaff } from "../../../store/slices/schoolSlice";
-import { errorAlert, successAlert } from "../../../utils";
+import { errorAlert, successAlert, currentCurrency } from "../../../utils";
 import Edit from "./Edit";
 
 const tableHeader = [
   { id: "name", name: "Name" },
-  { id: "amount", name: "Amount" },
+  { id: "amount", name: `Amount (${currentCurrency()})` },
   { id: "number", name: "Number of Staff" },
 ];
 

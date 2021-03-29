@@ -17,13 +17,15 @@ function Index() {
   const [events, setevents] = useState([]);
   const user = useSelector(selectUser);
   const [loading, setloading] = useState(false);
+  const [show, setshow] = useState(false);
 
   useEffect(() => {
-    // setloading(true);
+    setloading(true);
     axios.get("/count").then((res) => {
       setloading(false);
       if (res?.data) {
         setcount(res.data);
+        setshow(true);
       }
     });
   }, []);
@@ -58,22 +60,22 @@ function Index() {
           <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
             <AcademicYear isEdit={true} />
           </div>
-          <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
-            {!loading && (
-              <Population
-                femaleStudents={count?.femaleStudents}
-                maleStudents={count?.maleStudents}
-              />
-            )}
-          </div>
-          <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
-            {!loading && (
-              <StaffPopulation
-                femaleStudents={count?.femaleStaff}
-                maleStudents={count?.maleStaff}
-              />
-            )}
-          </div>
+          {show && (
+            <>
+              <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
+                <Population
+                  femaleStudents={count?.femaleStudents}
+                  maleStudents={count?.maleStudents}
+                />
+              </div>
+              <div className="col-xs-12 col-sm-12 col-md-6  mb-5">
+                <StaffPopulation
+                  femaleStudents={count?.femaleStaff}
+                  maleStudents={count?.maleStaff}
+                />
+              </div>
+            </>
+          )}
         </div>
       </>
     </>

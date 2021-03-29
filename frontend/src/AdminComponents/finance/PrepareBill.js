@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { selectClasses } from "../../store/slices/schoolSlice";
 import axios from "../../store/axios";
 import { Link, useHistory } from "react-router-dom";
-import { errorAlert } from "../../utils";
+import { errorAlert, currentCurrency } from "../../utils";
 
 const tableHeader = [
   { id: "date", name: "Date" },
@@ -13,7 +13,7 @@ const tableHeader = [
   { id: "paymentMethod", name: "Payment Method" },
   { id: "bank", name: "Bank" },
   { id: "chequeNumber", name: "Cheque Number" },
-  { id: "amount", name: "Amount ($)" },
+  { id: "amount", name: `Amount (${currentCurrency()})` },
 ];
 
 function PrepareBill() {

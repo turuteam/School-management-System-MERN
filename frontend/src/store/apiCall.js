@@ -98,9 +98,9 @@ export const handleLogin = (user) => {
 
 export const initFunc = () => {
   if (localStorage.getItem(LoginString.ID)) {
-    store.dispatch(setLoading(true));
+    // store.dispatch(setLoading(true));
     handleAutoLogin();
-    store.dispatch(setLoading(false));
+    // store.dispatch(setLoading(false));
   } else {
     store.dispatch(logout());
   }

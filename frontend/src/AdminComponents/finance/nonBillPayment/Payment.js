@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { bankOptions } from "../../../data";
-//import NumberFormat from "react-number-format";
+import { currentCurrency } from "../../../utils";
 
 function PaymentForm({
   bank,
@@ -39,7 +39,7 @@ function PaymentForm({
               onChange={(e) => setamount(e.target.value)}
               className="form-control"
               name="amount"
-              placeholder="Enter amount in $"
+              placeholder={`Enter amount in (${currentCurrency()})`}
             />
             {errors.amount && (
               <div className="text-danger">

@@ -149,16 +149,17 @@ route.get("/count", async (req, res) => {
 
   const staff = await TeacherModels.countDocuments({ role: role.Teacher });
   const femaleStaff = await TeacherModels.countDocuments({
-    role: role.Teacher,
     gender: "female",
+    isStaff: true,
   });
   const maleStaff = await TeacherModels.countDocuments({
-    role: role.Teacher,
+    isStaff: true,
     gender: "male",
   });
 
   const staffData = await TeacherModels.find({
     role: role.Teacher,
+    isStaff: true,
   }).exec();
 
   //const todayBirthdayStaff = getBirthday(staffData, month, day).length;
@@ -198,6 +199,17 @@ route.get("/count", async (req, res) => {
     femaleStaff,
     maleStaff,
   });
+});
+
+route.get("/users/search/:id", async (req, res) => {
+  const data = await TeacherModels.find({
+    $or: [
+      { userID: req.params.id },
+      { name: { $regex: req.params.id } },
+      { surname: { $regex: req.params.id } },
+    ],
+  });
+  res.json(data);
 });
 
 route.get("/count/attendance", async (req, res) => {

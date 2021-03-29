@@ -12,11 +12,11 @@ function Population({ maleStudents, femaleStudents }) {
         radius={40}
         segments={[
           {
-            color: "#051f3e",
+            color: "#ffa201",
             value: femaleStudents || 0,
           },
           {
-            color: "#ffa201",
+            color: "#051f3e",
             value: maleStudents || 0,
           },
         ]}

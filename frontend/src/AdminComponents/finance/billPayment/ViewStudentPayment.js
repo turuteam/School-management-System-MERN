@@ -10,7 +10,7 @@ import Slide from "@material-ui/core/Slide";
 import ListTable from "./PaymentTable";
 import axios from "../../../store/axios";
 import { useHistory } from "react-router-dom";
-import { errorAlert, successAlert } from "../../../utils";
+import { errorAlert, successAlert, currentCurrency } from "../../../utils";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const tableHeader = [
   { id: "date", name: "Date" },
-  { id: "amount", name: "Amount ($)" },
+  { id: "amount", name: `Amount (${currentCurrency()})` },
   { id: "paymentMethod", name: "Payment Method" },
   { id: "bank", name: "Bank" },
   { id: "chequeNumber", name: "Cheque Number" },

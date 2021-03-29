@@ -5,13 +5,13 @@ import AddItem from "./AddItem";
 import EditItem from "./EditItem";
 import EditInventory from "./EditInventory";
 import axios from "../../../store/axios";
-import { successAlert, errorAlert } from "../../../utils";
+import { successAlert, errorAlert, currentCurrency } from "../../../utils";
 import { useHistory } from "react-router-dom";
 
 const tableHeader = [
   { id: "name", name: "Name" },
   { id: "description", name: "Description" },
-  { id: "price", name: "Price" },
+  { id: "price", name: `Price (${currentCurrency()})` },
   { id: "quantity", name: "Quantity" },
 ];
 

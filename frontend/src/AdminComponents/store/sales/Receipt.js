@@ -3,7 +3,7 @@ import axios from "../../../store/axios";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import Loading from "../../../Loading";
-import { getImgSrc } from "../../../utils";
+import { getImgSrc, currentCurrency } from "../../../utils";
 
 function Receipt() {
   const [transaction, settransaction] = useState({});
@@ -67,7 +67,7 @@ function Receipt() {
               <th scope="col">Item</th>
               <th scope="col">Rate</th>
               <th scope="col">Qty</th>
-              <th scope="col">Amount ($)</th>
+              <th scope="col">Amount ({currentCurrency()})</th>
             </tr>
           </thead>
           <tbody>
@@ -86,11 +86,15 @@ function Receipt() {
               <td>
                 <div className="d-flex flex-column">
                   <strong>
-                    Amount Paid: ${transaction?.amountPaid || "0"}
+                    Amount Paid: ({currentCurrency()})
+                    {transaction?.amountPaid || "0"}
                   </strong>
-                  <strong>Total Cost: ${transaction?.totalCost || "0"} </strong>
                   <strong>
-                    Change: $
+                    Total Cost: ({currentCurrency()})
+                    {transaction?.totalCost || "0"}{" "}
+                  </strong>
+                  <strong>
+                    Change: ({currentCurrency()})
                     {transaction?.amountPaid - transaction?.totalCost || "0"}
                   </strong>
                 </div>

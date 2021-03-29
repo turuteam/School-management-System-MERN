@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Avatar } from "@material-ui/core";
-import { getImgSrc, getCapitalize, getIntial } from "../../utils";
+import {
+  getImgSrc,
+  getCapitalize,
+  getIntial,
+  currentCurrency,
+} from "../../utils";
 import moment from "moment";
 import axios from "../../store/axios";
 
@@ -58,12 +63,17 @@ function MemberPayments({ member, planName }) {
               <tr key={e._id}>
                 <td>{moment(e?.date).format("D MMMM  YYYY")}</td>
                 <td>{e.covers || "-"}</td>
-                <td>{e.amount}</td>
+                <td>
+                  {currentCurrency()}
+                  {e.amount}
+                </td>
               </tr>
             ))}
           <tr>
             <td colSpan="2">BALANCE</td>
-            <td> {balance}</td>
+            <td>
+              {currentCurrency()} {balance}
+            </td>
           </tr>
         </tbody>
       </table>

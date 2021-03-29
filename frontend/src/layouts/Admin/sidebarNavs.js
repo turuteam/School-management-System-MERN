@@ -112,16 +112,6 @@ const _nav = [
         name: "Staff Payrow",
         to: "/finance/staff/payrow",
       },
-      // {
-      //   _tag: "CSidebarNavItem",
-      //   name: "Paye Deductions",
-      //   to: "/finance/staff/paydeductions",
-      // },
-      // {
-      //   _tag: "CSidebarNavItem",
-      //   name: "Trustee Contribution",
-      //   to: "/finance/trustee",
-      // },
       {
         _tag: "CSidebarNavItem",
         name: "SSNIT Contributions",
@@ -370,6 +360,11 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Inbox",
         to: "/messages",
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Chat",
+        to: "/messages/chat",
       },
       {
         _tag: "CSidebarNavItem",

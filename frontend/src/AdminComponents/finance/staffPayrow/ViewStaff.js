@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Avatar } from "@material-ui/core";
-import { getImgSrc, getCapitalize, getIntial } from "../../../utils";
+import {
+  getImgSrc,
+  getCapitalize,
+  getIntial,
+  currentCurrency,
+} from "../../../utils";
 import NumberFormat from "react-number-format";
 import Transactions from "./Transactions";
 
@@ -52,7 +57,7 @@ function ViewStudent({
                 value={feetype?.salary}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrency()}
               />
             </td>
           </tr>
@@ -63,7 +68,7 @@ function ViewStudent({
                 value={feetype?.allowance}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrency()}
               />
             </td>
           </tr>
@@ -74,7 +79,7 @@ function ViewStudent({
                 value={feetype?.bonus}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrency()}
               />
             </td>
           </tr>
@@ -85,7 +90,7 @@ function ViewStudent({
                 value={totalBill}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrency()}
               />
             </td>
           </tr>
@@ -96,7 +101,7 @@ function ViewStudent({
                 value={total}
                 displayType={"text"}
                 thousandSeparator={true}
-                prefix={"$"}
+                prefix={currentCurrency()}
               />
             </td>
           </tr>
@@ -110,7 +115,7 @@ function ViewStudent({
                   value={balance}
                   displayType={"text"}
                   thousandSeparator={true}
-                  prefix={"$"}
+                  prefix={currentCurrency()}
                 />
               </strong>
             </td>

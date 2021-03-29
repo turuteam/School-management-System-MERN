@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "../../store/axios";
 import { selectClasses } from "../../store/slices/schoolSlice";
+import { currentCurrency } from "../../utils";
 
 function CanteenPayment() {
   const [classID, setclass] = useState("");
@@ -43,7 +44,7 @@ function CanteenPayment() {
   const tableHeader = [
     { id: "memberID", name: "Canteen ID" },
     { id: "name", name: " Member's Name" },
-    { id: "amount", name: "Amount Paid" },
+    { id: "amount", name: `Amount Paid (${currentCurrency()})` },
     { id: "date", name: "Date" },
   ];
 

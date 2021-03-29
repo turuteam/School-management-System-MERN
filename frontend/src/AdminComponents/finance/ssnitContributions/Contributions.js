@@ -4,7 +4,7 @@ import axios from "../../../store/axios";
 import { monthYear } from "../../../data";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/slices/userSlice";
-import { getYearsPast, errorAlert } from "../../../utils";
+import { getYearsPast, errorAlert, currentCurrency } from "../../../utils";
 import Export from "../../../components/tables/ExcelExport";
 
 const tableHeader = [
@@ -14,7 +14,7 @@ const tableHeader = [
   { id: "surname", name: "Surname" },
   { id: "position", name: "Staff Position" },
   { id: "tax", name: "5% Contribution" },
-  { id: "salary", name: "Salary" },
+  { id: "salary", name: `Salary (${currentCurrency()})` },
 ];
 
 function Contributions() {

@@ -74,6 +74,17 @@ route.get("/send/:id", async (req, res) => {
   res.json(messageChats);
 });
 
+//create  user connection
+route.get("/connection/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.json({ success: false, error: " id is required" });
+  }
+  const messageChats = await ChatModel.find({
+    $or: [{ acceptor_id: req.params.id }, { requestor_id: req.params.id }],
+  });
+  res.json(messageChats);
+});
+
 //get user connections
 route.get("/chats/:id", async (req, res) => {
   if (!req.params.id) {
@@ -124,22 +135,24 @@ route.get("/messages/:id", async (req, res) => {
 //create connection
 route.post("/create", async (req, res) => {
   let body = req.body;
-  const { error } = sendFriendRequest.validate(body);
-  if (error) {
-    console.log(error);
-    return res.json({ success: false, error: error.details[0].message });
-  }
+  // const { error } = sendFriendRequest.validate(body);
+  // if (error) {
+  //   console.log(error);
+  //   return res.json({ success: false, error: error.details[0].message });
+  // }
   //check if there is aconnection already
-  const checkConnection = ChatModel.findOne({
+  const checkConnection = await ChatModel.findOne({
     acceptor_id: body.acceptor_id,
     requestor_id: body.requestor_id,
   });
 
+  console.log(checkConnection, "connection");
+
   if (checkConnection) {
-    return res.json({ success: false, error: "You are already friends" });
+    return res.json({ doc: checkConnection });
   }
 
-  ChatModel.create(body)
+  await ChatModel.create(body)
     .then((doc) => {
       return res.json({ success: true, doc });
     })

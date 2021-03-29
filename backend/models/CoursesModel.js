@@ -24,6 +24,7 @@ const CourserSchema = new Schema(
         {
           teacher: String,
           class: String,
+          _id: String,
         },
       ],
     },

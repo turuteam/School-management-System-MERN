@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "../../shared/TablePagination";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { currentCurrency } from "../../../utils";
 
 const useStyles2 = makeStyles({
   table: {
@@ -44,7 +45,7 @@ export default function CustomPaginationActionsTable({ data }) {
             <TableCell>Date</TableCell>
             <TableCell align="left">Receipt</TableCell>
             <TableCell align="left">Student</TableCell>
-            <TableCell align="left">Amount ($)</TableCell>
+            <TableCell align="left">Amount ({currentCurrency()})</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

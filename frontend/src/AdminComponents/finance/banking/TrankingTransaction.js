@@ -12,8 +12,8 @@ const tableHeader = [
   { id: "issuedDate", name: "Date" },
   { id: "description", name: "Description" },
   { id: "type", name: "Type" },
-  { id: "credit", name: "Credit" },
-  { id: "debit", name: "Debit" },
+  { id: "credit", name: `Credit (${currentCurrency()})` },
+  { id: "debit", name: `Debit (${currentCurrency()})` },
 ];
 
 function TrankingTransaction() {

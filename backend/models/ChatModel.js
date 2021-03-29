@@ -9,7 +9,6 @@ const ChatSchema = new Schema(
     },
     message: {
       type: String,
-      required: true,
     },
     date: {
       type: Date,
@@ -20,6 +19,26 @@ const ChatSchema = new Schema(
     },
     sender: {
       type: String,
+    },
+    requestor_id: {
+      type: String,
+    },
+    acceptor_id: {
+      type: String,
+    },
+    messages: {
+      type: [
+        {
+          senderID: String,
+          message: String,
+          role: String,
+          date: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
+      default: [],
     },
   },
   { timestamps: true }

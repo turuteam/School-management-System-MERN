@@ -32,7 +32,7 @@ function SidebarMessage({ chat, currentUser }) {
 
   return (
     <div className="sidemessage">
-      <Link to={`/message/${chat?._id}`} className="d-flex">
+      <Link to={`/messages/chat/${chat?._id}`} className="d-flex">
         <div className="mr-2">
           <Avatar
             alt={getIntial(user?.name || "O")}
@@ -40,7 +40,7 @@ function SidebarMessage({ chat, currentUser }) {
           ></Avatar>
         </div>
         <div>
-          <div className="d-flex align-center">
+          <div className="d-flex align-center justify-content-between w-100">
             <h6>
               {getCapitalize(user?.name)}{" "}
               {getTrimString(getCapitalize(user?.surname), 5)}

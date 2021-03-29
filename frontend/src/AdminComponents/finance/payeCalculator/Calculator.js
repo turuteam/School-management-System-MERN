@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { currentCurrency } from "../../../utils";
 import NumberFormat from "react-number-format";
 
 function Calculator() {
@@ -116,7 +117,7 @@ function Calculator() {
                     value={balanceBeforeTax}
                     displayType={"text"}
                     thousandSeparator={true}
-                    prefix={"$"}
+                    prefix={currentCurrency()}
                   />
                 </td>
               </tr>
@@ -128,7 +129,7 @@ function Calculator() {
                       value={ssnitAmount}
                       displayType={"text"}
                       thousandSeparator={true}
-                      prefix={"$"}
+                      prefix={currentCurrency()}
                     />
                   </td>
                 </tr>
@@ -140,7 +141,7 @@ function Calculator() {
                     value={tax}
                     displayType={"text"}
                     thousandSeparator={true}
-                    prefix={"$"}
+                    prefix={currentCurrency()}
                   />
                 </td>
               </tr>
@@ -151,7 +152,7 @@ function Calculator() {
                     value={nettax}
                     displayType={"text"}
                     thousandSeparator={true}
-                    prefix={"$"}
+                    prefix={currentCurrency()}
                   />
                 </td>
               </tr>

@@ -40,6 +40,7 @@ const MessageAdmin = React.lazy(() =>
 const MessageTeacher = React.lazy(() =>
   import("../../StudentComponents/messages/MessageTeacher")
 );
+const Chat = React.lazy(() => import("../../StudentComponents/messages/Chat"));
 
 const Notifications = React.lazy(() =>
   import("../../StudentComponents/notifications/NotificationsPage")
@@ -153,6 +154,18 @@ const routes = [
     name: "Messages",
     exact: true,
     component: MessageTeacher,
+  },
+  {
+    path: "/messages/chat",
+    exact: true,
+    name: "Messages",
+    component: Chat,
+  },
+  {
+    path: "/messages/chat/:id",
+    exact: true,
+    name: "Messages",
+    component: Chat,
   },
   {
     path: "/message/:id",

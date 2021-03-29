@@ -1,4 +1,5 @@
 import React from "react";
+import { currentCurrency } from "../../utils";
 
 function Fees({ fees, balance, totalPaid, totalBill }) {
   return (
@@ -17,7 +18,7 @@ function Fees({ fees, balance, totalPaid, totalBill }) {
                     FEES
                   </th>
                   <th className="orange_color" scope="col">
-                    Amount ($)
+                    Amount ({currentCurrency()})
                   </th>
                 </tr>
               </thead>
@@ -50,7 +51,7 @@ function Fees({ fees, balance, totalPaid, totalBill }) {
                   FEES BALANCES
                 </th>
                 <th className="orange_color" scope="col">
-                  Amount ($)
+                  Amount ({currentCurrency()})
                 </th>
               </tr>
             </thead>

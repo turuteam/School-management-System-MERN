@@ -6,7 +6,7 @@ import axios from "../../store/axios";
 import Edit from "./EditPaymentPlan";
 import { selectUser } from "../../store/slices/userSlice";
 import { useSelector } from "react-redux";
-import { errorAlert, successAlert } from "../../utils";
+import { errorAlert, successAlert, currentCurrency } from "../../utils";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import CanteenNav from "./CanteenNav";
 
@@ -226,7 +226,10 @@ function PaymentPlan() {
                     <small>{plan?.description}</small>
                   </p>
                   <h1 className="d-flex align-items-end">
-                    <strong>{plan?.price}</strong>{" "}
+                    <strong>
+                      {currentCurrency()}
+                      {plan?.price}
+                    </strong>{" "}
                     <small style={{ fontSize: "0.4em" }}>/month</small>{" "}
                   </h1>
                 </th>
