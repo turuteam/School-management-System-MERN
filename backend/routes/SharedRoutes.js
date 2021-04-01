@@ -147,7 +147,7 @@ route.get("/count", async (req, res) => {
   //   },
   // });
 
-  const staff = await TeacherModels.countDocuments({ role: role.Teacher });
+  const staff = await TeacherModels.countDocuments({ isStaff: true });
   const femaleStaff = await TeacherModels.countDocuments({
     gender: "female",
     isStaff: true,
@@ -158,7 +158,6 @@ route.get("/count", async (req, res) => {
   });
 
   const staffData = await TeacherModels.find({
-    role: role.Teacher,
     isStaff: true,
   }).exec();
 

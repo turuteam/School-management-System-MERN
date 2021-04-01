@@ -44,7 +44,7 @@ route.post("/", (req, res) => {
       res.send(JSON.stringify({ success: true }));
     })
     .catch((err) => {
-      //console.log(err, "error");
+      console.log(err, "error");
       res.send(
         JSON.stringify({
           error: `Number ${req.body.telephone} is not a valid phone number`,
@@ -198,7 +198,7 @@ route.post("/send/user/:id/:id2", async (req, res) => {
             return res.json({ success: true, doc });
           })
           .catch((err) => {
-            res.json({ success: false, message: err });
+            res.json({ success: false, error: err });
           });
       })
       .catch((err) => {

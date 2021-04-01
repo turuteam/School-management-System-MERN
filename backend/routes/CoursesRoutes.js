@@ -94,23 +94,23 @@ route.get("/headteacher/:id", async (req, res) => {
 });
 
 //courses by class
-route.get("/class/:id", async (req, res) => {
-  if (!req.params.id) {
-    return res.status(400).send("Missing URL parameter: username");
-  }
-  await CoursesModel.find({ classID: req.params.id })
-    .then((docs) => {
-      console.log(docs);
-      if (docs) {
-        return res.json({ success: true, docs });
-      } else {
-        return res.json({ success: false, error: "Does not exists" });
-      }
-    })
-    .catch((err) => {
-      return res.json({ success: false, error: "Server error" });
-    });
-});
+// route.get("/class/:id", async (req, res) => {
+//   if (!req.params.id) {
+//     return res.status(400).send("Missing URL parameter: username");
+//   }
+//   await CoursesModel.find({ classID: req.params.id })
+//     .then((docs) => {
+//       console.log(docs);
+//       if (docs) {
+//         return res.json({ success: true, docs });
+//       } else {
+//         return res.json({ success: false, error: "Does not exists" });
+//       }
+//     })
+//     .catch((err) => {
+//       return res.json({ success: false, error: "Server error" });
+//     });
+// });
 
 //return course name
 
@@ -129,8 +129,8 @@ route.post("/create", async (req, res) => {
   let body = req.body;
   body = {
     ...body,
-    code: stringtoLowerCase(body.name),
-    name: stringtoLowerCase(body.name),
+    code: stringtoLowerCase(body.code),
+    name: body.name,
   };
 
   const departExist = await CoursesModel.findOne({

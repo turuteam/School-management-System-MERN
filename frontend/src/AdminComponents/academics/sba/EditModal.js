@@ -44,10 +44,11 @@ export default function FullScreenDialog({
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm();
   const handleClose = () => {
+    setposition("");
+    setclassWork("");
+    setexam("");
     setOpen(false);
   };
-
-  console.log(examMark, classworkMark);
 
   return (
     <Dialog
@@ -80,7 +81,7 @@ export default function FullScreenDialog({
           </label>
           <input
             value={classWork}
-            ref={register({ max: Number(classworkMark || 0) + 1 })}
+            ref={register({ min: 0, max: Number(classworkMark || 0) + 1 })}
             onChange={(e) => setclassWork(e.target.value)}
             type="number"
             className="form-control col-sm-6"
@@ -99,7 +100,7 @@ export default function FullScreenDialog({
           </label>
           <input
             value={exam}
-            ref={register({ max: Number(examMark || 0) + 1 })}
+            ref={register({ min: 0, max: Number(examMark || 0) + 1 })}
             onChange={(e) => setexam(e.target.value)}
             type="number"
             className="form-control col-6"
@@ -115,11 +116,17 @@ export default function FullScreenDialog({
           <label className="form-label">Position</label>
           <input
             value={position}
-            onChange={(e) => setposition(Number(e.target.value))}
+            onChange={(e) => setposition(e.target.value)}
             type="number"
+            ref={register({ min: 0 })}
             className="form-control col-6"
             name="position"
           />
+          {errors.position && (
+            <span className=" form-error text-danger mb-2">
+              cannot be negative
+            </span>
+          )}
         </div>
         <div className="mb-3">
           <button

@@ -50,7 +50,6 @@ function PaymentForm({
               onChange={(e) => setamount(e.target.value)}
               className="form-control"
               name="amount"
-              placeholder="Enter amount in $"
             />
             {errors.amount && (
               <div className="text-danger">

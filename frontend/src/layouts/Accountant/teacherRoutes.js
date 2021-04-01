@@ -198,6 +198,11 @@ const routes = [
     component: Chat,
   },
   {
+    path: "/messages/chat/:id",
+    name: "Messages",
+    component: Chat,
+  },
+  {
     path: "/messages/admin",
     name: "Messages",
     component: MessageAdmin,

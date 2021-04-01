@@ -26,6 +26,7 @@ function Search({
 
   const handleSelectClass = async (e) => {
     setclass(e);
+    setcourse("");
     await axios.get(`courses/class/${e}`).then((res) => {
       setcourses(
         res.data.docs.map((i) => {

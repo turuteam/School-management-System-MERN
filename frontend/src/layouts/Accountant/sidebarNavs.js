@@ -198,6 +198,11 @@ const _nav = [
       },
       {
         _tag: "CSidebarNavItem",
+        name: "Chat",
+        to: "/messages/chat",
+      },
+      {
+        _tag: "CSidebarNavItem",
         name: "Message School Admin",
         to: "/messages/admin",
       },

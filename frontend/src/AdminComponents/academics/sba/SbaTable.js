@@ -106,7 +106,7 @@ function SbaTable({
                     </TableCell>
                     <TableCell align="left">
                       <button
-                        onClick={() => handleEdit(row?._id)}
+                        onClick={() => handleEdit(row?.userID)}
                         className="btn"
                       >
                         <EditIcon />

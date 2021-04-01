@@ -56,7 +56,6 @@ function PaymentForm({
                 readOnly
                 className="form-control"
                 name="amount"
-                placeholder="Enter amount in $"
               />
             </div>
           </div>
