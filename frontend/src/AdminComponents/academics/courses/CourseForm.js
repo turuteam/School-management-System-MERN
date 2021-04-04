@@ -35,7 +35,7 @@ function CourseForm(props) {
   console.log(classesArr);
 
   useEffect(() => {
-    axios.get("/teachers").then((res) => {
+    axios.get("/teachers/teachers").then((res) => {
       setteachers(res.data);
     });
   }, []);

@@ -125,7 +125,7 @@ route.get("/:class/:course/:year/:term", async (req, res) => {
           userID: e?.userID,
           position: selected?.position || "",
           exam: selected?.exam || "",
-          classWork: selected?.classWork || 0,
+          classWork: selected?.classWork || "",
         };
       }),
     };
@@ -143,7 +143,7 @@ route.get("/:class/:course/:year/:term", async (req, res) => {
         userID: e?.userID,
         position: " ",
         exam: " ",
-        classWork: 0,
+        classWork: "",
       };
     }),
   })

@@ -12,7 +12,7 @@ function AddNote() {
   const [file, setfile] = useState("");
   const user = useSelector(selectUser);
   const [loading, setloading] = useState(false);
-  const { id } = useParams();
+  const { id, classID } = useParams();
 
   const handleAddNote = async () => {
     let fileUrl = " ";
@@ -23,18 +23,21 @@ function AddNote() {
     const fileData = new FormData();
     fileData.append("photo", file);
     let data = await axios.post("/upload", fileData, {});
+    if (data.error) {
+      return errorAlert("The file is too big");
+    }
     fileUrl = data?.path;
 
     await axios
       .post("/notes/create", {
         topic,
         courseID: id,
+        classID,
         notes,
         file: fileUrl,
         senderID: user?.id,
       })
       .then((response) => {
-        console.log(response.data);
         if (response.data.error) {
           errorAlert(response.data.error);
           setloading(false);

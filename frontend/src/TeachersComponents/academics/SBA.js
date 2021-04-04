@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../AdminComponents/academics/sba/SbaTable";
 import Edit from "../../AdminComponents/academics/sba/EditModal";
+
 import axios from "../../store/axios";
 import { useParams } from "react-router-dom";
 import { errorAlert } from "../../utils";
@@ -18,12 +19,9 @@ function SBA() {
   const [position, setposition] = useState("");
   const [loadingSubmit, setloadingSubmit] = useState(false);
   const [error, seterror] = useState(false);
-  const [classWork, setclassWork] = useState({
-    a1: "",
-    a2: "",
-    a3: "",
-    a4: "",
-  });
+  const [examMark, setexamMark] = useState("");
+  const [classWork, setclassWork] = useState("");
+  const [classworkMark, setclassworkMark] = useState("");
 
   useEffect(() => {
     axios.get(`/classes/classCode/${classID}`).then((res) => {
@@ -38,22 +36,35 @@ function SBA() {
         .then((result) => {
           setdata(result.data.docs);
           setstudents(result.data.docs?.students);
+          setclassworkMark(result.data.docs?.classWork);
+          setexamMark(result.data.docs?.exam);
         });
     });
   }, [currentYear, id, classID]);
 
   const handleEdit = (id) => {
+    if (!classworkMark) {
+      return errorAlert("Please set  classWork %");
+    }
+    if (!examMark) {
+      return errorAlert("Please set  exam score %");
+    }
     setopenEdit(true);
-    let selectedStudent = data.students.find((e) => e._id === id);
+    let selectedStudent = data.students.find((e) => e.userID === id);
     setselectedUser(selectedStudent);
     setexam(selectedStudent?.exam);
     setclassWork(selectedStudent?.classWork);
+    setposition(selectedStudent?.position);
   };
 
-  const handleonSubmit = () => {
+  const handleonSubmit = async () => {
     setloadingSubmit(true);
+    await axios.put(`/sba/update/${data?._id}`, {
+      exam: examMark,
+      classWork: classworkMark,
+    });
     axios
-      .put(`/sba/update/student/${data?._id}/${selectedUser?._id}`, {
+      .put(`/sba/update/student/${data?._id}/${selectedUser?.userID}`, {
         classWork,
         exam,
         userID: selectedUser?.userID,
@@ -64,7 +75,6 @@ function SBA() {
         setopenEdit(false);
         setloadingSubmit(false);
         setstudents(res.data.doc?.students);
-        console.log(res.data);
       });
   };
 
@@ -78,11 +88,17 @@ function SBA() {
             setclassWork={setclassWork}
             rows={students}
             handleEdit={handleEdit}
+            examMark={examMark}
+            setexamMark={setexamMark}
+            classworkMark={classworkMark}
+            setclassworkMark={setclassworkMark}
           />
           <Edit
             name={selectedUser?.name}
             userID={selectedUser?.userID}
             exam={exam}
+            classworkMark={classworkMark}
+            examMark={examMark}
             classID={classID}
             loading={loadingSubmit}
             setposition={setposition}

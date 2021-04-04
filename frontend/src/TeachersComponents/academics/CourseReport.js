@@ -2,56 +2,84 @@ import React, { useState, useEffect } from "react";
 import Table from "./ReportTable";
 import { useParams } from "react-router-dom";
 import axios from "../../store/axios";
-import { useSelector } from "react-redux";
-import { selectacademicYear } from "../../store/slices/schoolSlice";
 import PrintIcon from "@material-ui/icons/Print";
 import Loading from "../../Loading";
+import Search from "./Search";
 
 function CourseReport() {
   const [students, setstudents] = useState([]);
   const { id, classID } = useParams();
-  const currentYear = useSelector(selectacademicYear);
-  const [loading, setloading] = useState("");
-
-  console.log(currentYear);
+  const [loading, setloading] = useState(false);
+  const [term, setterm] = useState("");
+  const [academicYear, setacademicYear] = useState("");
+  const [show, setshow] = useState(false);
+  const [showterm, setshowterm] = useState("");
+  const [showyear, setshowyear] = useState("");
+  const [school, setschool] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(
-        `/sba/class/${classID}/${currentYear?.currentYear}/${currentYear?.currentTerm}`
-      )
-      .then((result) => {
-        setloading(false);
-        let data = result.data.docs[0];
-        console.log(result.data.docs[0]);
-        setstudents(data.students);
-      });
-  }, [currentYear, classID]);
+    axios.get("/school").then((res) => {
+      setschool(res.data);
+    });
+  }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setshow(false);
+    if (term && academicYear) {
+      setloading(true);
+      axios
+        .get(`/sba/${classID}/${id}/${academicYear}/${term}`)
+        .then((result) => {
+          setloading(false);
+          let data = result.data.docs;
+          setshow(true);
+          setshowterm(term);
+          setshowyear(academicYear);
+          setstudents(data.students);
+        });
+    }
+  };
 
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="content__container">
-      {loading && <Loading />}
-      <button onClick={handlePrint} className="btn blue__btn float-right">
-        Print <PrintIcon />
-      </button>
-      <div className=" mb-3" id="section-to-print">
-        <div>
-          <h3>
-            Class {classID} for Course {id}
-          </h3>
-          <h6>
-            <strong>
-              Term: {currentYear?.term} Year: {currentYear?.year}
-            </strong>
-          </h6>
+    <>
+      <Search
+        term={term}
+        setterm={setterm}
+        academicYear={academicYear}
+        setacademicYear={setacademicYear}
+        loading={loading}
+        handleSearch={handleSearch}
+      />
+      {show && (
+        <div className="content__container">
+          {loading && <Loading />}
+          <button onClick={handlePrint} className="btn blue__btn float-right">
+            Print <PrintIcon />
+          </button>
+          <div className=" mb-3" id="section-to-print">
+            <div className="text-center">
+              <h3>{school?.fullName}</h3>
+              <p>
+                <strong>{school?.motto}</strong>
+              </p>
+            </div>
+
+            <div className="row">
+              <h4 className="col">Class: {classID}</h4>
+              <h4 className="col">Course: {id}</h4>
+              <h4 className="col">Year: {showyear}</h4>
+              <h4 className="col">Term: {showterm}</h4>
+            </div>
+            <Table rows={students} classID={classID} course={id} />
+          </div>
         </div>
-        <Table rows={students} classID={classID} course={id} />
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

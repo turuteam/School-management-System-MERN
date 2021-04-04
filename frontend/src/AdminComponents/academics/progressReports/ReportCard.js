@@ -7,6 +7,13 @@ function ReportCard() {
   const { id, year, term } = useParams();
   const [results, setresults] = useState([]);
   const [user, setuser] = useState({});
+  const [school, setschool] = useState([]);
+
+  useEffect(() => {
+    axios.get("/school").then((res) => {
+      setschool(res.data);
+    });
+  }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -37,6 +44,12 @@ function ReportCard() {
         </button>
       </div>
       <div id="section-to-print">
+        <div className="text-center">
+          <h3>{school?.fullName}</h3>
+          <p>
+            <strong>{school?.motto}</strong>
+          </p>
+        </div>
         <div className=" mb-5">
           <div>
             <h5>Report Card</h5>

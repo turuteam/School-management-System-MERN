@@ -32,7 +32,7 @@ function SbaTable({
 
   return (
     <div>
-      <h3>Continuous Assessment</h3>
+      <h3 className="mb-5">Continuous Assessment</h3>
       <TableContainer className="mb-5" component={Paper}>
         <Table className={classes.table} aria-label="spanning table">
           <TableHead>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,6 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import PrintIcon from "@material-ui/icons/Print";
+import axios from "../../../store/axios";
 //import { pdf } from "../../../components/tables/pdf";
 
 const useStyles = makeStyles({
@@ -18,6 +19,13 @@ const useStyles = makeStyles({
 
 function SbaTable({ rows, classID }) {
   const classes = useStyles();
+  const [school, setschool] = useState([]);
+
+  useEffect(() => {
+    axios.get("/school").then((res) => {
+      setschool(res.data);
+    });
+  }, []);
 
   const getTotal = (exams, work) => {
     return Number(exams || 0) + Number(work || 0);
@@ -33,6 +41,12 @@ function SbaTable({ rows, classID }) {
         Print <PrintIcon />
       </button>
       <div className=" mb-3" id="section-to-print">
+        <div className="text-center">
+          <h3>{school?.fullName}</h3>
+          <p>
+            <strong>{school?.motto}</strong>
+          </p>
+        </div>
         <h3>Results for Class {classID}</h3>
         <TableContainer className="mb-5" component={Paper}>
           <Table className={classes.table} aria-label="spanning table">

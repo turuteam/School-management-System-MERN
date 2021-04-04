@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import axios from "../../../store/axios";
 import {
   selectCampuses,
-  selectStaff,
   selectFees,
   selectDivisions,
   selectYearGroup,
@@ -15,7 +14,7 @@ function ClassForm(props) {
   const campuses = useSelector(selectCampuses);
   const divisions = useSelector(selectDivisions);
   const groups = useSelector(selectFees);
-  const staff = useSelector(selectStaff);
+  const [staff, setstaff] = useState([]);
   const years = useSelector(selectYearGroup);
   const { register, handleSubmit, errors } = useForm();
   let {
@@ -49,6 +48,12 @@ function ClassForm(props) {
   useEffect(() => {
     axios.get("/prefects").then((res) => {
       setprefects(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get("/teachers/teachers").then((res) => {
+      setstaff(res.data);
     });
   }, []);
 

@@ -174,7 +174,7 @@ const routes = [
     component: Courses,
   },
   {
-    path: "/academics/courses/add/:id",
+    path: "/academics/courses/add/:id/:classID",
     name: "Courses Notes",
     component: AddCourseNotes,
   },

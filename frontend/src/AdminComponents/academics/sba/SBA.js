@@ -72,13 +72,11 @@ function SBA() {
 
   const handleonSubmit = async () => {
     setloadingSubmit(true);
-    console.log(data);
+
     await axios.put(`/sba/update/${data?._id}`, {
       exam: examMark,
       classWork: classWorkMark,
     });
-
-    console.log(selectedUser);
 
     await axios
       .put(`/sba/update/student/${data?._id}/${selectedUser?.userID}`, {

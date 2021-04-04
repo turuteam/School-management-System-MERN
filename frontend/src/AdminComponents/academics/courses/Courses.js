@@ -62,7 +62,6 @@ function Courses() {
           errorAlert(res.data.error);
           return 0;
         }
-        //   successAlert("Deleted");
         setcourses(courses.filter((course) => course._id !== id));
       });
     }

@@ -13,10 +13,15 @@ route.get("/", async (req, res) => {
   const data = await TeacherModel.find({ isStaff: true }).sort({
     createdAt: "desc",
   });
-
   res.json(data);
 });
-23;
+
+route.get("/teachers", async (req, res) => {
+  const data = await TeacherModel.find({ role: role.Teacher }).sort({
+    createdAt: "desc",
+  });
+  res.json(data);
+});
 
 //get one teacher by id
 route.get("/:id", async (req, res) => {

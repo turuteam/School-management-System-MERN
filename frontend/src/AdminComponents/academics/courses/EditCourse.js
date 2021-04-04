@@ -3,7 +3,6 @@ import EditForm from "./CourseForm";
 import axios from "../../../store/axios";
 import { useParams } from "react-router-dom";
 import { errorAlert, successAlert } from "../../../utils";
-import GoBack from "../../shared/GoBack";
 
 function EditCourse() {
   const [name, setname] = useState("");
@@ -24,7 +23,7 @@ function EditCourse() {
     let unique = [];
     arr.map((i) => {
       let check = unique.find(
-        (e) => e.class === i.class || e.teacher === i.teacher
+        (e) => e.class === i.class && e.teacher === i.teacher
       );
       if (!check) {
         unique.push(i);
@@ -46,7 +45,6 @@ function EditCourse() {
       settype(docs?.type);
       setteacher(docs?.teacher);
       setcode(docs?.code);
-      //console.log(docs?.classes);
       setclassesArr(docs?.classes);
     });
   }, [id]);
@@ -57,6 +55,7 @@ function EditCourse() {
       (e) => e.class !== "" || e.teacher !== ""
     );
     let classes = handleUniqueVal(classesData);
+    console.log(classesData);
     axios
       .put(`/courses/update/${id}`, {
         name,
@@ -73,6 +72,7 @@ function EditCourse() {
         }
         successAlert("successfully edited");
         setloading(false);
+        console.log(classes);
       })
       .catch(() => {
         errorAlert("Something went wrong");

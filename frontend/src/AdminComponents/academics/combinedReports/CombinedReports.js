@@ -28,7 +28,6 @@ function CombinedReports() {
     });
   };
 
-  console.log(data);
   return (
     <div>
       <h3>Combined Reports</h3>

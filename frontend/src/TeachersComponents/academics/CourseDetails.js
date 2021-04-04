@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/userSlice";
 import { Link, useParams } from "react-router-dom";
 import ListTable from "../../components/courses/NotesTable";
-import { getCapitalize } from "../../utils";
+import { getCapitalize, errorAlert } from "../../utils";
 
 const tableHeader = [
   { id: "date", name: "Date" },
   { id: "descripton", name: "Topic" },
-  { id: "data", name: "File" },
+  { id: "file", name: "File" },
 ];
 
 function CourseDetails() {
@@ -29,16 +29,18 @@ function CourseDetails() {
     setloading(true);
     axios.get(`/notes/course/${id}`).then((res) => {
       setloading(false);
-      console.log(res.data);
       setnotes(res.data.docs);
     });
   }, [id]);
 
-  const handleDelete = () => {};
-
-  const handleEdit = () => {};
-
-  console.log(course);
+  const handleDelete = (id) => {
+    axios.delete(`/notes/delete/${id}`).then((res) => {
+      if (res.data.error) {
+        errorAlert(res.data.error);
+      }
+      setnotes(notes.filter((e) => e._id !== id));
+    });
+  };
 
   return (
     <div>
@@ -58,7 +60,7 @@ function CourseDetails() {
             {user?.role !== "student" && (
               <>
                 <Link
-                  to={`/academics/courses/add/${course?.code}`}
+                  to={`/academics/courses/add/${course?.code}/${classID}`}
                   className="btn blue__btn mx-2"
                 >
                   Add New Note
@@ -83,7 +85,6 @@ function CourseDetails() {
         <ListTable
           tableHeader={tableHeader}
           data={notes}
-          handleEdit={handleEdit}
           handleDelete={handleDelete}
           loading={loading}
           noActions={user?.role === "student" ? true : false}

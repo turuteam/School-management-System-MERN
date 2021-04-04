@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,21 +17,8 @@ const useStyles = makeStyles({
 function SbaTable({ rows, classID, course }) {
   const classes = useStyles();
 
-  const calculateClassWork = (obj) => {
-    if (obj) {
-      let total = 40;
-      let sum = Object.values(obj).reduce((t, { value }) => t + value, 0);
-      return (sum / total) * (100 / 2) || "-";
-    }
-    return 0;
-  };
-
   const getTotal = (exams, work) => {
-    if (exams && work) {
-      let classwork = calculateClassWork(work);
-      return exams / 2 + (classwork === "-" ? 0 : classwork);
-    }
-    return 0;
+    return exams + work;
   };
 
   return (
@@ -52,6 +39,9 @@ function SbaTable({ rows, classID, course }) {
               <TableCell style={{ width: 160 }} align="left">
                 Final Course
               </TableCell>
+              <TableCell style={{ width: 160 }} align="left">
+                Position
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -62,13 +52,12 @@ function SbaTable({ rows, classID, course }) {
                 className="table-borderless"
               >
                 <TableCell style={{ width: 160 }}>{row?.name}</TableCell>
-                <TableCell style={{ width: 160 }}>
-                  {calculateClassWork(row?.classWork)}
-                </TableCell>
+                <TableCell style={{ width: 160 }}>{row?.classWork}</TableCell>
                 <TableCell style={{ width: 160 }}>{row?.exam || "-"}</TableCell>
                 <TableCell style={{ width: 160 }}>
                   {getTotal(row?.exam, row?.classWork)}
                 </TableCell>
+                <TableCell style={{ width: 160 }}>{row?.position}</TableCell>
               </TableRow>
             ))}
             {rows.length === 0 && (

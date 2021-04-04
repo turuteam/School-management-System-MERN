@@ -323,7 +323,6 @@ route.post("/signin", async (req, res) => {
         console.log(bcrypt.compareSync(req.body.password, user.password));
         if (bcrypt.compareSync(req.body.password, user.password)) {
           console.log(bcrypt.compareSync(req.body.password, user.password));
-
           return res.json({ success: true, user });
         } else {
           return res.json({ error: "Wrong Password or  ID", success: false });
