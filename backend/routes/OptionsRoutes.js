@@ -1,5 +1,5 @@
-import express from "express";
-import OptionsModel from "../models/OptionsModel.js";
+const express = require("express");
+const OptionsModel = require("../models/OptionsModel");
 
 const route = express.Router();
 
@@ -88,4 +88,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

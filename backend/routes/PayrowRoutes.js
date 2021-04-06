@@ -1,5 +1,5 @@
-import express from "express";
-import PayrowModel from "../models/PayRow.Model.js";
+const express = require("express");
+const PayrowModel = require("../models/PayRow.Model");
 
 const route = express.Router();
 
@@ -96,4 +96,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

@@ -1,5 +1,5 @@
-import express from "express";
-import Dormitories from "../models/DormitoriesModel.js";
+const express = require("express");
+const Dormitories = require("../models/DormitoriesModel");
 
 const route = express.Router();
 
@@ -87,4 +87,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

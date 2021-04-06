@@ -1,8 +1,8 @@
-import express from "express";
-import ClassesModel from "../models/ClassesModel.js";
-import { stringtoLowerCaseSpace } from "../middlewares/utils.js";
-import StudentModel from "../models/StudentModel.js";
-import { role } from "../middlewares/variables.js";
+const express = require("express");
+const ClassesModel = require("../models/ClassesModel");
+const { stringtoLowerCaseSpace } = require("../middlewares/utils");
+const StudentModel = require("../models/StudentModel");
+const { role } = require("../middlewares/variables");
 const route = express.Router();
 
 route.get("/", async (req, res) => {
@@ -173,4 +173,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

@@ -1,5 +1,5 @@
-import express from "express";
-import CampusModel from "../models/CampusesModel.js";
+const express = require("express");
+const CampusModel = require("../models/CampusesModel");
 
 const route = express.Router();
 
@@ -88,4 +88,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 //LOCAL_DB_CONNECT  -localhost database
 //DB_CONNECT  -online database
@@ -20,4 +20,5 @@ mongoose.connection.once("open", () => {
   // })
 });
 
-export default mongoose;
+//export default mongoose;
+module.exports = mongoose;

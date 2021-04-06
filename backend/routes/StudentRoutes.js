@@ -1,21 +1,24 @@
-import express from "express";
-import StudentModel from "../models/StudentModel.js";
-import CourseModel from "../models/CoursesModel.js";
-import bcrypt from "bcrypt";
-import { login, changePassword } from "../middlewares/validate.js";
-import { stringtoLowerCaseSpace } from "../middlewares/utils.js";
-import { role } from "../middlewares/variables.js";
-import ClassesModel from "../models/ClassesModel.js";
-import TransactionsModel from "../models/TransactionsModel.js";
+const express = require("express");
+const StudentModel = require("../models/StudentModel");
+const CourseModel = require("../models/CoursesModel");
+const bcrypt = require("bcrypt");
+const { login, changePassword } = require("../middlewares/validate");
+const { stringtoLowerCaseSpace } = require("../middlewares/utils");
+const { role } = require("../middlewares/variables");
+const ClassesModel = require("../models/ClassesModel");
+const TransactionsModel = require("../models/TransactionsModel");
 
 const route = express.Router();
 
 //get all students
 route.get("/", async (req, res) => {
-  const data = await StudentModel.find({ role: role.Student }).sort({
+  const data = await StudentModel.find({
+    role: role.Student,
+    "past.status": false,
+  }).sort({
     createdAt: "desc",
   });
-  let docs = data.filter((e) => e.withdraw !== true);
+  let docs = data.filter((e) => e.withdraw === false);
   res.json(docs);
 });
 
@@ -614,4 +617,5 @@ route.delete("/delele/:id", (req, res) => {
       res.status(500).json(err);
     });
 });
-export default route;
+
+module.exports = route;

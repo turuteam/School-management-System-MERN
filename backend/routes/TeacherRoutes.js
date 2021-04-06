@@ -1,10 +1,10 @@
-import express from "express";
-import TeacherModel from "../models/TeacherModel.js";
-import { login } from "../middlewares/validate.js";
-import bcrypt from "bcrypt";
-import { stringtoLowerCaseSpace, stringSpace } from "../middlewares/utils.js";
-import { role } from "../middlewares/variables.js";
-import Payrow from "../models/PayRow.Model.js";
+const express = require("express");
+const TeacherModel = require("../models/TeacherModel");
+const { login } = require("../middlewares/validate");
+const bcrypt = require("bcrypt");
+const { stringtoLowerCaseSpace, stringSpace } = require("../middlewares/utils");
+const { role } = require("../middlewares/variables");
+const Payrow = require("../models/PayRow.Model");
 
 const route = express.Router();
 
@@ -285,4 +285,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

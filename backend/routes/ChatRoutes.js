@@ -1,7 +1,10 @@
-import express from "express";
-import ChatModel from "../models/ChatModel.js";
-import { sendFriendRequest, sendMessage } from "../middlewares/validate.js";
-import twilio from "twilio";
+const express = require("express");
+const ChatModel = require("../models/ChatModel.js");
+const {
+  sendFriendRequest,
+  sendMessage,
+} = require("../middlewares/validate.js");
+const twilio = require("twilio");
 
 const route = express.Router();
 const client = twilio(
@@ -365,4 +368,4 @@ route.delete("/deleteAll", (req, res) => {
   });
 });
 
-export default route;
+module.exports = route;

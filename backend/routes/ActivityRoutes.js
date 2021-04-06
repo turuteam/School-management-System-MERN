@@ -1,5 +1,5 @@
-import express from "express";
-import ActivityModel from "../models/ActivityLogs.js";
+const express = require("express");
+const ActivityModel = require("../models/ActivityLogs");
 
 const route = express.Router();
 
@@ -88,4 +88,5 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+//export default route;
+module.exports = route;

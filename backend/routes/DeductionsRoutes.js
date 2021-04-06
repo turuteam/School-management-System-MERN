@@ -1,5 +1,5 @@
-import express from "express";
-import DeductionsModel from "../models/DeductionsModel.js";
+const express = require("express");
+const DeductionsModel = require("../models/DeductionsModel");
 
 const route = express.Router();
 
@@ -88,4 +88,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

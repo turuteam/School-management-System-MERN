@@ -1,8 +1,7 @@
-import express from "express";
-import SBAModel from "../models/SBAModel.js";
-import StudentModel from "../models/StudentModel.js";
-//import db from '../config/mongodb.js'
-import { role } from "../middlewares/variables.js";
+const express = require("express");
+const SBAModel = require("../models/SBAModel");
+const StudentModel = require("../models/StudentModel");
+const { role } = require("../middlewares/variables");
 
 const route = express.Router();
 
@@ -257,4 +256,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

@@ -1,4 +1,4 @@
-import mongoose from "../config/mongodb.js";
+const mongoose = require("../config/mongodb");
 
 const { Schema } = mongoose;
 
@@ -45,4 +45,4 @@ const BankingSchema = new Schema(
   { typeKey: "$type" }
 );
 
-export default mongoose.model("banking", BankingSchema);
+module.exports = mongoose.model("banking", BankingSchema);

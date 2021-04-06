@@ -1,6 +1,6 @@
-import express from "express";
-import AttendanceModel from "../models/AttendenceModel.js";
-import { startAttendance } from "../middlewares/validate.js";
+const express = require("express");
+const AttendanceModel = require("../models/AttendenceModel");
+const { startAttendance } = require("../middlewares/validate");
 
 const route = express.Router();
 
@@ -159,4 +159,4 @@ route.put("/update/:id", async (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

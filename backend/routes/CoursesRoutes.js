@@ -1,6 +1,6 @@
-import express from "express";
-import CoursesModel from "../models/CoursesModel.js";
-import { stringtoLowerCase } from "../middlewares/utils.js";
+const express = require("express");
+const CoursesModel = require("../models/CoursesModel");
+const { stringtoLowerCase } = require("../middlewares/utils");
 
 const route = express.Router();
 
@@ -93,27 +93,6 @@ route.get("/headteacher/:id", async (req, res) => {
     });
 });
 
-//courses by class
-// route.get("/class/:id", async (req, res) => {
-//   if (!req.params.id) {
-//     return res.status(400).send("Missing URL parameter: username");
-//   }
-//   await CoursesModel.find({ classID: req.params.id })
-//     .then((docs) => {
-//       console.log(docs);
-//       if (docs) {
-//         return res.json({ success: true, docs });
-//       } else {
-//         return res.json({ success: false, error: "Does not exists" });
-//       }
-//     })
-//     .catch((err) => {
-//       return res.json({ success: false, error: "Server error" });
-//     });
-// });
-
-//return course name
-
 //search
 route.get("search/:teacher/:name/:campus", async (res, req) => {
   const doc = await CoursesModel.find({
@@ -194,4 +173,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

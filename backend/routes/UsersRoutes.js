@@ -1,5 +1,5 @@
-import express from "express";
-import UsersModel from "../models/UsersModel.js";
+const express = require("express");
+const UsersModel = require("../models/UsersModel");
 
 const route = express.Router();
 
@@ -89,4 +89,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

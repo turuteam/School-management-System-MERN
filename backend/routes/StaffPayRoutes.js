@@ -1,5 +1,5 @@
-import express from "express";
-import StaffPayModel from "../models/StaffPayModel.js";
+const express = require("express");
+const StaffPayModel = require("../models/StaffPayModel");
 
 const route = express.Router();
 
@@ -104,4 +104,4 @@ route.delete("/delete/:id", async (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

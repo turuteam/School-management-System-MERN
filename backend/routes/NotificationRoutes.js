@@ -1,5 +1,5 @@
-import express from "express";
-import NotificationsModal from "../models/NoticeModel.js";
+const express = require("express");
+const NotificationsModal = require("../models/NoticeModel");
 
 const route = express.Router();
 //get all
@@ -139,4 +139,4 @@ route.delete("/delete", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

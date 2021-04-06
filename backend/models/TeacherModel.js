@@ -1,4 +1,4 @@
-import mongoose from "../config/mongodb.js";
+const mongoose = require("../config/mongodb");
 
 const { Schema } = mongoose;
 
@@ -139,4 +139,4 @@ const TeacherSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("teachers", TeacherSchema, "accounts");
+module.exports = mongoose.model("teachers", TeacherSchema, "accounts");

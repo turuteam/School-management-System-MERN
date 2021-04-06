@@ -1,5 +1,5 @@
-import express from "express";
-import Section from "../models/SectionModel.js";
+const express = require("express");
+const Section = require("../models/SectionModel");
 
 const route = express.Router();
 
@@ -89,4 +89,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

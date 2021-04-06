@@ -1,6 +1,6 @@
-import express from "express";
-import CanteenModel from "../models/CanteenModel.js";
-import StudentModel from "../models/StudentModel.js";
+const express = require("express");
+const CanteenModel = require("../models/CanteenModel");
+const StudentModel = require("../models/StudentModel");
 
 const route = express.Router();
 
@@ -173,4 +173,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

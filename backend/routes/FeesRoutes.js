@@ -1,6 +1,6 @@
-import express from "express";
-import FeesModel from "../models/FeesModel.js";
-import { stringtoLowerCaseSpace } from "../middlewares/utils.js";
+const express = require("express");
+const FeesModel = require("../models/FeesModel");
+const { stringtoLowerCaseSpace } = require("../middlewares/utils");
 const route = express.Router();
 
 //get all fees
@@ -164,4 +164,4 @@ route.delete("/delete/:id", async (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

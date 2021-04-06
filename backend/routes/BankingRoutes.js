@@ -1,5 +1,5 @@
-import express from "express";
-import BankingModel from "../models/BankingModel.js";
+const express = require("express");
+const BankingModel = require("../models/BankingModel");
 
 const route = express.Router();
 
@@ -105,4 +105,4 @@ route.delete("/delete/:id", async (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

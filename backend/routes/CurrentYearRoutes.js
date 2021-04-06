@@ -1,5 +1,5 @@
-import express from "express";
-import CurrentModel from "../models/CurrentModel.js";
+const express = require("express");
+const CurrentModel = require("../models/CurrentModel");
 
 const route = express.Router();
 
@@ -110,4 +110,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

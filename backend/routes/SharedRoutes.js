@@ -1,24 +1,24 @@
-import express from "express";
-import { uploader } from "../middlewares/multer.js";
-import StudentModel from "../models/StudentModel.js";
-import AttendanceModel from "../models/AttendenceModel.js";
-import CoursesModels from "../models/CoursesModel.js";
-import ClassesModel from "../models/ClassesModel.js";
-import Campus from "../models/CampusesModel.js";
-import CalendarModel from "../models/CalenderModel.js";
-import PrefectsModel from "../models/PrefectsModel.js";
-import Sections from "../models/SectionModel.js";
-import NotificationsModel from "../models/NoticeModel.js";
-import ScholarshipsModels from "../models/ScholarshipsModel.js";
-import TeacherModels from "../models/TeacherModel.js";
-import DivisionsModels from "../models/DivisionModel.js";
-import DepartmentsModels from "../models/DepartmentsModel.js";
-import { login, changePassword } from "../middlewares/validate.js";
-import { role } from "../middlewares/variables.js";
-import moment from "moment";
-import bcrypt from "bcrypt";
-import crypto from "crypto";
-import transport from "../middlewares/Nodemailer.js";
+const express = require("express");
+const { uploader } = require("../middlewares/multer");
+const StudentModel = require("../models/StudentModel");
+const AttendanceModel = require("../models/AttendenceModel");
+const CoursesModels = require("../models/CoursesModel");
+const ClassesModel = require("../models/ClassesModel");
+const Campus = require("../models/CampusesModel");
+const CalendarModel = require("../models/CalenderModel");
+const PrefectsModel = require("../models/PrefectsModel");
+const Sections = require("../models/SectionModel");
+const NotificationsModel = require("../models/NoticeModel");
+const ScholarshipsModels = require("../models/ScholarshipsModel");
+const TeacherModels = require("../models/TeacherModel");
+const DivisionsModels = require("../models/DivisionModel");
+const DepartmentsModels = require("../models/DepartmentsModel");
+const { login, changePassword } = require("../middlewares/validate");
+const { role } = require("../middlewares/variables");
+const moment = require("moment");
+const bcrypt = require("bcrypt");
+const crypto = require("crypto");
+const transport = require("../middlewares/Nodemailer");
 
 const dt = new Date();
 const month = dt.getMonth();
@@ -101,14 +101,6 @@ route.get("/student/count/:id", async (req, res) => {
 });
 
 route.get("/count", async (req, res) => {
-  // const getBirthday = (arr, m, d) => {
-  //   return arr.filter(
-  //     (e) =>
-  //       moment(e.dateofBirth || 0, "DD-MM-YYYY").get("month") === m &&
-  //       moment(e.dateofBirth || 0, "DD-MM-YYYY").get("date") === d
-  //   );
-  // };
-
   const students = await StudentModel.countDocuments({ role: role.Student });
 
   const femaleStudents = await StudentModel.countDocuments({
@@ -123,29 +115,6 @@ route.get("/count", async (req, res) => {
   const studentsData = await StudentModel.find({
     role: role.Student,
   }).exec();
-
-  // const yesterdayBirthdayStudents = getBirthday(studentsData, month, day - 1)
-  //   .length;
-
-  //const todayBirthdayStudents = getBirthday(studentsData, month, day).length;
-
-  // const tomorrowBirthdayStudents = getBirthday(studentsData, month, day + 1)
-  //   .length;
-
-  // const todayRegisteredStudents = await StudentModel.countDocuments({
-  //   role: role.Student,
-  //   createdAt: {
-  //     $gte: moment(today, "DD-MM-YYYY").startOf("day"),
-  //     $lte: moment(today, "DD-MM-YYYY").endOf("day"),
-  //   },
-  // });
-  // const yesterdayRegisteredStudents = await StudentModel.countDocuments({
-  //   role: role.Student,
-  //   createdAt: {
-  //     $gte: moment(today, "DD-MM-YYYY").subtract(1, "days").startOf("day"),
-  //     $lte: moment(today, "DD-MM-YYYY").subtract(1, "days").endOf("day"),
-  //   },
-  // });
 
   const staff = await TeacherModels.countDocuments({ isStaff: true });
   const femaleStaff = await TeacherModels.countDocuments({
@@ -527,4 +496,4 @@ route.delete("/division/delete/id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

@@ -1,5 +1,5 @@
-import express from "express";
-import FilesModel from "../models/FilesModel.js";
+const express = require("express");
+const FilesModel = require("../models/FilesModel");
 
 const route = express.Router();
 
@@ -103,4 +103,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

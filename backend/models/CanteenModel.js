@@ -1,4 +1,4 @@
-import mongoose from "../config/mongodb.js";
+const mongoose = require("../config/mongodb");
 const { Schema } = mongoose;
 
 const CanteenSchema = new Schema(
@@ -44,4 +44,4 @@ const CanteenSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("canteen", CanteenSchema);
+module.exports = mongoose.model("canteen", CanteenSchema);

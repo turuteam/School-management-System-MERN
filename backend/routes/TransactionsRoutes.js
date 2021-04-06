@@ -1,6 +1,5 @@
-import express from "express";
-import TransactionsModel from "../models/TransactionsModel.js";
-//import moment from "moment";
+const express = require("express");
+const TransactionsModel = require("../models/TransactionsModel");
 
 const route = express.Router();
 
@@ -193,4 +192,4 @@ route.delete("/delete/:id", async (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

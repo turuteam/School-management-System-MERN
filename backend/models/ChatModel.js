@@ -1,4 +1,4 @@
-import mongoose from "../config/mongodb.js";
+const mongoose = require("../config/mongodb");
 
 const { Schema } = mongoose;
 
@@ -44,4 +44,4 @@ const ChatSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("chats", ChatSchema);
+module.exports = mongoose.model("chats", ChatSchema);

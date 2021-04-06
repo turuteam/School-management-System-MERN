@@ -1,7 +1,7 @@
-import express from "express";
-import PaymentPlanModel from "../models/PaymentPlanModel.js";
-import StudentModel from "../models/StudentModel.js";
-import { role } from "../middlewares/variables.js";
+const express = require("express");
+const PaymentPlanModel = require("../models/PaymentPlanModel");
+const StudentModel = require("../models/StudentModel");
+const { role } = require("../middlewares/variables");
 const route = express.Router();
 
 //get all
@@ -142,4 +142,4 @@ route.put("/delete/services/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;

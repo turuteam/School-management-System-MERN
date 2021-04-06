@@ -1,4 +1,4 @@
-import mongoose from "../config/mongodb.js";
+const mongoose = require("../config/mongodb");
 
 const { Schema } = mongoose;
 
@@ -18,4 +18,4 @@ const AcademicYearSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("academicYear", AcademicYearSchema);
+module.exports = mongoose.model("academicYear", AcademicYearSchema);

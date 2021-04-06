@@ -1,6 +1,6 @@
-import express from "express";
-import NextkinModel from "../models/NextofKinModel.js";
-import { createnextKin } from "../middlewares/validate.js";
+const express = require("express");
+const NextkinModel = require("../models/NextofKinModel");
+const { createnextKin } = require("../middlewares/validate");
 
 const route = express.Router();
 
@@ -91,4 +91,4 @@ route.delete("/delete/:id", (req, res) => {
     });
 });
 
-export default route;
+module.exports = route;
