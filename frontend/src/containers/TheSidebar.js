@@ -11,7 +11,7 @@ import {
   CSidebarNavDropdown,
   CSidebarNavItem,
 } from "@coreui/react";
-import { selectSidebarShow } from "../store/slices/appSlice";
+import { selectSidebarShow, set } from "../store/slices/appSlice";
 import logo from "../assets/icons/logo.png";
 
 const TheSidebar = ({ navs }) => {
@@ -22,7 +22,7 @@ const TheSidebar = ({ navs }) => {
     <CSidebar
       className="sidebar__main"
       show={show}
-      onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
+      onShowChange={(val) => dispatch(set(val))}
     >
       <CSidebarBrand className="d-md-down-none nav__brand" to="/">
         <img

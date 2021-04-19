@@ -86,6 +86,7 @@ function Search({
             <option hidden defaultValue>
               Select
             </option>
+            <option value="all">All</option>
             {classes &&
               classes.map((e) => (
                 <option key={e.classCode} value={e.classCode}>
@@ -96,30 +97,7 @@ function Search({
         </div>
       </div>
 
-      <div className="col-sm-6 col-mb-4 mb-3">
-        <label className="col-form-label">Campus</label>
-        <div className="">
-          <select
-            value={campus}
-            ref={register({ required: true })}
-            onChange={(e) => setcampus(e.target.value)}
-            name="term"
-            className="form-select"
-          >
-            <option hidden defaultValue>
-              Select
-            </option>
-            {campuses &&
-              campuses.map((e) => (
-                <option key={e._id} value={e._id}>
-                  {e.name}
-                </option>
-              ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="col-sm-6 col-mb-4 mb-3">
+      <div className=" mb-3">
         <div className="">
           <button
             disabled={loading}

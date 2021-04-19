@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import Table from "./SalesTable";
 import AddSales from "./AddSales";
 import axios from "../../../store/axios";
-import { errorAlert } from "../../../utils";
+import { errorAlert, successAlert } from "../../../utils";
 import { useHistory } from "react-router-dom";
 
 function Sales() {
   const [data, setdata] = useState([]);
   const [open, setopen] = useState(false);
   const [name, setname] = useState("");
-  const [amount, setamount] = useState("");
+  const [amount, setamount] = useState(0);
   const [items, setitems] = useState([]);
   const [loading, setloading] = useState(false);
   const history = useHistory();
@@ -126,6 +126,9 @@ function Sales() {
 
   const handleAddSale = (e) => {
     e.preventDefault();
+    if (!name) {
+      return errorAlert("please select student");
+    }
     setloading(true);
     axios
       .post("/store/sales/create", {
@@ -141,7 +144,8 @@ function Sales() {
           errorAlert(res.data.error);
           return 0;
         }
-        alert("addes");
+        successAlert("payment successfully added");
+
         history.push(`/store/sales/receipt/${res.data.doc?._id}`);
       })
       .catch((err) => {

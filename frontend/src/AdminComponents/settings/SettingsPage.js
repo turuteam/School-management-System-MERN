@@ -106,7 +106,7 @@ function SettingsPage() {
   return (
     <div>
       <div className="content__container d-flex flex-column align-items-center mb-5">
-        <Profile id={user?.id} profile={user?.photoUrl} />
+        <Profile id={user?.userID} profile={user?.photoUrl} />
         <h2>
           {editfullname}{" "}
           <span>

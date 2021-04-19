@@ -79,8 +79,8 @@ function Form({
               </div>
               <div className="col-3">
                 <Checkbox
-                  value={e.userID}
-                  checked={staff.includes(e.userID)}
+                  value={e?.userID}
+                  checked={staff.includes(e?.userID)}
                   onChange={handleSetStaff}
                   color="primary"
                 />

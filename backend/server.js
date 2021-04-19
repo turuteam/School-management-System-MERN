@@ -27,7 +27,7 @@ const TeacherRoutes = require("./routes/TeacherRoutes");
 const SchoolRoutes = require("./routes/SchoolRoutes");
 const PaymentPlanRoutes = require("./routes/PaymentPlanRoutes");
 const SharedRoutes = require("./routes/SharedRoutes");
-
+const SSNITRoutes = require("./routes/SSNITRoutes");
 const StaffPay = require("./routes/StaffPayRoutes");
 const ScholarshipRoutes = require("./routes/ScholarshipRoutes");
 const SectionRoutes = require("./routes/SectionRoutes");
@@ -84,6 +84,7 @@ app.use("/api/teachers", TeacherRoutes);
 app.use("/api", SharedRoutes);
 app.use("/api/scholarships", ScholarshipRoutes);
 app.use("/api/staffpay", StaffPay);
+app.use("/api/ssnit", SSNITRoutes);
 app.use("/api/sections", SectionRoutes);
 app.use("/api/school", SchoolRoutes);
 app.use("/api/prefects", PrefectsRoutes);

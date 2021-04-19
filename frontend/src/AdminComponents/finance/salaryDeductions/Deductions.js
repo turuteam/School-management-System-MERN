@@ -70,6 +70,16 @@ function Deductions() {
     }
   };
 
+  const handleSelectAllEdit = (e) => {
+    if (e.target.checked) {
+      let d = [];
+      Allstaff.map((res) => d.push(res?.userID));
+      seteditstaff(d);
+    } else {
+      seteditstaff([]);
+    }
+  };
+
   const handleDelete = (id) => {
     axios.delete(`/deductions/delete/${id}`).then((res) => {
       setdata(data.filter((e) => e?._id !== id));
@@ -173,7 +183,7 @@ function Deductions() {
         </div>
       </div>
       <Edit
-        handleSelectAll={handleSelectAll}
+        handleSelectAll={handleSelectAllEdit}
         Allstaff={Allstaff}
         loading={editLoading}
         handleSetStaff={handleEditSetStaff}

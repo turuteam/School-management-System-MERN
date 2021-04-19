@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Search from "../../shared/Search";
-import StudentsTable from "../../shared/TableListUsers";
+import StudentsTable from "./Table";
 import axios from "../../../store/axios";
-import { selectYearGroup } from "../../../store/slices/schoolSlice";
+import {
+  selectYearGroup,
+  selectClasses,
+} from "../../../store/slices/schoolSlice";
 import { useSelector } from "react-redux";
-import { errorAlert } from "../../../utils";
+import { errorAlert, successAlert } from "../../../utils";
 import { pdf } from "../../../components/tables/pdf";
 import Loading from "../../../Loading";
+import Modal from "./Readmit";
 
 const headCells = [
   { id: "userID", numeric: false, disablePadding: false, label: "StudentID" },
@@ -14,12 +18,11 @@ const headCells = [
   { id: "name", numeric: false, disablePadding: true, label: "Name" },
   {
     id: "middlename",
-
     disablePadding: true,
     label: "Middle Name",
   },
   { id: "surname", disablePadding: true, label: "Last Name" },
-  { id: "status", disablePadding: false, label: "Status" },
+  { id: "year", disablePadding: false, label: "Graduation Year" },
   { id: "class", disablePadding: false, label: "Class" },
   { id: "Gender", disablePadding: false, label: "Gender" },
 ];
@@ -30,8 +33,13 @@ function AllStudents() {
   const [year, setyear] = useState("");
   const [students, setstudents] = useState([]);
   const years = useSelector(selectYearGroup);
+  const classes = useSelector(selectClasses);
   const [storeData, setstoreData] = useState([]);
   const [loading, setloading] = useState(false);
+  const [open, setopen] = useState(false);
+  const [classID, setclass] = useState("");
+  const [selectedUser, setselectedUser] = useState({});
+  const [editloading, seteditloading] = useState(false);
 
   const yearsOptions = years.map((e) => {
     return {
@@ -44,6 +52,7 @@ function AllStudents() {
     setloading(true);
     axios.get("/students/past").then((res) => {
       setloading(false);
+      console.log(res.data);
       setstudents(res.data);
       setstoreData(res.data);
     });
@@ -118,6 +127,29 @@ function AllStudents() {
     setstudents(newStudents);
   };
 
+  const handleAdmission = (id) => {
+    let selected = students.find((e) => e.userID === id);
+    setselectedUser(selected);
+    setopen(true);
+  };
+
+  const handleonSubmitAdmission = () => {
+    seteditloading(true);
+    axios
+      .put(`/students/readmit/${selectedUser?.userID}`, { classID })
+      .then((res) => {
+        seteditloading(false);
+        if (res.data.error) {
+          return errorAlert(res.data.error);
+        }
+        setopen(false);
+        successAlert("changes successfully saved");
+        setselectedUser({});
+        setclass("");
+        setstudents(students.filter((e) => e.userID !== selectedUser?.userID));
+      });
+  };
+
   const handleDelete = (i) => {
     let ans = window.confirm(`Are sure you want to delete user ${i}`);
     if (ans) {
@@ -145,6 +177,7 @@ function AllStudents() {
         students={students}
         noData="No past students yet"
         noAction={true}
+        handleWithdraw={handleAdmission}
         headCells={headCells}
       />
       <div className="d-flex justify-content-end">
@@ -152,6 +185,15 @@ function AllStudents() {
           Download PDF
         </button>
       </div>
+      <Modal
+        classID={classID}
+        setclass={setclass}
+        classes={classes}
+        open={open}
+        loading={editloading}
+        onSubmit={handleonSubmitAdmission}
+        setOpen={setopen}
+      />
     </div>
   );
 }

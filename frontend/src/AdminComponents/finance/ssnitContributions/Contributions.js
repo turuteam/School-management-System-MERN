@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Table from "./Table";
 import axios from "../../../store/axios";
 import { monthYear } from "../../../data";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/slices/userSlice";
-import { getYearsPast, errorAlert, currentCurrency } from "../../../utils";
+import {
+  getYearsPast,
+  errorAlert,
+  currentCurrency,
+  successAlert,
+} from "../../../utils";
 import Export from "../../../components/tables/ExcelExport";
-
-const tableHeader = [
-  { id: "userID", name: "Staff ID" },
-  { id: "taxNumber", name: "SSNIT Number" },
-  { id: "name", name: "Name" },
-  { id: "surname", name: "Surname" },
-  { id: "position", name: "Staff Position" },
-  { id: "tax", name: "5% Contribution" },
-  { id: "salary", name: `Salary (${currentCurrency()})` },
-];
+import SetContributions from "./SetContributions";
 
 function Contributions() {
   const [data, setdata] = useState([]);
-  const [staff, setstaff] = useState([]);
   const years = getYearsPast(20);
   const [year, setyear] = useState("");
   const [month, setmonth] = useState("");
@@ -28,12 +23,19 @@ function Contributions() {
   const user = useSelector(selectUser);
   const [selectedyear, setselectedyear] = useState("");
   const [selectedmonth, setselectedmonth] = useState("");
+  const [open, setopen] = useState(false);
+  const [percentage, setpercentage] = useState("");
+  const [id, setid] = useState("");
+  const [editloading, seteditloading] = useState(false);
 
-  useEffect(() => {
-    axios.get(`/teachers`).then((res) => {
-      setstaff(res.data);
-    });
-  });
+  const tableHeader = [
+    { id: "userID", name: "Staff ID" },
+    { id: "SSNITNumber", name: "SSNIT Number" },
+    { id: "name", name: "Name" },
+    { id: "position", name: "Staff Position" },
+    { id: "contribution", name: `${percentage}% Contribution` },
+    { id: "salary", name: `Salary (${currentCurrency()})` },
+  ];
 
   const handleSearch = (n) => {
     n.preventDefault();
@@ -46,22 +48,22 @@ function Contributions() {
     setloading(true);
     if (year && month) {
       axios
-        .get(`/transactions/pay/${year}/${month}`)
+        .get(`/ssnit/teachers/${year}/${month}`)
         .then((res) => {
           setloading(false);
+          let percentage = res.data.docs.percentage;
+          setpercentage(percentage);
+          setid(res.data.docs._id);
           setdata(
             res.data.docs &&
-              res.data.docs?.map((e) => {
-                let result = staff.find((i) => i.userID === e.pay.userID);
+              res.data.docs.teachers?.map((e) => {
                 return {
-                  userID: result?.userID,
-                  position: result?.position,
-                  name: result?.name,
-                  surname: result?.surname,
-                  tax: (e.salary || 0) * 0.05,
-                  salary: e?.salary,
-                  taxNumber: result?.ssnit ? result?.taxNumber : "not set",
-                  allowance: result?.salary,
+                  userID: e?.userID,
+                  position: e?.position,
+                  SSNITNumber: e?.SSNITNumber,
+                  name: e?.name,
+                  salary: e?.salary || "-",
+                  contribution: e.salary ? e.salary * percentage : "not set",
                 };
               })
           );
@@ -79,6 +81,19 @@ function Contributions() {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleChangePercentage = () => {
+    seteditloading(true);
+    axios.put(`/ssnit/update/${id}`, { percentage }).then((res) => {
+      seteditloading(false);
+      if (res.data.error) {
+        return errorAlert(res.data.error);
+      }
+
+      successAlert("successfully save changes");
+      setopen(false);
+    });
   };
 
   return (
@@ -149,14 +164,22 @@ function Contributions() {
         <div className="content__container">
           {" "}
           <div id="section-to-print">
-            <div className="text-center">
-              <h3>
-                <strong>{user?.name}</strong>
-              </h3>
-              <h5>
-                5% January SSNIT Contribution List for{" "}
-                {selectedmonth && monthYear[selectedmonth].name} {selectedyear}
-              </h5>
+            <div className="d-flex justify-content-between">
+              <div className="text-center">
+                <h3>
+                  <strong>{user?.name}</strong>
+                </h3>
+                <h5>
+                  {percentage}% January SSNIT Contribution List for{" "}
+                  {selectedmonth && monthYear[selectedmonth].name}{" "}
+                  {selectedyear}
+                </h5>
+              </div>
+              <div>
+                <button onClick={() => setopen(true)} className="btn blue__btn">
+                  Edit SSNIT Contributions
+                </button>
+              </div>
             </div>
 
             <Table data={data} tableHeader={tableHeader} />
@@ -177,6 +200,14 @@ function Contributions() {
           )}
         </div>
       )}
+      <SetContributions
+        percentage={percentage}
+        setpercentage={setpercentage}
+        open={open}
+        loading={editloading}
+        onSubmit={handleChangePercentage}
+        setOpen={setopen}
+      />
     </div>
   );
 }

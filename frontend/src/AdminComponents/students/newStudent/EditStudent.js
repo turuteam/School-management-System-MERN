@@ -133,19 +133,16 @@ function EditStudent() {
   const handleCreateSubmit = async () => {
     setloading(true);
     const fileData = new FormData();
-    fileData.append("photo", profileUrl);
-    var path = {};
+
+    var path = "";
     if (profileUrl) {
+      fileData.append("photo", profileUrl);
       path = await axios.post("/upload", fileData, {});
-      // dispatch(
-      //   update({
-      //     photoUrl: path?.data?.path,
-      //   })
-      // );
     }
-    axios
+    console.log(path?.data?.path);
+    await axios
       .put(`/students/update/${id}`, {
-        profileUrl: path?.data?.path || "",
+        profileUrl: path?.data?.path || profileimg,
         name,
         middleName: secondName,
         surname: lastname,
@@ -179,8 +176,7 @@ function EditStudent() {
       .then(async (response) => {
         setloading(false);
         if (response.data.error) {
-          errorAlert(response.data.error);
-          return 0;
+          return errorAlert(response.data.error);
         }
         successAlert("successfully updated");
         await axios.post("/activitylog/create", {

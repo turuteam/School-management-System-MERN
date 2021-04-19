@@ -4,13 +4,11 @@ import { set, selectSidebarShow } from "../store/slices/appSlice";
 import {
   CHeader,
   CToggler,
-  CHeaderBrand,
   CHeaderNav,
   CSubheader,
   CBreadcrumbRouter,
 } from "@coreui/react";
 import SearchIcon from "@material-ui/icons/Search";
-import CIcon from "@coreui/icons-react";
 import { selectUser } from "../store/slices/userSlice";
 
 // routes config
@@ -30,6 +28,7 @@ const TheHeader = ({ routes }) => {
   const [resultsData, setresultsData] = useState([]);
   const sidebarShow = useSelector(selectSidebarShow);
 
+  console.log(sidebarShow);
   const handlesearch = (e) => {
     e.preventDefault();
 
@@ -66,8 +65,6 @@ const TheHeader = ({ routes }) => {
   };
 
   const toggleSidebarMobile = () => {
-    console.log("toggle moblie");
-    console.log("totggle", sidebarShow);
     const val = [false, "responsive"].includes(sidebarShow)
       ? true
       : "responsive";
@@ -86,9 +83,9 @@ const TheHeader = ({ routes }) => {
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
       />
-      <CHeaderBrand className="mx-auto d-lg-none" to="/">
+      {/* <CHeaderBrand className="mx-auto d-lg-none" to="/">
         <CIcon name="logo" height="48" alt="Logo" />
-      </CHeaderBrand>
+      </CHeaderBrand> */}
 
       <CHeaderNav className="d-md-down-none mr-auto search__container">
         <form onSubmit={handlesearch} className="nav__search">

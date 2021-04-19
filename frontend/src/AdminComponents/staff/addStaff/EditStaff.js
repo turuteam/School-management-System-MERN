@@ -35,6 +35,7 @@ function EditStaff() {
 
   const dispatch = useDispatch();
   const staff = useSelector(selectStaff);
+  console.log(staff);
 
   //form verification
   const { register, handleSubmit, errors } = useForm();
@@ -101,9 +102,9 @@ function EditStaff() {
       setyears(data?.years);
       setbank(data?.bank);
       setaccountNumber(data?.accountNumber);
-      setmobilenumber(data?.telephone);
+      setmobilenumber(data?.mobilenumber);
       setresidence(data?.physicalAddress);
-      settelephone(data?.mobilenumber);
+      settelephone(data?.telephone);
       setpostalAddress(data?.postalAddress);
       setnexttelephone(data?.nextofKin?.mobile);
       setnextemail(data.nextofKin?.email);
@@ -147,14 +148,15 @@ function EditStaff() {
     setrelationship(data.nextofKin?.relationship);
   };
 
+  console.log(telephone);
+
   const handleCreateSubmit = async () => {
     setloading(true);
     const fileData = new FormData();
-    let path = "";
+    let path = profileimg;
     if (profileUrl) {
       fileData.append("photo", profileUrl);
       const fileResponse = await axios.post("/upload", fileData, {});
-      // axios.post("/upload", fileData, {}).then((res) => {
       path = fileResponse.data.path;
     }
     axios
@@ -200,15 +202,14 @@ function EditStaff() {
         },
       })
       .then(async (res) => {
-        console.log(res.data);
         setloading(false);
         if (res.data.error) {
-          errorAlert(res.data.error);
+          return errorAlert(res.data.error);
         }
         setdetails(res.data.teacher);
-        successAlert("Successfully Edited");
+        successAlert("changes successfully saved");
         dispatch(
-          setStaff(staff.map((i) => (i.userID === id ? res.data.doc : i)))
+          setStaff(staff.map((i) => (i?.userID === id ? res.data.doc : i)))
         );
         await axios.post("/activitylog/create", {
           activity: `staff member  ${name} ${lastname} was edited`,
@@ -254,7 +255,7 @@ function EditStaff() {
             setTitle={settitle}
             isTeacher={true}
             errors={errors}
-            setHeathCon={sethealth}
+            setHealthCon={sethealth}
             name={name}
             setname={setname}
             secondName={secondName}
@@ -273,6 +274,10 @@ function EditStaff() {
             setplaceofBirth={setplaceofBirth}
             religion={religion}
             setreligion={setreligion}
+            disease={disease}
+            setDisease={setdisease}
+            setallerge={setallege}
+            allerge={allege}
           />
           <br className="my-4" />
           <EmplymentDetails

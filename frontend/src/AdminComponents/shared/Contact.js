@@ -19,7 +19,6 @@ function Contact(props) {
   return (
     <div>
       <h3>Contact Details</h3>
-
       <div className="row mb-3">
         <div className="col-xs-12 col-sm-6 ">
           <label className="form-label">Mobile Number</label>
@@ -45,9 +44,15 @@ function Contact(props) {
             onChange={(e) => settelephone(e.target.value)}
             name="phone"
             type="tel"
+            ref={register({ required: true })}
             className="form-control"
             placeholder="phone number if any"
           />
+          {errors.phone && (
+            <span className=" form-error text-danger mb-2">
+              This field is required
+            </span>
+          )}
         </div>
       </div>
       <div className="row mb-3">

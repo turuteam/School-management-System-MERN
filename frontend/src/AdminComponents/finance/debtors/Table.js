@@ -111,7 +111,7 @@ export default function CustomPaginationActionsTable({
                             <PaymentIcon />
                           </Link>
                         </Tooltip>
-                        <Tooltip title="view payment receipts">
+                        {/* <Tooltip title="view payment receipts">
                           <Link
                             className="btn"
                             to={`/finance/students`}
@@ -119,7 +119,7 @@ export default function CustomPaginationActionsTable({
                           >
                             <ReceiptIcon />
                           </Link>
-                        </Tooltip>
+                        </Tooltip> */}
                       </div>
                     </TableCell>
                   </TableRow>

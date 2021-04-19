@@ -18,7 +18,7 @@ function DebtorsList() {
   const [data, setdata] = useState([]);
   const [year, setyear] = useState("");
   const [term, setterm] = useState("");
-  const [classID, setclassID] = useState("");
+  const [classID, setclassID] = useState("all");
   const [campus, setcampus] = useState("");
   const [amount, setamount] = useState("");
   const [show, setshow] = useState(false);
@@ -41,6 +41,7 @@ function DebtorsList() {
       return errorAlert("Please select term");
     }
     setloading(true);
+
     let bal = (u) => {
       let fee = fees.find((z) => z?.code === u?.classID);
       if (fee) {
@@ -53,11 +54,8 @@ function DebtorsList() {
       }
       return 0;
     };
-    axios.get(`/students/unpaidfees`).then((res) => {
-      let thisyear = res.data.filter((i) => i.academicYear === year);
-      let thisData = thisyear.filter((i) => i.term === term);
-
-      let students = thisData.map((e) => {
+    axios.get(`/students/unpaidfees/${year}/${term}`).then((res) => {
+      let students = res.data.map((e) => {
         let total = bal(e);
         return {
           ...e,
@@ -68,11 +66,8 @@ function DebtorsList() {
       });
       let dataAll = students.filter((e) => e.owe > 0);
 
-      if (classID) {
-        setdata(dataAll.filter((e) => e.classID === classID));
-      }
-      if (campus) {
-        setdata(dataAll.filter((e) => e.campus === campus));
+      if (classID !== "all") {
+        dataAll = dataAll.filter((e) => e.classID === classID);
       }
       setdata(dataAll);
       setshow(true);

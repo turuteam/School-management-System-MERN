@@ -24,13 +24,12 @@ function Profile({ profileimg, setprofileUrl, profileUrl }) {
           <PhotoCamera />
         </IconButton>
       </label>
-      {profileimg && (
-        <Avatar
-          style={{ width: "100px", height: "100px" }}
-          src={profileUrl ? profileimg : getImgSrc(profileimg)}
-          alt="Username"
-        />
-      )}
+
+      <Avatar
+        style={{ width: "100px", height: "100px" }}
+        src={profileUrl ? profileimg : getImgSrc(profileimg)}
+        alt="Username"
+      />
     </div>
   );
 }
