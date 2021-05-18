@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../../store/axios";
-import { getImgSrc } from "../../../utils";
+
 import { useSelector } from "react-redux";
 import { selectCampuses } from "../../../store/slices/schoolSlice";
 import Excel from "../../../components/tables/ExcelExport";

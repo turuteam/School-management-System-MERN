@@ -30,7 +30,7 @@ function SettingsPage() {
     axios.get(`/school`).then((res) => {
       let data = res?.data;
       setadmin(data);
-      setname(data?.name);
+      setname(data?.name || "Enter School Name");
       setmotto(data?.motto);
       setemail(data?.email);
       setaddress(data?.address);
@@ -238,7 +238,7 @@ function SettingsPage() {
         <ChangePassword id={user?.id} />
       </div>
 
-      <Logout user={user} dispatch={dispatch} logout={logout} />
+      <Logout user={user} dispatch={dispatch} loggout={logout} />
     </div>
   );
 }

@@ -16,7 +16,7 @@ import CIcon from "@coreui/icons-react";
 import { Link } from "react-router-dom";
 import axios from "../../store/axios";
 import { useForm } from "react-hook-form";
-import { errorAlert, successAlert } from "../../utils";
+import { errorAlert, successAlert, getEmailPattern } from "../../utils";
 
 const Login = () => {
   const [userId, setuserId] = useState("");
@@ -96,7 +96,10 @@ const Login = () => {
                         className="form-control  col-6"
                         placeholder="Email"
                         name="email"
-                        ref={register({ required: true })}
+                        ref={register({
+                          required: true,
+                          pattern: getEmailPattern(),
+                        })}
                         value={email}
                         required
                         onChange={(e) => setemail(e.target.value)}
@@ -106,7 +109,7 @@ const Login = () => {
                     </CInputGroup>
                     {errors.email && (
                       <span className="form-error text-danger mb-2">
-                        This field is required
+                        Valid email is required
                       </span>
                     )}
                     <p>

@@ -20,7 +20,13 @@ const SBASchema = new Schema(
     exam: {
       type: Number,
     },
+    examPercentage: {
+      type: Number,
+    },
     classWork: {
+      type: Number,
+    },
+    classWorkPercentage: {
       type: Number,
     },
     students: {
@@ -29,8 +35,11 @@ const SBASchema = new Schema(
           userID: String,
           name: String,
           position: String,
+          examPercentage: Number,
           exam: Number,
           classWork: Number,
+          classWorkPercentage: Number,
+          total: Number,
         },
       ],
     },

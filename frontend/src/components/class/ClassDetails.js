@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import StudentsTable from "../../AdminComponents/shared/TableListUsers";
+import StudentsTable from "./Table";
 import axios from "../../store/axios";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import { selectUser } from "../../store/slices/userSlice";
 import { selectStaff, selectCampuses } from "../../store/slices/schoolSlice";
 
 const headCells = [
-  { id: "userID", numeric: false, disablePadding: false, label: "StudentID" },
+  // { id: "userID", numeric: false, disablePadding: false, label: "StudentID" },
   { id: "photoUrl", numeric: false, disablePadding: false, label: "Photo" },
   { id: "name", numeric: false, disablePadding: true, label: "Name" },
   {
@@ -18,7 +18,7 @@ const headCells = [
   },
   { id: "surname", numeric: true, disablePadding: true, label: "Last Name" },
   { id: "status", numeric: true, disablePadding: true, label: "Status" },
-  { id: "classID", numeric: true, disablePadding: false, label: "Class" },
+  // { id: "classID", numeric: true, disablePadding: false, label: "Class" },
 
   { id: "Gender", numeric: true, disablePadding: false, label: "Gender" },
 ];
@@ -69,7 +69,7 @@ function AllClasses({ id }) {
             <div className="mb-4 text-center">
               <h6>Class Teacher</h6>
               <h5>
-                {classDetails?.teacherID || (
+                {classTeacher?.name + " " + classTeacher?.surname || (
                   <span className="text-danger">not appointed yet </span>
                 )}
               </h5>

@@ -43,7 +43,7 @@ function Deductions() {
   }, []);
 
   const handleSetStaff = (e) => {
-    console.log("clicked", e);
+    console.log("clicked", e.target.value);
     if (staff.includes(e.target.value)) {
       setstaff(staff.filter((i) => i !== e.target.value));
     } else {
@@ -52,12 +52,14 @@ function Deductions() {
   };
 
   const handleEditSetStaff = (e) => {
-    console.log("clicked", e);
-    if (staff.includes(e.target.value)) {
+    console.log("clicked", e.target.value);
+
+    if (editstaff.includes(e.target.value)) {
       seteditstaff(editstaff.filter((i) => i !== e.target.value));
     } else {
       seteditstaff([...editstaff, e.target.value]);
     }
+    console.log(editstaff);
   };
 
   const handleSelectAll = (e) => {

@@ -11,6 +11,10 @@ const ScholarshipsSchema = new Schema(
     percentage: {
       type: String,
     },
+    code: {
+      type: String,
+      required: true,
+    },
     types: {
       type: Object,
     },

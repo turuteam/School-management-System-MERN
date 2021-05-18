@@ -9,11 +9,16 @@ route.get("/", async (req, res) => {
   const docs = await ClassesModel.find().sort({
     createdAt: "desc",
   });
-  let classData = docs.map((e) => {
-    return e;
-  });
-  let data = classData.filter((e) => e.past !== true);
+
+  let data = docs.filter((e) => e.past !== true);
   res.json(data);
+});
+
+route.get("/all", async (req, res) => {
+  const docs = await ClassesModel.find().sort({
+    createdAt: "desc",
+  });
+  res.json(docs);
 });
 
 route.get("/past", async (req, res) => {

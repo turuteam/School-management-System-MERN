@@ -22,10 +22,13 @@ function TellerReports() {
   const [status, setstatus] = useState("");
   const [teller, setteller] = useState("");
   const [tellers, settellers] = useState([]);
-  const [loading, setloading] = useState("");
+  const [loading, setloading] = useState(false);
   const [data, setdata] = useState([]);
 
   const handleSearch = (e) => {
+    setloading(false);
+    settellers([]);
+    setdata([]);
     e.preventDefault();
   };
 

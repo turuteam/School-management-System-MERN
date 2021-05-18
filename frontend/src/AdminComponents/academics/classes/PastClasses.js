@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ClassTable from "../../shared/ListTable";
 import Search from "../../shared/Search";
-import { Link } from "react-router-dom";
 import axios from "../../../store/axios";
-import { useHistory } from "react-router-dom";
-import { errorAlert } from "../../../utils";
-import { useSelector, useDispatch } from "react-redux";
+//import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { selectCampuses, selectStaff } from "../../../store/slices/schoolSlice";
 
 const tableHeadings = [
@@ -29,8 +27,6 @@ function Classes() {
   const staff = useSelector(selectStaff);
   const [loading, setloading] = useState(false);
   const campuses = useSelector(selectCampuses);
-  const history = useHistory();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setloading(true);

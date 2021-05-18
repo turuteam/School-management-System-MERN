@@ -39,6 +39,7 @@ function TrankingTransaction() {
   const [opentransfer, setOpentransfer] = useState(false);
   const [openwithdraw, setOpenwithdraw] = useState(false);
   const _id = Math.random().toString(16).slice(2);
+
   useEffect(() => {
     axios.get(`/banking/${id}`).then((res) => {
       if (res.data.error) {
@@ -49,6 +50,8 @@ function TrankingTransaction() {
       setstoredData(res.data.transactions);
     });
   }, [id]);
+
+  console.log(bank);
 
   const inputFields = [
     {
@@ -117,7 +120,7 @@ function TrankingTransaction() {
         _id,
         type: "cheque",
         transactionNumber: checkNo,
-        credit: amount,
+        debit: amount,
       })
       .then((res) => {
         setloading(false);
@@ -157,7 +160,7 @@ function TrankingTransaction() {
         _id,
         type: "deposit",
         transactionNumber: checkNo,
-        debit: amount,
+        credit: amount,
       })
       .then((res) => {
         setloading(false);
@@ -192,10 +195,11 @@ function TrankingTransaction() {
         type: "transfer",
         transactionNumber: checkNo,
         backAcc: transferBank,
-        credit: amount,
+        debit: amount,
       })
       .then((res) => {
         setloading(false);
+        console.log(res.data);
         if (res.data.error) {
           return errorAlert(res.data.error);
         }
@@ -226,7 +230,7 @@ function TrankingTransaction() {
         _id,
         type: "withdraw",
         transactionNumber: checkNo,
-        credit: amount,
+        debit: amount,
       })
       .then((res) => {
         setloading(false);

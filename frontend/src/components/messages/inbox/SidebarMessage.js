@@ -9,10 +9,17 @@ import {
   timeStamp,
   getTrimString,
 } from "../../../utils";
+import {
+  selectNotifications,
+  setNotifications,
+} from "../../../store/slices/schoolSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 function SidebarMessage({ chat, currentUser }) {
   const [user, setuser] = useState({});
   const [lastmessage, setlastmessage] = useState({});
+  const messages = useSelector(selectNotifications);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let userId =
@@ -30,9 +37,21 @@ function SidebarMessage({ chat, currentUser }) {
     });
   }, [chat, currentUser]);
 
+  const handleOpen = async (id) => {
+    await axios.put(`/chats/update/chat/${id}/${currentUser}`).then((res) => {
+      console.log(res);
+      let newMessages = messages.filter((i) => i.type !== "chat");
+      dispatch(setNotifications(newMessages));
+    });
+  };
+
   return (
     <div className="sidemessage">
-      <Link to={`/messages/chat/${chat?._id}`} className="d-flex">
+      <Link
+        onClick={() => handleOpen(chat?._id)}
+        to={`/messages/chat/${chat?._id}`}
+        className="d-flex"
+      >
         <div className="mr-2">
           <Avatar
             alt={getIntial(user?.name || "O")}
@@ -43,7 +62,7 @@ function SidebarMessage({ chat, currentUser }) {
           <div className="d-flex align-center justify-content-between w-100">
             <h6>
               {getCapitalize(user?.name)}{" "}
-              {getTrimString(getCapitalize(user?.surname), 5)}
+              {user?.surname && getTrimString(getCapitalize(user?.surname), 5)}
             </h6>
             <small className="text-muted">{timeStamp(lastmessage?.date)}</small>
           </div>

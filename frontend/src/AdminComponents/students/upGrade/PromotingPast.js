@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
+import { setClasses } from "../../../store/slices/schoolSlice";
+import { useDispatch } from "react-redux";
 
 function PromotingPast({ classes }) {
+  const dispatch = useDispatch();
   const [currentclass, setcurrentclass] = useState("");
   const [loading, setloading] = useState("");
   const [errors, seterrors] = useState({
@@ -26,6 +29,9 @@ function PromotingPast({ classes }) {
             return 0;
           }
           successAlert("Changes are successfully done");
+          dispatch(
+            setClasses(classes.filter((course) => course._id !== currentclass))
+          );
           await axios.post("/activitylog/create", {
             activity: `students in class ${currentclass} was graduated`,
             user: "admin",

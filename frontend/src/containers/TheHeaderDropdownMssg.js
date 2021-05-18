@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   CBadge,
   CDropdown,
@@ -17,22 +17,48 @@ import {
 } from "../utils";
 import axios from "../store/axios";
 import { selectUser } from "../store/slices/userSlice";
-import { useSelector } from "react-redux";
+import {
+  selectNotifications,
+  setNotifications,
+} from "../store/slices/schoolSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "@material-ui/core";
+import { useHistory } from "react-router";
 
 const TheHeaderDropdownMssg = () => {
   const user = useSelector(selectUser);
-  const [messages, setmessages] = useState([]);
+  const messages = useSelector(selectNotifications);
+  // const [messages, setmessages] = useState([]);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
-    axios.get(`/chats/user/${user?.id}`).then((res) => {
+    axios.get(`/chats/user/notifications/${user?.id}`).then((res) => {
       let data = res.data;
-      data.slice(0, 5).sort(function (x, y) {
-        return y?.date - x?.date;
-      });
-      setmessages(data);
+      console.log(data);
+      dispatch(setNotifications(data));
+      // setmessages(data);
     });
-  }, [user]);
+  }, [user, dispatch]);
+
+  const handleOpenNotification = (id) => {
+    let message = messages.find((i) => i._id === id);
+    if (message.type === "inbox") {
+      axios.put(`/chats/update/view/${user?.id}`).then((res) => {
+        let newMessage = messages.filter((i) => i.type !== "inbox");
+        dispatch(setNotifications(newMessage));
+        history.push("/messages");
+      });
+    } else {
+      axios
+        .put(`/chats/update/chat/${message?.channelID}/${user?.id}`)
+        .then((res) => {
+          let newMessages = messages.filter((i) => i.type !== "chat");
+          dispatch(setNotifications(newMessages));
+          history.push(`/messages/chat/${message?.channelID}`);
+        });
+    }
+  };
 
   const itemsCount = messages?.length;
   return (
@@ -53,8 +79,12 @@ const TheHeaderDropdownMssg = () => {
         {messages &&
           messages
             .map((e) => (
-              <CDropdownItem key={e?._id} href="/messages">
-                <div className="message">
+              <CDropdownItem
+                onClick={() => handleOpenNotification(e._id)}
+                key={e?._id}
+                //href="/messages"
+              >
+                <div className="message d-flex">
                   <div className="pt-3 mr-3 float-left">
                     <div className="c-avatar">
                       <Avatar />
@@ -67,7 +97,7 @@ const TheHeaderDropdownMssg = () => {
                     </div>
                     <div className="small text-muted text-truncate">
                       {" "}
-                      {getTrimString(e?.message, 50)}{" "}
+                      {e?.message && getTrimString(e?.message, 20)}{" "}
                     </div>
                     <small className="text-muted float-right mt-1">
                       {timeStamp(e?.date)}
@@ -79,11 +109,17 @@ const TheHeaderDropdownMssg = () => {
             .slice(0.5)}
 
         {messages.length > 5 ? (
-          <CDropdownItem href="/messages" className="text-center border-top">
+          <CDropdownItem
+            href="/messages/chat"
+            className="text-center border-top"
+          >
             <strong>View all messages</strong>
           </CDropdownItem>
         ) : (
-          <CDropdownItem href="/messages" className="text-center border-top">
+          <CDropdownItem
+            href="/messages/chat"
+            className="text-center border-top"
+          >
             <strong>View Chat</strong>
           </CDropdownItem>
         )}

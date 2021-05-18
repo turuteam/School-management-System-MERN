@@ -30,9 +30,32 @@ route.get("/:id", async (req, res) => {
     });
 });
 
+route.get("/name/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.status(400).send("Missing URL parameter: username");
+  }
+  await ScholarshipModel.findOne({ name: req.params.id })
+    .then((doc) => {
+      if (doc) {
+        return res.json({ success: true, doc });
+      } else {
+        return res.json({ success: false, error: "Does not exists" });
+      }
+    })
+    .catch((err) => {
+      return res.json({ success: false, error: "Server error" });
+    });
+});
+
 //create
 route.post("/create", async (req, res) => {
   let body = req.body;
+
+  body = {
+    ...body,
+    code: stringtoLowerCase(body.name),
+    name: body.name,
+  };
 
   ScholarshipModel.create(body)
     .then((doc) => {

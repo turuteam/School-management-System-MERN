@@ -14,6 +14,16 @@ function MessageContainer() {
   const [user, setuser] = useState({});
   const currentUser = useSelector(selectUser);
 
+  const messagesEndRef = React.createRef();
+
+  useEffect(() => {
+    scrollToBottom();
+  });
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     axios.get(`/chats/chat/${id}`).then(async (res) => {
       setmessages(res.data?.messages);
@@ -31,7 +41,11 @@ function MessageContainer() {
     e.preventDefault();
     if (message) {
       axios
-        .put(`/chats/send/${id}`, { message, senderID: currentUser?.id })
+        .put(`/chats/send/${id}`, {
+          message,
+          senderID: currentUser?.id,
+          channelID: id,
+        })
         .then((res) => {
           console.log(res.data);
           setmessages(res.data.doc?.messages);
@@ -60,6 +74,7 @@ function MessageContainer() {
           messages.map((e) => (
             <Message message={e} key={e._id} currentUser={currentUser?.id} />
           ))}
+        <div ref={messagesEndRef} />
       </div>
       <form onSubmit={handleSendMessage} className="send">
         <input

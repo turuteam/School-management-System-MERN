@@ -68,7 +68,8 @@ export const getID = function () {
 };
 
 export const getTrimString = (str, length) => {
-  if (str?.length > length) {
+  if (str.length > length) {
+    console.log(str, length);
     return str.substr(0, length) + "...";
   }
   return str;

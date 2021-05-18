@@ -45,6 +45,8 @@ function CourseReport() {
     window.print();
   };
 
+  console.log(students);
+
   return (
     <>
       <Search

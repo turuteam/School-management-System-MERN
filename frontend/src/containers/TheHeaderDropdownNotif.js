@@ -9,9 +9,11 @@ import {
 import CIcon from "@coreui/icons-react";
 import moment from "moment";
 import axios from "../store/axios";
+import { useHistory } from "react-router";
 
 const TheHeaderDropdownNotif = () => {
   const [items, setitems] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     axios.get("/notification").then((res) => {
@@ -21,6 +23,11 @@ const TheHeaderDropdownNotif = () => {
   }, []);
 
   console.log(items);
+
+  const handleOpenNotification = (id) => {
+    setitems(items.filter((i) => i._id !== id));
+    history.push(`/notifications`);
+  };
 
   let itemsCount = items?.length;
   return (
@@ -42,7 +49,11 @@ const TheHeaderDropdownNotif = () => {
           items
             .map((e) => (
               <>
-                <CDropdownItem key={e._id}>
+                <CDropdownItem
+                  onClick={() => handleOpenNotification(e._id)}
+                  key={e._id}
+                  //href="/notifications"
+                >
                   <CIcon name="cil-bell" className="mr-2 text-success" />
                   <div>
                     {" "}

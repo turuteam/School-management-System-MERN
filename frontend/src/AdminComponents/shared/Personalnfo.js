@@ -142,7 +142,7 @@ function Personalnfo(props) {
           <input
             value={dateofBirth}
             name="dateofBirth"
-            ref={register}
+            ref={register({ required: true })}
             onChange={(e) => {
               setdateofBirth(e.target.value);
             }}

@@ -34,6 +34,18 @@ function NonBillPayment() {
   const years = useSelector(selectYearGroup);
 
   const handleSave = () => {
+    setdata([
+      {
+        tuition: "0",
+        facility: "0",
+        maintenance: "0",
+        exam: "0",
+        transportion: "0",
+        arrears: "0",
+        bills: "0",
+        total: "0",
+      },
+    ]);
     const headers = [
       { key: "tuition", label: "Tuition Fee" },
       { key: "facility", label: "Facility User Fee" },
@@ -53,6 +65,7 @@ function NonBillPayment() {
   };
 
   const handleSearch = (e) => {
+    setloading(false);
     e.preventDefault();
   };
 

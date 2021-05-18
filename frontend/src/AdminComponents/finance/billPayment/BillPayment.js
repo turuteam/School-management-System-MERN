@@ -35,6 +35,7 @@ function BillPayment() {
   const [totalBill, settotalBill] = useState(0);
   const [totalPaid, settotalPaid] = useState(0);
   const [show, setshow] = useState(false);
+  const [scholarship, setscholarship] = useState(null);
 
   const handleSelectStudent = async (e) => {
     e.preventDefault();
@@ -50,8 +51,8 @@ function BillPayment() {
     }
     setshow(false);
     setloading(true);
+
     let transactionData = await axios.get(`/transactions/student/${studentID}`);
-    console.log(transactionData);
     let thisMonthTrans = transactionData.data.filter(
       (e) => e.fees.term === term && e.fees.academicYear === year
     );
@@ -60,21 +61,31 @@ function BillPayment() {
     let studentData = await axios.get(`/students/student/${studentID}`);
     let student = studentData.data?.student;
     setuser(student);
+    const scholarshipData = await axios.get(
+      `/scholarships/${student?.scholarship}`
+    );
+
     let feesData = await axios.get(
       `/fees/type/${student?.classID}/${student?.status}`
     );
 
     setfeetype(feesData?.data);
 
-    const bill = Object.values(feesData?.data).reduce(
+    let bill = Object.values(feesData?.data).reduce(
       (t, value) => Number(t) + Number(value),
       0
     );
 
-    const paid = thisMonthTrans?.reduce((accumulator, element) => {
+    let paid = thisMonthTrans?.reduce((accumulator, element) => {
       return Number(accumulator) + Number(element?.amount);
     }, 0);
 
+    if (scholarshipData.data.doc) {
+      setscholarship(scholarshipData.data.doc);
+      paid = paid + (Number(scholarshipData.data.doc.percentage) / 100) * bill;
+    }
+
+    console.log(paid);
     settotalBill(bill);
     settotalPaid(paid);
     setbalance(bill - paid);
@@ -169,13 +180,22 @@ function BillPayment() {
           />
 
           {show && (
-            <>
-              {" "}
+            <div className="content__container">
+              {scholarship && (
+                <div>
+                  <strong>
+                    {" "}
+                    Students granted {scholarship?.name} which covers{" "}
+                    {scholarship?.percentage}% of the fees
+                  </strong>
+                </div>
+              )}{" "}
               {balance > 0 ? (
                 <PaymentForm
                   balance={balance}
                   amount={amount}
                   year={year}
+                  scholarship={scholarship}
                   term={term}
                   setterm={setterm}
                   setyear={setyear}
@@ -204,13 +224,14 @@ function BillPayment() {
                   </h5>
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
         <div className="col-sm-6">
           {show && (
             <ViewStudent
               transactions={transactions}
+              scholarship={scholarship}
               user={user}
               balance={balance}
               feetype={feetype}

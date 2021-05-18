@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { bankOptions } from "../../../data";
-import { useSelector } from "react-redux";
-import { selectYearGroup } from "../../../store/slices/schoolSlice";
 import { currentCurrency } from "../../../utils";
 
 function PaymentForm({
@@ -13,10 +11,6 @@ function PaymentForm({
   setchequeNo,
   chequeNo,
   amount,
-  term,
-  setterm,
-  year,
-  setyear,
   setamount,
   remarks,
   setremarks,
@@ -27,9 +21,9 @@ function PaymentForm({
   setdate,
   paymentType,
   setpaymentType,
+  scholarship,
 }) {
   const { register, handleSubmit, errors } = useForm();
-  //const years = useSelector(selectYearGroup);
 
   const handleSelectall = (e) => {
     setapplyTo({
@@ -48,8 +42,8 @@ function PaymentForm({
         <div className="row mb-3">
           <label className="col-sm-3 col-form-label">Fees Due</label>
           <div className="col-md-6">
-            <div class="input-group">
-              <div class="input-group-text">{currentCurrency()}</div>
+            <div className="input-group">
+              <div className="input-group-text">{currentCurrency()}</div>
               <input
                 type="number"
                 value={balance}
@@ -72,8 +66,8 @@ function PaymentForm({
         <div className="row mb-3">
           <label className="col-sm-3 col-form-label">Amount</label>
           <div className="col-sm-9">
-            <div class="input-group">
-              <div class="input-group-text">{currentCurrency()}</div>
+            <div className="input-group">
+              <div className="input-group-text">{currentCurrency()}</div>
               <input
                 type="number"
                 ref={register({ required: true, max: balance + 1 })}

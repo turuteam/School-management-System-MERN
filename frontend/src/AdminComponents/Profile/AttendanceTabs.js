@@ -105,9 +105,9 @@ function AttendanceTabs() {
     },
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  // const handlePrint = () => {
+  //   window.print();
+  // };
   return (
     <div id="section-to-print">
       <div className="content__container mb-3">

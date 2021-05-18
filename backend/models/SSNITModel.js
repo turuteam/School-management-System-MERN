@@ -22,6 +22,8 @@ const SBASchema = new Schema(
           position: String,
           salary: Number,
           contribution: Number,
+          grade: String,
+          interpretation: String,
         },
       ],
     },

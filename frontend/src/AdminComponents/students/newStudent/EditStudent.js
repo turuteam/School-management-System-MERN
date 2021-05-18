@@ -8,14 +8,12 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
-import { update } from "../../../store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import GuadianCard from "../../shared/GuadianCard";
 import moment from "moment";
 
 function EditStudent() {
   const { id } = useParams();
-  const dispatch = useDispatch();
 
   // const [studentDetails, setstudentDetails] = useState({});
 
@@ -175,6 +173,7 @@ function EditStudent() {
       })
       .then(async (response) => {
         setloading(false);
+        console.log(response);
         if (response.data.error) {
           return errorAlert(response.data.error);
         }

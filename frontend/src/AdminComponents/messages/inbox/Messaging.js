@@ -3,15 +3,18 @@ import axios from "../../../store/axios";
 import Table from "./Table";
 import PropTypes from "prop-types";
 import { errorAlert } from "../../../utils";
-//import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import Typography from "@material-ui/core/Typography";
 import ForumIcon from "@material-ui/icons/Forum";
 import Box from "@material-ui/core/Box";
-import { useSelector } from "react-redux";
 import { selectUser } from "../../../store/slices/userSlice";
+import {
+  selectNotifications,
+  setNotifications,
+} from "../../../store/slices/schoolSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -76,20 +79,31 @@ function Messaging() {
   const [messages, setmessages] = useState([]);
   const [sendMessages, setsendMessages] = useState("");
   const [value, setValue] = React.useState(0);
+  const notificationMessages = useSelector(selectNotifications);
+  const dispatch = useDispatch();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
+    axios.put(`/chats/update/view/${user?.id}`).then((res) => {
+      let newMessage = notificationMessages.filter((i) => i.type !== "inbox");
+      dispatch(setNotifications(newMessage));
+    });
+    // let newMessage = notificationMessages.filter((i) => i.type !== "inbox");
+    // dispatch(setNotifications(newMessage));
+  }, [notificationMessages, dispatch, user]);
+
+  useEffect(() => {
     axios.get(`/chats/send/${user?.id}`).then(async (res) => {
-      setmessages(res.data);
+      setsendMessages(res.data);
     });
   }, [user]);
 
   useEffect(() => {
     axios.get(`/chats/user/${user?.id}`).then(async (res) => {
-      setsendMessages(res.data);
+      setmessages(res.data);
     });
   }, [user]);
 
@@ -148,7 +162,7 @@ function Messaging() {
       <div className="content__container d-flex mb-5 justify-content-between">
         <div className="text-center">
           <h6>
-            <strong>Send Messages</strong>
+            <strong>Inbox Messages</strong>
           </h6>
           <strong>{messages.length}</strong>
         </div>
@@ -169,32 +183,33 @@ function Messaging() {
           aria-label="icon label tabs example"
         >
           <LinkTab
-            icon={<TelegramIcon />}
-            label="Send Messages"
-            href="/outgoing"
-            {...a11yProps(0)}
-          />
-          <LinkTab
             icon={<ForumIcon />}
             label="Received Messages"
             href="/income"
             {...a11yProps(1)}
           />
+          <LinkTab
+            icon={<TelegramIcon />}
+            label="Send Messages"
+            href="/outgoing"
+            {...a11yProps(0)}
+          />
         </Tabs>
         <TabPanel value={value} index={0}>
+          <Table
+            handleDelete={handleDelete}
+            data={messages}
+            isEdit={true}
+            isRecieved={true}
+            tableHeader={tableHeaderReceived}
+          ></Table>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
           <Table
             handleDelete={handleDeleteSend}
             data={sendMessages}
             isEdit={true}
             tableHeader={tableHeader}
-          ></Table>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Table
-            handleDelete={handleDelete}
-            data={messages}
-            isEdit={true}
-            tableHeader={tableHeaderReceived}
           ></Table>
         </TabPanel>
       </div>

@@ -17,6 +17,7 @@ function ViewStudent({
   total,
   totalBill,
   balance,
+  scholarship,
 }) {
   const [open, setOpen] = useState(false);
   const name =
@@ -102,6 +103,20 @@ function ViewStudent({
               />
             </td>
           </tr>
+          {scholarship && (
+            <tr>
+              <td>
+                SCHOLARSHIP: {scholarship?.name}-{scholarship?.percentage}%
+              </td>
+              <td>
+                <NumberFormat
+                  value={(Number(scholarship?.percentage) / 100) * totalBill}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                />
+              </td>
+            </tr>
+          )}
           <tr>
             <td>TOTAL PAID</td>
             <td>

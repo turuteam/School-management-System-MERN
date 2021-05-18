@@ -341,6 +341,12 @@ route.post("/forgetpassword", async (req, res) => {
     return res.json({ error: "Wrong userID" });
   }
 
+  if (studentIDexist.email !== req.body.email) {
+    return res.json({
+      error: "Wrong email",
+    });
+  }
+
   const token = crypto.randomBytes(20).toString("hex");
 
   await StudentModel.findOneAndUpdate(
@@ -357,8 +363,8 @@ route.post("/forgetpassword", async (req, res) => {
   );
 
   const mailOptions = {
-    from: "rudomaru25@email.com",
-    to: req.body.email,
+    from: process.env.EMAIL_ADDRESS,
+    to: studentIDexist.email,
     subject: "Link to reset Password",
     html:
       "<!DOCTYPE html>" +

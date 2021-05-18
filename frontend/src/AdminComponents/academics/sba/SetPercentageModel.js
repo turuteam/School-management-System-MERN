@@ -26,26 +26,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function FullScreenDialog({
   open,
   setOpen,
-  name,
-  userID,
-  exam,
-  setexam,
-  classWork,
-  setclassWork,
+  examPercentage,
+  setexamPercentage,
+  classWorkPercentage,
+  setclassWorkPercentage,
   onSubmit,
   classID,
   loading,
-  position,
-  setposition,
-  classworkMark,
-  examMark,
 }) {
   const classes = useStyles();
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit } = useForm();
   const handleClose = () => {
-    setposition("");
-    setclassWork("");
-    setexam("");
+    console.log("ndhou");
     setOpen(false);
   };
 
@@ -59,7 +51,7 @@ export default function FullScreenDialog({
       <AppBar color="transparent" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            {name} - {userID}
+            Set Percentages for Class {classID}
           </Typography>
           <IconButton
             edge="start"
@@ -72,59 +64,28 @@ export default function FullScreenDialog({
         </Toolbar>
       </AppBar>
       <form action="" className="m-5">
-        <h3 className="mb-5">Set Grades for Class {classID} </h3>
         <div className="mb-3">
-          <label className="form-label">
-            Set ClassWork ( out of {Number(classworkMark || 0)})
-          </label>
+          <label className="form-label">Set ClassWork %</label>
           <input
-            value={classWork}
-            ref={register({ min: 0, max: Number(classworkMark || 0) + 1 })}
-            onChange={(e) => setclassWork(e.target.value)}
+            value={classWorkPercentage}
+            ref={register({ min: 0, max: 100 })}
+            onChange={(e) => setclassWorkPercentage(e.target.value)}
             type="number"
             className="form-control col-sm-6"
             name="a1"
           />
-          {errors.a1 && (
-            <span className=" form-error text-danger mb-2">
-              out of ({Number(classworkMark || 0)}
-            </span>
-          )}
         </div>
         <div className="mb-5">
-          <label className="form-label">
-            Exam Mark (out of {Number(examMark || 0)})
-          </label>
+          <label className="form-label">Exam %</label>
           <input
-            value={exam}
-            ref={register({ min: 0, max: Number(examMark || 0) + 1 })}
-            onChange={(e) => setexam(e.target.value)}
+            value={examPercentage}
+            ref={register({ min: 0, max: 100 })}
+            onChange={(e) => setexamPercentage(e.target.value)}
             type="number"
             className="form-control col-6"
             name="exams"
           />
-          {errors.exams && (
-            <span className=" form-error text-danger mb-2">
-              out of ({Number(examMark || 0)}
-            </span>
-          )}
         </div>
-        {/* <div className="mb-5">
-          <label className="form-label">Position</label>
-          <input
-            value={position}
-            onChange={(e) => setposition(e.target.value)}
-            type="number"
-            ref={register({ min: 0 })}
-            className="form-control col-6"
-            name="position"
-          />
-          {errors.position && (
-            <span className=" form-error text-danger mb-2">
-              cannot be negative
-            </span>
-          )}
-        </div> */}
         <div className="mb-3">
           <button
             disabled={loading}
@@ -138,7 +99,7 @@ export default function FullScreenDialog({
                 aria-hidden="true"
               ></span>
             )}
-            Submit Changes
+            Save Changes
           </button>
         </div>
       </form>

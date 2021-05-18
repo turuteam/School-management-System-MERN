@@ -57,6 +57,8 @@ function ViewPayment() {
     e.preventDefault();
     console.log("searching");
     setloading(true);
+    setfrom(firstday);
+    setto(moment().format("YYYY-MM-DD"));
     let newData = [];
     if (year) {
       newData = storeData.filter((i) =>

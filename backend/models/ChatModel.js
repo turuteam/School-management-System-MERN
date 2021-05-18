@@ -17,6 +17,10 @@ const ChatSchema = new Schema(
     parent: {
       type: String,
     },
+    isViewed: {
+      type: Boolean,
+      default: false,
+    },
     sender: {
       type: String,
     },
@@ -31,7 +35,12 @@ const ChatSchema = new Schema(
         {
           senderID: String,
           message: String,
+          channelID: String,
           role: String,
+          isViewed: {
+            type: Boolean,
+            default: false,
+          },
           date: {
             type: Date,
             default: Date.now,

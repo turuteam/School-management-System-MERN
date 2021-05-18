@@ -39,16 +39,9 @@ function AcademicTabs({ count }) {
         </div>
         <div className="col-sm-6 col-md-4">
           <Card
-            title="Terminal Report"
-            name="Terminal Report"
-            route="/academics/progressreports"
-          />
-        </div>
-        <div className="col-sm-6 col-md-4">
-          <Card
             title="Class Terminal Report"
-            name="Class Terminal Report"
-            route="/reports/classterminal"
+            name=" Report"
+            route="/academics/progressreports"
           />
         </div>
 

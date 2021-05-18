@@ -14,7 +14,9 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import TablePaginationActions from "../../shared/TablePagination";
 import Tooltip from "@material-ui/core/Tooltip";
-import TocIcon from "@material-ui/icons/Toc";
+//import TocIcon from "@material-ui/icons/Toc";
+import { timeStamp } from "../../../utils";
+
 const useStyles2 = makeStyles({
   table: {
     width: "100%",
@@ -27,7 +29,7 @@ export default function CustomPaginationActionsTable({
   handleEdit,
   handleDelete,
   loading,
-  isCanteen,
+  isRecieved,
   isEdit,
   isItems,
   noActions,
@@ -92,20 +94,23 @@ export default function CustomPaginationActionsTable({
                   : data
                 )?.map((row) => (
                   <TableRow key={row._id}>
-                    {tableHeader &&
+                    <TableCell>{timeStamp(row.createdAt)}</TableCell>
+                    <TableCell>
+                      {isRecieved ? row?.sender : row?.userID}
+                    </TableCell>
+                    <TableCell>{row?.message}</TableCell>
+                    {/* {tableHeader &&
                       tableHeader?.map((cell) => (
                         <TableCell key={cell?.id} align="left">
                           {row[cell?.id] || "-"}
                         </TableCell>
-                      ))}
+                      ))} */}
                     {!noActions && (
                       <TableCell align="left">
                         <div className="d-flex align-items-center">
-                          <Tooltip
-                            title={isItems ? "Manage Inventory" : "delete"}
-                          >
+                          <Tooltip title={"delete"}>
                             <IconButton onClick={() => handleDelete(row._id)}>
-                              {isItems ? <TocIcon /> : <DeleteOutlineIcon />}
+                              <DeleteOutlineIcon />
                             </IconButton>
                           </Tooltip>
                           {!isEdit && (

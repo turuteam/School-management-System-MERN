@@ -1,9 +1,6 @@
 const express = require("express");
 const ChatModel = require("../models/ChatModel.js");
-const {
-  sendFriendRequest,
-  sendMessage,
-} = require("../middlewares/validate.js");
+const { sendMessage } = require("../middlewares/validate.js");
 const twilio = require("twilio");
 
 const route = express.Router();
@@ -42,7 +39,6 @@ route.post("/", (req, res) => {
       body: req.body.message,
     })
     .then(async () => {
-      //console.log("message send");
       await ChatModel.create(body);
       res.send(JSON.stringify({ success: true }));
     })
@@ -63,8 +59,61 @@ route.get("/user/:id", async (req, res) => {
   }
   const messageChats = await ChatModel.find({
     userID: req.params.id,
+  }).sort({
+    createdAt: "desc",
   });
   res.json(messageChats);
+});
+
+//get chat uer
+route.get("/user/notifications/:id", async (req, res) => {
+  if (!req.params.id) {
+    return res.json({ success: false, error: " id is required" });
+  }
+  const messageChats = await ChatModel.find({
+    userID: req.params.id,
+  }).sort({
+    createdAt: "desc",
+  });
+
+  let chatmessages = await ChatModel.find({
+    "messages.isViewed": false,
+    $or: [{ acceptor_id: req.params.id }, { requestor_id: req.params.id }],
+  }).sort({
+    createdAt: "desc",
+  });
+
+  let combinedArr = chatmessages.map((e) => e.messages);
+  var merged = [].concat.apply([], combinedArr);
+  let filteredArr = merged.filter((e) => e.senderID !== req.params.id);
+
+  let chatsMessages = filteredArr.map((e) => {
+    return {
+      isViewed: e.isViewed,
+      message: e.message,
+      type: "chat",
+      _id: e._id,
+      channelID: e.channelID,
+      date: e.date,
+      senderID: e.senderID,
+    };
+  });
+
+  let inboxMessages = messageChats.map((e) => {
+    return {
+      isViewed: e.isViewed,
+      message: e.message,
+      type: "inbox",
+      _id: e._id,
+      date: e.date,
+      senderID: e.sender,
+    };
+  });
+
+  let results = [...chatsMessages, ...inboxMessages];
+
+  let returnData = results.filter((e) => e.isViewed === false);
+  res.json(returnData);
 });
 
 route.get("/send/:id", async (req, res) => {
@@ -104,14 +153,11 @@ route.get("/chat/:id", async (req, res) => {
   if (!req.params.id) {
     return res.json({ success: false, error: " id is required" });
   }
-  console.log(req.params.id);
   ChatModel.findOne({ _id: req.params.id })
     .then((doc) => {
-      console.log(doc, "doc");
       return res.json(doc);
     })
     .catch((err) => {
-      console.log(err, "err");
       return res.json({ success: false, message: "something when wrong" });
     });
 });
@@ -138,19 +184,11 @@ route.get("/messages/:id", async (req, res) => {
 //create connection
 route.post("/create", async (req, res) => {
   let body = req.body;
-  // const { error } = sendFriendRequest.validate(body);
-  // if (error) {
-  //   console.log(error);
-  //   return res.json({ success: false, error: error.details[0].message });
-  // }
-  //check if there is aconnection already
   const checkConnection = await ChatModel.findOne({
     acceptor_id: body.acceptor_id,
     requestor_id: body.requestor_id,
   });
-
   console.log(checkConnection, "connection");
-
   if (checkConnection) {
     return res.json({ doc: checkConnection });
   }
@@ -238,7 +276,6 @@ route.put("/send/:id", (req, res) => {
 
   const { error } = sendMessage.validate(req.body);
   if (error) {
-    console.log(error);
     return res.json({ success: false, error: error.details[0].message });
   }
 
@@ -262,6 +299,30 @@ route.put("/send/:id", (req, res) => {
     }
   )
     .then((doc) => {
+      if (!doc) {
+        return res.json({ success: false, error: "doex not exists" });
+      }
+      return res.json({ success: true, doc });
+    })
+    .catch((err) => {
+      res.json({ success: false, message: err });
+    });
+});
+
+//send message
+route.put("/update/view/:id", (req, res) => {
+  ChatModel.updateMany(
+    {
+      userID: req.params.id,
+    },
+    {
+      isViewed: true,
+    },
+    {
+      new: true,
+    }
+  )
+    .then((doc) => {
       console.log(doc);
       if (!doc) {
         return res.json({ success: false, error: "doex not exists" });
@@ -270,6 +331,29 @@ route.put("/send/:id", (req, res) => {
     })
     .catch((err) => {
       res.json({ success: false, message: err });
+    });
+});
+
+//send message
+route.put("/update/chat/:id/:userID", async (req, res) => {
+  await ChatModel.updateMany(
+    {
+      _id: req.params.id,
+      "messages.isViewed": false,
+      //  "messages.senderID": { $ne: req.params.userID },
+    },
+    {
+      "messages.$.isViewed": true,
+      // $set: { "messages.$.isViewed": true },
+    }
+  )
+    .then(async (doc) => {
+      let test = await ChatModel.findOne({ _id: req.params.id });
+      console.log(test);
+      return res.json({ success: true, doc });
+    })
+    .catch((err) => {
+      res.json({ error: err });
     });
 });
 

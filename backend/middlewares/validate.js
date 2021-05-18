@@ -101,6 +101,7 @@ const sendFriendRequest = Joi.object({
 const sendMessage = Joi.object({
   message: Joi.string().required(),
   senderID: Joi.string().required(),
+  channelID: Joi.string().required(),
 });
 
 module.exports = {

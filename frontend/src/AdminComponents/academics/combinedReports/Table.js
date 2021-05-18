@@ -28,7 +28,67 @@ function SbaTable({ rows, classID }) {
   }, []);
 
   const getTotal = (exams, work) => {
+    if (!work && !exams) {
+      return "-";
+    }
     return Number(exams || 0) + Number(work || 0);
+  };
+
+  const getGrade = (classwork, exam) => {
+    if (!classwork && !exam) {
+      return "-";
+    }
+    let num = getTotal(classwork, exam);
+    if (num >= 75 && num <= 100) {
+      return "A1";
+    } else if (num >= 70 && num <= 74) {
+      return "B2";
+    } else if (num >= 65 && num <= 69) {
+      return "B3";
+    } else if (num >= 60 && num <= 64) {
+      return "C4";
+    } else if (num >= 55 && num <= 59) {
+      return "C5";
+    } else if (num >= 50 && num <= 54) {
+      return "C6";
+    } else if (num >= 45 && num <= 49) {
+      return "D7";
+    } else if (num >= 40 && num <= 44) {
+      return "E8";
+    } else if (num >= 0 && num <= 39) {
+      return "F9";
+    } else {
+      return null;
+    }
+  };
+
+  const getInterpretation = (classwork, exam) => {
+    if (!classwork && !exam) {
+      return "-";
+    }
+    let num = getTotal(classwork, exam);
+    num = Number(num);
+    if (num > 75 && num <= 100) {
+      return "Excellent";
+    } else if (num >= 70 && num <= 74) {
+      return "Vert good";
+    } else if (num >= 65 && num <= 69) {
+      return "Good";
+    } else if (num >= 60 && num <= 64) {
+      return "Credit";
+    } else if (num >= 55 && num <= 59) {
+      return "Credit";
+    } else if (num >= 50 && num <= 54) {
+      return "Credit";
+    } else if (num >= 45 && num <= 49) {
+      return "Pass";
+    } else if (num >= 40 && num <= 44) {
+      return "Pass";
+    } else if (num >= 0 && num <= 39) {
+      return "Failure";
+    } else {
+      return null;
+    }
   };
 
   const handlePrint = () => {
@@ -58,13 +118,22 @@ function SbaTable({ rows, classID }) {
                     Name of Student
                   </TableCell>
                   <TableCell style={{ width: 160 }} align="left">
-                    ClassWork
+                    ClassWork (%)
                   </TableCell>
                   <TableCell style={{ width: 160 }} align="left">
-                    Exam
+                    Exam (%)
                   </TableCell>
                   <TableCell style={{ width: 160 }} align="left">
-                    Final Course
+                    Total (%)
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="left">
+                    Grade
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="left">
+                    Interpretation
+                  </TableCell>
+                  <TableCell style={{ width: 160 }} align="left">
+                    Position
                   </TableCell>
                 </TableRow>
               </TableRow>
@@ -84,13 +153,31 @@ function SbaTable({ rows, classID }) {
                           {user?.name}
                         </TableCell>
                         <TableCell style={{ width: 160 }}>
-                          {user?.classWork}
+                          {user?.classWorkPercentage}
                         </TableCell>
                         <TableCell style={{ width: 160 }}>
-                          {user?.exam || "-"}
+                          {user?.examPercentage || "-"}
                         </TableCell>
                         <TableCell style={{ width: 160 }}>
-                          {getTotal(user?.exam, user?.classWork)}
+                          {getTotal(
+                            user?.examPercentage,
+                            user?.classWorkPercentage
+                          )}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }}>
+                          {getGrade(
+                            user?.examPercentage,
+                            user?.classWorkPercentage
+                          )}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }}>
+                          {getInterpretation(
+                            user?.examPercentage,
+                            user?.classWorkPercentage
+                          )}
+                        </TableCell>
+                        <TableCell style={{ width: 160 }}>
+                          {user?.position}
                         </TableCell>
                       </TableRow>
                     ))}

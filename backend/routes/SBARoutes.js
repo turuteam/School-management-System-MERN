@@ -51,7 +51,9 @@ route.get("/student/:id/:year/:term", async (req, res) => {
             userID: r.userID,
             position: r.position,
             exam: r.exam,
+            examPercentage: r.examPercentage,
             classWork: r.classWork,
+            classWorkPercentage: r.classWorkPercentage,
             course: e.course,
           };
         })
@@ -116,6 +118,8 @@ route.get("/:class/:course/:year/:term", async (req, res) => {
       course: isExist.course,
       createdAt: isExist.createdAt,
       exam: isExist.exam,
+      examPercentage: isExist.examPercentage,
+      classWorkPercentage: isExist.classWorkPercentage,
       students: students.map((e) => {
         let selected = oldStudents.find((i) => i.userID === e.userID);
 
@@ -125,9 +129,12 @@ route.get("/:class/:course/:year/:term", async (req, res) => {
           position: selected?.position || "",
           exam: selected?.exam || "",
           classWork: selected?.classWork || "",
+          examPercentage: selected?.examPercentage || "",
+          classWorkPercentage: selected?.classWorkPercentage || "",
         };
       }),
     };
+
     return res.json({ docs });
   }
 
@@ -136,6 +143,8 @@ route.get("/:class/:course/:year/:term", async (req, res) => {
     course: req.params.course,
     academicYear: req.params.year,
     term: req.params.term,
+    examPercentage: 70,
+    classWorkPercentage: 30,
     students: students.map((e) => {
       return {
         name: e.name + "  " + e.surname,
@@ -143,6 +152,8 @@ route.get("/:class/:course/:year/:term", async (req, res) => {
         position: " ",
         exam: " ",
         classWork: "",
+        examPercentage: "",
+        classWorkPercentage: "",
       };
     }),
   })
@@ -174,7 +185,6 @@ route.post("/create", async (req, res) => {
 
 //update student marks
 route.put("/update/student/:id/:studentID", async (req, res) => {
-  console.log(req.params.studentID);
   const isExist = await SBAModel.findOne({
     _id: req.params.id,
   });
@@ -182,7 +192,6 @@ route.put("/update/student/:id/:studentID", async (req, res) => {
   if (!isExist) {
     return res.json({ error: "SBA not found" });
   }
-
   SBAModel.findOneAndUpdate(
     {
       "students.userID": req.params.studentID,
@@ -194,13 +203,13 @@ route.put("/update/student/:id/:studentID", async (req, res) => {
     }
   )
     .then((doc) => {
+      console.log(doc);
       if (!doc) {
         SBAModel.findOneAndUpdate(
           { _id: req.params.id },
           { $push: { students: req.body } },
           { new: true }
         ).then((doc) => {
-          console.log(doc);
           return res.json({ success: true, doc });
         });
       } else {
