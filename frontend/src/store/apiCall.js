@@ -16,7 +16,6 @@ import {
 import store from "./index";
 import { LoginString } from "./localStorage";
 import { loggin, logout } from "./slices/userSlice";
-import { setLoading } from "./slices/appSlice";
 
 export const callData = () => {
   axios.get("/classes").then((res) => {
@@ -71,6 +70,10 @@ export const handleAutoLogin = () => {
     })
   );
   callData();
+};
+
+export const doUploadImage = async (dataUrl) => {
+  axios.post("/upload", { dataUrl });
 };
 
 export const handleLogin = (user) => {

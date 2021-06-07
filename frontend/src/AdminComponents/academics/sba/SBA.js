@@ -58,8 +58,11 @@ function SBA() {
           setexamMark(data?.exam);
           setexamPercentage(data?.examPercentage);
           setclassWorkPercentage(data?.classWorkPercentage);
-          console.log(data?.students);
-          setstudents(data?.students);
+          let sortedStudents = data?.students.sort((a, b) => {
+            return Number(b?.total || 0) - Number(a?.total || 0);
+          });
+          //setstudents(data?.students);
+          setstudents(sortedStudents);
         });
     });
   };
@@ -134,8 +137,6 @@ function SBA() {
         : i
     );
 
-    console.log(newData);
-
     let newStudents = calculatePositions(newData);
 
     await axios
@@ -146,26 +147,6 @@ function SBA() {
         setloadingSubmit(false);
         setstudents(newStudents);
       });
-    // await axios
-    //   .put(`/sba/update/student/${data?._id}/${selectedUser?.userID}`, {
-    //     classWork,
-    //     exam,
-    //     classWorkPercentage: getClassWorkPercentage(classWork),
-    //     examPercentage: getexamPercentage(exam),
-    //     userID: selectedUser?.userID,
-    //     name: selectedUser?.name,
-    //     position,
-    //   })
-    //   .then((res) => {
-    //     setopenEdit(false);
-    //     setloadingSubmit(false);
-    //     setstudents(res.data.doc?.students);
-    //     console.log(res.data.doc?.students);
-    //   })
-    //   .catch((err) => {
-    //     errorAlert("Failed");
-    //     setloadingSubmit(false);
-    //   });
   };
 
   const handleSetclasswork = (e) => {

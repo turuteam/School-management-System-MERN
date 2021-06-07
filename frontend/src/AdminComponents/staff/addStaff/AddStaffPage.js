@@ -9,6 +9,7 @@ import { errorAlert, successAlert } from "../../../utils";
 import axios from "../../../store/axios";
 import { useSelector, useDispatch } from "react-redux";
 import { selectStaff, setStaff } from "../../../store/slices/schoolSlice";
+import imageCompression from "browser-image-compression";
 
 function NewStaff() {
   //personal
@@ -116,9 +117,9 @@ function NewStaff() {
     let path = "";
     if (profileUrl) {
       fileData.append("photo", profileUrl);
-      const fileResponse = await axios.post("/upload", fileData, {});
+      const fileResponse = await axios.post("/upload", { dataUrl: profileimg });
       // axios.post("/upload", fileData, {}).then((res) => {
-      path = fileResponse.data.path;
+      path = fileResponse.data.url;
     }
     axios
       .post("/teachers/create", {
@@ -183,8 +184,12 @@ function NewStaff() {
       });
   };
 
-  const handleChangeFile = (e) => {
-    const selected = e.target.files[0];
+  const options = {
+    maxSizeMB: 1,
+  };
+
+  const handleChangeFile = async (e) => {
+    const selected = await imageCompression(e.target.files[0], options);
     if (selected?.size > 2000000) {
       errorAlert("image is too large");
     } else if (selected) {

@@ -15,18 +15,22 @@ function AddNote() {
   const [loading, setloading] = useState(false);
 
   const handleAddNote = async () => {
+    if (!classID) {
+      return errorAlert("Please select class");
+    }
+    if (!subject) {
+      return errorAlert("Please select course");
+    }
     if (!file) {
       return errorAlert("Please select file");
     }
     setloading(true);
-    const fileData = new FormData();
-    fileData.append("photo", file);
-    const data = await axios.post("/upload", fileData, {});
-    if (data.error) {
+    const data = await axios.post("/upload", { dataUrl: file });
+    if (data.data.error) {
       return errorAlert("The file is too big");
     }
-    const path = data.path;
-
+    const path = data.data.url;
+    console.log(path);
     await axios
       .post("/notes/create", {
         topic,
@@ -55,12 +59,17 @@ function AddNote() {
       });
   };
 
-  const handleSetFile = (e) => {
-    const selected = e.target.files[0];
+  const handleSetFile = async (e) => {
+    const selected = e.target.files[0]; //await imageCompression(e.target.files[0], options);
     if (selected?.size > 2000000) {
       return errorAlert("image is too large");
     }
-    setfile(selected);
+    //setfile(selected);
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(selected);
+    fileReader.onloadend = () => {
+      setfile(fileReader.result);
+    };
   };
   const handleResetNote = () => {
     setclassID("");

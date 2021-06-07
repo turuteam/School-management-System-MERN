@@ -228,15 +228,15 @@ route.get("/count/attendance/week/:start", async (req, res) => {
   res.json(arr);
 });
 
-route.post("/upload/", uploader.single("photo"), (req, res) => {
-  try {
-    console.log(req.body.caption);
-    res.send({ path: `${req.file.filename}` });
-  } catch (err) {
-    console.log(err);
-    res.json({ success: false, message: err });
-  }
-});
+// route.post("/upload/", uploader.single("photo"), (req, res) => {
+//   try {
+//     console.log(req.body.caption);
+//     res.send({ path: `${req.file.filename}` });
+//   } catch (err) {
+//     console.log(err);
+//     res.json({ success: false, message: err });
+//   }
+// });
 
 //get student's class details
 route.get("/student/classDetails/:id", (req, res) => {

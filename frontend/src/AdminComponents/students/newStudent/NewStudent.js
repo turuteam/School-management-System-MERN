@@ -8,8 +8,6 @@ import { useForm } from "react-hook-form";
 import GuadianCard from "../../shared/GuadianCard";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
-import { update } from "../../../store/slices/userSlice";
-import { useDispatch } from "react-redux";
 
 function NewStudent() {
   //personal
@@ -26,7 +24,6 @@ function NewStudent() {
   const [allege, setallege] = useState("");
   const [disease, setdisease] = useState("");
   const [loading, setloading] = useState("");
-  const dispatch = useDispatch();
 
   const [profileUrl, setprofileUrl] = useState("");
   const [profileimg, setprofileimg] = useState("");
@@ -116,16 +113,11 @@ function NewStudent() {
     fileData.append("photo", profileUrl);
     var path;
     if (profileUrl) {
-      path = await axios.post("/upload", fileData, {});
-      // dispatch(
-      //   update({
-      //     photoUrl: path?.data?.path,
-      //   })
-      // );
+      path = await axios.post("/upload", { dataUrl: profileimg });
     }
     await axios
       .post("/students/create", {
-        profileUrl: path?.data?.path,
+        profileUrl: path?.data?.url,
         name,
         setuserID: autoID ? null : userID,
         middleName: secondName,

@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import axios from "../../../store/axios";
 import { errorAlert, successAlert } from "../../../utils";
-import { useDispatch } from "react-redux";
 import GuadianCard from "../../shared/GuadianCard";
 import moment from "moment";
 
@@ -133,14 +132,16 @@ function EditStudent() {
     const fileData = new FormData();
 
     var path = "";
+    console.log(path, "path");
     if (profileUrl) {
       fileData.append("photo", profileUrl);
-      path = await axios.post("/upload", fileData, {});
+      path = await axios.post("/upload", { dataUrl: profileimg });
+      // path = await axios.post("/upload", { fileData });
     }
-    console.log(path?.data?.path);
+    console.log(path, "path");
     await axios
       .put(`/students/update/${id}`, {
-        profileUrl: path?.data?.path || profileimg,
+        profileUrl: path?.data?.url || profileimg,
         name,
         middleName: secondName,
         surname: lastname,

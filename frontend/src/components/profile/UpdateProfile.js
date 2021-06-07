@@ -7,6 +7,7 @@ import axios from "../../store/axios";
 import { useDispatch } from "react-redux";
 import { update } from "../../store/slices/userSlice";
 import { LoginString } from "../../store/localStorage";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,35 +37,37 @@ function UpdateProfile({ id, profile }) {
       errorAlert("image is too large");
     } else if (selected) {
       setloading(true);
-      const fileData = new FormData();
-      fileData.append("photo", selected);
-      axios
-        .post("/upload", fileData, {})
-        .then((res) => {
-          const path = res.data.path;
-          console.log(path);
-          axios
-            .post(`/update/profile/${id}`, { profileUrl: path })
-            .then((response) => {
-              setloading(false);
-              if (response.data.error) {
-                errorAlert("Profile update failed");
-                return 0;
-              }
-              setprofileimg(path);
-              dispatch(
-                update({
-                  photoUrl: path,
-                })
-              );
-              localStorage.setItem(LoginString.PhotoURL, path);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-          setloading(false);
-          errorAlert("Profile update failed");
-        });
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(selected);
+      fileReader.onloadend = () => {
+        axios
+          .post("/upload", { dataUrl: fileReader.result })
+          .then((res) => {
+            const path = res.data.url;
+            console.log(path);
+            axios
+              .post(`/update/profile/${id}`, { profileUrl: path })
+              .then((response) => {
+                setloading(false);
+                if (response.data.error) {
+                  errorAlert("Profile update failed");
+                  return 0;
+                }
+                setprofileimg(path);
+                dispatch(
+                  update({
+                    photoUrl: path,
+                  })
+                );
+                localStorage.setItem(LoginString.PhotoURL, path);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            setloading(false);
+            errorAlert("Profile update failed");
+          });
+      };
     } else {
       console.log("no file selected");
       errorAlert("no file selected");
@@ -88,8 +91,9 @@ function UpdateProfile({ id, profile }) {
           aria-label="upload picture"
           component="span"
         >
-          <PhotoCamera />
+          {loading ? <CircularProgress /> : <PhotoCamera />}
         </Avatar>
+
         <div className="profileIcon">Change Profile</div>
       </label>
     </div>

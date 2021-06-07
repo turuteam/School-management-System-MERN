@@ -76,7 +76,6 @@ route.get("/unpaidfees/:year/:term", async (req, res) => {
         0
       );
     }
-
     return {
       userID: e.userID,
       campus: e.campus,

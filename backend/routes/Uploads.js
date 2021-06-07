@@ -1,16 +1,25 @@
-const { uploader } = require("../middlewares/multer");
 const express = require("express");
-//import StudentModel from '../models/SchoolModel.js'
+const { cloudinary } = require("../middlewares/cloudinary");
+
 const route = express.Router();
 
-//upload
-route.post("/", uploader.single("photo"), (req, res, next) => {
+route.post("/", async (req, res) => {
   try {
-    console.log("logging req.file: ", req.file);
-    res.send({ path: `${req.file.filename}` });
-    // res.status(200).sendFile(`${__dirname}/public/consumerPhotos/${req.file.filename}`);
+    let timeStamp = new Date();
+    timeStamp = timeStamp.toJSON();
+
+    // Set folder for uploads
+    let day = timeStamp.substring(0, 10);
+
+    let promise = await cloudinary.v2.uploader.upload(req.body.dataUrl, {
+      public_id: `${day}/files-${timeStamp}`,
+      tags: "files", // tag
+    });
+    console.log("finish loading", promise);
+    return res.json(promise);
   } catch (err) {
-    res.status(418).send(err);
+    console.log("err", err);
+    res.send({ error: err });
   }
 });
 

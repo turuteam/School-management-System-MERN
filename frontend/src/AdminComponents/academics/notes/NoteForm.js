@@ -16,7 +16,6 @@ function NoteForm(props) {
 
   useEffect(() => {
     axios.get("/courses").then((res) => {
-      console.log(res.data);
       setcourses(res.data);
     });
   }, []);

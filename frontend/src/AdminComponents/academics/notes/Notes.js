@@ -26,6 +26,8 @@ function Notes() {
   const history = useHistory();
   const user = useSelector(selectUser);
 
+  console.log(notes);
+
   useEffect(() => {
     axios.get("/notes").then((res) => {
       setnotes(res.data);

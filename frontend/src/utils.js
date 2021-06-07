@@ -95,7 +95,7 @@ export const getIntial = (name) => {
 };
 
 export const getImgSrc = (src) => {
-  return `http://localhost:5000/${src}`;
+  return `${src}`;
 };
 
 export const timeStamp = (time) => {

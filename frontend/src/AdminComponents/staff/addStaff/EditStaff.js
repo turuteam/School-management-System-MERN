@@ -11,6 +11,7 @@ import moment from "moment";
 import { errorAlert, successAlert } from "../../../utils";
 import { useSelector, useDispatch } from "react-redux";
 import { selectStaff, setStaff } from "../../../store/slices/schoolSlice";
+import imageCompression from "browser-image-compression";
 
 function EditStaff() {
   const { id } = useParams();
@@ -35,7 +36,10 @@ function EditStaff() {
 
   const dispatch = useDispatch();
   const staff = useSelector(selectStaff);
-  console.log(staff);
+
+  const options = {
+    maxSizeMB: 1,
+  };
 
   //form verification
   const { register, handleSubmit, errors } = useForm();
@@ -156,8 +160,8 @@ function EditStaff() {
     let path = profileimg;
     if (profileUrl) {
       fileData.append("photo", profileUrl);
-      const fileResponse = await axios.post("/upload", fileData, {});
-      path = fileResponse.data.path;
+      const fileResponse = await axios.post("/upload", { dataUrl: profileimg });
+      path = fileResponse.data.url;
     }
     axios
       .put(`/teachers/update/${id}`, {
@@ -223,8 +227,8 @@ function EditStaff() {
       });
   };
 
-  const handleChangeFile = (e) => {
-    const selected = e.target.files[0];
+  const handleChangeFile = async (e) => {
+    const selected = await imageCompression(e.target.files[0], options);
     if (selected?.size > 2000000) {
       errorAlert("image is too large");
     } else if (selected) {

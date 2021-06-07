@@ -50,6 +50,20 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use(
+  bodyParser.json({
+    limit: "50mb",
+  })
+);
+
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    parameterLimit: 100000,
+    extended: true,
+  })
+);
+
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -90,7 +104,7 @@ app.use("/api/school", SchoolRoutes);
 app.use("/api/prefects", PrefectsRoutes);
 app.use("/api/paymentplan", PaymentPlanRoutes);
 app.use("/api/payrow", PayrowRoutes);
-app.use("/upload", UploadsRoutes);
+app.use("/api/upload", UploadsRoutes);
 app.use("/api/departments", DepartmentsRoutes);
 app.use("/api/divisions", DivisionRoutes);
 app.use("/api/canteen", CanteenRoutes);
